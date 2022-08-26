@@ -1,0 +1,19 @@
+bookdown::bs4_book:
+  theme:
+    primary: "#37b063"  
+bookdown::gitbook: 
+  css: custom.css  
+  config:
+    toc: 
+      collapse: section 
+      before: |
+        <li><a href="./">LECTURE NOTES</a></li>
+      after: |
+        <li><a href="https://sites.google.com/view/kau-melon/home" target="blank">Published in MeLON</a></li>
+    toolbar:
+      position: fixed
+    edit : null
+    download: null
+    sharing: null
+    info: true
+        

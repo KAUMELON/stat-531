@@ -1,0 +1,36 @@
+---
+title: "BIOMATHEMATICS"
+author: "Dr. Pratheesh P. Gopinath"
+date: "2022-01-30"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: https://github.com/KAUMELON/BSTA-2104
+description: "A BOOK FOR BTECH BIOTECHNOLOGY"
+cover-image: images/cover.PNG
+---  
+ 
+
+# Welcome {-} 
+<p style="text-align: center;"><a href="https://coavellayani.kau.in/people/dr-pratheesh-p-gopinath"><img src="images/cover.png" class="cover" width="250" height="328"/></a></p>  
+Welcome to the online version of the book **BIOMATHEMATICS**.  
+<p>This book is a collection of all lecture notes covering the syllabus of Biomathematics course  (BSTA 2104) in Btech Biotechnology Kerala Agricultural University </p> 
+
+
+
+# Preface {-}  
+<p style="text-align: justify;">
+</p>  
+<p style="text-align: justify;"> **Note**: This book is published in MeLoN (Module for e-Learning & Online Notes) . The online version of this book is free to read here.</p> 
+````{=html}
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+````
+<p>If you have any feedback, please feel free to contact [Dr.Pratheesh P. Gopinath](https://coavellayani.kau.in/people/dr-pratheesh-p-gopinath). E-mail: `pratheesh.pg@kau.in` Thank you!</p>  
+
+```{r logo, echo=FALSE,out.width="30%", fig.align='center'}
+knitr::include_graphics(rep("docs/logo.png"))
+```
+
+

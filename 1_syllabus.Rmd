@@ -1,0 +1,10 @@
+# Syllabus {-}  
+
+## UNIT 1 {-}  
+
+Rolle’s theorem; Lagrange’s theorem; Taylor’s and Maclaurin’s series; Differentiation and Partial differentiation, Euler’s theorem on homogeneous function, change of variable; Jacobian, maxima and minima of one variable, two or more than two variables, eigen values and eigen vectors of a matrix; Reduction formulae, definite integrals and its applications  
+
+## UNIT 2 {-}  
+
+Solution of ordinary differential equation of first degree and first order and their application for determination of volume of blood and drug distribution; Epidemic models, Simultaneous differential equation of first order and their applications to predator models; Linear differential equations of higher order and their applications to simple biological problem; Numerical methods for solving algebraic and transcendental equations.
+

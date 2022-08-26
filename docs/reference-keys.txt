@@ -1,0 +1,14 @@
+fig:secant
+fig:meanval
+fig:roll
+introduction
+tangent-and-secant
+theorems
+mean-value-theorem
+geometric-interpretation
+application-of-mean-value-theorem
+example
+rolles-theorem
+geometric-interpretation-1
+example-1
+references
