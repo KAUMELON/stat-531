@@ -1,6 +1,6 @@
 bookdown::bs4_book:
   theme:
-    primary: "#37b063"  
+    primary: "#3477eb"  
 bookdown::gitbook: 
   css: custom.css  
   config:
