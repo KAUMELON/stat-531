@@ -11,3 +11,4 @@ proprietary-software
 introduction-to-r
 rstudio
 installing-r-and-r-studio
+r-basics

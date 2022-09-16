@@ -1,0 +1,4 @@
+# R basics
+```{block2 items, type='rmdnote'}
+learn R basics
+``` 
