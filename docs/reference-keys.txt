@@ -1,1 +1,7 @@
-section
+introduction
+statistical-software
+types-of-statistical-software
+open-source-software
+public-domain
+freeware
+proprietary-software

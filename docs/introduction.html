@@ -4,17 +4,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 1 Introduction | BIOMATHEMATICS</title>
+<title>Chapter 1 Introduction | DATA ANALYSIS USING STATISTICAL PACKAGES</title>
 <meta name="author" content="Dr. Pratheesh P. Gopinath">
-<meta name="description" content="1.1 Tangent and Secant A tangent line just touches a curve at a point, matching the curve’s slope there. A secant line intersects two or more points on a curve. See figure 1.1  Figure 1.1: A...">
+<meta name="description" content="Data science is a fast growing field with the development of advanced statistical tools for data analysis and visualization. When the data volume is large and also when precision is required, we...">
 <meta name="generator" content="bookdown 0.28 with bs4_book()">
-<meta property="og:title" content="Chapter 1 Introduction | BIOMATHEMATICS">
+<meta property="og:title" content="Chapter 1 Introduction | DATA ANALYSIS USING STATISTICAL PACKAGES">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.PNG">
-<meta property="og:description" content="1.1 Tangent and Secant A tangent line just touches a curve at a point, matching the curve’s slope there. A secant line intersects two or more points on a curve. See figure 1.1  Figure 1.1: A...">
+<meta property="og:description" content="Data science is a fast growing field with the development of advanced statistical tools for data analysis and visualization. When the data volume is large and also when precision is required, we...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 1 Introduction | BIOMATHEMATICS">
-<meta name="twitter:description" content="1.1 Tangent and Secant A tangent line just touches a curve at a point, matching the curve’s slope there. A secant line intersects two or more points on a curve. See figure 1.1  Figure 1.1: A...">
+<meta name="twitter:title" content="Chapter 1 Introduction | DATA ANALYSIS USING STATISTICAL PACKAGES">
+<meta name="twitter:description" content="Data science is a fast growing field with the development of advanced statistical tools for data analysis and visualization. When the data volume is large and also when precision is required, we...">
 <meta name="twitter:image" content="/images/cover.PNG">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
@@ -32,7 +32,7 @@
 
     <div class="d-flex align-items-start justify-content-between">
       <h1>
-        <a href="index.html" title="">BIOMATHEMATICS</a>
+        <a href="index.html" title="">DATA ANALYSIS USING STATISTICAL PACKAGES</a>
       </h1>
       <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
     </div>
@@ -48,8 +48,7 @@
 <li><a class="" href="preface.html">Preface</a></li>
 <li><a class="" href="syllabus.html">Syllabus</a></li>
 <li><a class="active" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
-<li><a class="" href="theorems.html"><span class="header-section-number">2</span> Theorems</a></li>
-<li><a class="" href="references.html"><span class="header-section-number">3</span> References</a></li>
+<li><a class="" href="references.html">References</a></li>
 </ul>
 
         <div class="book-extra">
@@ -61,29 +60,220 @@
 <h1>
 <span class="header-section-number">1</span> Introduction<a class="anchor" aria-label="anchor" href="#introduction"><i class="fas fa-link"></i></a>
 </h1>
-<div id="tangent-and-secant" class="section level2" number="1.1">
+<p>Data science is a fast growing field with the development of advanced
+statistical tools for data analysis and visualization. When the data
+volume is large and also when precision is required, we depend on
+statistical software to get better insights from the data. Statistical
+software makes analysis easy, produces more precise results, enables us
+to use complex statistical tools and generates advance complex graphical
+outputs.</p>
+<p>One cannot blindly depend upon statistical software for data analysis,
+as you can use any software for data analysis as per your convenience.
+Even some of the basic statistical tools, you can perform calculations
+manually. Without proper knowledge in statistics, every software is a
+garbage in garbage out. What that really matters is knowledge in
+statistical concepts and tools, so that effective interpretations can be
+made from the data.</p>
+<p>Agricultural experiments demand a wide range of statistical tools for
+analysis, which includes exploratory analysis, design of experiments,
+and statistical genetics. It is a challenge for scientists and students
+to find a suitable platform for data analysis and publish the research
+outputs in quality journals. Most of the software available for data
+analysis are proprietary or lack a simple user interface. The open
+source programming language R and associated ecosystem of packages,
+provides an excellent platform for data analysis but as of yet, is not
+heavily utilized by researchers in agricultural disciplines.
+Insufficient programming and computational knowledge are the primary
+challenges for agricultural researchers using R for analysis.</p>
+<p>In our sessions, I will be using R studio. I believe that, there is no
+need for agricultural scientist and students to learn R as a programming
+language, as majority of you would like to have their data analyzed and
+make inference from it. I have seen agricultural researchers take up R
+workshops and leave it behind as such workshops mainly deals with code
+chunks; user will get easily tired of that. Beauty of R is that, it is a
+free open-source software. Apart from the software used, I again insist
+that students and researchers should strengthen their basic statistics
+knowledge and they should be able to decide, what tool should be used
+and when. I strongly recommend that you should go through the basic
+statistical theory by visiting my e-book <a href="https://kaumelon.github.io/stat3202/">Textbook of Agricultural Statistics</a>. Before proceeding further, one
+should also have a basic knowledge about different statistical software
+available.</p>
+<div id="statistical-software" class="section level2" number="1.1">
 <h2>
-<span class="header-section-number">1.1</span> Tangent and Secant<a class="anchor" aria-label="anchor" href="#tangent-and-secant"><i class="fas fa-link"></i></a>
+<span class="header-section-number">1.1</span> Statistical Software<a class="anchor" aria-label="anchor" href="#statistical-software"><i class="fas fa-link"></i></a>
 </h2>
-<p>A <strong>tangent</strong> line just touches a curve at a point, matching the curve’s slope there.
-A <strong>secant</strong> line intersects two or more points on a curve. See figure <a href="introduction.html#fig:secant">1.1</a></p>
-<div class="figure" style="text-align: center">
-<span style="display:block;" id="fig:secant"></span>
-<img src="images/secant.png" alt="A secant and Tangent" width="80%"><p class="caption">
-Figure 1.1: A secant and Tangent
-</p>
+<p>Statistical analysis software are specialized programs designed to allow
+users to perform complex statistical analysis. These software typically
+provide tools for the organization, interpretation, and presentation of
+selected data sets. Statistical analysis capabilities refer to
+capabilities that support analysis methodologies such as regression
+analysis, predictive analytics, and statistical modelling, among many
+other basic tools.</p>
+<div id="types-of-statistical-software" class="section level3" number="1.1.1">
+<h3>
+<span class="header-section-number">1.1.1</span> Types of statistical software<a class="anchor" aria-label="anchor" href="#types-of-statistical-software"><i class="fas fa-link"></i></a>
+</h3>
+<div id="open-source-software" class="section level4" number="1.1.1.1">
+<h4>
+<span class="header-section-number">1.1.1.1</span> Open-source software<a class="anchor" aria-label="anchor" href="#open-source-software"><i class="fas fa-link"></i></a>
+</h4>
+<p>Open-source software (OSS) is non-proprietary software that allows
+anyone to modify, enhance, or simply view the source code behind it. It
+can enable programmers to work or collaborate on projects created by
+different teams, companies, and organizations. Open-source software
+authors do not view their creations as proprietary and instead release
+their software under licenses that grant users with the desire and
+know-how to view, copy, learn, alter, and share its code.</p>
+<p>OSS is shared in a public repository, granting access to anyone who
+wants to work on the source code. However, open-source software tends to
+come with a distribution license, which establishes how people can
+interact, modify, and share the OSS.</p>
+<p>Once changes are made to the source code, the OSS should signify those
+changes and what methods were used to make them. Also, depending on the
+license, the resulting OSS may or may not be required to be free. With
+that, most open-source software is free but some require up-front costs
+or subscription fees.</p>
+<p>Few open source software are</p>
+<ul>
+<li><p><strong>R</strong> and <strong>Rstudio</strong> (GUI interface and development environment for R)</p></li>
+<li><p><strong>gretl</strong> – gnu regression, econometrics and time-series library</p></li>
+<li><p><strong>JASP</strong> – A free software alternative to IBM SPSS Statistics with
+additional option for Bayesian methods</p></li>
+<li><p><strong>Orange</strong> - a data mining, machine learning, and bioinformatics
+software</p></li>
+<li><p><strong>Weka</strong> (machine learning) – a suite of machine learning software
+written at the University of Waikato</p></li>
+<li><p><strong>Perl</strong> Data Language – Scientific computing with Perl</p></li>
+</ul>
 </div>
+<div id="public-domain" class="section level4" number="1.1.1.2">
+<h4>
+<span class="header-section-number">1.1.1.2</span> Public Domain<a class="anchor" aria-label="anchor" href="#public-domain"><i class="fas fa-link"></i></a>
+</h4>
+<p>Public domain software is any software that has no legal, copyright or
+editing restrictions associated with it. It is free and open-source
+software that can be publicly modified, distributed or sold without any
+restrictions.</p>
+<ul>
+<li><p><strong>Dataplot</strong> - It is a public domain software system for scientific
+visualization and statistical analysis. It was developed and is
+being maintained at the National Institute of Standards and
+Technology. Dataplot's source code is available and in public
+domain</p></li>
+<li><p><strong>CSPro</strong> - CSPro is short for the Census and Survey Processing System,
+is a public domain data processing software package developed by the
+U.S. Census Bureau and ICF International.</p></li>
+</ul>
+</div>
+<div id="freeware" class="section level4" number="1.1.1.3">
+<h4>
+<span class="header-section-number">1.1.1.3</span> Freeware<a class="anchor" aria-label="anchor" href="#freeware"><i class="fas fa-link"></i></a>
+</h4>
+<p>Freeware is software, most often proprietary, that is distributed at no
+monetary cost to the end user. There is no agreed-upon set of rights,
+license that defines freeware unambiguously; every publisher defines its
+own rules for the freeware it offers. For instance, modification,
+redistribution by third parties, and reverse engineering are permitted
+by some publishers but prohibited by others. Unlike with free and
+open-source software, which are also often distributed free of charge,
+the source code for freeware is typically not made available. Freeware
+may be intended to benefit its producer by, for example, encouraging
+sales of a more capable version</p>
+<ul>
+<li><p><strong>BV4.1</strong>- The application software BV4.1 is an easy-to-use tool for
+decomposing and seasonally adjusting monthly or quarterly economic
+time series by version 4.1 of the Berlin procedure. It is being
+developed by the Federal Statistical Office of Germany. The software
+is released as freeware for non-commercial purposes.</p></li>
+<li><p><strong>GeoDa</strong> - It is a free software package that conducts spatial data
+analysis, geo-visualization, spatial autocorrelation and spatial
+modeling. Maintained from 2016 by Centre for Spatial Data Science
+(CSDS) at the University of Chicago, originally developed by Spatial
+Analysis Laboratory of the University of Illinois at
+Urbana-Champaign</p></li>
+<li><p><strong>WinPepi</strong> - It is a freeware package of statistical programs for
+epidemiologists, comprising seven programs with over 120 modules.</p></li>
+</ul>
+<div id="proprietary-software" class="section level5" number="1.1.1.3.1">
+<h5>
+<span class="header-section-number">1.1.1.3.1</span> Proprietary software<a class="anchor" aria-label="anchor" href="#proprietary-software"><i class="fas fa-link"></i></a>
+</h5>
+<p>It is also known as non-free software or closed-source software, is
+computer software for which the software's publisher or another person
+reserves some licensing rights to use, modify, share modifications, or
+share the software, restricting user freedom with the software they
+lease. It is the opposite of open-source or free software. Non-free
+software sometimes includes patent rights. Some of the few well known
+proprietary statistical software are:-</p>
+<p><strong>SAS</strong> - SAS (previously "Statistical Analysis System") is a statistical
+software suite developed by SAS Institute for data management, advanced
+analytics, multivariate analysis, business intelligence, criminal
+investigation and predictive analytics. SAS was developed at North
+Carolina State University from 1966 until 1976, when SAS Institute was
+incorporated. SAS was further developed in the 1980s and 1990s with the
+addition of new statistical procedures, additional components and the
+introduction of JMP.</p>
+<p><strong>SPSS Statistics</strong> – SPSS Statistics is a statistical software suite
+developed by IBM for data management, advanced analytics, multivariate
+analysis, business intelligence, and criminal investigation. Long
+produced by SPSS Inc., it was acquired by IBM in 2009. Current versions
+(post 2015) have the brand name: IBM SPSS Statistics. The software name
+originally stood for Statistical Package for the Social Sciences (SPSS),
+reflecting the original market, then later changed to Statistical
+Product and Service Solutions.</p>
+<p><strong>Stata</strong> – It is a general-purpose statistical software package developed
+by StataCorp for data manipulation, visualization, statistics, and
+automated reporting. It is used by researchers in many fields, including
+biomedicine, epidemiology, sociology and science. Stata was initially
+developed by Computing Resource Center in California and the first
+version was released in 1985. In 1993, the company was renamed Stata
+Corporation, now known as StataCorp.</p>
+<p><strong>Genstat</strong> (General Statistics) - It is a statistical software package with
+data analysis capabilities, particularly in the field of agriculture. It
+was developed in 1968 by Rothamsted Research in the United Kingdom and
+was designed to provide modular design, linear mixed models and graphic
+functions. It is developed and distributed by VSN International (VSNi),
+which is owned by The Numerical Algorithms Group and Rothamsted
+Research.</p>
+<p><strong>Minitab</strong> – Minitab is a statistics package developed at the Pennsylvania
+State University by researchers Barbara F. Ryan, Thomas A. Ryan, Jr.,
+and Brian L. Joiner in conjunction with Triola Statistics Company in
+1972. It began as a light version of OMNITAB 80, a statistical analysis
+program by National Institute of Standards and Technology.</p>
+<p><strong>MATLAB</strong> – MATLAB an abbreviation of "MATrix LABoratory" is a
+proprietary multi-paradigm programming language and numeric computing
+environment developed by MathWorks. MATLAB allows matrix manipulations,
+plotting of functions and data, implementation of algorithms, creation
+of user interfaces, and interfacing with programs written in other
+languages.</p>
+<p><strong>EViews</strong> – EViews is a statistical package for Windows, used mainly for
+time-series oriented econometric analysis. It is developed by
+Quantitative Micro Software (QMS). EViews can be used for general
+statistical analysis and econometric analyses, such as cross-section and
+panel data analysis and time series estimation and forecasting. EViews
+combines spreadsheet and relational database technology with the
+traditional tasks found in statistical software, and uses a Windows GUI
+(Graphical User Interface).</p>
+<p>For agricultural researchers I recommend using RStudio for data
+analysis, as it is easy to use. RStudio allows users to develop and edit
+programs in R by supporting a large number of statistical packages,
+higher quality graphics, and the ability to manage your workspace. We have developed a R package <code>grapesAgri1</code> for agricultural research. We will be discussing this package towards last session. To read more on please see <a href="https://joss.theoj.org/papers/10.21105/joss.03437">grapesAgri1</a></p>
 
+</div>
+</div>
+</div>
 </div>
 </div>
   <div class="chapter-nav">
 <div class="prev"><a href="syllabus.html">Syllabus</a></div>
-<div class="next"><a href="theorems.html"><span class="header-section-number">2</span> Theorems</a></div>
+<div class="next"><a href="references.html">References</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
-<li><a class="nav-link" href="#tangent-and-secant"><span class="header-section-number">1.1</span> Tangent and Secant</a></li>
+<li>
+<a class="nav-link" href="#statistical-software"><span class="header-section-number">1.1</span> Statistical Software</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#types-of-statistical-software"><span class="header-section-number">1.1.1</span> Types of statistical software</a></li></ul>
+</li>
 </ul>
 
       <div class="book-extra">
@@ -100,7 +290,7 @@ Figure 1.1: A secant and Tangent
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>BIOMATHEMATICS</strong>" was written by Dr. Pratheesh P. Gopinath. It was last built on 2022-01-30.</p>
+    <p>"<strong>DATA ANALYSIS USING STATISTICAL PACKAGES</strong>" was written by Dr. Pratheesh P. Gopinath. It was last built on 2022-01-30.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
@@ -108,34 +298,6 @@ Figure 1.1: A secant and Tangent
   </div>
 
 </div></div>
-</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
-for (let popover of popovers) {
-  const div = document.createElement('div');
-  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
-  div.innerHTML = popover.getAttribute('data-content');
-
-  var has_math = div.querySelector("span.math");
-  if (has_math) {
-    document.body.appendChild(div);
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
-    MathJax.Hub.Queue(function() {
-      popover.setAttribute('data-content', div.innerHTML);
-      document.body.removeChild(div);
-    })
-  }
-}
-</script>
+</footer>
 </body>
 </html>

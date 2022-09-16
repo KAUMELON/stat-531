@@ -1,2 +1,209 @@
-# 2 
+# Introduction  
+Data science is a fast growing field with the development of advanced
+statistical tools for data analysis and visualization. When the data
+volume is large and also when precision is required, we depend on
+statistical software to get better insights from the data. Statistical
+software makes analysis easy, produces more precise results, enables us
+to use complex statistical tools and generates advance complex graphical
+outputs.
 
+One cannot blindly depend upon statistical software for data analysis,
+as you can use any software for data analysis as per your convenience.
+Even some of the basic statistical tools, you can perform calculations
+manually. Without proper knowledge in statistics, every software is a
+garbage in garbage out. What that really matters is knowledge in
+statistical concepts and tools, so that effective interpretations can be
+made from the data.
+
+Agricultural experiments demand a wide range of statistical tools for
+analysis, which includes exploratory analysis, design of experiments,
+and statistical genetics. It is a challenge for scientists and students
+to find a suitable platform for data analysis and publish the research
+outputs in quality journals. Most of the software available for data
+analysis are proprietary or lack a simple user interface. The open
+source programming language R and associated ecosystem of packages,
+provides an excellent platform for data analysis but as of yet, is not
+heavily utilized by researchers in agricultural disciplines.
+Insufficient programming and computational knowledge are the primary
+challenges for agricultural researchers using R for analysis.
+
+In our sessions, I will be using R studio. I believe that, there is no
+need for agricultural scientist and students to learn R as a programming
+language, as majority of you would like to have their data analyzed and
+make inference from it. I have seen agricultural researchers take up R
+workshops and leave it behind as such workshops mainly deals with code
+chunks; user will get easily tired of that. Beauty of R is that, it is a
+free open-source software. Apart from the software used, I again insist
+that students and researchers should strengthen their basic statistics
+knowledge and they should be able to decide, what tool should be used
+and when. I strongly recommend that you should go through the basic
+statistical theory by visiting my e-book [Textbook of Agricultural Statistics](https://kaumelon.github.io/stat3202/). Before proceeding further, one
+should also have a basic knowledge about different statistical software
+available.
+
+## Statistical Software
+
+Statistical analysis software are specialized programs designed to allow
+users to perform complex statistical analysis. These software typically
+provide tools for the organization, interpretation, and presentation of
+selected data sets. Statistical analysis capabilities refer to
+capabilities that support analysis methodologies such as regression
+analysis, predictive analytics, and statistical modelling, among many
+other basic tools.
+
+### Types of statistical software
+
+#### Open-source software
+
+Open-source software (OSS) is non-proprietary software that allows
+anyone to modify, enhance, or simply view the source code behind it. It
+can enable programmers to work or collaborate on projects created by
+different teams, companies, and organizations. Open-source software
+authors do not view their creations as proprietary and instead release
+their software under licenses that grant users with the desire and
+know-how to view, copy, learn, alter, and share its code.
+
+OSS is shared in a public repository, granting access to anyone who
+wants to work on the source code. However, open-source software tends to
+come with a distribution license, which establishes how people can
+interact, modify, and share the OSS.
+
+Once changes are made to the source code, the OSS should signify those
+changes and what methods were used to make them. Also, depending on the
+license, the resulting OSS may or may not be required to be free. With
+that, most open-source software is free but some require up-front costs
+or subscription fees.
+
+Few open source software are
+
+-   **R** and **Rstudio** (GUI interface and development environment for R)
+
+-   **gretl** -- gnu regression, econometrics and time-series library
+
+-   **JASP** -- A free software alternative to IBM SPSS Statistics with
+    additional option for Bayesian methods
+
+-   **Orange** - a data mining, machine learning, and bioinformatics
+    software
+
+-   **Weka** (machine learning) -- a suite of machine learning software
+    written at the University of Waikato
+
+-   **Perl** Data Language -- Scientific computing with Perl
+
+#### Public Domain
+
+Public domain software is any software that has no legal, copyright or
+editing restrictions associated with it. It is free and open-source
+software that can be publicly modified, distributed or sold without any
+restrictions.
+
+-   **Dataplot** - It is a public domain software system for scientific
+    visualization and statistical analysis. It was developed and is
+    being maintained at the National Institute of Standards and
+    Technology. Dataplot\'s source code is available and in public
+    domain
+
+-   **CSPro** - CSPro is short for the Census and Survey Processing System,
+    is a public domain data processing software package developed by the
+    U.S. Census Bureau and ICF International.
+
+#### Freeware
+
+Freeware is software, most often proprietary, that is distributed at no
+monetary cost to the end user. There is no agreed-upon set of rights,
+license that defines freeware unambiguously; every publisher defines its
+own rules for the freeware it offers. For instance, modification,
+redistribution by third parties, and reverse engineering are permitted
+by some publishers but prohibited by others. Unlike with free and
+open-source software, which are also often distributed free of charge,
+the source code for freeware is typically not made available. Freeware
+may be intended to benefit its producer by, for example, encouraging
+sales of a more capable version
+
+-   **BV4.1**- The application software BV4.1 is an easy-to-use tool for
+    decomposing and seasonally adjusting monthly or quarterly economic
+    time series by version 4.1 of the Berlin procedure. It is being
+    developed by the Federal Statistical Office of Germany. The software
+    is released as freeware for non-commercial purposes.
+
+-   **GeoDa** - It is a free software package that conducts spatial data
+    analysis, geo-visualization, spatial autocorrelation and spatial
+    modeling. Maintained from 2016 by Centre for Spatial Data Science
+    (CSDS) at the University of Chicago, originally developed by Spatial
+    Analysis Laboratory of the University of Illinois at
+    Urbana-Champaign
+
+-   **WinPepi** - It is a freeware package of statistical programs for
+    epidemiologists, comprising seven programs with over 120 modules.
+
+##### Proprietary software
+
+It is also known as non-free software or closed-source software, is
+computer software for which the software\'s publisher or another person
+reserves some licensing rights to use, modify, share modifications, or
+share the software, restricting user freedom with the software they
+lease. It is the opposite of open-source or free software. Non-free
+software sometimes includes patent rights. Some of the few well known
+proprietary statistical software are:-
+
+**SAS** - SAS (previously \"Statistical Analysis System\") is a statistical
+software suite developed by SAS Institute for data management, advanced
+analytics, multivariate analysis, business intelligence, criminal
+investigation and predictive analytics. SAS was developed at North
+Carolina State University from 1966 until 1976, when SAS Institute was
+incorporated. SAS was further developed in the 1980s and 1990s with the
+addition of new statistical procedures, additional components and the
+introduction of JMP.
+
+**SPSS Statistics** -- SPSS Statistics is a statistical software suite
+developed by IBM for data management, advanced analytics, multivariate
+analysis, business intelligence, and criminal investigation. Long
+produced by SPSS Inc., it was acquired by IBM in 2009. Current versions
+(post 2015) have the brand name: IBM SPSS Statistics. The software name
+originally stood for Statistical Package for the Social Sciences (SPSS),
+reflecting the original market, then later changed to Statistical
+Product and Service Solutions.
+
+**Stata** -- It is a general-purpose statistical software package developed
+by StataCorp for data manipulation, visualization, statistics, and
+automated reporting. It is used by researchers in many fields, including
+biomedicine, epidemiology, sociology and science. Stata was initially
+developed by Computing Resource Center in California and the first
+version was released in 1985. In 1993, the company was renamed Stata
+Corporation, now known as StataCorp.
+
+**Genstat** (General Statistics) - It is a statistical software package with
+data analysis capabilities, particularly in the field of agriculture. It
+was developed in 1968 by Rothamsted Research in the United Kingdom and
+was designed to provide modular design, linear mixed models and graphic
+functions. It is developed and distributed by VSN International (VSNi),
+which is owned by The Numerical Algorithms Group and Rothamsted
+Research.
+
+**Minitab** -- Minitab is a statistics package developed at the Pennsylvania
+State University by researchers Barbara F. Ryan, Thomas A. Ryan, Jr.,
+and Brian L. Joiner in conjunction with Triola Statistics Company in
+1972. It began as a light version of OMNITAB 80, a statistical analysis
+program by National Institute of Standards and Technology.
+
+**MATLAB** -- MATLAB an abbreviation of \"MATrix LABoratory\" is a
+proprietary multi-paradigm programming language and numeric computing
+environment developed by MathWorks. MATLAB allows matrix manipulations,
+plotting of functions and data, implementation of algorithms, creation
+of user interfaces, and interfacing with programs written in other
+languages.
+
+**EViews** -- EViews is a statistical package for Windows, used mainly for
+time-series oriented econometric analysis. It is developed by
+Quantitative Micro Software (QMS). EViews can be used for general
+statistical analysis and econometric analyses, such as cross-section and
+panel data analysis and time series estimation and forecasting. EViews
+combines spreadsheet and relational database technology with the
+traditional tasks found in statistical software, and uses a Windows GUI
+(Graphical User Interface).
+
+For agricultural researchers I recommend using RStudio for data
+analysis, as it is easy to use. RStudio allows users to develop and edit
+programs in R by supporting a large number of statistical packages,
+higher quality graphics, and the ability to manage your workspace. We have developed a R package `grapesAgri1` for agricultural research. We will be discussing this package towards last session. To read more on please see [grapesAgri1](https://joss.theoj.org/papers/10.21105/joss.03437)
