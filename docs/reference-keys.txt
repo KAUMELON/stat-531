@@ -1,3 +1,6 @@
+fig:rlogo
+fig:rstudio1
+fig:rstudio2
 introduction
 statistical-software
 types-of-statistical-software
@@ -5,3 +8,6 @@ open-source-software
 public-domain
 freeware
 proprietary-software
+introduction-to-r
+rstudio
+installing-r-and-r-studio

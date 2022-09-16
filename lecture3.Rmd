@@ -1,0 +1,63 @@
+# Introduction to R
+R is a programming language for statistical computing and graphics supported by the R Core Team and the R Foundation for Statistical Computing. Created by statisticians Ross Ihaka and Robert Gentleman. R is an implementation of the S programming language. R is used among data miners, bioinformaticians and statisticians for data analysis and developing statistical software. Users have created packages to augment the functions of the R language.
+According to user surveys and studies of scholarly literature databases, R is one of the most commonly used programming languages used in data mining. The official R software environment is an open-source free software environment within the GNU package, available under the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html). It is written primarily in C, Fortran, and R itself (partially self-hosting). R has a command line interface. Multiple third-party graphical user interfaces are also available, such as RStudio, an integrated development environment.  
+
+```{r rlogo, echo=FALSE,fig.cap='R logo',out.width="50%", fig.align='center'}
+knitr::include_graphics(rep("images/rlogo.png"))
+```
+
+## Rstudio  
+RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. RStudio is available in open source and commercial editions and runs on the desktop (Windows, Mac, and Linux) or in a browser connected to RStudio Server. RStudio is a free and open-source integrated development environment (IDE) for R, a programming language for statistical computing and graphics. JJ Allaire, creator of the programming language ColdFusion, founded RStudio. RStudio is available in two editions: RStudio Desktop, where the program is run locally as a regular desktop application; and RStudio Server, which allows accessing RStudio using a web browser while it is running on a remote Linux server.  
+
+RStudio is written in the C++ programming language and uses the Qt framework for its graphical user interface. Work on RStudio started at around December 2010, and the first public beta version (v0.92) was officially announced in February 2011.  
+
+```{r rstudio1, echo=FALSE,fig.cap='R studio logo',out.width="30%", fig.align='center'}
+knitr::include_graphics(rep("images/rstudiologo.png"))
+```
+
+Typical RStudio window has four panes as explained below  
+
+```{r rstudio2, echo=FALSE,fig.cap='R studio window',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/rstudiowindow.png"))
+```
+
+1. Console
+
+This is where the action happens. Here any authentic R code typed after the ‘>’ prompt will be executed after pressing ‘Enter’ to generate the output. This is where we are going to type our single call function to start our app for data analysis.  
+
+2. Source
+
+This is where R scripts (collection of code) can be created and edited. We won't be using much of these.  
+
+3. Environment|History|Connections
+
+One can browse in the internet and know more about these tabs if interested, we wont be using this much.   
+
+4. Files|Plots|Packages|Help|Viewer  
+
+We are interested in the install button in this pane, to install packages required for our analysis.
+
+
+
+
+## Installing R and R studio  
+ 
+- First install R latest version  
+
+- Then install Rstudio  
+
+see details on how to install --> [Click here](https://www.grapesorchard.com/install-r)  
+
+
+
+#### The above descriptions are sourced from: {-}
+
+[The R Project for Statistical Computing](https://www.r-project.org/)
+
+[RStudio](https://www.rstudio.com/)
+
+[Wikipedia R (programming language)](https://en.wikipedia.org/wiki/R_(programming_language))
+
+[Wikipedia RStudio](https://en.wikipedia.org/wiki/RStudio)  
+
+[grapesorchard.com](https://www.grapesorchard.com/)
