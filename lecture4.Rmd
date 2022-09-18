@@ -38,11 +38,93 @@ The colon operator (`:`) returns every integer between two integers. It is an ea
 
 ## Basic arithmetic functions:  
 
+```{r}  
+# Logarithm to the base e  
+log(4)  
+# Logarithm to the base 10  
+log10(4)  
+# Logarithm to the base 2  
+log2(4)  
+# absolute value
+abs(-4)  
+# square root
+sqrt(4) 
+
+```
 
 
+## Assigning values to variables  
+
+```{r}  
+x <- 2
+# it is that value 2 is assigned to variable x  
+
+y <- 5  
+
+# it is that value 5 is assigned to variable y
+
+# Now if you give x+5 or using any operator between x and y, you can see as below  
+
+x + y  
+x * y  
+x / y  
+x + 2*y  
+
+```
+
+> Note that R is case sensitive, i.e. x and X are not equal.  
+
+## Basic data types  
+
++ numeric  
++ character  
++ logical  
+
+```{r}
+my_age <- 32   
+# Numeric variable 32 is assigned to my_age
+
+# while writing your code it is preffered to use '_' instead of space  
+
+my_name <- "Dr Pratheesh" # Character variable  
+
+#  Are you a data scientist?: (yes/no) <=> (TRUE/FALSE)  
+
+is_datascientist <- TRUE # logical variable
+
+```  
+
+### Vectors  
+
+A combination of multiple values (numeric, character or logical)  
+
+#### How to create a vector {-}
+Create a vector: c() for concatenate  
+
+Case of missing values: **NA** (not available) and **NaN** (not a number)  
+
+Get a subset of a vector: my_vector[i] to get the i^th^ element
+
+```{r}  
+# Create a numeric vector
+student_ages <- c(27, 25, 29, 26, 20, 21, 23, 25)  
+
+# Create a character vector
+student_name <- c("asha", "adhi", "aravind", 
+                  "mary", "peter", "daisy", 
+                  "papu", "ramu")  
+
+# subset of a vector  
+
+# obtain 3 rd element from student_name  
+
+student_name[3]
+
+```
 
 
+> Case of missing values: **NA** (not available) and **NaN** (not a number)
+> Get a subset of a vector: my_vector[i] to get the ith element  
 
-
- 
-
+#### Calculations with vectors {-}  
+> max(x), min(x), range(x), length(x), sum(x), mean(x), prod(x): product of the elements in x, sd(x): standard deviation, var(x): variance, sort(x)

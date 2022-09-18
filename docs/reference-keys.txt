@@ -12,3 +12,8 @@ introduction-to-r
 rstudio
 installing-r-and-r-studio
 r-basics
+basic-arithmetic-operations
+basic-arithmetic-functions
+assigning-values-to-variables
+basic-data-types
+vectors

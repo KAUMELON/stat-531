@@ -64,14 +64,14 @@
 </h1>
 <p>In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R.</p>
 <p>The RStudio interface is simple. You type R code into the bottom line of the RStudio console pane (see figure <a href="introduction-to-r.html#fig:rstudio2">2.3</a>) and then click Enter to run it. The code you type is called a command, because it will command your computer to do something for you. The line you type it into is called the command line.</p>
-<p><strong>Basic arithmetic operations</strong></p>
-<ul>
-<li>(addition)<br>
-&gt;<br>
-&gt; * (multiplication)<br>
-&gt; / (division)<br>
-&gt; ^ (exponentiation)</li>
-</ul>
+<blockquote>
+<p>‘#’ hashtag in R<br>
+R treats the hashtag character, ’#’in a special way; R will not run anything that follows a hashtag on a line. This makes hashtags very useful for adding comments and annotations to your code. We will be able to read the comments, but your computer will not process it.</p>
+</blockquote>
+<div id="basic-arithmetic-operations" class="section level2" number="3.1">
+<h2>
+<span class="header-section-number">3.1</span> Basic arithmetic operations<a class="anchor" aria-label="anchor" href="#basic-arithmetic-operations"><i class="fas fa-link"></i></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Try these codes in R, Type these codes in console and hit enter</span></span>
 <span><span class="co"># result of R code is also shown here  </span></span>
@@ -100,19 +100,139 @@
 <code class="sourceCode R"><span><span class="fl">100</span><span class="op">:</span><span class="fl">130</span></span></code></pre></div>
 <pre><code>##  [1] 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118
 ## [20] 119 120 121 122 123 124 125 126 127 128 129 130</code></pre>
-
-<div class="rmdnote">
-‘#’ hashtag in R<br>
-R treats the hashtag character, ’#’in a special way; R will not run anything that follows a hashtag on a line. This makes hashtags very useful for adding comments and annotations to your code. We will be able to read the comments, but your computer will not process it.
 </div>
+<div id="basic-arithmetic-functions" class="section level2" number="3.2">
+<h2>
+<span class="header-section-number">3.2</span> Basic arithmetic functions:<a class="anchor" aria-label="anchor" href="#basic-arithmetic-functions"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Logarithm to the base e  </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 1.386294</code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Logarithm to the base 10  </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 0.60206</code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Logarithm to the base 2  </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># absolute value</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># square root</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> </span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+</div>
+<div id="assigning-values-to-variables" class="section level2" number="3.3">
+<h2>
+<span class="header-section-number">3.3</span> Assigning values to variables<a class="anchor" aria-label="anchor" href="#assigning-values-to-variables"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
+<span><span class="co"># it is that value 2 is assigned to variable x  </span></span>
+<span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">5</span>  </span>
+<span></span>
+<span><span class="co"># it is that value 5 is assigned to variable y</span></span>
+<span></span>
+<span><span class="co"># Now if you give x+5 or using any operator between x and y, you can see as below  </span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span>  </span></code></pre></div>
+<pre><code>## [1] 7</code></pre>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">*</span> <span class="va">y</span>  </span></code></pre></div>
+<pre><code>## [1] 10</code></pre>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">/</span> <span class="va">y</span>  </span></code></pre></div>
+<pre><code>## [1] 0.4</code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">+</span> <span class="fl">2</span><span class="op">*</span><span class="va">y</span>  </span></code></pre></div>
+<pre><code>## [1] 12</code></pre>
+<blockquote>
+<p>Note that R is case sensitive, i.e. x and X are not equal.</p>
+</blockquote>
+</div>
+<div id="basic-data-types" class="section level2" number="3.4">
+<h2>
+<span class="header-section-number">3.4</span> Basic data types<a class="anchor" aria-label="anchor" href="#basic-data-types"><i class="fas fa-link"></i></a>
+</h2>
+<ul>
+<li>numeric<br>
+</li>
+<li>character<br>
+</li>
+<li>logical</li>
+</ul>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_age</span> <span class="op">&lt;-</span> <span class="fl">32</span>   </span>
+<span><span class="co"># Numeric variable 32 is assigned to my_age</span></span>
+<span></span>
+<span><span class="co"># while writing your code it is preffered to use '_' instead of space  </span></span>
+<span></span>
+<span><span class="va">my_name</span> <span class="op">&lt;-</span> <span class="st">"Dr Pratheesh"</span> <span class="co"># Character variable  </span></span>
+<span></span>
+<span><span class="co">#  Are you a data scientist?: (yes/no) &lt;=&gt; (TRUE/FALSE)  </span></span>
+<span></span>
+<span><span class="va">is_datascientist</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span> <span class="co"># logical variable</span></span></code></pre></div>
+<div id="vectors" class="section level3" number="3.4.1">
+<h3>
+<span class="header-section-number">3.4.1</span> Vectors<a class="anchor" aria-label="anchor" href="#vectors"><i class="fas fa-link"></i></a>
+</h3>
+<p>A combination of multiple values (numeric, character or logical)</p>
+<div id="how-to-create-a-vector" class="section level4 unnumbered">
+<h4>How to create a vector<a class="anchor" aria-label="anchor" href="#how-to-create-a-vector"><i class="fas fa-link"></i></a>
+</h4>
+<p>Create a vector: c() for concatenate</p>
+<p>Case of missing values: <strong>NA</strong> (not available) and <strong>NaN</strong> (not a number)</p>
+<p>Get a subset of a vector: my_vector[i] to get the i<sup>th</sup> element</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create a numeric vector</span></span>
+<span><span class="va">student_ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">27</span>, <span class="fl">25</span>, <span class="fl">29</span>, <span class="fl">26</span>, <span class="fl">20</span>, <span class="fl">21</span>, <span class="fl">23</span>, <span class="fl">25</span><span class="op">)</span>  </span>
+<span></span>
+<span><span class="co"># Create a character vector</span></span>
+<span><span class="va">student_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"asha"</span>, <span class="st">"adhi"</span>, <span class="st">"aravind"</span>, </span>
+<span>                  <span class="st">"mary"</span>, <span class="st">"peter"</span>, <span class="st">"daisy"</span>, </span>
+<span>                  <span class="st">"papu"</span>, <span class="st">"ramu"</span><span class="op">)</span>  </span>
+<span></span>
+<span><span class="co"># subset of a vector  </span></span>
+<span></span>
+<span><span class="co"># obtain 3 rd element from student_name  </span></span>
+<span></span>
+<span><span class="va">student_name</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span></span></code></pre></div>
+<pre><code>## [1] "aravind"</code></pre>
+<blockquote>
+<p>Case of missing values: <strong>NA</strong> (not available) and <strong>NaN</strong> (not a number)
+Get a subset of a vector: my_vector[i] to get the ith element</p>
+</blockquote>
+</div>
+<div id="calculations-with-vectors" class="section level4 unnumbered">
+<h4>Calculations with vectors<a class="anchor" aria-label="anchor" href="#calculations-with-vectors"><i class="fas fa-link"></i></a>
+</h4>
+<blockquote>
+<p>max(x), min(x), range(x), length(x), sum(x), mean(x), prod(x): product of the elements in x, sd(x): standard deviation, var(x): variance, sort(x)</p>
+</blockquote>
 
+</div>
+</div>
+</div>
 </div>
   <div class="chapter-nav">
 <div class="prev"><a href="introduction-to-r.html"><span class="header-section-number">2</span> Introduction to R</a></div>
 <div class="next"><a href="references.html">References</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav"><li><a class="nav-link" href="#r-basics"><span class="header-section-number">3</span> R basics</a></li></ul>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#r-basics"><span class="header-section-number">3</span> R basics</a></li>
+<li><a class="nav-link" href="#basic-arithmetic-operations"><span class="header-section-number">3.1</span> Basic arithmetic operations</a></li>
+<li><a class="nav-link" href="#basic-arithmetic-functions"><span class="header-section-number">3.2</span> Basic arithmetic functions:</a></li>
+<li><a class="nav-link" href="#assigning-values-to-variables"><span class="header-section-number">3.3</span> Assigning values to variables</a></li>
+<li>
+<a class="nav-link" href="#basic-data-types"><span class="header-section-number">3.4</span> Basic data types</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#vectors"><span class="header-section-number">3.4.1</span> Vectors</a></li></ul>
+</li>
+</ul>
 
       <div class="book-extra">
         <ul class="list-unstyled">
