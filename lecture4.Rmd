@@ -2,13 +2,47 @@
 
 In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R.  
 
-**Basic arithmetic operations**  
-+ (addition)   
-- (subtraction)  
-* (multiplication)  
-/ (division)  
-^ (exponentiation)  
+The RStudio interface is simple. You type R code into the bottom line of the RStudio console pane (see figure \@ref(fig:rstudio2)) and then click Enter to run it. The code you type is called a command, because it will command your computer to do something for you. The line you type it into is called the command line.  
 
-```{block2 items, type='rmdnote'}
-learn R basics
-``` 
+>'#' hashtag in R  
+R treats the hashtag character, '#'in a special way; R will not run anything that follows a hashtag on a line. This makes hashtags very useful for adding comments and annotations to your code. We will be able to read the comments, but your computer will not process it.
+
+## Basic arithmetic operations  
+
+```{r}
+# Try these codes in R, Type these codes in console and hit enter
+# result of R code is also shown here  
+
+# + (Addition)   
+7 + 4  
+
+# - (Subtraction)  
+7 - 4  
+
+# * (Multiplication)
+7 * 2  
+
+# / (division) 
+7 / 2  
+
+# ^ (exponentiation) 
+7 ^ 2
+```  
+
+The colon operator (`:`) returns every integer between two integers. It is an easy way to create a sequence of numbers.  
+
+```{r}
+100:130
+```  
+
+
+## Basic arithmetic functions:  
+
+
+
+
+
+
+
+ 
+

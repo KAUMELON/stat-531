@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 3 R basics | DATA ANALYSIS USING STATISTICAL PACKAGES</title>
 <meta name="author" content="Dr. Pratheesh P. Gopinath">
-<meta name="description" content="In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R. Basic arithmetic operations +...">
+<meta name="description" content="In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R. The RStudio interface is simple. You...">
 <meta name="generator" content="bookdown 0.28 with bs4_book()">
 <meta property="og:title" content="Chapter 3 R basics | DATA ANALYSIS USING STATISTICAL PACKAGES">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.PNG">
-<meta property="og:description" content="In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R. Basic arithmetic operations +...">
+<meta property="og:description" content="In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R. The RStudio interface is simple. You...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 3 R basics | DATA ANALYSIS USING STATISTICAL PACKAGES">
-<meta name="twitter:description" content="In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R. Basic arithmetic operations +...">
+<meta name="twitter:description" content="In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R. The RStudio interface is simple. You...">
 <meta name="twitter:image" content="/images/cover.PNG">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
@@ -63,15 +63,47 @@
 <span class="header-section-number">3</span> R basics<a class="anchor" aria-label="anchor" href="#r-basics"><i class="fas fa-link"></i></a>
 </h1>
 <p>In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R.</p>
-<p><strong>Basic arithmetic operations</strong><br>
-+ (addition)<br>
-- (subtraction)<br>
-* (multiplication)<br>
-/ (division)<br>
-^ (exponentiation)</p>
+<p>The RStudio interface is simple. You type R code into the bottom line of the RStudio console pane (see figure <a href="introduction-to-r.html#fig:rstudio2">2.3</a>) and then click Enter to run it. The code you type is called a command, because it will command your computer to do something for you. The line you type it into is called the command line.</p>
+<p><strong>Basic arithmetic operations</strong></p>
+<ul>
+<li>(addition)<br>
+&gt;<br>
+&gt; * (multiplication)<br>
+&gt; / (division)<br>
+&gt; ^ (exponentiation)</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Try these codes in R, Type these codes in console and hit enter</span></span>
+<span><span class="co"># result of R code is also shown here  </span></span>
+<span></span>
+<span><span class="co"># + (Addition)   </span></span>
+<span><span class="fl">7</span> <span class="op">+</span> <span class="fl">4</span>  </span></code></pre></div>
+<pre><code>## [1] 11</code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># - (Subtraction)  </span></span>
+<span><span class="fl">7</span> <span class="op">-</span> <span class="fl">4</span>  </span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># * (Multiplication)</span></span>
+<span><span class="fl">7</span> <span class="op">*</span> <span class="fl">2</span>  </span></code></pre></div>
+<pre><code>## [1] 14</code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># / (division) </span></span>
+<span><span class="fl">7</span> <span class="op">/</span> <span class="fl">2</span>  </span></code></pre></div>
+<pre><code>## [1] 3.5</code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># ^ (exponentiation) </span></span>
+<span><span class="fl">7</span> <span class="op">^</span> <span class="fl">2</span></span></code></pre></div>
+<pre><code>## [1] 49</code></pre>
+<p>The colon operator (<code>:</code>) returns every integer between two integers. It is an easy way to create a sequence of numbers.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fl">100</span><span class="op">:</span><span class="fl">130</span></span></code></pre></div>
+<pre><code>##  [1] 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118
+## [20] 119 120 121 122 123 124 125 126 127 128 129 130</code></pre>
 
 <div class="rmdnote">
-learn R basics
+‘#’ hashtag in R<br>
+R treats the hashtag character, ’#’in a special way; R will not run anything that follows a hashtag on a line. This makes hashtags very useful for adding comments and annotations to your code. We will be able to read the comments, but your computer will not process it.
 </div>
 
 </div>
