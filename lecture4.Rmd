@@ -128,3 +128,5 @@ student_name[3]
 
 #### Calculations with vectors {-}  
 > max(x), min(x), range(x), length(x), sum(x), mean(x), prod(x): product of the elements in x, sd(x): standard deviation, var(x): variance, sort(x)
+
+edit
