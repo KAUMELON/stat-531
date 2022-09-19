@@ -214,6 +214,55 @@ Get a subset of a vector: my_vector[i] to get the ith element</p>
 <blockquote>
 <p>max(x), min(x), range(x), length(x), sum(x), mean(x), prod(x): product of the elements in x, sd(x): standard deviation, var(x): variance, sort(x)</p>
 </blockquote>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create a numeric vector</span></span>
+<span><span class="va">student_ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">27</span>, <span class="fl">25</span>, <span class="fl">29</span>, <span class="fl">26</span>, <span class="fl">20</span>, <span class="fl">21</span>, <span class="fl">23</span>, <span class="fl">25</span><span class="op">)</span>  </span>
+<span></span>
+<span><span class="co"># Maximum value of the vector</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">student_ages</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 29</code></pre>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Minimum value of the vector</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">student_ages</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 20</code></pre>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Range of the vector</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">student_ages</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 20 29</code></pre>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Length of the vector</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">student_ages</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Total of the values in the vector</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">student_ages</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 196</code></pre>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Mean of the vector</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">student_ages</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 24.5</code></pre>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Product of the elements in the vector</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/prod.html">prod</a></span><span class="op">(</span><span class="va">student_ages</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 122911425000</code></pre>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Standard deviation  </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">student_ages</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 3.023716</code></pre>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Variance of the vector</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">student_ages</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 9.142857</code></pre>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Sort the values of the vector</span></span>
+<span></span>
+<span><span class="co"># Ascending order</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">student_ages</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 20 21 23 25 25 26 27 29</code></pre>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Descending order</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="op">-</span><span class="va">student_ages</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] -29 -27 -26 -25 -25 -23 -21 -20</code></pre>
 
 </div>
 </div>

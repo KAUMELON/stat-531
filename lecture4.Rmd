@@ -127,6 +127,46 @@ student_name[3]
 > Get a subset of a vector: my_vector[i] to get the ith element  
 
 #### Calculations with vectors {-}  
-> max(x), min(x), range(x), length(x), sum(x), mean(x), prod(x): product of the elements in x, sd(x): standard deviation, var(x): variance, sort(x)
+> max(x), min(x), range(x), length(x), sum(x), mean(x), prod(x): product of the elements in x, sd(x): standard deviation, var(x): variance, sort(x)  
 
-edit
+```{r}  
+# Create a numeric vector
+student_ages <- c(27, 25, 29, 26, 20, 21, 23, 25)  
+
+# Maximum value of the vector
+max(student_ages)
+
+# Minimum value of the vector
+min(student_ages)
+
+# Range of the vector
+range(student_ages)  
+
+# Length of the vector
+length(student_ages)  
+
+# Total of the values in the vector
+sum(student_ages)
+
+# Mean of the vector
+mean(student_ages)  
+
+# Product of the elements in the vector
+prod(student_ages)
+
+# Standard deviation  
+sd(student_ages)
+
+# Variance of the vector
+var(student_ages)
+
+# Sort the values of the vector
+
+# Ascending order
+sort(student_ages)
+
+# Descending order
+sort(-student_ages)
+```
+
+
