@@ -257,14 +257,188 @@ Get a subset of a vector: my_vector[i] to get the ith element</p>
 <code class="sourceCode R"><span><span class="co"># Sort the values of the vector</span></span>
 <span></span>
 <span><span class="co"># Ascending order</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">student_ages</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">student_ages</span>,decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] 20 21 23 25 25 26 27 29</code></pre>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Descending order</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="op">-</span><span class="va">student_ages</span><span class="op">)</span></span></code></pre></div>
-<pre><code>## [1] -29 -27 -26 -25 -25 -23 -21 -20</code></pre>
-
+<span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="va">student_ages</span>,decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 29 27 26 25 25 23 21 20</code></pre>
 </div>
+</div>
+<div id="matrices" class="section level3" number="3.4.2">
+<h3>
+<span class="header-section-number">3.4.2</span> Matrices<a class="anchor" aria-label="anchor" href="#matrices"><i class="fas fa-link"></i></a>
+</h3>
+<p>It’s a homogeneous collection of data sets which is arranged in a two dimensional organisation. It’s a m*n array with similar data type. It is created using a vector input. It has a fixed number of rows and columns. You can perform many arithmetic operations on R matrix like – addition, subtraction, multiplication, and divisions.</p>
+<p>Create and naming matrix: matrix(), cbind(), rbind(), rownames(), colnames()
+Transpose a matrix: t()
+Dimensions of a matrix: ncol(), nrow(), dim()
+Get a subset of a matrix: my_data[row, col]
+Calculations with numeric matrices: rowSums(), colSums(), rowMeans(), colMeans()</p>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># make three vectors c1, c2 and c3</span></span>
+<span><span class="va">c1</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">c2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">7</span>,<span class="fl">8</span>,<span class="fl">9</span><span class="op">)</span></span>
+<span><span class="va">c3</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">11</span>,<span class="fl">12</span>,<span class="fl">13</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Creating matrix by binding column wise  </span></span>
+<span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">c1</span>,<span class="va">c2</span>,<span class="va">c3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##      c1 c2 c3
+## [1,]  3  7 11
+## [2,]  4  8 12
+## [3,]  5  9 13</code></pre>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Creating matrix by binding row wise  </span></span>
+<span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">c1</span>,<span class="va">c2</span>,<span class="va">c3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>##    [,1] [,2] [,3]
+## c1    3    4    5
+## c2    7    8    9
+## c3   11   12   13</code></pre>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Adding two matrices</span></span>
+<span><span class="va">A</span><span class="op">+</span><span class="va">B</span></span></code></pre></div>
+<pre><code>##      c1 c2 c3
+## [1,]  6 11 16
+## [2,] 11 16 21
+## [3,] 16 21 26</code></pre>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Simple element by element multiplication up to matrices.</span></span>
+<span></span>
+<span><span class="va">A</span><span class="op">*</span><span class="va">B</span></span></code></pre></div>
+<pre><code>##      c1  c2  c3
+## [1,]  9  28  55
+## [2,] 28  64 108
+## [3,] 55 108 169</code></pre>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Matrix multiplication  </span></span>
+<span></span>
+<span><span class="va">A</span><span class="op"><a href="https://rdrr.io/r/base/matmult.html">%*%</a></span><span class="va">B</span></span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]  179  200  221
+## [2,]  200  224  248
+## [3,]  221  248  275</code></pre>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Using matrix() function</span></span>
+<span><span class="co"># Elements are arranged sequentially by row.</span></span>
+<span><span class="va">M</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">14</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">M</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    3    4    5
+## [2,]    6    7    8
+## [3,]    9   10   11
+## [4,]   12   13   14</code></pre>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Elements are arranged sequentially by column.</span></span>
+<span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">14</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    3    7   11
+## [2,]    4    8   12
+## [3,]    5    9   13
+## [4,]    6   10   14</code></pre>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Define the column and row names.</span></span>
+<span><span class="va">rownames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"row1"</span>, <span class="st">"row2"</span>, <span class="st">"row3"</span>, <span class="st">"row4"</span><span class="op">)</span></span>
+<span><span class="va">colnames</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"col3"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">P</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">14</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">rownames</span>, <span class="va">colnames</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">P</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>##      col1 col2 col3
+## row1    3    4    5
+## row2    6    7    8
+## row3    9   10   11
+## row4   12   13   14</code></pre>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Access the element at 3rd column and 1st row.</span></span>
+<span><span class="va">P</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">]</span></span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Access the element at 2nd column and 4th row.</span></span>
+<span><span class="va">P</span><span class="op">[</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">]</span></span></code></pre></div>
+<pre><code>## [1] 13</code></pre>
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Access only the  2nd row.</span></span>
+<span><span class="va">P</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span></span></code></pre></div>
+<pre><code>## col1 col2 col3 
+##    6    7    8</code></pre>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Access only the 3rd column.  </span></span>
+<span><span class="va">P</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span>  </span></code></pre></div>
+<pre><code>## row1 row2 row3 row4 
+##    5    8   11   14</code></pre>
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Assign element at 1st row and 3rd column of matrix P to the variable x  </span></span>
+<span></span>
+<span><span class="va">x</span><span class="op">&lt;-</span><span class="va">P</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">]</span>  </span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># create a vector from the second column of matrix P  </span></span>
+<span></span>
+<span><span class="va">y</span><span class="op">&lt;-</span><span class="va">P</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">y</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#Transpose a matrix</span></span>
+<span><span class="va">Q</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">P</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">Q</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##      row1 row2 row3 row4
+## col1    3    6    9   12
+## col2    4    7   10   13
+## col3    5    8   11   14</code></pre>
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Knowing dimensions of a matrix</span></span>
+<span></span>
+<span><span class="co">#Number of columns in A</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#Number of rows in A</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Number of rows and columns</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 3 3</code></pre>
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Calculations with numeric matrices  </span></span>
+<span></span>
+<span><span class="co"># Compute row sums of matrix A</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 21 24 27</code></pre>
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute column sums of matrix A</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## c1 c2 c3 
+## 12 24 36</code></pre>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute row means of matrix A</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowMeans</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 7 8 9</code></pre>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute column means of matrix A</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colMeans</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## c1 c2 c3 
+##  4  8 12</code></pre>
+
+<div class="rmdnote">
+<p><strong>Practical 1</strong></p>
+<ol style="list-style-type: decimal">
+<li>Create a vector of numbers form 23 to 33</li>
+<li>Assign the vector with a name “numbers”<br>
+</li>
+<li>Create a Matrix named “mat_num” with elements from 1 to 20 in 4 rows and 5 columns<br>
+</li>
+<li>Name the columns and rows of matrix mat_num with any names you like<br>
+</li>
+<li>Compute column means and row means of matrix mat_num</li>
+<li>Access the element in second row and third column of matrix mat_num
+</li>
+</ol>
+</div>
+
+
 </div>
 </div>
 </div>
@@ -279,7 +453,10 @@ Get a subset of a vector: my_vector[i] to get the ith element</p>
 <li><a class="nav-link" href="#basic-arithmetic-functions"><span class="header-section-number">3.2</span> Basic arithmetic functions:</a></li>
 <li><a class="nav-link" href="#assigning-values-to-variables"><span class="header-section-number">3.3</span> Assigning values to variables</a></li>
 <li>
-<a class="nav-link" href="#basic-data-types"><span class="header-section-number">3.4</span> Basic data types</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#vectors"><span class="header-section-number">3.4.1</span> Vectors</a></li></ul>
+<a class="nav-link" href="#basic-data-types"><span class="header-section-number">3.4</span> Basic data types</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#vectors"><span class="header-section-number">3.4.1</span> Vectors</a></li>
+<li><a class="nav-link" href="#matrices"><span class="header-section-number">3.4.2</span> Matrices</a></li>
+</ul>
 </li>
 </ul>
 

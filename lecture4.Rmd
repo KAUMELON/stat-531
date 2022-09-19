@@ -163,10 +163,131 @@ var(student_ages)
 # Sort the values of the vector
 
 # Ascending order
-sort(student_ages)
+sort(student_ages,decreasing = FALSE)
 
 # Descending order
-sort(-student_ages)
+sort(student_ages,decreasing = TRUE)
 ```
+  
+### Matrices  
+
+It’s a homogeneous collection of data sets which is arranged in a two dimensional organisation. It’s a m*n array with similar data type. It is created using a vector input. It has a fixed number of rows and columns. You can perform many arithmetic operations on R matrix like – addition, subtraction, multiplication, and divisions.  
+
+Create and naming matrix: matrix(), cbind(), rbind(), rownames(), colnames()
+Transpose a matrix: t()
+Dimensions of a matrix: ncol(), nrow(), dim()
+Get a subset of a matrix: my_data[row, col]
+Calculations with numeric matrices: rowSums(), colSums(), rowMeans(), colMeans()
+
+```{r}
+# make three vectors c1, c2 and c3
+c1<-c(3,4,5)
+c2<-c(7,8,9)
+c3<-c(11,12,13)
+
+# Creating matrix by binding column wise  
+A <- cbind(c1,c2,c3)
+print(A)
+
+# Creating matrix by binding row wise  
+B <- rbind(c1,c2,c3)
+print(B)  
+
+# Adding two matrices
+A+B
+
+# Simple element by element multiplication up to matrices.
+
+A*B
+
+# Matrix multiplication  
+
+A%*%B
+
+# Using matrix() function
+# Elements are arranged sequentially by row.
+M <- matrix(c(3:14), nrow = 4, byrow = TRUE)
+print(M)
+
+# Elements are arranged sequentially by column.
+N <- matrix(c(3:14), nrow = 4, byrow = FALSE)
+print(N)
+
+# Define the column and row names.
+rownames = c("row1", "row2", "row3", "row4")
+colnames = c("col1", "col2", "col3")
+
+P <- matrix(c(3:14), nrow = 4, byrow = TRUE, dimnames = list(rownames, colnames))
+print(P)  
+
+# Access the element at 3rd column and 1st row.
+P[1,3]
+
+# Access the element at 2nd column and 4th row.
+P[4,2]
+
+# Access only the  2nd row.
+P[2,]
+
+# Access only the 3rd column.  
+P[,3]  
+
+
+# Assign element at 1st row and 3rd column of matrix P to the variable x  
+
+x<-P[1,3]  
+print(x)
+
+# create a vector from the second column of matrix P  
+
+y<-P[,2]
+y<-as.vector(y)
+
+#Transpose a matrix
+Q<-t(P)
+print(Q)
+
+# Knowing dimensions of a matrix
+
+#Number of columns in A
+ncol(A)  
+
+#Number of rows in A
+nrow(A)
+
+# Number of rows and columns
+dim(A)  
+
+# Calculations with numeric matrices  
+
+# Compute row sums of matrix A
+rowSums(A)  
+
+# Compute column sums of matrix A
+colSums(A)  
+
+# Compute row means of matrix A
+rowMeans(A)  
+
+# Compute column means of matrix A
+colMeans(A)
+
+```  
+
+
+```{block2 item2, type='rmdnote'}
+**Practical 1**: Matrices and vectors  
+
+1. Create a vector of numbers form 23 to 33
+2. Assign the vector with a name "numbers"  
+3. Create a Matrix named "mat_num" with elements from 1 to 20 in 4 rows and 5 columns  
+4. Name the columns and rows of matrix mat_num with any names you like  
+5. Compute column means and row means of matrix mat_num
+6. Access the element in second row and third column of matrix mat_num
+``` 
+
+
+
+
 
 
