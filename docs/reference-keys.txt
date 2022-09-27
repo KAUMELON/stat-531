@@ -18,3 +18,5 @@ assigning-values-to-variables
 basic-data-types
 vectors
 matrices
+data-frames
+operations-on-data-frame

@@ -421,9 +421,158 @@ Calculations with numeric matrices: rowSums(), colSums(), rowMeans(), colMeans()
 <span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colMeans</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## c1 c2 c3 
 ##  4  8 12</code></pre>
+</div>
+<div id="data-frames" class="section level3" number="3.4.3">
+<h3>
+<span class="header-section-number">3.4.3</span> Data frames<a class="anchor" aria-label="anchor" href="#data-frames"><i class="fas fa-link"></i></a>
+</h3>
+<p>A data frame is the data type, we will be going to use frequently. A data frame is like a matrix but can have columns with different types (numeric, character, logical). Rows are observations (individuals) and columns are variables. Function <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> is used to create data frame</p>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">friends_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"asha"</span>, <span class="st">"adhi"</span>, <span class="st">"aravind"</span>, </span>
+<span>                  <span class="st">"mary"</span><span class="op">)</span>, </span>
+<span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">23</span>,<span class="fl">22</span>,<span class="fl">21</span><span class="op">)</span>,</span>
+<span>  height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="fl">170</span>, <span class="fl">185</span>, <span class="fl">169</span><span class="op">)</span>,</span>
+<span>  married <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span><span class="op">)</span>  </span>
+<span><span class="op">)</span>  </span>
+<span></span>
+<span><span class="co"># Print</span></span>
+<span><span class="va">friends_data</span></span></code></pre></div>
+<pre><code>##      name age height married
+## 1    asha  20    180    TRUE
+## 2    adhi  23    170   FALSE
+## 3 aravind  22    185    TRUE
+## 4    mary  21    169    TRUE</code></pre>
+<p>To check whether a data is a data frame, use the <code><a href="https://rdrr.io/r/base/as.data.frame.html">is.data.frame()</a></code> function. Returns TRUE if the data is a data frame:</p>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">is.data.frame</a></span><span class="op">(</span><span class="va">friends_data</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>To check whether a data is a matrix, data frame or any other class use the function <code><a href="https://rdrr.io/r/base/class.html">class()</a></code></p>
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># What is the class of A? --&gt; matrix</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] "matrix" "array"</code></pre>
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># What is the class of friends_data? --&gt; matrix</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">friends_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] "data.frame"</code></pre>
+<p>Convert a data class to data frame use the function <code><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame()</a></code></p>
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Convert it as a data frame</span></span>
+<span><span class="va">A2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></span>
+<span><span class="co"># Now, the class is data.frame</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">A2</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] "data.frame"</code></pre>
+<p>As described in matrix section, you can use the function <code><a href="https://rdrr.io/r/base/t.html">t()</a></code> to transpose a data frame:</p>
+<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">friends_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##         [,1]   [,2]    [,3]      [,4]  
+## name    "asha" "adhi"  "aravind" "mary"
+## age     "20"   "23"    "22"      "21"  
+## height  "180"  "170"   "185"     "169" 
+## married "TRUE" "FALSE" "TRUE"    "TRUE"</code></pre>
+<div id="operations-on-data-frame" class="section level4" number="3.4.3.1">
+<h4>
+<span class="header-section-number">3.4.3.1</span> Operations on data frame<a class="anchor" aria-label="anchor" href="#operations-on-data-frame"><i class="fas fa-link"></i></a>
+</h4>
+<p>Positive indexing by name and by location</p>
+<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Access the data in 'name' column in friends_data</span></span>
+<span><span class="co"># dollar sign is used</span></span>
+<span><span class="va">friends_data</span><span class="op">$</span><span class="va">name</span>  </span></code></pre></div>
+<pre><code>## [1] "asha"    "adhi"    "aravind" "mary"</code></pre>
+<div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># or use this</span></span>
+<span><span class="va">friends_data</span><span class="op">[</span>, <span class="st">'name'</span><span class="op">]</span>  </span></code></pre></div>
+<pre><code>## [1] "asha"    "adhi"    "aravind" "mary"</code></pre>
+<div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Subset columns 1 and 3</span></span>
+<span><span class="va">friends_data</span><span class="op">[</span> , <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span>  </span></code></pre></div>
+<pre><code>##      name height
+## 1    asha    180
+## 2    adhi    170
+## 3 aravind    185
+## 4    mary    169</code></pre>
+<div class="sourceCode" id="cb116"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Subset columns 1 to 3  </span></span>
+<span><span class="va">friends_data</span><span class="op">[</span> , <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">]</span>    </span></code></pre></div>
+<pre><code>##      name age height
+## 1    asha  20    180
+## 2    adhi  23    170
+## 3 aravind  22    185
+## 4    mary  21    169</code></pre>
+<p>Negative Indexing</p>
+<div class="sourceCode" id="cb118"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Exclude column 1  </span></span>
+<span></span>
+<span><span class="va">friends_data</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>  </span></code></pre></div>
+<pre><code>##   age height married
+## 1  20    180    TRUE
+## 2  23    170   FALSE
+## 3  22    185    TRUE
+## 4  21    169    TRUE</code></pre>
+<p>Index by characteristics</p>
+<p>We want to select all friends with age greater than or equal to 22.</p>
+<div class="sourceCode" id="cb120"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Identify rows that meet the condition</span></span>
+<span><span class="va">friends_data</span><span class="op">$</span><span class="va">age</span> <span class="op">&gt;=</span> <span class="fl">22</span>   </span></code></pre></div>
+<pre><code>## [1] FALSE  TRUE  TRUE FALSE</code></pre>
+<div class="sourceCode" id="cb122"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># TRUE specifies that the row contains a value of age &gt;= 22.</span></span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Select the rows that meet the condition</span></span>
+<span><span class="va">friends_data</span><span class="op">[</span><span class="va">friends_data</span><span class="op">$</span><span class="va">age</span> <span class="op">&gt;=</span> <span class="fl">22</span>, <span class="op">]</span>  </span></code></pre></div>
+<pre><code>##      name age height married
+## 2    adhi  23    170   FALSE
+## 3 aravind  22    185    TRUE</code></pre>
+<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># The R code above, tells R to get all rows from friends_data where age &gt;= 22</span></span></code></pre></div>
+<p>If you don’t want to see all the column data for the selected rows but are just interested in displaying, for example, friend names and age for friends with age &gt;= 22, you could use the following R code:</p>
+<div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Use column locations</span></span>
+<span><span class="va">friends_data</span><span class="op">[</span><span class="va">friends_data</span><span class="op">$</span><span class="va">age</span> <span class="op">&gt;=</span> <span class="fl">22</span>,  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span>  </span></code></pre></div>
+<pre><code>##      name age
+## 2    adhi  23
+## 3 aravind  22</code></pre>
+<div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Or use column names</span></span>
+<span><span class="va">friends_data</span><span class="op">[</span><span class="va">friends_data</span><span class="op">$</span><span class="va">age</span> <span class="op">&gt;=</span> <span class="fl">22</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"age"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<pre><code>##      name age
+## 2    adhi  23
+## 3 aravind  22</code></pre>
+<p>If you’re finding that your selection statement is starting to be inconvenient, you can put your row and column selections into variables first, such as:</p>
+<div class="sourceCode" id="cb130"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">age22</span> <span class="op">&lt;-</span> <span class="va">friends_data</span><span class="op">$</span><span class="va">age</span> <span class="op">&gt;=</span> <span class="fl">22</span></span>
+<span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"age"</span><span class="op">)</span></span>
+<span><span class="co"># Then you can select the rows and columns with those variables:</span></span>
+<span></span>
+<span><span class="va">friends_data</span><span class="op">[</span><span class="va">age22</span>, <span class="va">cols</span><span class="op">]</span></span></code></pre></div>
+<pre><code>##      name age
+## 2    adhi  23
+## 3 aravind  22</code></pre>
+<p>It’s also possible to use the function <code><a href="https://rdrr.io/r/base/subset.html">subset()</a></code> as follow.</p>
+<div class="sourceCode" id="cb132"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Select friends data with age &gt;= 22</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">friends_data</span>, <span class="va">age</span> <span class="op">&gt;=</span> <span class="fl">22</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>##      name age height married
+## 2    adhi  23    170   FALSE
+## 3 aravind  22    185    TRUE</code></pre>
+<p>Another option is to use the functions <code><a href="https://rdrr.io/r/base/attach.html">attach()</a></code> and <code><a href="https://rdrr.io/r/base/detach.html">detach()</a></code>. The function <code><a href="https://rdrr.io/r/base/attach.html">attach()</a></code> takes a data frame and makes its columns accessible by simply giving their names.</p>
+<div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Attach a data frame</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/attach.html">attach</a></span><span class="op">(</span><span class="va">friends_data</span><span class="op">)</span></span>
+<span><span class="co"># === Data manipulation ====</span></span>
+<span><span class="va">friends_data</span><span class="op">[</span><span class="va">age</span><span class="op">&gt;=</span><span class="fl">22</span>, <span class="op">]</span></span></code></pre></div>
+<pre><code>##      name age height married
+## 2    adhi  23    170   FALSE
+## 3 aravind  22    185    TRUE</code></pre>
+<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># === End of data manipulation ====</span></span>
+<span><span class="co"># Detach the data frame</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/detach.html">detach</a></span><span class="op">(</span><span class="va">friends_data</span><span class="op">)</span></span></code></pre></div>
 
 <div class="rmdnote">
-<p><strong>Practical 1</strong></p>
+<p><strong>Practical 1</strong>: Matrices and vectors</p>
 <ol style="list-style-type: decimal">
 <li>Create a vector of numbers form 23 to 33</li>
 <li>Assign the vector with a name “numbers”<br>
@@ -439,6 +588,24 @@ Calculations with numeric matrices: rowSums(), colSums(), rowMeans(), colMeans()
 </div>
 
 
+<div class="rmdnote">
+<p><strong>Practical 2</strong>: Data frames</p>
+<ol style="list-style-type: decimal">
+<li>Create a data frame of 5 students with name, age, height, degree.</li>
+<li>Assign the vector with a name “numbers”<br>
+</li>
+<li>Create a Matrix named “mat_num” with elements from 1 to 20 in 4 rows and 5 columns<br>
+</li>
+<li>Name the columns and rows of matrix mat_num with any names you like<br>
+</li>
+<li>Compute column means and row means of matrix mat_num</li>
+<li>Access the element in second row and third column of matrix mat_num
+</li>
+</ol>
+</div>
+
+
+</div>
 </div>
 </div>
 </div>
@@ -456,6 +623,7 @@ Calculations with numeric matrices: rowSums(), colSums(), rowMeans(), colMeans()
 <a class="nav-link" href="#basic-data-types"><span class="header-section-number">3.4</span> Basic data types</a><ul class="nav navbar-nav">
 <li><a class="nav-link" href="#vectors"><span class="header-section-number">3.4.1</span> Vectors</a></li>
 <li><a class="nav-link" href="#matrices"><span class="header-section-number">3.4.2</span> Matrices</a></li>
+<li><a class="nav-link" href="#data-frames"><span class="header-section-number">3.4.3</span> Data frames</a></li>
 </ul>
 </li>
 </ul>
