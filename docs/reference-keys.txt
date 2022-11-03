@@ -1,6 +1,11 @@
 fig:rlogo
 fig:rstudio1
 fig:rstudio2
+fig:goodfile
+fig:saving
+fig:saving1
+fig:saving2
+fig:saving3
 introduction
 statistical-software
 types-of-statistical-software
@@ -20,3 +25,11 @@ vectors
 matrices
 data-frames
 operations-on-data-frame
+importing-data-files
+preparing-your-file
+naming-conventions
+saving-file
+how-to-save-as-csv
+importing-data-set-in-rstudio
+alternate-methods
+accessin-the-variables
