@@ -1,4 +1,4 @@
-# R basics  
+# R basics {#rbase} 
 
 In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R.  
 

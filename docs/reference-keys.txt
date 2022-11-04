@@ -16,7 +16,7 @@ proprietary-software
 introduction-to-r
 rstudio
 installing-r-and-r-studio
-r-basics
+rbase
 basic-arithmetic-operations
 basic-arithmetic-functions
 assigning-values-to-variables
@@ -25,6 +25,9 @@ vectors
 matrices
 data-frames
 operations-on-data-frame
+packages-and-libraries
+packages
+standard-packages
 importing-data-files
 preparing-your-file
 naming-conventions
@@ -39,9 +42,3 @@ function-to-access-variables-easily
 some-useful-functions
 str
 view
-packages-and-libraries
-package-installation-from-cran
-package-installation-from-bioconductor
-package-installation-from-source
-loading-libraries
-finding-functions-specific-to-a-package
