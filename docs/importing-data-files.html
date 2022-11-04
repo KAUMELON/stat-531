@@ -155,7 +155,7 @@ Figure 4.2: How to save as csv
 </div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:saving1"></span>
-<img src="images/data3c4.png" alt="How to save as csv (1)" width="50%"><p class="caption">
+<img src="images/data3c4.png" alt="How to save as csv (1)" width="80%"><p class="caption">
 Figure 4.3: How to save as csv (1)
 </p>
 </div>
@@ -166,7 +166,7 @@ Figure 4.3: How to save as csv (1)
 <span class="header-section-number">4.2</span> Importing Data set in Rstudio<a class="anchor" aria-label="anchor" href="#importing-data-set-in-rstudio"><i class="fas fa-link"></i></a>
 </h2>
 <p>To import a csv file in Rstudio</p>
-<p>click on File then Import then select Data from Text (base)</p>
+<p>click on <code>File</code> then click on <code>Import Dataset</code> then select <code>from Text (base)</code></p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:saving2"></span>
 <img src="images/data4c4.png" alt="Importing data set" width="50%"><p class="caption">
@@ -176,7 +176,7 @@ Figure 4.4: Importing data set
 <p>Select the file and click open</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:saving3"></span>
-<img src="images/data5c4.png" alt="Import Dataset dialogue box" width="50%"><p class="caption">
+<img src="images/data5c4.png" alt="Import Dataset dialogue box" width="80%"><p class="caption">
 Figure 4.5: Import Dataset dialogue box
 </p>
 </div>
@@ -188,18 +188,22 @@ work on.</p>
 <h3>
 <span class="header-section-number">4.2.1</span> Alternate methods<a class="anchor" aria-label="anchor" href="#alternate-methods"><i class="fas fa-link"></i></a>
 </h3>
+<div id="importing-csv-files" class="section level4" number="4.2.1.1">
+<h4>
+<span class="header-section-number">4.2.1.1</span> Importing csv files<a class="anchor" aria-label="anchor" href="#importing-csv-files"><i class="fas fa-link"></i></a>
+</h4>
 <p>Data can be also imported using read.csv() function in R.
 read.csv('path to the file')</p>
 <div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># example</span></span>
 <span></span>
-<span><span class="va">data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">'data/iris.csv'</span><span class="op">)</span></span>
+<span><span class="va">my_data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">'data/iris.csv'</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># here now the data set iris.csv is stored in the name data</span></span>
+<span><span class="co"># here now the data set iris.csv is stored in the name my_data</span></span>
 <span></span>
-<span><span class="co">#You can now directly do operations on the data</span></span>
+<span><span class="co"># You can now directly do operations on the my_data</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##   Sepal_Length    Sepal_Width     Petal_length    Petal_Width   
 ##  Min.   :4.600   Min.   :2.300   Min.   :1.300   Min.   :0.200  
 ##  1st Qu.:5.050   1st Qu.:2.925   1st Qu.:1.450   1st Qu.:0.200  
@@ -217,25 +221,110 @@ read.csv('path to the file')</p>
 ##                    
 ## </code></pre>
 </div>
+<div id="importing-excel-files" class="section level4" number="4.2.1.2">
+<h4>
+<span class="header-section-number">4.2.1.2</span> Importing excel files<a class="anchor" aria-label="anchor" href="#importing-excel-files"><i class="fas fa-link"></i></a>
+</h4>
+<p>To import from xlsx file, we need the package xlsx</p>
+<pre><code><a href="https://github.com/colearendt/xlsx">library(xlsx)  
+
+df &lt;-read.xlsx("path/file.xlsx", n)
+
+# n is n-th worksheet to import</a></code></pre>
 </div>
-<div id="accessin-the-variables" class="section level2" number="4.3">
+</div>
+</div>
+<div id="accessing-the-variables" class="section level2" number="4.3">
 <h2>
-<span class="header-section-number">4.3</span> Accessin the variables<a class="anchor" aria-label="anchor" href="#accessin-the-variables"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.3</span> Accessing the variables<a class="anchor" aria-label="anchor" href="#accessing-the-variables"><i class="fas fa-link"></i></a>
 </h2>
-<p>The variables in the data can be accessed using ’$” symbol to the data name</p>
-<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">'data/iris.csv'</span><span class="op">)</span></span>
+<p>The variables in the data can be accessed using <code>$</code> symbol to the data name</p>
+<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">'data/iris.csv'</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># accessing variable Petal_length</span></span>
+<span><span class="co"># Accessing variable Petal_length</span></span>
 <span></span>
-<span><span class="va">data</span><span class="op">$</span><span class="va">Petal_length</span></span></code></pre></div>
+<span><span class="va">my_data</span><span class="op">$</span><span class="va">Petal_length</span></span></code></pre></div>
 <pre><code>##  [1] 1.4 1.4 1.3 1.5 1.4 4.7 4.5 4.9 4.0 4.6 6.0 5.1 5.9 5.6 5.8</code></pre>
-<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># You can perform functions on them</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">Petal_length</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">$</span><span class="va">Petal_length</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.300   1.450   4.600   3.873   5.350   6.000</code></pre>
+<div id="function-to-access-variables-easily" class="section level3" number="4.3.1">
+<h3>
+<span class="header-section-number">4.3.1</span> Function to access variables easily<a class="anchor" aria-label="anchor" href="#function-to-access-variables-easily"><i class="fas fa-link"></i></a>
+</h3>
+<p>Without using the name of the data frame, you can access the variables in the data framework using the <code><a href="https://rdrr.io/r/base/attach.html">attach()</a></code> function in the R language. The data framework attachment created by the <code><a href="https://rdrr.io/r/base/attach.html">attach()</a></code> function is removed using the <code><a href="https://rdrr.io/r/base/detach.html">detach()</a></code> function.</p>
+<p>The database is attached to the R search path. This means that the database is searched by R when evaluating a variable, so objects in the database can be accessed by simply giving their names.</p>
+<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">'data/iris.csv'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Using function attach  </span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/attach.html">attach</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Accessing variable Petal_length, now you can call variable name directly without using my_data</span></span>
+<span></span>
+<span><span class="va">Petal_length</span></span></code></pre></div>
+<pre><code>##  [1] 1.4 1.4 1.3 1.5 1.4 4.7 4.5 4.9 4.0 4.6 6.0 5.1 5.9 5.6 5.8</code></pre>
+<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># You can perform functions on them</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">Petal_length</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.300   1.450   4.600   3.873   5.350   6.000</code></pre>
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Using detach function</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/detach.html">detach</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div id="some-useful-functions" class="section level2" number="4.4">
+<h2>
+<span class="header-section-number">4.4</span> Some useful functions<a class="anchor" aria-label="anchor" href="#some-useful-functions"><i class="fas fa-link"></i></a>
+</h2>
+<div id="str" class="section level3" number="4.4.1">
+<h3>
+<span class="header-section-number">4.4.1</span> str()<a class="anchor" aria-label="anchor" href="#str"><i class="fas fa-link"></i></a>
+</h3>
+<p>R object structures are displayed by <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code>. <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> is frequently used to display a list’s contents.It is used particularly when the data set is huge.</p>
+<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">'data/iris.csv'</span><span class="op">)</span>  </span>
+<span></span>
+<span><span class="co"># Using str() function</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## 'data.frame':    15 obs. of  5 variables:
+##  $ Sepal_Length: num  5.1 4.9 4.7 4.6 5 7 6.4 6.9 5.5 6.5 ...
+##  $ Sepal_Width : num  3.5 3 3.2 3.1 NA 3.2 3.2 3.1 2.3 2.8 ...
+##  $ Petal_length: num  1.4 1.4 1.3 1.5 1.4 4.7 4.5 4.9 4 4.6 ...
+##  $ Petal_Width : num  0.2 0.2 0.2 0.2 0.2 1.4 1.5 1.5 1.3 1.5 ...
+##  $ Species     : chr  "setosa" "setosa" "setosa" "setosa" ...</code></pre>
+</div>
+</div>
+<div id="view" class="section level2" number="4.5">
+<h2>
+<span class="header-section-number">4.5</span> View()<a class="anchor" aria-label="anchor" href="#view"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">'data/iris.csv'</span><span class="op">)</span>  </span>
+<span></span>
+<span><span class="co"># Using str() function</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/View.html">View</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code></pre></div>
+
+<div class="rmdnote">
+<p><strong>Self assesment</strong></p>
+<ol style="list-style-type: decimal">
+<li>Create any dataset in excel with 4 coloumns, save it as a csv file</li>
+<li>Import the dataset into R, rename as my_data</li>
+<li>Calculate the summary of my_data
+</li>
+</ol>
+</div>
+
 
 </div>
 </div>
@@ -256,7 +345,13 @@ read.csv('path to the file')</p>
 <li>
 <a class="nav-link" href="#importing-data-set-in-rstudio"><span class="header-section-number">4.2</span> Importing Data set in Rstudio</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#alternate-methods"><span class="header-section-number">4.2.1</span> Alternate methods</a></li></ul>
 </li>
-<li><a class="nav-link" href="#accessin-the-variables"><span class="header-section-number">4.3</span> Accessin the variables</a></li>
+<li>
+<a class="nav-link" href="#accessing-the-variables"><span class="header-section-number">4.3</span> Accessing the variables</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#function-to-access-variables-easily"><span class="header-section-number">4.3.1</span> Function to access variables easily</a></li></ul>
+</li>
+<li>
+<a class="nav-link" href="#some-useful-functions"><span class="header-section-number">4.4</span> Some useful functions</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#str"><span class="header-section-number">4.4.1</span> str()</a></li></ul>
+</li>
+<li><a class="nav-link" href="#view"><span class="header-section-number">4.5</span> View()</a></li>
 </ul>
 
       <div class="book-extra">

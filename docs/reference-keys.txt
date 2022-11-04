@@ -32,4 +32,10 @@ saving-file
 how-to-save-as-csv
 importing-data-set-in-rstudio
 alternate-methods
-accessin-the-variables
+importing-csv-files
+importing-excel-files
+accessing-the-variables
+function-to-access-variables-easily
+some-useful-functions
+str
+view

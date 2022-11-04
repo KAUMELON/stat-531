@@ -95,7 +95,7 @@ Under the \"File name\" section in the \"Save As\" tab, you can select
 knitr::include_graphics(rep("images/data2c4.png"))
 ```  
 
-```{r saving1, echo=FALSE,fig.cap='How to save as csv (1)',out.width="50%", fig.align='center'}
+```{r saving1, echo=FALSE,fig.cap='How to save as csv (1)',out.width="80%", fig.align='center'}
 knitr::include_graphics(rep("images/data3c4.png"))
 ```
 
@@ -104,7 +104,7 @@ knitr::include_graphics(rep("images/data3c4.png"))
 
 To import a csv file in Rstudio
 
-click on File then Import then select Data from Text (base)  
+click on `File` then click on `Import Dataset` then select `from Text (base)`  
 
 ```{r saving2, echo=FALSE,fig.cap='Importing data set',out.width="50%", fig.align='center'}
 knitr::include_graphics(rep("images/data4c4.png"))
@@ -112,7 +112,7 @@ knitr::include_graphics(rep("images/data4c4.png"))
 
 Select the file and click open  
 
-```{r saving3, echo=FALSE,fig.cap='Import Dataset dialogue box',out.width="50%", fig.align='center'}
+```{r saving3, echo=FALSE,fig.cap='Import Dataset dialogue box',out.width="80%", fig.align='center'}
 knitr::include_graphics(rep("images/data5c4.png"))
 ```    
 
@@ -123,6 +123,8 @@ work on.
 
 ### Alternate methods
 
+#### Importing csv files  
+
 Data can be also imported using read.csv() function in R.
 read.csv(\'path to the file\')  
 
@@ -130,34 +132,106 @@ read.csv(\'path to the file\')
 
 # example
 
-data<-read.csv(file = 'data/iris.csv')
+my_data<-read.csv(file = 'data/iris.csv')
 
-# here now the data set iris.csv is stored in the name data
+# here now the data set iris.csv is stored in the name my_data
 
-#You can now directly do operations on the data
+# You can now directly do operations on the my_data
 
-summary(data)
+summary(my_data)
 
 ``` 
 
+#### Importing excel files  
+
+To import from xlsx file, we need the package xlsx  
+
+```
+library(xlsx)  
+
+df <-read.xlsx("path/file.xlsx", n)
+
+# n is n-th worksheet to import
+```
+
 ## Accessing the variables 
 
-The variables in the data can be accessed using '$" symbol to the data name  
+The variables in the data can be accessed using `$` symbol to the data name  
 
 ```{r} 
-data<-read.csv(file = 'data/iris.csv')
+my_data<-read.csv(file = 'data/iris.csv')
 
-# accessing variable Petal_length
+# Accessing variable Petal_length
 
-data$Petal_length
+my_data$Petal_length
 
 # You can perform functions on them
 
-summary(data$Petal_length)
+summary(my_data$Petal_length)
 
 
 ```
 
+### Function to access variables easily  
 
+Without using the name of the data frame, you can access the variables in the data framework using the `attach()` function in the R language. The data framework attachment created by the `attach()` function is removed using the `detach()` function.
+
+The database is attached to the R search path. This means that the database is searched by R when evaluating a variable, so objects in the database can be accessed by simply giving their names.
+
+```{r} 
+my_data<-read.csv(file = 'data/iris.csv')
+
+# Using function attach  
+
+attach(my_data)
+
+# Accessing variable Petal_length, now you can call variable name directly without using my_data
+
+Petal_length
+
+# You can perform functions on them
+
+summary(Petal_length)
+
+# Using detach function
+
+detach(my_data)
+
+```  
+
+## Some useful functions  
+
+### str()  
+
+R object structures are displayed by `str()`. `str()` is frequently used to display a list's contents.It is used particularly when the data set is huge.
+
+```{r} 
+my_data<-read.csv(file = 'data/iris.csv')  
+
+# Using str() function
+
+str(my_data)
+
+```  
+
+## View()  
+
+```{r, eval=F, echo=T}
+my_data<-read.csv(file = 'data/iris.csv')  
+
+# Using str() function
+
+View(my_data)
+
+```  
+
+
+```{block2 item4, type='rmdnote'}
+**Self assesment**
+
+1. Create any dataset in excel with 4 coloumns, save it as a csv file
+2. Import the dataset into R, rename as my_data
+3. Calculate the summary of my_data
+```
 
 
