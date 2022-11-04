@@ -39,3 +39,9 @@ function-to-access-variables-easily
 some-useful-functions
 str
 view
+packages-and-libraries
+package-installation-from-cran
+package-installation-from-bioconductor
+package-installation-from-source
+loading-libraries
+finding-functions-specific-to-a-package
