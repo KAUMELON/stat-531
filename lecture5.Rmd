@@ -1,9 +1,183 @@
 # Packages and libraries  
 
 ## Packages
-Packages are organised collections of R functions, data, and compiled code. There are two type of packages in R.  
+Packages are organised collections of R functions, data, and compiled code. Packages have useful functions to perform specific tasks. Some of the useful packages for agricultural research are `agricolae`, `grapesAgri1` etc.  
+In the R environment, packages are kept in a directory called "library". R installs a group of packages by default during installation. Only the default packages are initially available once the R console has been launched. The R application that is getting to use other installed packages needs to be explicitly loaded from package library in order to use them.
 
-## Standard packages
-Standard packages come pre-installed with R installations and are regarded as being a part of the R source code. The fundamental R functions are found in base packages, which make it possible to perform common statistical and graphical operations on datasets. Examples of standard packages include `stats`, `graphics`, `grDevices`, `utils`, `datasets`, `methods` and `base`. The functions available in these standard packages can be used for basic operations on the data set. Some of the functions we have discussed earlier in Section\@ref(rbase), like `mean()`,`min`, `log10`,`as.data.frame` etc
+## Repositories  
+
+A repository is where packages are located so that they can be installed from it. Organizations and developers each have their own local repository, which is often online and open to all. The most well-liked R package repositories include: **CRAN**, **BIOCONDUCTOR**, **GITHUB**.  
+
+### CRAN
+**C**omprehensive **R** **A**rchive **N**etwork(**CRAN**) is the official repository, It is an international network of ftp and web servers run and managed by the R community. It is coordinated by the R community, and before a package can be published in CRAN, it must pass a number of tests to guarantee that it complies with CRAN rules.  
+
+### Bioconductor 
+Open source software for bioinformatics is designed for the topic-specific repository known as Bioconductor. In keeping with CRAN, it has its own submission and review procedures, and its community is quite active, holding numerous conferences and meetings each year.  
+
+### Github  
+
+The most well-known repository for open source projects is Github. Its popularity is due to the unrestricted open source storage space, integration with the version control programme git, and simplicity of sharing and teamwork.  
+
+## Base packages  
+
+Base packages or standard pacakges come pre-installed with R installations and are regarded as being a part of the R source code. The fundamental R functions are found in base packages, which make it possible to perform common statistical and graphical operations on datasets. Examples of Base packages include `stats`, `graphics`, `grDevices`, `utils`, `datasets`, `methods` and `base`. The functions available in these Base packages can be used for basic operations on the data set. Some of the functions we have discussed earlier in Section\@ref(rbase), like `mean()`,`min`, `log10`,`as.data.frame` etc.  
+
+R is distributed with fifteen "base packages": `base`, `compiler`, `datasets`, `grDevices`, `graphics`, `grid`, `methods`, `parallel`, `splines`, `stats`, `stats4`, `tcltk`, `tools`, `translations`, and `utils`.  
+
+In addition, there are fifteen "recommended packages" from CRAN which are included with binary distributions of R: `KernSmooth`, `MASS`, `Matrix`, `boot`, `class`, `cluster`, `codetools`, `foreign`, `lattice`, `mgcv`, `nlme`, `nnet`, `rpart`, `spatial`, and `survival`.
+
+## Other packages  
+
+Any user could develop a package and make it available through any of the repositories. There are thousands of helpful R packages.  
+
+## Installing R Packages  
+
+There are numerous ways to install R Packages, which are listed below. You need an active internet connectivity for installing packages.  
+
+### From CRAN  
+
+Installing Packages From CRAN: For installing Package from `CRAN` we need the name of the package and use the following command:  
+
+```{r , eval=FALSE}
+install.packages("package name")  
+```  
+Simply express package name as a character vector in the first argument of the `install.packages()` function to install more than one package at once:  
+
+```{r , eval=FALSE}
+install.packages(c("grapesAgri1", "MASS"))  
+```  
+
+### From Bioconductor  
+In order to install a package in Bioconductor, run the following script first:  
+
+```{r , eval=FALSE}
+source("https://bioconductor.org/biocLite.R")  
+
+```  
+This will install some basic functions which are needed to install bioconductor packages, such as the `biocLite()` function. To install the core packages of Bioconductor just type it without further arguments.  
+
+```{r , eval=FALSE}  
+biocLite()  
+```   
+Type the names of the desired packages in a character vector format if we just need a few of them from this repository.  
+
+**Example:** 
+
+```{r , eval=FALSE}
+biocLite(c("GenomicFeatures", "AnnotationDbi"))
+
+```  
+
+### From github  
+
+To install a R package from github, start by installing the devtools package. The best way to do this is from CRAN.  
+
+```{r , eval=FALSE}
+install.packages("devtools")  
+
+```  
+
+Install the package of interest from GitHub using the following code, where you need to remember to list both the author and the name of the package. In this example, we are installing the `grapesAgri1` package created by *pratheesh3780*.  
+
+```{r , eval=FALSE}  
+devtools::install_github("pratheesh3780/grapesAgri1")  
+
+```
+
+## Load packages  
+
+Once you successfully install an R package; you need to load the package for use in the session. `library()` function can be used to load package. 
+
+**Example**  
+```{r, eval=FALSE}  
+library(grapesAgri1)
+```  
+
+### Load Multiple Packages at Once  
+
+We need to first specify a vector of package names:  
+```{r, eval=FALSE}  
+my_packages <- c("dplyr", "mice", "stringr") # vector of package names 
+lapply(my_packages, require, character.only = TRUE)    # Load multiple packages  
+ 
+```
+After running the previous R code, all packages in the vector my_packages are loaded to R.  
+
+
+## Check, Update and Remove  
+
+To check what packages are installed on your computer, type this command:  
+
+```{r, eval=FALSE}
+installed.packages()  
+```  
+
+To update all the packages, type this command:  
+
+```{r, eval=FALSE}  
+
+update.packages()  
+```   
+
+To update a specific package, type this command:`install.packages("package name")`  
+
+```{r, eval=FALSE}  
+
+install.packages("grapesAgri1")  
+
+```
+
+## Installation using R studio UI  
+
+The packages can be installed using Rstudio User interface. Step by step installation of package `grapesAgri1` is shown below. All other packages can be installed in similar way  
+
+-  **Step 1**: Click on the install button as shown below 
+
+```{r 1, echo=FALSE,fig.cap='Step 1',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/packages/1.png"))
+```    
+
+-  **Step 2**: Type the name of the package in the window that appears
+
+```{r 2, echo=FALSE,fig.cap='Step 2',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/packages/2.png"))
+```  
+
+-  **Step 3**: Select the package name and click install  
+
+```{r 3, echo=FALSE,fig.cap='Step 3',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/packages/3.png"))
+```  
+
+-  **Step 4**: Load the package name by clicking on the check box.  
+
+```{r 4, echo=FALSE,fig.cap='Step 4',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/packages/4.png"))
+```  
+
+
+```{block2 item5, type='rmdnote'}
+**Self Evaluation**  
+
+1. Install package `grapesAgri1` by yourself.  
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
