@@ -45,7 +45,7 @@ load-packages
 load-multiple-packages-at-once
 check-update-and-remove
 installation-using-r-studio-ui
-importing-data-files
+import
 preparing-your-file
 naming-conventions
 saving-file
@@ -68,5 +68,14 @@ iris
 toothgrowth
 plantgrowth
 usarrests
-summarization-and-tabulation-of-data
+descriptive-statistics
+list-of-r-functions
 measures-of-central-tendancy
+measures-of-dispersion
+overall-summary
+summary-of-single-variable
+summary-of-a-data-frame
+the-sapply-function
+some-other-useful-functions
+stat.desc
+missing-values

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 7 Descriptive Statistics | DATA ANALYSIS USING STATISTICAL PACKAGES</title>
+<meta name="author" content="Dr. Pratheesh P. Gopinath">
+<meta name="description" content="Before proceeding further please go through the first 6 chapters from my book Textbook of Agricultural Statistics. You can download iris data from here or use the inbuilt data set as discussed in...">
+<meta name="generator" content="bookdown 0.28 with bs4_book()">
+<meta property="og:title" content="Chapter 7 Descriptive Statistics | DATA ANALYSIS USING STATISTICAL PACKAGES">
+<meta property="og:type" content="book">
+<meta property="og:image" content="/images/cover.PNG">
+<meta property="og:description" content="Before proceeding further please go through the first 6 chapters from my book Textbook of Agricultural Statistics. You can download iris data from here or use the inbuilt data set as discussed in...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 7 Descriptive Statistics | DATA ANALYSIS USING STATISTICAL PACKAGES">
+<meta name="twitter:description" content="Before proceeding further please go through the first 6 chapters from my book Textbook of Agricultural Statistics. You can download iris data from here or use the inbuilt data set as discussed in...">
+<meta name="twitter:image" content="/images/cover.PNG">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.0/transition.js"></script><script src="libs/bs3compat-0.4.0/tabs.js"></script><script src="libs/bs3compat-0.4.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">DATA ANALYSIS USING STATISTICAL PACKAGES</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Welcome</a></li>
+<li><a class="" href="preface.html">Preface</a></li>
+<li><a class="" href="syllabus.html">Syllabus</a></li>
+<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="introduction-to-r.html"><span class="header-section-number">2</span> Introduction to R</a></li>
+<li><a class="" href="rbase.html"><span class="header-section-number">3</span> R basics</a></li>
+<li><a class="" href="packages-and-libraries.html"><span class="header-section-number">4</span> Packages and libraries</a></li>
+<li><a class="" href="import.html"><span class="header-section-number">5</span> Importing data files</a></li>
+<li><a class="" href="dataset.html"><span class="header-section-number">6</span> Datasets in R</a></li>
+<li><a class="active" href="descriptive-statistics.html"><span class="header-section-number">7</span> Descriptive Statistics</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="descriptive-statistics" class="section level1" number="7">
+<h1>
+<span class="header-section-number">7</span> Descriptive Statistics<a class="anchor" aria-label="anchor" href="#descriptive-statistics"><i class="fas fa-link"></i></a>
+</h1>
+<p>Before proceeding further please go through the first 6 chapters from my book <a href="https://kaumelon.github.io/stat3202/">Textbook of Agricultural Statistics</a>.</p>
+<p>You can download iris data from <a href="https://drive.google.com/file/d/1AcAeL0XKOcYA3z99qmaQFvTr7gw3gxRB/view?usp=sharing">here</a> or use the inbuilt data set as discussed in chapter <a href="dataset.html#dataset">6</a>.</p>
+<p>To do any analysis we first import data, see Chapter <a href="import.html#import">5</a>. You can inspect your data using the functions <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> and <code><a href="https://rdrr.io/r/utils/head.html">tail()</a></code>, which will display the first and the last part of the data, respectively.</p>
+<div class="sourceCode" id="cb203"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># import data set in to R</span></span>
+<span><span class="co"># here we are using iris dataset</span></span>
+<span></span>
+<span><span class="va">my_data</span><span class="op">&lt;-</span><span class="va">iris</span> <span class="co"># iris dataset is called in to variable my_data</span></span>
+<span></span>
+<span><span class="co"># display first 6 rows</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="fl">6</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
+<div class="sourceCode" id="cb205"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># display last 6 rows</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">my_data</span>,<span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+## 145          6.7         3.3          5.7         2.5 virginica
+## 146          6.7         3.0          5.2         2.3 virginica
+## 147          6.3         2.5          5.0         1.9 virginica
+## 148          6.5         3.0          5.2         2.0 virginica
+## 149          6.2         3.4          5.4         2.3 virginica
+## 150          5.9         3.0          5.1         1.8 virginica</code></pre>
+<div id="list-of-r-functions" class="section level2" number="7.1">
+<h2>
+<span class="header-section-number">7.1</span> List of R functions<a class="anchor" aria-label="anchor" href="#list-of-r-functions"><i class="fas fa-link"></i></a>
+</h2>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th align="center"><strong>Descriptive Statistics</strong></th>
+<th align="center"><strong>R Function</strong></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">Mean</td>
+<td align="center">mean()</td>
+</tr>
+<tr class="even">
+<td align="center">Standard deviation</td>
+<td align="center">sd()</td>
+</tr>
+<tr class="odd">
+<td align="center">Variance</td>
+<td align="center">var()</td>
+</tr>
+<tr class="even">
+<td align="center">Minimum</td>
+<td align="center">min()</td>
+</tr>
+<tr class="odd">
+<td align="center">Maximum</td>
+<td align="center">maximum()</td>
+</tr>
+<tr class="even">
+<td align="center">Median</td>
+<td align="center">median()</td>
+</tr>
+<tr class="odd">
+<td align="center">Range of values (minimum and maximum)</td>
+<td align="center">range()</td>
+</tr>
+<tr class="even">
+<td align="center">Sample quantiles</td>
+<td align="center">quantile()</td>
+</tr>
+<tr class="odd">
+<td align="center">Generic function</td>
+<td align="center">summary()</td>
+</tr>
+<tr class="even">
+<td align="center">Interquartile range</td>
+<td align="center">IQR()</td>
+</tr>
+</tbody>
+</table></div>
+<p>The function <code><a href="https://rdrr.io/pkg/statip/man/mfv.html">mfv()</a></code>, for most frequent value, [in <code>modeest</code> package] can be used to find the statistical mode of a numeric vector.</p>
+</div>
+<div id="measures-of-central-tendancy" class="section level2" number="7.2">
+<h2>
+<span class="header-section-number">7.2</span> Measures of central tendancy<a class="anchor" aria-label="anchor" href="#measures-of-central-tendancy"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb207"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute the mean value</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 5.843333</code></pre>
+<div class="sourceCode" id="cb209"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute the median value</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 5.8</code></pre>
+<div class="sourceCode" id="cb211"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute the mode</span></span>
+<span><span class="co"># install.packages("modeest")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paulponcet/modeest">modeest</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code>## Loading required package: modeest</code></pre>
+<pre><code>## Warning: package 'modeest' was built under R version 4.2.2</code></pre>
+<div class="sourceCode" id="cb214"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/statip/man/mfv.html">mfv</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute the minimum value</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 4.3</code></pre>
+<div class="sourceCode" id="cb218"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute the maximum value</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 7.9</code></pre>
+<div class="sourceCode" id="cb220"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Quartiles  </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>##   0%  25%  50%  75% 100% 
+##  4.3  5.1  5.8  6.4  7.9</code></pre>
+<div class="sourceCode" id="cb222"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute the median</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 5.8</code></pre>
+</div>
+<div id="measures-of-dispersion" class="section level2" number="7.3">
+<h2>
+<span class="header-section-number">7.3</span> Measures of dispersion<a class="anchor" aria-label="anchor" href="#measures-of-dispersion"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb224"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Range</span></span>
+<span><span class="co"># minimum value and maximum value is displayed</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 4.3 7.9</code></pre>
+<div class="sourceCode" id="cb226"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Inter quartile range  </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/IQR.html">IQR</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 1.3</code></pre>
+<div class="sourceCode" id="cb228"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute the variance</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 0.6856935</code></pre>
+<div class="sourceCode" id="cb230"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute the standard deviation </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## [1] 0.8280661</code></pre>
+<div class="sourceCode" id="cb232"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compute the median absolute deviation</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/mad.html">mad</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>## [1] 1.03782</code></pre>
+</div>
+<div id="overall-summary" class="section level2" number="7.4">
+<h2>
+<span class="header-section-number">7.4</span> Overall summary<a class="anchor" aria-label="anchor" href="#overall-summary"><i class="fas fa-link"></i></a>
+</h2>
+<p>The overall summary statistics of One variable or an entire data frame can be displayed using the function <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>.</p>
+<div id="summary-of-single-variable" class="section level3" number="7.4.1">
+<h3>
+<span class="header-section-number">7.4.1</span> Summary of single variable<a class="anchor" aria-label="anchor" href="#summary-of-single-variable"><i class="fas fa-link"></i></a>
+</h3>
+<p>The mean, median, 25th and 75th quartiles, minimum and maximum values are all returned in a single line call.</p>
+<div class="sourceCode" id="cb234"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   4.300   5.100   5.800   5.843   6.400   7.900</code></pre>
+</div>
+<div id="summary-of-a-data-frame" class="section level3" number="7.4.2">
+<h3>
+<span class="header-section-number">7.4.2</span> Summary of a Data frame<a class="anchor" aria-label="anchor" href="#summary-of-a-data-frame"><i class="fas fa-link"></i></a>
+</h3>
+<p>In this instance, each column receives an automated use of the summary() method. The kind of data in the column determines how the output is formatted. For instance:</p>
+<ul>
+<li><p>The mean, median, min, max, and quartiles are returned if the column is a numeric variable.</p></li>
+<li><p>The total number of observations in each group is returned if the column is a factor variable.</p></li>
+</ul>
+<div class="sourceCode" id="cb236"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## </code></pre>
+</div>
+</div>
+<div id="the-sapply-function" class="section level2" number="7.5">
+<h2>
+<span class="header-section-number">7.5</span> The sapply function<a class="anchor" aria-label="anchor" href="#the-sapply-function"><i class="fas fa-link"></i></a>
+</h2>
+<p>The <code><a href="https://rdrr.io/r/base/lapply.html">sapply()</a></code> method may also be used to apply a specific function on a list or vector. For example, we may use it to compute the mean, sd, var, min, quantile,… for each column in a data frame.</p>
+<div class="sourceCode" id="cb238"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="op">-</span><span class="fl">5</span><span class="op">]</span>, <span class="va">mean</span><span class="op">)</span></span></code></pre></div>
+<pre><code>## Sepal.Length  Sepal.Width Petal.Length  Petal.Width 
+##     5.843333     3.057333     3.758000     1.199333</code></pre>
+<div class="sourceCode" id="cb240"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># The command direct to find the mean of all columns in the dataset iris except 5th column, which is species and is non numeric </span></span>
+<span></span>
+<span><span class="co"># Compute quartiles</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">iris</span><span class="op">[</span>, <span class="op">-</span><span class="fl">5</span><span class="op">]</span>, <span class="va">quantile</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##      Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 0%            4.3         2.0         1.00         0.1
+## 25%           5.1         2.8         1.60         0.3
+## 50%           5.8         3.0         4.35         1.3
+## 75%           6.4         3.3         5.10         1.8
+## 100%          7.9         4.4         6.90         2.5</code></pre>
+</div>
+<div id="some-other-useful-functions" class="section level2" number="7.6">
+<h2>
+<span class="header-section-number">7.6</span> Some other useful functions<a class="anchor" aria-label="anchor" href="#some-other-useful-functions"><i class="fas fa-link"></i></a>
+</h2>
+<div id="stat.desc" class="section level3" number="7.6.1">
+<h3>
+<span class="header-section-number">7.6.1</span> stat.desc()<a class="anchor" aria-label="anchor" href="#stat.desc"><i class="fas fa-link"></i></a>
+</h3>
+<p>The function <code><a href="https://rdrr.io/pkg/pastecs/man/stat.desc.html">stat.desc()</a></code> [in pastecs package], provides lot of useful statistics in a single call</p>
+<div class="sourceCode" id="cb242"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#Install 'pastecs' package</span></span>
+<span><span class="co">#load the library</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/phgrosjean/pastecs">pastecs</a></span><span class="op">)</span>  </span>
+<span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/pastecs/man/stat.desc.html">stat.desc</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">[</span>, <span class="op">-</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span> <span class="co"># results were stored to the variable 'res'  </span></span>
+<span></span>
+<span><span class="co"># decimal digits were rounded to 2 using round()function</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">res</span>, <span class="fl">2</span><span class="op">)</span>  </span></code></pre></div>
+<pre><code>##              Sepal.Length Sepal.Width Petal.Length Petal.Width
+## nbr.val            150.00      150.00       150.00      150.00
+## nbr.null             0.00        0.00         0.00        0.00
+## nbr.na               0.00        0.00         0.00        0.00
+## min                  4.30        2.00         1.00        0.10
+## max                  7.90        4.40         6.90        2.50
+## range                3.60        2.40         5.90        2.40
+## sum                876.50      458.60       563.70      179.90
+## median               5.80        3.00         4.35        1.30
+## mean                 5.84        3.06         3.76        1.20
+## SE.mean              0.07        0.04         0.14        0.06
+## CI.mean.0.95         0.13        0.07         0.28        0.12
+## var                  0.69        0.19         3.12        0.58
+## std.dev              0.83        0.44         1.77        0.76
+## coef.var             0.14        0.14         0.47        0.64</code></pre>
+</div>
+</div>
+<div id="missing-values" class="section level2" number="7.7">
+<h2>
+<span class="header-section-number">7.7</span> Missing values<a class="anchor" aria-label="anchor" href="#missing-values"><i class="fas fa-link"></i></a>
+</h2>
+<p>It should be noted that some R functions will return errors or NA even if just one item is missing or when the data contains missing values. For instance, if a vector has even a single missing value, the <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> method will return <strong>NA</strong>. The option <code>na.rm = TRUE</code>, which instructs the function to delete any NAs before computations, can be used to prevent this. Here’s an example of how to use the mean function:</p>
+<div class="sourceCode" id="cb244"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+
+<div class="rmdnote">
+<p><strong>Self assesment</strong></p>
+<ol style="list-style-type: decimal">
+<li>Download the dataset by clicking <a href="https://drive.google.com/file/d/1_2U-_JbJlJyGOUhaDrTtXTGOgZZlx6Wx/view?usp=sharing">Here</a><br>
+</li>
+<li>Find the descriptive statistics for the data using the functions above.<br>
+</li>
+</ol>
+</div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="dataset.html"><span class="header-section-number">6</span> Datasets in R</a></div>
+<div class="next"><a href="references.html">References</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#descriptive-statistics"><span class="header-section-number">7</span> Descriptive Statistics</a></li>
+<li><a class="nav-link" href="#list-of-r-functions"><span class="header-section-number">7.1</span> List of R functions</a></li>
+<li><a class="nav-link" href="#measures-of-central-tendancy"><span class="header-section-number">7.2</span> Measures of central tendancy</a></li>
+<li><a class="nav-link" href="#measures-of-dispersion"><span class="header-section-number">7.3</span> Measures of dispersion</a></li>
+<li>
+<a class="nav-link" href="#overall-summary"><span class="header-section-number">7.4</span> Overall summary</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#summary-of-single-variable"><span class="header-section-number">7.4.1</span> Summary of single variable</a></li>
+<li><a class="nav-link" href="#summary-of-a-data-frame"><span class="header-section-number">7.4.2</span> Summary of a Data frame</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#the-sapply-function"><span class="header-section-number">7.5</span> The sapply function</a></li>
+<li>
+<a class="nav-link" href="#some-other-useful-functions"><span class="header-section-number">7.6</span> Some other useful functions</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#stat.desc"><span class="header-section-number">7.6.1</span> stat.desc()</a></li></ul>
+</li>
+<li><a class="nav-link" href="#missing-values"><span class="header-section-number">7.7</span> Missing values</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>DATA ANALYSIS USING STATISTICAL PACKAGES</strong>" was written by Dr. Pratheesh P. Gopinath. It was last built on 2022-01-30.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>

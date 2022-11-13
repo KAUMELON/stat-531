@@ -1,8 +1,166 @@
-# Summarization and tabulation of data  
+# Descriptive Statistics  
 
 Before proceeding further please go through the first 6 chapters from my book [Textbook of Agricultural Statistics](https://kaumelon.github.io/stat3202/).  
 
-You can download iris data from [here](https://drive.google.com/file/d/1AcAeL0XKOcYA3z99qmaQFvTr7gw3gxRB/view?usp=sharing) or use the inbuilt data set as discussed in chapter \@ref(dataset) [test](data\iris1.csv)
+You can download iris data from [here](https://drive.google.com/file/d/1AcAeL0XKOcYA3z99qmaQFvTr7gw3gxRB/view?usp=sharing) or use the inbuilt data set as discussed in chapter \@ref(dataset).  
+
+
+To do any analysis we first import data, see Chapter \@ref(import). You can inspect your data using the functions `head()` and `tail()`, which will display the first and the last part of the data, respectively.
+
+```{r, eval=TRUE}
+
+# import data set in to R
+# here we are using iris dataset
+
+my_data<-iris # iris dataset is called in to variable my_data
+
+# display first 6 rows
+head(my_data, 6)  
+
+# display last 6 rows
+tail(my_data,6)
+
+```  
+## List of R functions  
+
+**Descriptive Statistics**|**R Function**
+:-----:|:-----:
+Mean|mean()
+Standard deviation|sd()
+Variance|var()
+Minimum|min()
+Maximum|maximum()
+Median|median()
+Range of values (minimum and maximum)|range()
+Sample quantiles|quantile()
+Generic function|summary()
+Interquartile range|IQR()  
+  
+The function `mfv()`, for most frequent value, [in `modeest` package] can be used to find the statistical mode of a numeric vector.  
 
 ## Measures of central tendancy  
 
+```{r, eval=TRUE}
+# Compute the mean value
+mean(iris$Sepal.Length)
+
+# Compute the median value
+median(iris$Sepal.Length)  
+
+# Compute the mode
+# install.packages("modeest")
+require(modeest)
+mfv(iris$Sepal.Length)  
+
+# Compute the minimum value
+min(iris$Sepal.Length)
+
+# Compute the maximum value
+max(iris$Sepal.Length)  
+
+# Quartiles  
+quantile(iris$Sepal.Length)  
+
+# Compute the median
+median(iris$Sepal.Length)
+
+```   
+
+##  Measures of dispersion 
+
+```{r, eval=TRUE}
+
+# Range
+# minimum value and maximum value is displayed
+range(iris$Sepal.Length)  
+
+# Inter quartile range  
+IQR(iris$Sepal.Length)  
+
+# Compute the variance
+var(iris$Sepal.Length)
+
+# Compute the standard deviation 
+sd(iris$Sepal.Length)
+
+
+# Compute the median absolute deviation
+mad(iris$Sepal.Length)  
+
+```  
+
+## Overall summary   
+
+The overall summary statistics of One variable or an entire data frame can be displayed using the function `summary()`.  
+
+
+### Summary of single variable  
+
+The mean, median, 25th and 75th quartiles, minimum and maximum values are all returned in a single line call.  
+
+```{r, eval=TRUE}
+summary(iris$Sepal.Length)
+```
+
+### Summary of a Data frame  
+
+In this instance, each column receives an automated use of the summary() method. The kind of data in the column determines how the output is formatted. For instance:  
+
+- The mean, median, min, max, and quartiles are returned if the column is a numeric variable.  
+
+- The total number of observations in each group is returned if the column is a factor variable.
+
+```{r, eval=TRUE}
+summary(iris)
+```   
+
+
+
+## The sapply function  
+
+The `sapply()` method may also be used to apply a specific function on a list or vector. For example, we may use it to compute the mean, sd, var, min, quantile,... for each column in a data frame.  
+
+
+```{r, eval=TRUE}
+sapply(iris[, -5], mean)
+# The command direct to find the mean of all columns in the dataset iris except 5th column, which is species and is non numeric 
+
+# Compute quartiles
+sapply(iris[, -5], quantile)
+
+```  
+
+## Some other useful functions  
+
+### stat.desc()
+
+The function `stat.desc()` [in pastecs package], provides lot of useful statistics in a single call
+
+```{r, eval=TRUE}
+#Install 'pastecs' package
+#load the library
+library(pastecs)  
+
+res <- stat.desc(my_data[, -5]) # results were stored to the variable 'res'  
+
+# decimal digits were rounded to 2 using round()function
+round(res, 2)  
+
+```
+
+## Missing values  
+
+It should be noted that some R functions will return errors or NA even if just one item is missing or when the data contains missing values. For instance, if a vector has even a single missing value, the `mean()` method will return **NA**. The option `na.rm = TRUE`, which instructs the function to delete any NAs before computations, can be used to prevent this. Here's an example of how to use the mean function:
+
+```{r, eval=FALSE}
+mean(iris$Sepal.Length, na.rm = TRUE)
+```   
+
+
+```{block2 item6, type='rmdnote'}
+**Self assesment**
+
+1. Download the dataset by clicking [Here](https://drive.google.com/file/d/1_2U-_JbJlJyGOUhaDrTtXTGOgZZlx6Wx/view?usp=sharing)  
+2. Find the descriptive statistics for the data using the functions above.  
+
+```
