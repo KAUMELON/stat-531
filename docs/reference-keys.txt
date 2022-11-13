@@ -59,7 +59,7 @@ function-to-access-variables-easily
 some-useful-functions
 str
 view
-datasets-in-r
+dataset
 pre-loaded-data
 loading-a-built-in-r-data
 most-used-data-sets-in-r

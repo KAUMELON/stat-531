@@ -2,5 +2,7 @@
 
 Before proceeding further please go through the first 6 chapters from my book [Textbook of Agricultural Statistics](https://kaumelon.github.io/stat3202/).  
 
+You can download iris data from [here](https://drive.google.com/file/d/1AcAeL0XKOcYA3z99qmaQFvTr7gw3gxRB/view?usp=sharing) or use the inbuilt data set as discussed in chapter \@ref(dataset) [test](data\iris1.csv)
+
 ## Measures of central tendancy  
 
