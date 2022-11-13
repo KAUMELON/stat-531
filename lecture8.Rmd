@@ -1,0 +1,6 @@
+# Summarization and tabulation of data  
+
+Before proceeding further please go through the first 6 chapters from my book [Textbook of Agricultural Statistics](https://kaumelon.github.io/stat3202/).  
+
+## Measures of central tendancy  
+

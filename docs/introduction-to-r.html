@@ -52,6 +52,8 @@
 <li><a class="" href="rbase.html"><span class="header-section-number">3</span> R basics</a></li>
 <li><a class="" href="packages-and-libraries.html"><span class="header-section-number">4</span> Packages and libraries</a></li>
 <li><a class="" href="importing-data-files.html"><span class="header-section-number">5</span> Importing data files</a></li>
+<li><a class="" href="datasets-in-r.html"><span class="header-section-number">6</span> Datasets in R</a></li>
+<li><a class="" href="summarization-and-tabulation-of-data.html"><span class="header-section-number">7</span> Summarization and tabulation of data</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -96,17 +98,24 @@ Figure 2.3: R studio window
 </ol>
 <p>This is where the action happens. Here any authentic R code typed after the ‘&gt;’ prompt will be executed after pressing ‘Enter’ to generate the output. This is where we are going to type our single call function to start our app for data analysis.</p>
 <ol start="2" style="list-style-type: decimal">
-<li>Source</li>
+<li>Source Editor</li>
 </ol>
-<p>This is where R scripts (collection of code) can be created and edited. We won’t be using much of these.</p>
+<p>This is where R scripts (collection of code) can be created and edited. New R script can be opened by clicking File –&gt; New File –&gt; R Script or using short cut <code>ctrl+shift+N</code>. You can type your codes here. To run a code in console or execute, place the cursor in the line which code is written and press <code>ctrl+enter</code> or highlight the code you wish to evaluate and clicking on the “Run” button on the top right of the Source. You can save your R codes, written in script.</p>
 <ol start="3" style="list-style-type: decimal">
 <li>Environment|History|Connections</li>
 </ol>
-<p>One can browse in the internet and know more about these tabs if interested, we wont be using this much.</p>
+<p>All of the data objects (such as vectors, matrices, and dataframes) that you have defined in your current R session are listed under the Environment tab of this panel. In data objects, you may also examine details like the quantity of observations and rows. A few other clickable options are available on the tab, such as <code>Import Dataset</code>, which will launch a graphical user interface (GUI) for inputting data into R.</p>
+<p>This panel’s History tab only provides a history of all the code that you have previously evaluated in the Console.</p>
+<p>The Environment / History panel could be helpful as you become more accustomed to R. However, you can ignore it right now. You can simply just reduce the window by clicking the minimise button in the panel’s upper right corner if you wish to clear up space on your screen.</p>
 <ol start="4" style="list-style-type: decimal">
 <li>Files|Plots|Packages|Help|Viewer</li>
 </ol>
-<p>We are interested in the install button in this pane, to install packages required for our analysis.</p>
+<p>You can find a collection of useful information in the Files|Plots|Packages|Help panel. Let’s examine each tab in more detail:<br>
+- The file directory on your hard disc is accessible through the files panel. You can utilise the “Files” panel to set your working directory by clicking “More” and then “Set As Working Directory” once you’ve navigated to the folder where you wish to read and save files.</p>
+<ul>
+<li>All of your plots are displayed in the Plots panel. There are buttons to export the plot as a pdf or jpg and to open the plot in a separate window.<br>
+We are interested in the install button in this pane, to install packages required for our analysis.</li>
+</ul>
 </div>
 <div id="installing-r-and-r-studio" class="section level2" number="2.2">
 <h2>

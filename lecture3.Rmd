@@ -25,20 +25,25 @@ knitr::include_graphics(rep("images/rstudiowindow.png"))
 
 This is where the action happens. Here any authentic R code typed after the ‘>’ prompt will be executed after pressing ‘Enter’ to generate the output. This is where we are going to type our single call function to start our app for data analysis.  
 
-2. Source
+2. Source Editor
 
-This is where R scripts (collection of code) can be created and edited. We won't be using much of these.  
+This is where R scripts (collection of code) can be created and edited. New R script can be opened by clicking File --> New File --> R Script or using short cut `ctrl+shift+N`. You can type your codes here. To run a code in console or execute, place the cursor in the line which code is written and press `ctrl+enter` or highlight the code you wish to evaluate and clicking on the “Run” button on the top right of the Source. You can save your R codes, written in script.   
 
 3. Environment|History|Connections
 
-One can browse in the internet and know more about these tabs if interested, we wont be using this much.   
+All of the data objects (such as vectors, matrices, and dataframes) that you have defined in your current R session are listed under the Environment tab of this panel. In data objects, you may also examine details like the quantity of observations and rows. A few other clickable options are available on the tab, such as `Import Dataset`, which will launch a graphical user interface (GUI) for inputting data into R.  
+
+This panel's History tab only provides a history of all the code that you have previously evaluated in the Console.  
+
+The Environment / History panel could be helpful as you become more accustomed to R. However, you can ignore it right now. You can simply just reduce the window by clicking the minimise button in the panel's upper right corner if you wish to clear up space on your screen. 
 
 4. Files|Plots|Packages|Help|Viewer  
 
+You can find a collection of useful information in the Files|Plots|Packages|Help panel. Let's examine each tab in more detail:  
+- The file directory on your hard disc is accessible through the files panel. You can utilise the "Files" panel to set your working directory by clicking "More" and then "Set As Working Directory" once you've navigated to the folder where you wish to read and save files.  
+
+- All of your plots are displayed in the Plots panel. There are buttons to export the plot as a pdf or jpg and to open the plot in a separate window.  
 We are interested in the install button in this pane, to install packages required for our analysis.
-
-
-
 
 ## Installing R and R studio  
  

@@ -1,0 +1,100 @@
+# Datasets in R  
+
+There are various pre-built data sets included with R, which are typically used as practice sets for playing with R functions. We'll first go through how to load and use built-in R data sets in this lecture. The most popular R demo data sets will then be discussed, including `mtcars`, `iris`, `ToothGrowth`, `PlantGrowth`, and `USArrests`.   
+
+## Pre-loaded data
+To see the list of pre-loaded data in your system, type the function `data()`:  
+
+```{r, eval=FALSE}  
+data()
+```  
+  
+## Loading a built-in R data  
+
+Load and print `mtcars` data as follow:
+
+```{r, eval=TRUE}  
+# Loading
+data(mtcars)
+# Print the first 6 rows
+head(mtcars, 6)
+```  
+
+
+
+## Most used data sets in R  
+
+### mtcars  
+`mtcars` data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).  
+  
+```{r, eval=TRUE}  
+# 1. Loading 
+data("mtcars")  
+
+# 2. Print
+head(mtcars)  
+
+# Number of rows (observations)
+nrow(mtcars)  
+
+# Number of columns (variables)
+ncol(mtcars)
+```  
+If you want learn more about `mtcars` data sets, type this: `?mtcars`  
+```{r, eval=FALSE}  
+?mtcars
+```   
+
+### iris  
+
+`iris` data set gives the measurements in centimeters of the variables sepal length, sepal width, petal length and petal width, respectively, for 50 flowers from each of 3 species of iris. The species are *Iris setosa*, *versicolor*, and *virginica*.  
+
+```{r, eval=TRUE}  
+data("iris")
+head(iris)
+```   
+If you want learn more about `iris` data sets, type this: `?iris`  
+```{r, eval=FALSE}  
+?iris
+```   
+
+
+### ToothGrowth  
+
+The results of an experiment examining the impact of vitamin C on tooth development in 60 Guinea pigs are included in the data set. Each rat received one of three vitamin C dose levels (0.5, 1, and 2 mg/day) using either ascorbic acid or orange juice as the delivery mechanism (a form of vitamin C and coded as VC).  
+
+```{r, eval=TRUE} 
+data("ToothGrowth")
+head(ToothGrowth)
+```  
+
+If you want learn more about `ToothGrowth` data sets, type this: `?ToothGrowth`  
+```{r, eval=FALSE}  
+?ToothGrowth
+```   
+
+
+### PlantGrowth
+Results from an experiment comparing yields between two distinct treatment conditions and a control condition (as determined by the dry weight of plants).
+
+```{r, eval=TRUE} 
+data("PlantGrowth")
+head(PlantGrowth)
+```  
+
+### USArrests  
+
+Statistics on the rates of violent crime in each US state  
+
+```{r, eval=TRUE} 
+data("USArrests")
+head(USArrests)
+```  
+
+
+
+
+
+
+
+

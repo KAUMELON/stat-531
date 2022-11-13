@@ -59,3 +59,14 @@ function-to-access-variables-easily
 some-useful-functions
 str
 view
+datasets-in-r
+pre-loaded-data
+loading-a-built-in-r-data
+most-used-data-sets-in-r
+mtcars
+iris
+toothgrowth
+plantgrowth
+usarrests
+summarization-and-tabulation-of-data
+measures-of-central-tendancy
