@@ -10,6 +10,8 @@ fig:saving
 fig:saving1
 fig:saving2
 fig:saving3
+fig:hex
+fig:hex1
 introduction
 statistical-software
 types-of-statistical-software
@@ -79,6 +81,13 @@ the-sapply-function
 some-other-useful-functions
 stat.desc
 missing-values
-frequency-table
+freq
 cumulative-frequency
 grouped-frequency-distribution
+r-function
+creating-a-function
+graphical-representation
+bar-plot
+hex-colour-codes
+how-to-get-hex-codes
+plotting-categorical-data

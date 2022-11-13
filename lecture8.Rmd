@@ -39,6 +39,7 @@ Interquartile range|IQR()
 The function `mfv()`, for most frequent value, [in `modeest` package] can be used to find the statistical mode of a numeric vector.  
 
 ## Measures of central tendancy  
+Know more about [Measures of central tendency](https://kaumelon.github.io/stat3202/measures-of-central-tendency---i.html#measures-of-central-tendency---i)  
 
 ```{r, eval=TRUE}
 # Compute the mean value
@@ -66,7 +67,8 @@ median(iris$Sepal.Length)
 
 ```   
 
-##  Measures of dispersion 
+##  Measures of dispersion   
+Know more about [Measures of dispersion](https://kaumelon.github.io/stat3202/measures-of-dispersion.html#measures-of-dispersion)
 
 ```{r, eval=TRUE}
 
@@ -156,8 +158,8 @@ It should be noted that some R functions will return errors or NA even if just o
 mean(iris$Sepal.Length, na.rm = TRUE)
 ```  
 
-## Frequency table  
-
+## Frequency table {#freq}  
+For more theoretical details see [here](https://kaumelon.github.io/stat3202/introduction.html#frequency-distribution)
 Dataset below shows the number of children in 50 household collected as a part of survey. I will demonstrate how frequency table can be constructed.
 
 ```{r setup, eval=TRUE}
@@ -188,7 +190,11 @@ cumsum(freq_table)
 From the above results now you can easily answer the question: number of families having 8 or less than 8 children?. It is 45  
 
 
-## Grouped Frequency distribution  
+### Grouped Frequency distribution  
+
+What is a [grouped frequency table?](https://kaumelon.github.io/stat3202/introduction.html#grouped-frequency-distribution)
+
+Before going in to the details of constructing frequency table read thoroughly [The construction of grouped frequency table](https://kaumelon.github.io/stat3202/introduction.html#construction-of-frequency-distribution-table).
 
 ```{r, eval=TRUE}
 
@@ -200,34 +206,82 @@ N<- length(data)
 k<-1+3.322*log(N,base=10)
 n_class<-ceiling(k) #Rounds value of k to nearest highest integer.
   
-
 #Determine the class width  
 c<-(max(data)-min(data))/k
 
-# Rounded value of c 
+# Rounded value of c to one digit after decimal 
 class_width<-round(c,1) 
 
 # Find lower limit  
 L<-min(data)-((c*k-(max(data)-min(data)))/2)
 
-              
 # Upper limit  
-
 U<-L+(class_width*n_class)
 
-
-
-
-#to the closest half-integers, we come up with the interval [4, 8].
-#Class width is set as 0.5
+#Break the range [L,U] into non-overlapping sub-intervals by defining a sequence of equal distance break points (class_width). 
 breaks = seq(L, U, by=class_width) 
 
-
+#Classify the data according to the sub-intervals (each of class_width length) with cut. As the intervals are to be closed on the left, and open on the right, we set the right argument as FALSE.
 data.cut = cut(data, breaks, right=FALSE)
+
+# Generate frequency table of classes
 data.freq = table(data.cut)
 data.freq
-
 ```
+## R function  
+
+*This section is just for your information*. I don't want to go deep in to programming part, as we are concentrating only on data analysis. If you are not interested you can skip this section.  
+
+A function is a block of code which only runs when it is called. You can pass data, known as parameters, into a function. A function can return data as a result.   
+
+### Creating a Function
+To create a function, use the `function()` keyword:
+```{r, eval=FALSE}
+#General Format
+function_name<- function(){
+  #function_body
+}
+```
+
+For example, here I'm creating a function named `print_me()`, on calling `print_me()`, it automatically prints "Hello world!"
+```{r}
+# create a function with the name print_me
+print_me <- function() { 
+  print("Hello World!")
+}
+```
+```{r}  
+# calling function print_me()
+print_me()
+```
+In the above section we have written at least 12 lines of code to construct a grouped frequency table from a data. Each time we need to run all these code individually, which is a difficult task. You can create a **Function** to perform this task in a single call. I'm creating a function called `construct()` to create a grouped frequency table.  
+
+```{r setup2}  
+
+construct <- function(x) 
+  {
+  #This function will take in a numeric vector x and gives its frequency table
+  N<- length(x)
+  k<-1+3.322*log(N,base=10)
+  n_class<-ceiling(k)
+  c<-(max(data)-min(data))/k
+  class_width<-round(c,1) 
+  L<-min(data)-((c*k-(max(data)-min(data)))/2)
+  U<-L+(class_width*n_class)
+  breaks = seq(L, U, by=class_width) 
+  data.cut = cut(data, breaks, right=FALSE)
+  data.freq = table(data.cut)
+  data.freq
+}
+```
+
+Constructing frequency table of Petal.Length in iris dataset using the `construct` function we just created.  
+
+```{r}
+construct(iris$Petal.Length)
+```
+
+
 
 
 ```{block2 item6, type='rmdnote'}
@@ -235,5 +289,6 @@ data.freq
 
 1. Download the dataset by clicking [Here](https://drive.google.com/file/d/1_2U-_JbJlJyGOUhaDrTtXTGOgZZlx6Wx/view?usp=sharing)  
 2. Find the descriptive statistics for the data using the functions above.  
+3.Construct grouped frequency table of Petal.Width column in iris data.
 
 ```
