@@ -154,7 +154,80 @@ It should be noted that some R functions will return errors or NA even if just o
 
 ```{r, eval=FALSE}
 mean(iris$Sepal.Length, na.rm = TRUE)
-```   
+```  
+
+## Frequency table  
+
+Dataset below shows the number of children in 50 household collected as a part of survey. I will demonstrate how frequency table can be constructed.
+
+```{r setup, eval=TRUE}
+# Create example vector  
+set.seed(99)
+survey_data<- floor(runif(50, min=0, max=10)) 
+survey_data                                                  
+```
+The frequency counts of the variables that appear in the chosen column of the dataframe are calculated using the `table()` function in R. The outcome is presented as a two-row tabular structure, with the first row displaying the value of each column and the second row displaying the matching frequencies.  
+
+```{r, eval=TRUE}
+# Frequency Table
+
+freq_table<- table(survey_data)
+freq_table
+
+```  
+
+### Cumulative frequency  
+The total of all classes in a frequency distribution table, including this class below it, makes up the cumulative frequency distribution of a particular data set. The value at every cell location is calculated by adding the current value and all previous values encountered up to that point. This may be determined by using the `cumsum()` method.  
+
+```{r, eval=TRUE}
+# cumulative frequency
+
+cumsum(freq_table)
+
+``` 
+From the above results now you can easily answer the question: number of families having 8 or less than 8 children?. It is 45  
+
+
+## Grouped Frequency distribution  
+
+```{r, eval=TRUE}
+
+# Constucting frequency table
+data<-iris$Sepal.Length  
+
+# Decide how many classes you wish to use using struges formula
+N<- length(data)
+k<-1+3.322*log(N,base=10)
+n_class<-ceiling(k) #Rounds value of k to nearest highest integer.
+  
+
+#Determine the class width  
+c<-(max(data)-min(data))/k
+
+# Rounded value of c 
+class_width<-round(c,1) 
+
+# Find lower limit  
+L<-min(data)-((c*k-(max(data)-min(data)))/2)
+
+              
+# Upper limit  
+
+U<-L+(class_width*n_class)
+
+
+
+
+#to the closest half-integers, we come up with the interval [4, 8].
+#Class width is set as 0.5
+breaks = seq(L, U, by=class_width) 
+
+
+data.cut = cut(data, breaks, right=FALSE)
+data.freq = table(data.cut)
+data.freq
+
+```
 
 
 ```{block2 item6, type='rmdnote'}

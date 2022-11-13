@@ -318,6 +318,86 @@
 <p>It should be noted that some R functions will return errors or NA even if just one item is missing or when the data contains missing values. For instance, if a vector has even a single missing value, the <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> method will return <strong>NA</strong>. The option <code>na.rm = TRUE</code>, which instructs the function to delete any NAs before computations, can be used to prevent this. Here’s an example of how to use the mean function:</p>
 <div class="sourceCode" id="cb244"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="frequency-table" class="section level2" number="7.8">
+<h2>
+<span class="header-section-number">7.8</span> Frequency table<a class="anchor" aria-label="anchor" href="#frequency-table"><i class="fas fa-link"></i></a>
+</h2>
+<p>Dataset below shows the number of children in 50 household collected as a part of survey. I will demonstrate how frequency table can be constructed.</p>
+<div class="sourceCode" id="cb245"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Create example vector  </span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">99</span><span class="op">)</span></span>
+<span><span class="va">survey_data</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">floor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">50</span>, min<span class="op">=</span><span class="fl">0</span>, max<span class="op">=</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="va">survey_data</span>                                                  </span></code></pre></div>
+<pre><code>##  [1] 5 1 6 9 5 9 6 2 3 1 5 5 1 6 6 6 3 1 0 1 2 0 8 5 7 3 0 8 0 2 5 3 3 5 0 4 6 8
+## [39] 6 9 8 4 7 9 4 9 3 4 5 1</code></pre>
+<p>The frequency counts of the variables that appear in the chosen column of the dataframe are calculated using the <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function in R. The outcome is presented as a two-row tabular structure, with the first row displaying the value of each column and the second row displaying the matching frequencies.</p>
+<div class="sourceCode" id="cb247"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Frequency Table</span></span>
+<span></span>
+<span><span class="va">freq_table</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">survey_data</span><span class="op">)</span></span>
+<span><span class="va">freq_table</span></span></code></pre></div>
+<pre><code>## survey_data
+## 0 1 2 3 4 5 6 7 8 9 
+## 5 6 3 6 4 8 7 2 4 5</code></pre>
+<div id="cumulative-frequency" class="section level3" number="7.8.1">
+<h3>
+<span class="header-section-number">7.8.1</span> Cumulative frequency<a class="anchor" aria-label="anchor" href="#cumulative-frequency"><i class="fas fa-link"></i></a>
+</h3>
+<p>The total of all classes in a frequency distribution table, including this class below it, makes up the cumulative frequency distribution of a particular data set. The value at every cell location is calculated by adding the current value and all previous values encountered up to that point. This may be determined by using the <code><a href="https://rdrr.io/r/base/cumsum.html">cumsum()</a></code> method.</p>
+<div class="sourceCode" id="cb249"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># cumulative frequency</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">freq_table</span><span class="op">)</span></span></code></pre></div>
+<pre><code>##  0  1  2  3  4  5  6  7  8  9 
+##  5 11 14 20 24 32 39 41 45 50</code></pre>
+<p>From the above results now you can easily answer the question: number of families having 8 or less than 8 children?. It is 45</p>
+</div>
+</div>
+<div id="grouped-frequency-distribution" class="section level2" number="7.9">
+<h2>
+<span class="header-section-number">7.9</span> Grouped Frequency distribution<a class="anchor" aria-label="anchor" href="#grouped-frequency-distribution"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb251"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Constucting frequency table</span></span>
+<span><span class="va">data</span><span class="op">&lt;-</span><span class="va">iris</span><span class="op">$</span><span class="va">Sepal.Length</span>  </span>
+<span></span>
+<span><span class="co"># Decide how many classes you wish to use using struges formula</span></span>
+<span><span class="va">N</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="va">k</span><span class="op">&lt;-</span><span class="fl">1</span><span class="op">+</span><span class="fl">3.322</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">N</span>,base<span class="op">=</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">n_class</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="co">#Rounds value of k to nearest highest integer.</span></span>
+<span>  </span>
+<span></span>
+<span><span class="co">#Determine the class width  </span></span>
+<span><span class="va">c</span><span class="op">&lt;-</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="va">k</span></span>
+<span></span>
+<span><span class="co"># Rounded value of c </span></span>
+<span><span class="va">class_width</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">c</span>,<span class="fl">1</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Find lower limit  </span></span>
+<span><span class="va">L</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">-</span><span class="op">(</span><span class="op">(</span><span class="va">c</span><span class="op">*</span><span class="va">k</span><span class="op">-</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span>              </span>
+<span><span class="co"># Upper limit  </span></span>
+<span></span>
+<span><span class="va">U</span><span class="op">&lt;-</span><span class="va">L</span><span class="op">+</span><span class="op">(</span><span class="va">class_width</span><span class="op">*</span><span class="va">n_class</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co">#to the closest half-integers, we come up with the interval [4, 8].</span></span>
+<span><span class="co">#Class width is set as 0.5</span></span>
+<span><span class="va">breaks</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="va">L</span>, <span class="va">U</span>, by<span class="op">=</span><span class="va">class_width</span><span class="op">)</span> </span>
+<span></span>
+<span></span>
+<span><span class="va">data.cut</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">breaks</span>, right<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">data.freq</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">data.cut</span><span class="op">)</span></span>
+<span><span class="va">data.freq</span></span></code></pre></div>
+<pre><code>## data.cut
+## [4.3,4.7) [4.7,5.1) [5.1,5.5) [5.5,5.9) [5.9,6.3) [6.3,6.7) [6.7,7.1) [7.1,7.5) 
+##         9        23        20        28        19        23        16         6 
+## [7.5,7.9) 
+##         5</code></pre>
 
 <div class="rmdnote">
 <p><strong>Self assesment</strong></p>
@@ -352,6 +432,10 @@
 <a class="nav-link" href="#some-other-useful-functions"><span class="header-section-number">7.6</span> Some other useful functions</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#stat.desc"><span class="header-section-number">7.6.1</span> stat.desc()</a></li></ul>
 </li>
 <li><a class="nav-link" href="#missing-values"><span class="header-section-number">7.7</span> Missing values</a></li>
+<li>
+<a class="nav-link" href="#frequency-table"><span class="header-section-number">7.8</span> Frequency table</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#cumulative-frequency"><span class="header-section-number">7.8.1</span> Cumulative frequency</a></li></ul>
+</li>
+<li><a class="nav-link" href="#grouped-frequency-distribution"><span class="header-section-number">7.9</span> Grouped Frequency distribution</a></li>
 </ul>
 
       <div class="book-extra">

@@ -79,3 +79,6 @@ the-sapply-function
 some-other-useful-functions
 stat.desc
 missing-values
+frequency-table
+cumulative-frequency
+grouped-frequency-distribution
