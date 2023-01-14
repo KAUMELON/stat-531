@@ -264,14 +264,15 @@ construct <- function(x)
   N<- length(x)
   k<-1+3.322*log(N,base=10)
   n_class<-ceiling(k)
-  c<-(max(data)-min(data))/k
+  c<-(max(x)-min(x))/k
   class_width<-round(c,1) 
-  L<-min(data)-((c*k-(max(data)-min(data)))/2)
+  L<-min(x)-((c*k-(max(x)-min(x)))/2)
   U<-L+(class_width*n_class)
   breaks = seq(L, U, by=class_width) 
-  data.cut = cut(data, breaks, right=FALSE)
+  data.cut = cut(x, breaks, right=FALSE)
   data.freq = table(data.cut)
   data.freq
+
 }
 ```
 
