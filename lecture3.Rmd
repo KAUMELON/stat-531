@@ -1,9 +1,14 @@
-# Introduction to R
+# R and R studio  
+
+This training program is tailored to equip you with the skills needed for multivariate data analysis using R and RStudio. In this introductory section, we will provide you with a brief overview and guide you through the process of installing R and RStudio.  
+
+
+## R  
 R is a programming language for statistical computing and graphics supported by the R Core Team and the R Foundation for Statistical Computing. Created by statisticians Ross Ihaka and Robert Gentleman. R is an implementation of the S programming language. R is used among data miners, bioinformaticians and statisticians for data analysis and developing statistical software. Users have created packages to augment the functions of the R language.
 According to user surveys and studies of scholarly literature databases, R is one of the most commonly used programming languages used in data mining. The official R software environment is an open-source free software environment within the GNU package, available under the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html). It is written primarily in C, Fortran, and R itself (partially self-hosting). R has a command line interface. Multiple third-party graphical user interfaces are also available, such as RStudio, an integrated development environment.  
 
-```{r rlogo, echo=FALSE,fig.cap='R logo',out.width="50%", fig.align='center'}
-knitr::include_graphics(rep("images/rlogo.png"))
+```{r rlogo, echo=FALSE,fig.cap='R logo',out.width="30%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/rlogo.png"))
 ```
 
 ## Rstudio  
@@ -12,24 +17,24 @@ RStudio is an integrated development environment (IDE) for R. It includes a cons
 RStudio is written in the C++ programming language and uses the Qt framework for its graphical user interface. Work on RStudio started at around December 2010, and the first public beta version (v0.92) was officially announced in February 2011.  
 
 ```{r rstudio1, echo=FALSE,fig.cap='R studio logo',out.width="30%", fig.align='center'}
-knitr::include_graphics(rep("images/rstudiologo.png"))
+knitr::include_graphics(rep("images/downloadR/rstudiologo.png"))
 ```
 
 Typical RStudio window has four panes as explained below  
 
 ```{r rstudio2, echo=FALSE,fig.cap='R studio window',out.width="80%", fig.align='center'}
-knitr::include_graphics(rep("images/rstudiowindow.png"))
+knitr::include_graphics(rep("images/downloadR/rstudiowindow.png"))
 ```
 
-1. Console
+1. **Console**
 
 This is where the action happens. Here any authentic R code typed after the ‘>’ prompt will be executed after pressing ‘Enter’ to generate the output. This is where we are going to type our single call function to start our app for data analysis.  
 
-2. Source Editor
+2. **Source Editor**
 
 This is where R scripts (collection of code) can be created and edited. New R script can be opened by clicking File --> New File --> R Script or using short cut `ctrl+shift+N`. You can type your codes here. To run a code in console or execute, place the cursor in the line which code is written and press `ctrl+enter` or highlight the code you wish to evaluate and clicking on the “Run” button on the top right of the Source. You can save your R codes, written in script.   
 
-3. Environment|History|Connections
+3. **Environment|History|Connections**
 
 All of the data objects (such as vectors, matrices, and dataframes) that you have defined in your current R session are listed under the Environment tab of this panel. In data objects, you may also examine details like the quantity of observations and rows. A few other clickable options are available on the tab, such as `Import Dataset`, which will launch a graphical user interface (GUI) for inputting data into R.  
 
@@ -37,7 +42,7 @@ This panel's History tab only provides a history of all the code that you have p
 
 The Environment / History panel could be helpful as you become more accustomed to R. However, you can ignore it right now. You can simply just reduce the window by clicking the minimise button in the panel's upper right corner if you wish to clear up space on your screen. 
 
-4. Files|Plots|Packages|Help|Viewer  
+4. **Files|Plots|Packages|Help|Viewer**  
 
 You can find a collection of useful information in the Files|Plots|Packages|Help panel. Let's examine each tab in more detail:  
 - The file directory on your hard disc is accessible through the files panel. You can utilise the "Files" panel to set your working directory by clicking "More" and then "Set As Working Directory" once you've navigated to the folder where you wish to read and save files.  
@@ -45,14 +50,70 @@ You can find a collection of useful information in the Files|Plots|Packages|Help
 - All of your plots are displayed in the Plots panel. There are buttons to export the plot as a pdf or jpg and to open the plot in a separate window.  
 We are interested in the install button in this pane, to install packages required for our analysis.
 
-## Installing R and R studio  
+## Installing R
+Follow below steps in correct order for installation of R
  
-- First install R latest version  
+### First install R latest version  
 
-- Then install Rstudio  
+To install R on Windows OS:  
 
-see details on how to install --> [Click here](https://www.grapesorchard.com/install-r)  
+Go to the [CRAN](https://cran.r-project.org/) website.
 
+**Click on "Download R for Windows"**.  
+```{r crandown, echo=FALSE,fig.cap= "",out.width="70%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/cranwindow.png"))
+```  
+
+**Click on "install R for the first time"**.
+```{r crandown2, echo=FALSE,fig.cap= "",out.width="70%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/cranwindow2.png"))
+```  
+
+**Click on "Download R-4.3.1 for windows" link to download the R executable (.exe) file**.(By the time of writing this manual R version was 4.3.1, it may change in future)  
+```{r crandown3, echo=FALSE,fig.cap= "",out.width="70%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/cranwindow3.png"))
+``` 
+
+After downloading the file. Run the R executable file by double clicking on the downloaded file to start installation, and allow the app to make changes to your device.  
+
+**Select the installation language.**  
+```{r crandown4, echo=FALSE,fig.cap= "",out.width="50%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/exefile.png"))
+```  
+
+**Follow the installation instructions**.  
+```{r crandown5, echo=FALSE,fig.cap= "",out.width="50%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/setup.png"))
+```  
+**Click next and wait for the installation to complete**.  
+```{r crandown6, echo=FALSE,fig.cap= "",out.width="70%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/setupinstall.png"))
+```
+**Click on "Finish" to exit and complete the installation setup.**  
+```{r crandown7, echo=FALSE,fig.cap= "",out.width="70%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/completeinstall.jpg"))
+```
+**You can now run R from the start menu or the shortcut created on your desktop**  
+
+```{r crandown8, echo=FALSE,fig.cap= "",out.width="70%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/Rfinal.png"))
+```
+
+```{block2 items, type='rmdnote'}
+R studio is GUI for R, so keep this in mind. Before installing R studio you should install R.   
+```  
+
+## Installing Rstudio
+After installing latest version of R. Go to the [Rstudio](https://posit.co/download/rstudio-desktop/) website.  
+
+Click on "DOWNLOAD RSTUDIO DESKTOP FOR R"  
+```{r rinsatll, echo=FALSE,fig.cap= "",out.width="50%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/rstudio1.png"))
+``` 
+
+Now like you have completed the installation of R, complete the installation setup of Rstudio. After installation you can now run R from the start menu or the shortcut created on your desktop.   
+
+Now you are ready to explore the world of data analysis and unleash the potential of R and RStudio to unlock valuable insights from your datasets. Happy Statistics with R!  
 
 
 #### The above descriptions are sourced from: {-}
@@ -64,5 +125,3 @@ see details on how to install --> [Click here](https://www.grapesorchard.com/ins
 [Wikipedia R (programming language)](https://en.wikipedia.org/wiki/R_(programming_language))
 
 [Wikipedia RStudio](https://en.wikipedia.org/wiki/RStudio)  
-
-[grapesorchard.com](https://www.grapesorchard.com/)

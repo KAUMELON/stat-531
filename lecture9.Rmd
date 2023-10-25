@@ -77,8 +77,24 @@ You can easily find the hex code for the colour you want using a [colour picker]
 knitr::include_graphics(rep("images/graphs/cp.png"))
 ```  
 
-### Plotting categorical data  
- plot..................
+## Boxplot  
+A box and whisker plot, often known as a box plot, shows a data set's five-number summary. The minimum, first quartile, median, third quartile, and maximum make up the five-number summary.  
+
+A box is drawn from the first quartile to the third quartile in a box plot. At the median, a vertical line passes through the box. Each quartile's whiskers lead to the minimum or maximum.  
+
+### Anatomy of boxplot
+
+Figure \@ref(fig:box) below shows the parts of a box plot  
+
+```{r box, echo=FALSE,fig.cap='Anatomy of boxplot',out.width="100%", fig.align='center'}
+knitr::include_graphics(rep("images/lecture9/boxplot.png"))
+``` 
+
+#### Minimum Value  
+In a boxplot the minimum value is the value which is equal to $Q_{1}- 1.5\times IQR$
+
+
+
 
 
 

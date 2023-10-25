@@ -12,6 +12,8 @@ fig:saving2
 fig:saving3
 fig:hex
 fig:hex1
+fig:box
+section
 introduction
 statistical-software
 types-of-statistical-software
@@ -19,9 +21,12 @@ open-source-software
 public-domain
 freeware
 proprietary-software
-introduction-to-r
+r-and-r-studio
+r
 rstudio
-installing-r-and-r-studio
+installing-r
+first-install-r-latest-version
+installing-rstudio
 rbase
 basic-arithmetic-operations
 basic-arithmetic-functions
@@ -90,4 +95,6 @@ graphical-representation
 bar-plot
 hex-colour-codes
 how-to-get-hex-codes
-plotting-categorical-data
+boxplot
+anatomy-of-boxplot
+minimum-value

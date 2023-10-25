@@ -4,21 +4,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 3 R basics | DATA ANALYSIS USING STATISTICAL PACKAGES</title>
+<title>Chapter 4 R basics | DATA ANALYSIS USING STATISTICAL PACKAGES</title>
 <meta name="author" content="Dr. Pratheesh P. Gopinath">
 <meta name="description" content="In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R. The RStudio interface is simple. You...">
-<meta name="generator" content="bookdown 0.28 with bs4_book()">
-<meta property="og:title" content="Chapter 3 R basics | DATA ANALYSIS USING STATISTICAL PACKAGES">
+<meta name="generator" content="bookdown 0.36 with bs4_book()">
+<meta property="og:title" content="Chapter 4 R basics | DATA ANALYSIS USING STATISTICAL PACKAGES">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.PNG">
 <meta property="og:description" content="In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R. The RStudio interface is simple. You...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 3 R basics | DATA ANALYSIS USING STATISTICAL PACKAGES">
+<meta name="twitter:title" content="Chapter 4 R basics | DATA ANALYSIS USING STATISTICAL PACKAGES">
 <meta name="twitter:description" content="In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R. The RStudio interface is simple. You...">
 <meta name="twitter:image" content="/images/cover.PNG">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.4.1/transition.js"></script><script src="libs/bs3compat-0.4.1/tabs.js"></script><script src="libs/bs3compat-0.4.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
@@ -47,14 +47,15 @@
 <li><a class="" href="index.html">Welcome</a></li>
 <li><a class="" href="preface.html">Preface</a></li>
 <li><a class="" href="syllabus.html">Syllabus</a></li>
-<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
-<li><a class="" href="introduction-to-r.html"><span class="header-section-number">2</span> Introduction to R</a></li>
-<li><a class="active" href="rbase.html"><span class="header-section-number">3</span> R basics</a></li>
-<li><a class="" href="packages-and-libraries.html"><span class="header-section-number">4</span> Packages and libraries</a></li>
-<li><a class="" href="import.html"><span class="header-section-number">5</span> Importing data files</a></li>
-<li><a class="" href="dataset.html"><span class="header-section-number">6</span> Datasets in R</a></li>
-<li><a class="" href="descriptive-statistics.html"><span class="header-section-number">7</span> Descriptive Statistics</a></li>
-<li><a class="" href="graphical-representation.html"><span class="header-section-number">8</span> Graphical Representation</a></li>
+<li><a class="" href="section.html"><span class="header-section-number">1</span></a></li>
+<li><a class="" href="introduction.html"><span class="header-section-number">2</span> Introduction</a></li>
+<li><a class="" href="r-and-r-studio.html"><span class="header-section-number">3</span> R and R studio</a></li>
+<li><a class="active" href="rbase.html"><span class="header-section-number">4</span> R basics</a></li>
+<li><a class="" href="packages-and-libraries.html"><span class="header-section-number">5</span> Packages and libraries</a></li>
+<li><a class="" href="import.html"><span class="header-section-number">6</span> Importing data files</a></li>
+<li><a class="" href="dataset.html"><span class="header-section-number">7</span> Datasets in R</a></li>
+<li><a class="" href="descriptive-statistics.html"><span class="header-section-number">8</span> Descriptive Statistics</a></li>
+<li><a class="" href="graphical-representation.html"><span class="header-section-number">9</span> Graphical Representation</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -63,19 +64,19 @@
         </div>
       </nav>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="rbase" class="section level1" number="3">
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="rbase" class="section level1" number="4">
 <h1>
-<span class="header-section-number">3</span> R basics<a class="anchor" aria-label="anchor" href="#rbase"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4</span> R basics<a class="anchor" aria-label="anchor" href="#rbase"><i class="fas fa-link"></i></a>
 </h1>
 <p>In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R.</p>
-<p>The RStudio interface is simple. You type R code into the bottom line of the RStudio console pane (see figure <a href="introduction-to-r.html#fig:rstudio2">2.3</a>) and then click Enter to run it. The code you type is called a command, because it will command your computer to do something for you. The line you type it into is called the command line.</p>
+<p>The RStudio interface is simple. You type R code into the bottom line of the RStudio console pane (see figure <a href="r-and-r-studio.html#fig:rstudio2">3.3</a>) and then click Enter to run it. The code you type is called a command, because it will command your computer to do something for you. The line you type it into is called the command line.</p>
 <blockquote>
 <p>‘#’ hashtag in R<br>
 R treats the hashtag character, ’#’in a special way; R will not run anything that follows a hashtag on a line. This makes hashtags very useful for adding comments and annotations to your code. We will be able to read the comments, but your computer will not process it.</p>
 </blockquote>
-<div id="basic-arithmetic-operations" class="section level2" number="3.1">
+<div id="basic-arithmetic-operations" class="section level2" number="4.1">
 <h2>
-<span class="header-section-number">3.1</span> Basic arithmetic operations<a class="anchor" aria-label="anchor" href="#basic-arithmetic-operations"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.1</span> Basic arithmetic operations<a class="anchor" aria-label="anchor" href="#basic-arithmetic-operations"><i class="fas fa-link"></i></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Try these codes in R, Type these codes in console and hit enter</span></span>
@@ -106,9 +107,9 @@ R treats the hashtag character, ’#’in a special way; R will not run anything
 <pre><code>##  [1] 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118
 ## [20] 119 120 121 122 123 124 125 126 127 128 129 130</code></pre>
 </div>
-<div id="basic-arithmetic-functions" class="section level2" number="3.2">
+<div id="basic-arithmetic-functions" class="section level2" number="4.2">
 <h2>
-<span class="header-section-number">3.2</span> Basic arithmetic functions:<a class="anchor" aria-label="anchor" href="#basic-arithmetic-functions"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.2</span> Basic arithmetic functions:<a class="anchor" aria-label="anchor" href="#basic-arithmetic-functions"><i class="fas fa-link"></i></a>
 </h2>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Logarithm to the base e  </span></span>
@@ -131,9 +132,9 @@ R treats the hashtag character, ’#’in a special way; R will not run anything
 <span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> </span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
 </div>
-<div id="assigning-values-to-variables" class="section level2" number="3.3">
+<div id="assigning-values-to-variables" class="section level2" number="4.3">
 <h2>
-<span class="header-section-number">3.3</span> Assigning values to variables<a class="anchor" aria-label="anchor" href="#assigning-values-to-variables"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.3</span> Assigning values to variables<a class="anchor" aria-label="anchor" href="#assigning-values-to-variables"><i class="fas fa-link"></i></a>
 </h2>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
@@ -160,9 +161,9 @@ R treats the hashtag character, ’#’in a special way; R will not run anything
 <p>Note that R is case sensitive, i.e. x and X are not equal.</p>
 </blockquote>
 </div>
-<div id="basic-data-types" class="section level2" number="3.4">
+<div id="basic-data-types" class="section level2" number="4.4">
 <h2>
-<span class="header-section-number">3.4</span> Basic data types<a class="anchor" aria-label="anchor" href="#basic-data-types"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.4</span> Basic data types<a class="anchor" aria-label="anchor" href="#basic-data-types"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
 <li>numeric<br>
@@ -182,9 +183,9 @@ R treats the hashtag character, ’#’in a special way; R will not run anything
 <span><span class="co">#  Are you a data scientist?: (yes/no) &lt;=&gt; (TRUE/FALSE)  </span></span>
 <span></span>
 <span><span class="va">is_datascientist</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span> <span class="co"># logical variable</span></span></code></pre></div>
-<div id="vectors" class="section level3" number="3.4.1">
+<div id="vectors" class="section level3" number="4.4.1">
 <h3>
-<span class="header-section-number">3.4.1</span> Vectors<a class="anchor" aria-label="anchor" href="#vectors"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.4.1</span> Vectors<a class="anchor" aria-label="anchor" href="#vectors"><i class="fas fa-link"></i></a>
 </h3>
 <p>A combination of multiple values (numeric, character or logical)</p>
 <div id="how-to-create-a-vector" class="section level4 unnumbered">
@@ -270,9 +271,9 @@ Get a subset of a vector: my_vector[i] to get the ith element</p>
 <pre><code>## [1] 29 27 26 25 25 23 21 20</code></pre>
 </div>
 </div>
-<div id="matrices" class="section level3" number="3.4.2">
+<div id="matrices" class="section level3" number="4.4.2">
 <h3>
-<span class="header-section-number">3.4.2</span> Matrices<a class="anchor" aria-label="anchor" href="#matrices"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.4.2</span> Matrices<a class="anchor" aria-label="anchor" href="#matrices"><i class="fas fa-link"></i></a>
 </h3>
 <p>It’s a homogeneous collection of data sets which is arranged in a two dimensional organisation. It’s a m*n array with similar data type. It is created using a vector input. It has a fixed number of rows and columns. You can perform many arithmetic operations on R matrix like – addition, subtraction, multiplication, and divisions.</p>
 <p>Create and naming matrix: matrix(), cbind(), rbind(), rownames(), colnames()
@@ -427,9 +428,9 @@ Calculations with numeric matrices: rowSums(), colSums(), rowMeans(), colMeans()
 <pre><code>## c1 c2 c3 
 ##  4  8 12</code></pre>
 </div>
-<div id="data-frames" class="section level3" number="3.4.3">
+<div id="data-frames" class="section level3" number="4.4.3">
 <h3>
-<span class="header-section-number">3.4.3</span> Data frames<a class="anchor" aria-label="anchor" href="#data-frames"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.4.3</span> Data frames<a class="anchor" aria-label="anchor" href="#data-frames"><i class="fas fa-link"></i></a>
 </h3>
 <p>A data frame is the data type, we will be going to use frequently. A data frame is like a matrix but can have columns with different types (numeric, character, logical). Rows are observations (individuals) and columns are variables. Function <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> is used to create data frame</p>
 <div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
@@ -476,9 +477,9 @@ Calculations with numeric matrices: rowSums(), colSums(), rowMeans(), colMeans()
 ## age     "20"   "23"    "22"      "21"  
 ## height  "180"  "170"   "185"     "169" 
 ## married "TRUE" "FALSE" "TRUE"    "TRUE"</code></pre>
-<div id="operations-on-data-frame" class="section level4" number="3.4.3.1">
+<div id="operations-on-data-frame" class="section level4" number="4.4.3.1">
 <h4>
-<span class="header-section-number">3.4.3.1</span> Operations on data frame<a class="anchor" aria-label="anchor" href="#operations-on-data-frame"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.4.3.1</span> Operations on data frame<a class="anchor" aria-label="anchor" href="#operations-on-data-frame"><i class="fas fa-link"></i></a>
 </h4>
 <p>Positive indexing by name and by location</p>
 <div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
@@ -681,20 +682,20 @@ Here:
 </div>
 </div>
   <div class="chapter-nav">
-<div class="prev"><a href="introduction-to-r.html"><span class="header-section-number">2</span> Introduction to R</a></div>
-<div class="next"><a href="packages-and-libraries.html"><span class="header-section-number">4</span> Packages and libraries</a></div>
+<div class="prev"><a href="r-and-r-studio.html"><span class="header-section-number">3</span> R and R studio</a></div>
+<div class="next"><a href="packages-and-libraries.html"><span class="header-section-number">5</span> Packages and libraries</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#rbase"><span class="header-section-number">3</span> R basics</a></li>
-<li><a class="nav-link" href="#basic-arithmetic-operations"><span class="header-section-number">3.1</span> Basic arithmetic operations</a></li>
-<li><a class="nav-link" href="#basic-arithmetic-functions"><span class="header-section-number">3.2</span> Basic arithmetic functions:</a></li>
-<li><a class="nav-link" href="#assigning-values-to-variables"><span class="header-section-number">3.3</span> Assigning values to variables</a></li>
+<li><a class="nav-link" href="#rbase"><span class="header-section-number">4</span> R basics</a></li>
+<li><a class="nav-link" href="#basic-arithmetic-operations"><span class="header-section-number">4.1</span> Basic arithmetic operations</a></li>
+<li><a class="nav-link" href="#basic-arithmetic-functions"><span class="header-section-number">4.2</span> Basic arithmetic functions:</a></li>
+<li><a class="nav-link" href="#assigning-values-to-variables"><span class="header-section-number">4.3</span> Assigning values to variables</a></li>
 <li>
-<a class="nav-link" href="#basic-data-types"><span class="header-section-number">3.4</span> Basic data types</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#vectors"><span class="header-section-number">3.4.1</span> Vectors</a></li>
-<li><a class="nav-link" href="#matrices"><span class="header-section-number">3.4.2</span> Matrices</a></li>
-<li><a class="nav-link" href="#data-frames"><span class="header-section-number">3.4.3</span> Data frames</a></li>
+<a class="nav-link" href="#basic-data-types"><span class="header-section-number">4.4</span> Basic data types</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#vectors"><span class="header-section-number">4.4.1</span> Vectors</a></li>
+<li><a class="nav-link" href="#matrices"><span class="header-section-number">4.4.2</span> Matrices</a></li>
+<li><a class="nav-link" href="#data-frames"><span class="header-section-number">4.4.3</span> Data frames</a></li>
 </ul>
 </li>
 </ul>
@@ -721,6 +722,34 @@ Here:
   </div>
 
 </div></div>
-</footer>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
 </body>
 </html>
