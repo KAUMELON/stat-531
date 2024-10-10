@@ -262,4 +262,15 @@ souvenir <- scan("http://robjhyndman.com/tsdldata/hurst/precip1.dat",skip=1)
 ```{r, eval=TRUE}
 rainseries <- ts(rain,start=c(1813))
 plot.ts(rainseries)
+```  
+
+In the above plot we can observe that the mean remains approximately constant at around 25 inches, and the random fluctuations appear to be relatively stable over time. Given this, it seems appropriate to apply an additive model for the time series. Consequently, we can generate forecasts using simple exponential smoothing.
+
+In R, we can fit a simple exponential smoothing model using the `HoltWinters()` function. For simple exponential smoothing, we must set the parameters `beta = FALSE` and `gamma = FALSE`, as these parameters are utilized for Holt’s or Holt-Winters exponential smoothing.
+
+The `HoltWinters()` function returns a list containing several key components. To forecast a time series, such as London’s annual rainfall, with simple exponential smoothing, we would use the following R code:
+
+```R
+HoltWinters(time_series, beta = FALSE, gamma = FALSE)
 ```
+
