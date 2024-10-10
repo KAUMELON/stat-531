@@ -252,4 +252,14 @@ where \(F_{t+1}\) is the forecast for the next period, \(Y_t\) is the actual obs
 - **Flexibility**: Different types can accommodate various data patterns (trends and seasonality).
 - **Adaptability**: The method can quickly adjust to changes in the data patterns.  
 
-Exponential smoothing is a powerful technique for forecasting time series data. By applying weighted averages to past observations, it effectively captures trends and seasonal patterns, making it a valuable tool for analysts and decision-makers. The method's adaptability and ease of use make it an essential part of any forecasting toolkit.  
+Exponential smoothing is a powerful technique for forecasting time series data. By applying weighted averages to past observations, it effectively captures trends and seasonal patterns, making it a valuable tool for analysts and decision-makers. The method's adaptability and ease of use make it an essential part of any forecasting toolkit. 
+
+Consider the data `rain.csv`  
+```{r, echo=FALSE, include=FALSE}
+souvenir <- scan("http://robjhyndman.com/tsdldata/hurst/precip1.dat",skip=1)
+```   
+
+```{r, eval=TRUE}
+rainseries <- ts(rain,start=c(1813))
+plot.ts(rainseries)
+```
