@@ -1,0 +1,496 @@
+# R basics {#rbase} 
+
+In this section we will be dealing with basic operations using R. One should be aware of these basics before proceeding to any kind of data analysis using R.  
+
+The RStudio interface is simple. You type R code into the bottom line of the RStudio console pane (see figure \@ref(fig:rstudio2)) and then click Enter to run it. The code you type is called a command, because it will command your computer to do something for you. The line you type it into is called the command line.  
+
+>'#' hashtag in R  
+R treats the hashtag character, '#'in a special way; R will not run anything that follows a hashtag on a line. This makes hashtags very useful for adding comments and annotations to your code. We will be able to read the comments, but your computer will not process it.
+
+## Basic arithmetic operations  
+
+```{r}
+# Try these codes in R, Type these codes in console and hit enter
+# result of R code is also shown here  
+
+# + (Addition)   
+7 + 4  
+
+# - (Subtraction)  
+7 - 4  
+
+# * (Multiplication)
+7 * 2  
+
+# / (division) 
+7 / 2  
+
+# ^ (exponentiation) 
+7 ^ 2
+```  
+
+The colon operator (`:`) returns every integer between two integers. It is an easy way to create a sequence of numbers.  
+
+```{r}
+100:130
+```  
+
+
+## Basic arithmetic functions:  
+
+```{r}  
+# Logarithm to the base e  
+log(4)  
+# Logarithm to the base 10  
+log10(4)  
+# Logarithm to the base 2  
+log2(4)  
+# absolute value
+abs(-4)  
+# square root
+sqrt(4) 
+
+```
+
+
+## Assigning values to variables  
+
+```{r}  
+x <- 2
+# it is that value 2 is assigned to variable x  
+
+y <- 5  
+
+# it is that value 5 is assigned to variable y
+
+# Now if you give x+5 or using any operator between x and y, you can see as below  
+
+x + y  
+x * y  
+x / y  
+x + 2*y  
+
+```
+
+> Note that R is case sensitive, i.e. x and X are not equal.  
+
+## Basic data types  
+
++ numeric  
++ character  
++ logical  
+
+```{r}
+my_age <- 32   
+# Numeric variable 32 is assigned to my_age
+
+# while writing your code it is preffered to use '_' instead of space  
+
+my_name <- "Dr Pratheesh" # Character variable  
+
+#  Are you a data scientist?: (yes/no) <=> (TRUE/FALSE)  
+
+is_datascientist <- TRUE # logical variable
+
+```  
+
+### Vectors  
+
+A combination of multiple values (numeric, character or logical)  
+
+#### How to create a vector {-}
+Create a vector: c() for concatenate  
+
+Case of missing values: **NA** (not available) and **NaN** (not a number)  
+
+Get a subset of a vector: my_vector[i] to get the i^th^ element
+
+```{r}  
+# Create a numeric vector
+student_ages <- c(27, 25, 29, 26, 20, 21, 23, 25)  
+
+# Create a character vector
+student_name <- c("asha", "adhi", "aravind", 
+                  "mary", "peter", "daisy", 
+                  "papu", "ramu")  
+
+# subset of a vector  
+
+# obtain 3 rd element from student_name  
+
+student_name[3]
+
+```
+
+
+> Case of missing values: **NA** (not available) and **NaN** (not a number)
+> Get a subset of a vector: my_vector[i] to get the ith element  
+
+#### Calculations with vectors {-}  
+> max(x), min(x), range(x), length(x), sum(x), mean(x), prod(x): product of the elements in x, sd(x): standard deviation, var(x): variance, sort(x)  
+
+```{r}  
+# Create a numeric vector
+student_ages <- c(27, 25, 29, 26, 20, 21, 23, 25)  
+
+# Maximum value of the vector
+max(student_ages)
+
+# Minimum value of the vector
+min(student_ages)
+
+# Range of the vector
+range(student_ages)  
+
+# Length of the vector
+length(student_ages)  
+
+# Total of the values in the vector
+sum(student_ages)
+
+# Mean of the vector
+mean(student_ages)  
+
+# Product of the elements in the vector
+prod(student_ages)
+
+# Standard deviation  
+sd(student_ages)
+
+# Variance of the vector
+var(student_ages)
+
+# Sort the values of the vector
+
+# Ascending order
+sort(student_ages,decreasing = FALSE)
+
+# Descending order
+sort(student_ages,decreasing = TRUE)
+```
+  
+### Matrices  
+
+It’s a homogeneous collection of data sets which is arranged in a two dimensional organisation. It’s a m*n array with similar data type. It is created using a vector input. It has a fixed number of rows and columns. You can perform many arithmetic operations on R matrix like – addition, subtraction, multiplication, and divisions.  
+
+Create and naming matrix: matrix(), cbind(), rbind(), rownames(), colnames()
+Transpose a matrix: t()
+Dimensions of a matrix: ncol(), nrow(), dim()
+Get a subset of a matrix: my_data[row, col]
+Calculations with numeric matrices: rowSums(), colSums(), rowMeans(), colMeans()
+
+```{r}
+# make three vectors c1, c2 and c3
+c1<-c(3,4,5)
+c2<-c(7,8,9)
+c3<-c(11,12,13)
+
+# Creating matrix by binding column wise  
+A <- cbind(c1,c2,c3)
+print(A)
+
+# Creating matrix by binding row wise  
+B <- rbind(c1,c2,c3)
+print(B)  
+
+# Adding two matrices
+A+B
+
+# Simple element by element multiplication up to matrices.
+
+A*B
+
+# Matrix multiplication  
+
+A%*%B
+
+# Using matrix() function
+# Elements are arranged sequentially by row.
+M <- matrix(c(3:14), nrow = 4, byrow = TRUE)
+print(M)
+
+# Elements are arranged sequentially by column.
+N <- matrix(c(3:14), nrow = 4, byrow = FALSE)
+print(N)
+
+# Define the column and row names.
+rownames = c("row1", "row2", "row3", "row4")
+colnames = c("col1", "col2", "col3")
+
+P <- matrix(c(3:14), nrow = 4, byrow = TRUE, dimnames = list(rownames, colnames))
+print(P)  
+
+# Access the element at 3rd column and 1st row.
+P[1,3]
+
+# Access the element at 2nd column and 4th row.
+P[4,2]
+
+# Access only the  2nd row.
+P[2,]
+
+# Access only the 3rd column.  
+P[,3]  
+
+
+# Assign element at 1st row and 3rd column of matrix P to the variable x  
+
+x<-P[1,3]  
+print(x)
+
+# create a vector from the second column of matrix P  
+
+y<-P[,2]
+y<-as.vector(y)
+
+#Transpose a matrix
+Q<-t(P)
+print(Q)
+
+# Knowing dimensions of a matrix
+
+#Number of columns in A
+ncol(A)  
+
+#Number of rows in A
+nrow(A)
+
+# Number of rows and columns
+dim(A)  
+
+# Calculations with numeric matrices  
+
+# Compute row sums of matrix A
+rowSums(A)  
+
+# Compute column sums of matrix A
+colSums(A)  
+
+# Compute row means of matrix A
+rowMeans(A)  
+
+# Compute column means of matrix A
+colMeans(A)
+
+```  
+
+### Data frames  
+
+A data frame is the data type, we will be going to use frequently. A data frame is like a matrix but can have columns with different types (numeric, character, logical). Rows are observations (individuals) and columns are variables. Function `data.frame()` is used to create data frame  
+
+```{r}  
+friends_data <- data.frame(
+  name = c("asha", "adhi", "aravind", 
+                  "mary"), 
+  age = c(20,23,22,21),
+  height = c(180, 170, 185, 169),
+  married = c(TRUE, FALSE, TRUE, TRUE)  
+)  
+
+# Print
+friends_data
+```
+To check whether a data is a data frame, use the `is.data.frame()` function. Returns TRUE if the data is a data frame:  
+
+```{r}
+is.data.frame(friends_data)  
+```  
+ 
+To check whether a data is a matrix, data frame or any other class use the function `class()`  
+
+```{r}
+# What is the class of A? --> matrix
+class(A)  
+
+# What is the class of friends_data? --> matrix
+class(friends_data)
+```  
+
+Convert a data class to data frame use the function `as.data.frame()`
+
+```{r}
+# Convert it as a data frame
+A2 <- as.data.frame(A)
+# Now, the class is data.frame
+class(A2)
+```  
+
+As described in matrix section, you can use the function `t()` to transpose a data frame:  
+
+```{r}  
+t(friends_data)
+```  
+
+#### Operations on data frame  
+
+Positive indexing by name and by location
+```{r}
+# Access the data in 'name' column in friends_data
+# dollar sign is used
+friends_data$name  
+
+# or use this
+friends_data[, 'name']  
+
+# Subset columns 1 and 3
+friends_data[ , c(1, 3)]  
+
+# Subset columns 1 to 3  
+friends_data[ , c(1:3)]    
+```  
+
+Negative Indexing  
+
+```{r}
+# Exclude column 1  
+
+friends_data[, -1]  
+```  
+  
+  
+Index by characteristics
+
+We want to select all friends with age greater than or equal to 22.
+
+```{r}
+# Identify rows that meet the condition
+friends_data$age >= 22   
+
+# TRUE specifies that the row contains a value of age >= 22.
+```  
+
+```{r}  
+# Select the rows that meet the condition
+friends_data[friends_data$age >= 22, ]  
+# The R code above, tells R to get all rows from friends_data where age >= 22
+```  
+
+If you don’t want to see all the column data for the selected rows but are just interested in displaying, for example, friend names and age for friends with age >= 22, you could use the following R code:  
+
+```{r}  
+
+# Use column locations
+friends_data[friends_data$age >= 22,  c(1, 2)]  
+
+# Or use column names
+friends_data[friends_data$age >= 22, c("name", "age")]
+```  
+
+If you’re finding that your selection statement is starting to be inconvenient, you can put your row and column selections into variables first, such as:  
+
+```{r}
+
+age22 <- friends_data$age >= 22
+cols <- c("name", "age")
+# Then you can select the rows and columns with those variables:
+
+friends_data[age22, cols]
+```  
+
+It’s also possible to use the function `subset()` as follow.
+
+```{r}
+# Select friends data with age >= 22
+subset(friends_data, age >= 22)  
+```  
+
+Another option is to use the functions `attach()` and `detach()`. The function `attach()` takes a data frame and makes its columns accessible by simply giving their names.  
+
+```{r}
+# Attach a data frame
+attach(friends_data)
+# === Data manipulation ====
+friends_data[age>=22, ]
+# === End of data manipulation ====
+# Detach the data frame
+detach(friends_data)
+```
+
+**Extend a data frame**  
+Add new column in a data frame
+```{r}
+# Add group column to friends_data
+data<-c("BSc", "MSc", "Phd", "Btech")
+friends_data$degree <- data
+friends_data
+```  
+
+It’s also possible to use the functions `cbind()` and `rbind()` to extend a data frame.
+```{r}
+roll_no<-c(234,235,236,238)
+cbind(friends_data, roll_no)
+```  
+  
+**Calculations with data frame**  
+  
+With numeric data frame, you can use the function `rowSums()`, `colSums()`, `colMeans()`, `rowMeans()` and `apply()`.  
+
+```{r}  
+# Following can be used when it is a numeric data frame
+
+# creating a numeric data frame
+c1<-c(3,4,5)
+c2<-c(7,8,9)
+c3<-c(11,12,13)
+
+# Creating matrix by binding column wise  
+ex <- cbind(c1,c2,c3)
+
+# converting matrix to data frame
+ex<-as.data.frame(ex)
+ex
+
+rowSums(ex)
+colSums(ex)
+
+# calculation in non numeric data frame on selected numeric columns
+attach(friends_data)
+sum(age)
+mean(age)
+```   
+
+`apply()` function  
+
+```
+apply(X, MARGIN, FUN)
+Here:
+  -x: an array or matrix
+-MARGIN:  take a value or range between 1 and 2 to define where to apply the function:
+  -MARGIN=1`: the manipulation is performed on rows
+-MARGIN=2`: the manipulation is performed on columns
+-MARGIN=c(1,2)` the manipulation is performed on rows and columns
+-FUN: tells which function to apply. Built functions like mean, median, sum, min, max and even user-defined functions can be applied>
+
+```
+
+
+```{r}
+apply(ex,2, mean)
+apply(ex,1, mean)
+```
+
+
+
+<!-- ```{block2 item2, type='rmdnote'} -->
+<!-- **Practical 1**: Matrices and vectors   -->
+
+<!-- 1. Create a vector of numbers form 23 to 33 -->
+<!-- 2. Assign the vector with a name "numbers"   -->
+<!-- 3. Create a Matrix named "mat_num" with elements from 1 to 20 in 4 rows and 5 columns   -->
+<!-- 4. Name the columns and rows of matrix mat_num with any names you like   -->
+<!-- 5. Compute column means and row means of matrix mat_num -->
+<!-- 6. Access the element in second row and third column of matrix mat_num -->
+<!-- ```    -->
+
+
+<!-- ```{block2 item3, type='rmdnote'} -->
+<!-- **Practical 2**: Data frames   -->
+
+<!-- 1. Create a data frame of 10 students with name, age (between 20 and 25), height and degree. -->
+<!-- 2. Select all the rows with age above 23  -->
+<!-- 3. Find the mean and total of age -->
+<!-- ``` -->
+
+
+
+

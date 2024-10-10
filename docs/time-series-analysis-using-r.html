@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 9 Time series Analysis using R | DATA ANALYSIS USING STATISTICAL PACKAGES</title>
+<meta name="author" content="Dr. Pratheesh P. Gopinath">
+<meta name="description" content="We will be using the following data to demonstrate Time series analysis in R. Download the data and save in your system for practice. -kings.csv contains data on the age of death of successive...">
+<meta name="generator" content="bookdown 0.40.3 with bs4_book()">
+<meta property="og:title" content="Chapter 9 Time series Analysis using R | DATA ANALYSIS USING STATISTICAL PACKAGES">
+<meta property="og:type" content="book">
+<meta property="og:image" content="/images/cover.PNG">
+<meta property="og:description" content="We will be using the following data to demonstrate Time series analysis in R. Download the data and save in your system for practice. -kings.csv contains data on the age of death of successive...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 9 Time series Analysis using R | DATA ANALYSIS USING STATISTICAL PACKAGES">
+<meta name="twitter:description" content="We will be using the following data to demonstrate Time series analysis in R. Download the data and save in your system for practice. -kings.csv contains data on the age of death of successive...">
+<meta name="twitter:image" content="/images/cover.PNG">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">DATA ANALYSIS USING STATISTICAL PACKAGES</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Welcome</a></li>
+<li><a class="" href="preface.html">Preface</a></li>
+<li><a class="" href="syllabus.html">Syllabus</a></li>
+<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="r-and-r-studio.html"><span class="header-section-number">2</span> R and R studio</a></li>
+<li><a class="" href="rbase.html"><span class="header-section-number">3</span> R basics</a></li>
+<li><a class="" href="packages-and-libraries.html"><span class="header-section-number">4</span> Packages and libraries</a></li>
+<li><a class="" href="import.html"><span class="header-section-number">5</span> Importing data files</a></li>
+<li><a class="" href="dataset.html"><span class="header-section-number">6</span> Datasets in R</a></li>
+<li><a class="" href="descriptive-statistics.html"><span class="header-section-number">7</span> Descriptive Statistics</a></li>
+<li><a class="" href="graphical-representation.html"><span class="header-section-number">8</span> Graphical Representation</a></li>
+<li><a class="active" href="time-series-analysis-using-r.html"><span class="header-section-number">9</span> Time series Analysis using R</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="time-series-analysis-using-r" class="section level1" number="9">
+<h1>
+<span class="header-section-number">9</span> Time series Analysis using R<a class="anchor" aria-label="anchor" href="#time-series-analysis-using-r"><i class="fas fa-link"></i></a>
+</h1>
+<p>We will be using the following data to demonstrate Time series analysis in R. Download the data and save in your system for practice.</p>
+<p>-<a href="https://drive.google.com/file/d/1pnuS4YMPMOuH1V-Ay-oHI2QA1DN6bGJw/view?usp=drive_link">kings.csv</a> contains data on the age of death of successive kings of England, starting with William the Conqueror.</p>
+<p>-<a href="https://drive.google.com/file/d/1Z7JrhsO1CyYl2dQakLw5BrdBrIOFePAf/view?usp=drive_link">births.csv</a> is a data set of the number of births per month in New York city, from January 1946 to December 1959
+(originally collected by Newton).</p>
+<p>-<a href="https://drive.google.com/file/d/1yZQpaOUH5PqWj_tC_l9spFGiuWvq0-yd/view?usp=drive_link">souvenir.csv</a> contains monthly sales for a souvenir shop at a beach resort town in Queensland, Australia, for January 1987-December 1993.</p>
+<p>-<a href="https://drive.google.com/file/d/1WbA8Vpgoed_pinj8W3IBCoxUYQYxRsxZ/view?usp=drive_link">rain.csv</a> data contains total annual rainfall in inches for London, from 1813-1912.</p>
+<div id="getting-started" class="section level2" number="9.1">
+<h2>
+<span class="header-section-number">9.1</span> Getting Started<a class="anchor" aria-label="anchor" href="#getting-started"><i class="fas fa-link"></i></a>
+</h2>
+<p>After importing the time series data <code>kings.csv</code> into R in the name <code>kings</code>, the next step is to save it as a time series object using R’s <code><a href="https://rdrr.io/r/stats/ts.html">ts()</a></code> function. For example, to store the data from your imported CSV file in the variable ‘kings’ as a time series, you would write:</p>
+<p>Import kings.csv and call it as kings in R. (We assume the reader knows the basics of importing csv in R)</p>
+<div class="sourceCode" id="cb263"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">kingsts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html">ts</a></span><span class="op">(</span><span class="va">kings</span><span class="op">)</span></span>
+<span><span class="va">kingsts</span></span></code></pre></div>
+<pre><code>## Time Series:
+## Start = 1 
+## End = 42 
+## Frequency = 1 
+##  [1] 60 43 67 50 56 42 50 65 68 43 65 34 47 34 49 41 13 35 53 56 16 43 69 59 48
+## [26] 59 86 55 68 51 33 49 67 77 81 67 71 81 68 70 77 56</code></pre>
+<p>If your time series data is collected at intervals shorter than a year, like monthly or quarterly, you can use the <code>frequency</code> parameter in the <code><a href="https://rdrr.io/r/stats/ts.html">ts()</a></code> function. For monthly data, set <code>frequency=12</code>, and for quarterly data, set <code>frequency=4</code>. You can also indicate the starting year and interval with the <code>start</code> parameter. For instance, if the data begins in the second quarter of 1986, you’d use <code>start=c(1986, 2)</code>.</p>
+<p>Download <code>birth.csv</code> file form first section which contains number of births per month in New York city, from January 1946 to December 1959. So it can be converted to ts object in R as follows. It is a monthly data so frequency 12.</p>
+<div class="sourceCode" id="cb265"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">birthsts</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html">ts</a></span><span class="op">(</span><span class="va">births</span>, frequency<span class="op">=</span><span class="fl">12</span>, start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1946</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">birthsts</span></span></code></pre></div>
+<pre><code>##         Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct
+## 1946 26.663 23.598 26.931 24.740 25.806 24.364 24.477 23.901 23.175 23.227
+## 1947 21.439 21.089 23.709 21.669 21.752 20.761 23.479 23.824 23.105 23.110
+## 1948 21.937 20.035 23.590 21.672 22.222 22.123 23.950 23.504 22.238 23.142
+## 1949 21.548 20.000 22.424 20.615 21.761 22.874 24.104 23.748 23.262 22.907
+## 1950 22.604 20.894 24.677 23.673 25.320 23.583 24.671 24.454 24.122 24.252
+## 1951 23.287 23.049 25.076 24.037 24.430 24.667 26.451 25.618 25.014 25.110
+## 1952 23.798 22.270 24.775 22.646 23.988 24.737 26.276 25.816 25.210 25.199
+## 1953 24.364 22.644 25.565 24.062 25.431 24.635 27.009 26.606 26.268 26.462
+## 1954 24.657 23.304 26.982 26.199 27.210 26.122 26.706 26.878 26.152 26.379
+## 1955 24.990 24.239 26.721 23.475 24.767 26.219 28.361 28.599 27.914 27.784
+## 1956 26.217 24.218 27.914 26.975 28.527 27.139 28.982 28.169 28.056 29.136
+## 1957 26.589 24.848 27.543 26.896 28.878 27.390 28.065 28.141 29.048 28.484
+## 1958 27.132 24.924 28.963 26.589 27.931 28.009 29.229 28.759 28.405 27.945
+## 1959 26.076 25.286 27.660 25.951 26.398 25.565 28.865 30.000 29.261 29.012
+##         Nov    Dec
+## 1946 21.672 21.870
+## 1947 21.759 22.073
+## 1948 21.059 21.573
+## 1949 21.519 22.025
+## 1950 22.084 22.991
+## 1951 22.964 23.981
+## 1952 23.162 24.707
+## 1953 25.246 25.180
+## 1954 24.712 25.688
+## 1955 25.693 26.881
+## 1956 26.291 26.987
+## 1957 26.634 27.735
+## 1958 25.912 26.619
+## 1959 26.992 27.897</code></pre>
+<p>similarly for <code>souvenir.csv</code></p>
+<div class="sourceCode" id="cb267"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">souvenirts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html">ts</a></span><span class="op">(</span><span class="va">souvenir</span>, frequency<span class="op">=</span><span class="fl">12</span>, start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1987</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">souvenirts</span></span></code></pre></div>
+<pre><code>##            Jan       Feb       Mar       Apr       May       Jun       Jul
+## 1987   1664.81   2397.53   2840.71   3547.29   3752.96   3714.74   4349.61
+## 1988   2499.81   5198.24   7225.14   4806.03   5900.88   4951.34   6179.12
+## 1989   4717.02   5702.63   9957.58   5304.78   6492.43   6630.80   7349.62
+## 1990   5921.10   5814.58  12421.25   6369.77   7609.12   7224.75   8121.22
+## 1991   4826.64   6470.23   9638.77   8821.17   8722.37  10209.48  11276.55
+## 1992   7615.03   9849.69  14558.40  11587.33   9332.56  13082.09  16732.78
+## 1993  10243.24  11266.88  21826.84  17357.33  15997.79  18601.53  26155.15
+##            Aug       Sep       Oct       Nov       Dec
+## 1987   3566.34   5021.82   6423.48   7600.60  19756.21
+## 1988   4752.15   5496.43   5835.10  12600.08  28541.72
+## 1989   8176.62   8573.17   9690.50  15151.84  34061.01
+## 1990   7979.25   8093.06   8476.70  17914.66  30114.41
+## 1991  12552.22  11637.39  13606.89  21822.11  45060.69
+## 1992  19888.61  23933.38  25391.35  36024.80  80721.71
+## 1993  28586.52  30505.41  30821.33  46634.38 104660.67</code></pre>
+</div>
+<div id="plotting-time-series-data" class="section level2" number="9.2">
+<h2>
+<span class="header-section-number">9.2</span> Plotting time series data<a class="anchor" aria-label="anchor" href="#plotting-time-series-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>After importing a time series into R, the next step is often to create a plot of the data. You can do this using the <code><a href="https://rdrr.io/r/stats/plot.ts.html">plot.ts()</a></code> function. For example, to plot the time series of the ages at death of 42 successive English kings, you would write:</p>
+<div class="sourceCode" id="cb269"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/plot.ts.html">plot.ts</a></span><span class="op">(</span><span class="va">kingsts</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure">
+<img src="lecture_note_files/figure-html/unnamed-chunk-76-1.png" width="672">
+In the time plot, the fluctuations in the data appear to be relatively consistent in size throughout the series. This suggests that an additive model could be appropriate for describing this time series. In an additive model, the components (trend, seasonality, and residuals) are added together, which works well when the variability (the size of fluctuations) does not change much over time.</div>
+<div class="sourceCode" id="cb270"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/plot.ts.html">plot.ts</a></span><span class="op">(</span><span class="va">birthsts</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure">
+<img src="lecture_note_files/figure-html/unnamed-chunk-77-1.png" width="672">
+The time series shows a pattern of seasonal variation in monthly births, with peaks in the summer and dips in the winter. This suggests that an additive model could be suitable, as the size of the seasonal fluctuations remains fairly constant and does not seem influenced by the overall level of the series. Additionally, the random variations in the data appear to stay relatively stable over time.</div>
+<div class="sourceCode" id="cb271"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/plot.ts.html">plot.ts</a></span><span class="op">(</span><span class="va">souvenirts</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure">
+<img src="lecture_note_files/figure-html/unnamed-chunk-78-1.png" width="672">
+In this case, an additive model doesn’t seem suitable because both the seasonal and random fluctuations increase as the time series level rises. To make the data more suitable for an additive model, we may need to apply a transformation. One common approach is to take the natural logarithm of the original data, which can help stabilize the variance and make the fluctuations more consistent across the series.</div>
+<div class="sourceCode" id="cb272"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">logsouvenirts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">souvenirts</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/plot.ts.html">plot.ts</a></span><span class="op">(</span><span class="va">logsouvenirts</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure">
+<img src="lecture_note_files/figure-html/unnamed-chunk-79-1.png" width="672">
+In the log-transformed time series, the size of both the seasonal and random fluctuations appears relatively stable over time and does not seem to vary with the overall level of the series. This suggests that the log-transformed data is now more suitable for an additive model, as the fluctuations are more uniform throughout the time series.</div>
+</div>
+<div id="decomposing-time-series" class="section level2" number="9.3">
+<h2>
+<span class="header-section-number">9.3</span> Decomposing Time Series<a class="anchor" aria-label="anchor" href="#decomposing-time-series"><i class="fas fa-link"></i></a>
+</h2>
+<p>Decomposing a time series involves breaking it down into distinct elements to better understand its underlying patterns. Typically, this process separates the data into three key components:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Trend Component</strong>: This reflects the long-term direction of the data, showing whether there is an overall upward or downward movement over time. It helps to identify the general course of the series without short-term fluctuations.</p></li>
+<li><p><strong>Seasonal Component</strong>: If the data exhibits regular patterns at consistent intervals, this component captures those repeating cycles. For example, monthly sales data may show higher sales during the holiday season every year. This helps to isolate predictable fluctuations from the rest of the data.</p></li>
+<li><p><strong>Irregular (or Residual) Component</strong>: After removing the trend and seasonal components, what’s left is the irregular component, which represents random noise or short-term variations that cannot be attributed to a clear pattern. These fluctuations are unpredictable and often occur due to unforeseen events or natural variability.</p></li>
+</ol>
+<p>By decomposing a time series, you can better analyze and model the individual components, making it easier to forecast future values or understand the underlying behaviors of the data.</p>
+<div id="decomposing-non-seasonal-data" class="section level3" number="9.3.1">
+<h3>
+<span class="header-section-number">9.3.1</span> Decomposing Non-Seasonal Data<a class="anchor" aria-label="anchor" href="#decomposing-non-seasonal-data"><i class="fas fa-link"></i></a>
+</h3>
+<p>A non-seasonal time series typically consists of a trend component and an irregular component. Decomposing this type of time series involves estimating these two components separately.</p>
+<p>To estimate the trend component of a non-seasonal time series that can be modeled using an additive approach, a common technique is to apply a smoothing method. One effective method for this is the simple moving average (SMA), which helps to smooth out short-term fluctuations and highlight longer-term trends.</p>
+<p>In R, you can use the <code><a href="https://rdrr.io/pkg/TTR/man/MovingAverages.html">SMA()</a></code> function from the “TTR” package to calculate the simple moving average of your time series data. Here’s how to do it:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Install the “TTR” Package</strong>: If you haven’t already installed the “TTR” package, you can do so by running the following command in R:</li>
+</ol>
+<div class="sourceCode" id="cb273"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"TTR"</span><span class="op">)</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>
+<strong>Load the “TTR” Package</strong>: Once the package is installed, you can load it into your R session with the following command:</li>
+</ol>
+<div class="sourceCode" id="cb274"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/joshuaulrich/TTR">TTR</a></span><span class="op">)</span></span></code></pre></div>
+<p>After loading the package, you can then use the <code><a href="https://rdrr.io/pkg/TTR/man/MovingAverages.html">SMA()</a></code> function to compute the simple moving average and obtain the trend component of your non-seasonal time series. This process allows you to better understand the underlying trend in the data by reducing noise from irregular fluctuations.</p>
+<div class="sourceCode" id="cb275"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">kingstsSMA3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/TTR/man/MovingAverages.html">SMA</a></span><span class="op">(</span><span class="va">kingsts</span>,n<span class="op">=</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/plot.ts.html">plot.ts</a></span><span class="op">(</span><span class="va">kingstsSMA3</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure">
+<img src="lecture_note_files/figure-html/unnamed-chunk-82-1.png" width="672">
+Although smoothing the time series with a simple moving average of order 3 has helped reduce some fluctuations, there are still considerable random variations present. To achieve a more accurate estimation of the trend component, it may be beneficial to apply a higher-order moving average.</div>
+<p>Finding the optimal level of smoothing often requires some trial and error to determine the best order that balances noise reduction while preserving the essential patterns in the data.</p>
+<p>For instance, you can experiment with a simple moving average of order 8 to see if this provides a clearer representation of the trend. Here’s how you can do that in R:</p>
+<div class="sourceCode" id="cb276"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">kingstsSMA8</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/TTR/man/MovingAverages.html">SMA</a></span><span class="op">(</span><span class="va">kingsts</span>,n<span class="op">=</span><span class="fl">8</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/plot.ts.html">plot.ts</a></span><span class="op">(</span><span class="va">kingstsSMA8</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="lecture_note_files/figure-html/unnamed-chunk-83-1.png" width="672"></div>
+<p>Using a higher order like 8 should help smooth the data further, potentially reducing the random fluctuations and allowing for a clearer view of the underlying trend. This iterative approach can lead to a more accurate understanding of the time series behavior.</p>
+</div>
+<div id="decomposing-seasonal-data" class="section level3" number="9.3.2">
+<h3>
+<span class="header-section-number">9.3.2</span> Decomposing Seasonal Data<a class="anchor" aria-label="anchor" href="#decomposing-seasonal-data"><i class="fas fa-link"></i></a>
+</h3>
+<p>A seasonal time series is characterized by three components: a trend component, a seasonal component, and an irregular component. Decomposing this time series involves separating it into these three distinct elements to better understand its structure.</p>
+<p>To estimate the trend and seasonal components of a seasonal time series that can be modeled using an additive approach, you can utilize the <code><a href="https://rdrr.io/r/stats/decompose.html">decompose()</a></code> function in R. This function effectively breaks down the time series into its constituent components, providing estimates for each.</p>
+<p>Here’s how to use the <code><a href="https://rdrr.io/r/stats/decompose.html">decompose()</a></code> function:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Apply the <code><a href="https://rdrr.io/r/stats/decompose.html">decompose()</a></code> Function</strong>: You can call this function on your seasonal time series object. For example:</li>
+</ol>
+<div class="sourceCode" id="cb277"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">birthstscomp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/decompose.html">decompose</a></span><span class="op">(</span><span class="va">birthsts</span><span class="op">)</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>
+<p><strong>Accessing Components</strong>: The <code><a href="https://rdrr.io/r/stats/decompose.html">decompose()</a></code> function returns a list object containing the estimates of the seasonal, trend, and irregular components. You can access these components using the following names:</p>
+<ul>
+<li>
+<code>birthstscomp$seasonal</code>: This element holds the estimated seasonal component.</li>
+<li>
+<code>birthstscomp$trend</code>: This contains the estimated trend component.</li>
+<li>
+<code>birthstscomp$random</code>: This represents the irregular component.</li>
+</ul>
+</li>
+</ol>
+<p>By decomposing the time series, you can analyze each component separately, which can enhance your understanding of the data and improve forecasting accuracy.</p>
+<p>The estimated seasonal factors for the months from January to December indicate consistent patterns across each year. Notably, July has the highest seasonal factor at approximately 1.46, suggesting a peak in births during that month. Conversely, February has the lowest seasonal factor at around -2.08, indicating a trough in births during this time of year.</p>
+<p>To visualize these components—trend, seasonal, and irregular—you can use the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function in R. Here’s how to do it:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Plot the Components</strong>: After decomposing your time series, you can create plots for each component as follows:</li>
+</ol>
+<div class="sourceCode" id="cb278"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">birthstscomp</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="lecture_note_files/figure-html/unnamed-chunk-85-1.png" width="672"></div>
+<p>This command will generate a series of plots showing the estimated trend, seasonal, and irregular components of your time series, allowing you to analyze and interpret the behavior of each component visually.</p>
+<p>The plot presented above displays the original time series at the top, followed by the estimated trend component, the estimated seasonal component, and finally, the estimated irregular component at the bottom. The trend component reveals a slight decline from approximately 24 in 1947 to around 22 in 1948. After this dip, there is a consistent upward trend, reaching about 27 by 1959.</p>
+</div>
+</div>
+<div id="seasonally-adjusting-a-time-series" class="section level2" number="9.4">
+<h2>
+<span class="header-section-number">9.4</span> Seasonally Adjusting a Time Series<a class="anchor" aria-label="anchor" href="#seasonally-adjusting-a-time-series"><i class="fas fa-link"></i></a>
+</h2>
+<p>Seasonal adjustment of a time series involves removing the seasonal effects to reveal the underlying trends and irregularities more clearly. If the time series can be described using an additive model, this process is relatively straightforward. By estimating the seasonal component and subtracting it from the original data, you can remove the seasonal variation and obtain a seasonally adjusted time series.</p>
+<p>Here’s how to achieve this in R using the <code><a href="https://rdrr.io/r/stats/decompose.html">decompose()</a></code> function:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Estimate the Seasonal Component</strong>: First, decompose the time series to estimate its seasonal component using the <code><a href="https://rdrr.io/r/stats/decompose.html">decompose()</a></code> function. This function calculates the seasonal, trend, and irregular components of the data.</li>
+</ol>
+<div class="sourceCode" id="cb279"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">birthstscomp</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/decompose.html">decompose</a></span><span class="op">(</span><span class="va">birthsts</span><span class="op">)</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>
+<strong>Subtract the Seasonal Component</strong>: Once you have the seasonal component, subtract it from the original time series to remove the seasonality. This gives you a seasonally adjusted series:</li>
+</ol>
+<div class="sourceCode" id="cb280"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">birthstsadj</span><span class="op">&lt;-</span> <span class="va">birthsts</span> <span class="op">-</span> <span class="va">birthstscomp</span><span class="op">$</span><span class="va">seasonal</span></span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>
+<strong>Interpretation</strong>: The result is a time series without the repetitive seasonal fluctuations, making it easier to focus on trends and irregular components. For example, if you’re analyzing the number of births per month in New York City, this adjustment will help you see whether the overall trend in births is increasing or decreasing, without being influenced by regular seasonal peaks and troughs.</li>
+</ol>
+<p>By seasonally adjusting the data, analysts can make more accurate comparisons and forecasts without seasonal noise. This process is crucial in understanding the true underlying behavior of time series data, especially when making decisions based on long-term trends.</p>
+<p>We can then plot the seasonally adjusted time series using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function</p>
+<div class="sourceCode" id="cb281"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">birthstsadj</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="lecture_note_files/figure-html/unnamed-chunk-88-1.png" width="672"></div>
+</div>
+<div id="forecasts-using-exponential-smoothing" class="section level2" number="9.5">
+<h2>
+<span class="header-section-number">9.5</span> Forecasts Using Exponential Smoothing<a class="anchor" aria-label="anchor" href="#forecasts-using-exponential-smoothing"><i class="fas fa-link"></i></a>
+</h2>
+<p>Exponential smoothing, first introduced by Robert Goodell Brown in 1956 and later refined by Charles C. Holt in 1957, is a widely effective technique for smoothing time-series data. Unlike methods like the simple moving average, which apply equal weights to past data points, exponential smoothing uses an exponentially decreasing weight function. This approach assigns more significance to recent observations and less to older ones. A key parameter in this method is the smoothing constant, which determines the rate of decay for the weights. Due to its straightforward nature and ease of application, exponential smoothing is frequently employed in time-series analysis, often incorporating factors like seasonality based on user-defined assumptions.<br>
+Exponential smoothing is generally used to make short term forecasts, but longer-term forecasts using this technique can be quite unreliable.</p>
+<p>When the smoothing factor (α) is larger, the level of smoothing decreases. An α value close to 1 results in less smoothing, giving more weight to recent changes in the data. Conversely, an α value closer to 0 leads to greater smoothing, making the model less responsive to recent fluctuations.</p>
+<p>There is no universally accepted method for selecting the ideal α value. In some cases, the statistician’s expertise is used to choose an appropriate factor. Alternatively, statistical methods can be applied to optimize α, such as using the least squares method to find the value that minimizes the sum of errors in the model.</p>
+<div id="types-of-exponential-smoothing" class="section level3" number="9.5.1">
+<h3>
+<span class="header-section-number">9.5.1</span> Types of Exponential Smoothing<a class="anchor" aria-label="anchor" href="#types-of-exponential-smoothing"><i class="fas fa-link"></i></a>
+</h3>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Simple Exponential Smoothing</strong>:</li>
+</ol>
+<ul>
+<li>Best suited for data without trend or seasonality.</li>
+<li>The forecast for the next period is a weighted average of past observations, where weights decrease exponentially for older observations.</li>
+<li>The smoothing parameter (<span class="math inline">\(\alpha\)</span>) controls the degree of weighting; values range from 0 to 1. A higher <span class="math inline">\(\alpha\)</span> gives more weight to recent observations.</li>
+</ul>
+<p><strong>Formula</strong>:
+<span class="math display">\[
+    F_{t+1} = \alpha Y_t + (1 - \alpha) F_t
+    \]</span>
+where <span class="math inline">\(F_{t+1}\)</span> is the forecast for the next period, <span class="math inline">\(Y_t\)</span> is the actual observation at time <span class="math inline">\(t\)</span>, and <span class="math inline">\(F_t\)</span> is the forecast for time <span class="math inline">\(t\)</span>.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>
+<strong>Holt’s Linear Exponential Smoothing</strong>:</li>
+</ol>
+<ul>
+<li>Extends simple exponential smoothing to account for trends in the data.</li>
+<li>It uses two smoothing parameters: one for the level (<span class="math inline">\(\alpha\)</span>) and one for the trend (<span class="math inline">\(\beta\)</span>).</li>
+<li>This method allows for forecasts that can accommodate linear trends.</li>
+</ul>
+<p><strong>Formulas</strong>:
+- Level:
+<span class="math display">\[
+    l_t = \alpha Y_t + (1 - \alpha)(l_{t-1} + b_{t-1})
+    \]</span>
+- Trend:
+<span class="math display">\[
+    b_t = \beta (l_t - l_{t-1}) + (1 - \beta)b_{t-1}
+    \]</span>
+- Forecast:
+<span class="math display">\[
+    F_{t+m} = l_t + mb_t
+    \]</span></p>
+<ol start="3" style="list-style-type: decimal">
+<li>
+<strong>Holt-Winters Exponential Smoothing</strong>:</li>
+</ol>
+<ul>
+<li>An extension of Holt’s method that also incorporates seasonality.</li>
+<li>It uses three parameters: <span class="math inline">\(\alpha\)</span> for the level, <span class="math inline">\(\beta\)</span> for the trend, and <span class="math inline">\(\gamma\)</span> for the seasonal component.</li>
+<li>There are two variants: additive (for seasonal effects that are roughly constant) and multiplicative (for seasonal effects that change with the level of the series).</li>
+</ul>
+<p><strong>Formulas</strong>:
+- Level:
+<span class="math display">\[
+    l_t = \alpha (Y_t / s_{t-s}) + (1 - \alpha)(l_{t-1} + b_{t-1})
+    \]</span>
+- Trend:
+<span class="math display">\[
+    b_t = \beta (l_t - l_{t-1}) + (1 - \beta)b_{t-1}
+    \]</span>
+- Seasonal:
+<span class="math display">\[
+    s_t = \gamma (Y_t / l_t) + (1 - \gamma)s_{t-s}
+    \]</span>
+- Forecast:
+<span class="math display">\[
+    F_{t+m} = (l_t + mb_t)s_{t-m}
+    \]</span></p>
+</div>
+<div id="advantages-of-exponential-smoothing" class="section level3" number="9.5.2">
+<h3>
+<span class="header-section-number">9.5.2</span> Advantages of Exponential Smoothing<a class="anchor" aria-label="anchor" href="#advantages-of-exponential-smoothing"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>
+<strong>Simplicity</strong>: It is relatively easy to implement and understand.</li>
+<li>
+<strong>Flexibility</strong>: Different types can accommodate various data patterns (trends and seasonality).</li>
+<li>
+<strong>Adaptability</strong>: The method can quickly adjust to changes in the data patterns.</li>
+</ul>
+<p>Exponential smoothing is a powerful technique for forecasting time series data. By applying weighted averages to past observations, it effectively captures trends and seasonal patterns, making it a valuable tool for analysts and decision-makers. The method’s adaptability and ease of use make it an essential part of any forecasting toolkit.</p>
+
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="graphical-representation.html"><span class="header-section-number">8</span> Graphical Representation</a></div>
+<div class="next"><a href="references.html">References</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#time-series-analysis-using-r"><span class="header-section-number">9</span> Time series Analysis using R</a></li>
+<li><a class="nav-link" href="#getting-started"><span class="header-section-number">9.1</span> Getting Started</a></li>
+<li><a class="nav-link" href="#plotting-time-series-data"><span class="header-section-number">9.2</span> Plotting time series data</a></li>
+<li>
+<a class="nav-link" href="#decomposing-time-series"><span class="header-section-number">9.3</span> Decomposing Time Series</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#decomposing-non-seasonal-data"><span class="header-section-number">9.3.1</span> Decomposing Non-Seasonal Data</a></li>
+<li><a class="nav-link" href="#decomposing-seasonal-data"><span class="header-section-number">9.3.2</span> Decomposing Seasonal Data</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#seasonally-adjusting-a-time-series"><span class="header-section-number">9.4</span> Seasonally Adjusting a Time Series</a></li>
+<li>
+<a class="nav-link" href="#forecasts-using-exponential-smoothing"><span class="header-section-number">9.5</span> Forecasts Using Exponential Smoothing</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#types-of-exponential-smoothing"><span class="header-section-number">9.5.1</span> Types of Exponential Smoothing</a></li>
+<li><a class="nav-link" href="#advantages-of-exponential-smoothing"><span class="header-section-number">9.5.2</span> Advantages of Exponential Smoothing</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+          
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>DATA ANALYSIS USING STATISTICAL PACKAGES</strong>" was written by Dr. Pratheesh P. Gopinath. It was last built on 2022-01-30.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

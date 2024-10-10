@@ -4,21 +4,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 7 Datasets in R | DATA ANALYSIS USING STATISTICAL PACKAGES</title>
+<title>Chapter 6 Datasets in R | DATA ANALYSIS USING STATISTICAL PACKAGES</title>
 <meta name="author" content="Dr. Pratheesh P. Gopinath">
 <meta name="description" content="There are various pre-built data sets included with R, which are typically used as practice sets for playing with R functions. We’ll first go through how to load and use built-in R data sets in...">
-<meta name="generator" content="bookdown 0.36 with bs4_book()">
-<meta property="og:title" content="Chapter 7 Datasets in R | DATA ANALYSIS USING STATISTICAL PACKAGES">
+<meta name="generator" content="bookdown 0.40.3 with bs4_book()">
+<meta property="og:title" content="Chapter 6 Datasets in R | DATA ANALYSIS USING STATISTICAL PACKAGES">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.PNG">
 <meta property="og:description" content="There are various pre-built data sets included with R, which are typically used as practice sets for playing with R functions. We’ll first go through how to load and use built-in R data sets in...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 7 Datasets in R | DATA ANALYSIS USING STATISTICAL PACKAGES">
+<meta name="twitter:title" content="Chapter 6 Datasets in R | DATA ANALYSIS USING STATISTICAL PACKAGES">
 <meta name="twitter:description" content="There are various pre-built data sets included with R, which are typically used as practice sets for playing with R functions. We’ll first go through how to load and use built-in R data sets in...">
 <meta name="twitter:image" content="/images/cover.PNG">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
@@ -47,15 +47,15 @@
 <li><a class="" href="index.html">Welcome</a></li>
 <li><a class="" href="preface.html">Preface</a></li>
 <li><a class="" href="syllabus.html">Syllabus</a></li>
-<li><a class="" href="section.html"><span class="header-section-number">1</span></a></li>
-<li><a class="" href="introduction.html"><span class="header-section-number">2</span> Introduction</a></li>
-<li><a class="" href="r-and-r-studio.html"><span class="header-section-number">3</span> R and R studio</a></li>
-<li><a class="" href="rbase.html"><span class="header-section-number">4</span> R basics</a></li>
-<li><a class="" href="packages-and-libraries.html"><span class="header-section-number">5</span> Packages and libraries</a></li>
-<li><a class="" href="import.html"><span class="header-section-number">6</span> Importing data files</a></li>
-<li><a class="active" href="dataset.html"><span class="header-section-number">7</span> Datasets in R</a></li>
-<li><a class="" href="descriptive-statistics.html"><span class="header-section-number">8</span> Descriptive Statistics</a></li>
-<li><a class="" href="graphical-representation.html"><span class="header-section-number">9</span> Graphical Representation</a></li>
+<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="r-and-r-studio.html"><span class="header-section-number">2</span> R and R studio</a></li>
+<li><a class="" href="rbase.html"><span class="header-section-number">3</span> R basics</a></li>
+<li><a class="" href="packages-and-libraries.html"><span class="header-section-number">4</span> Packages and libraries</a></li>
+<li><a class="" href="import.html"><span class="header-section-number">5</span> Importing data files</a></li>
+<li><a class="active" href="dataset.html"><span class="header-section-number">6</span> Datasets in R</a></li>
+<li><a class="" href="descriptive-statistics.html"><span class="header-section-number">7</span> Descriptive Statistics</a></li>
+<li><a class="" href="graphical-representation.html"><span class="header-section-number">8</span> Graphical Representation</a></li>
+<li><a class="" href="time-series-analysis-using-r.html"><span class="header-section-number">9</span> Time series Analysis using R</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -64,22 +64,22 @@
         </div>
       </nav>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="dataset" class="section level1" number="7">
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="dataset" class="section level1" number="6">
 <h1>
-<span class="header-section-number">7</span> Datasets in R<a class="anchor" aria-label="anchor" href="#dataset"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6</span> Datasets in R<a class="anchor" aria-label="anchor" href="#dataset"><i class="fas fa-link"></i></a>
 </h1>
 <p>There are various pre-built data sets included with R, which are typically used as practice sets for playing with R functions. We’ll first go through how to load and use built-in R data sets in this lecture. The most popular R demo data sets will then be discussed, including <code>mtcars</code>, <code>iris</code>, <code>ToothGrowth</code>, <code>PlantGrowth</code>, and <code>USArrests</code>.</p>
-<div id="pre-loaded-data" class="section level2" number="7.1">
+<div id="pre-loaded-data" class="section level2" number="6.1">
 <h2>
-<span class="header-section-number">7.1</span> Pre-loaded data<a class="anchor" aria-label="anchor" href="#pre-loaded-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.1</span> Pre-loaded data<a class="anchor" aria-label="anchor" href="#pre-loaded-data"><i class="fas fa-link"></i></a>
 </h2>
 <p>To see the list of pre-loaded data in your system, type the function <code><a href="https://rdrr.io/r/utils/data.html">data()</a></code>:</p>
 <div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="loading-a-built-in-r-data" class="section level2" number="7.2">
+<div id="loading-a-built-in-r-data" class="section level2" number="6.2">
 <h2>
-<span class="header-section-number">7.2</span> Loading a built-in R data<a class="anchor" aria-label="anchor" href="#loading-a-built-in-r-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.2</span> Loading a built-in R data<a class="anchor" aria-label="anchor" href="#loading-a-built-in-r-data"><i class="fas fa-link"></i></a>
 </h2>
 <p>Load and print <code>mtcars</code> data as follow:</p>
 <div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
@@ -95,13 +95,13 @@
 ## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
 ## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
 </div>
-<div id="most-used-data-sets-in-r" class="section level2" number="7.3">
+<div id="most-used-data-sets-in-r" class="section level2" number="6.3">
 <h2>
-<span class="header-section-number">7.3</span> Most used data sets in R<a class="anchor" aria-label="anchor" href="#most-used-data-sets-in-r"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.3</span> Most used data sets in R<a class="anchor" aria-label="anchor" href="#most-used-data-sets-in-r"><i class="fas fa-link"></i></a>
 </h2>
-<div id="mtcars" class="section level3" number="7.3.1">
+<div id="mtcars" class="section level3" number="6.3.1">
 <h3>
-<span class="header-section-number">7.3.1</span> mtcars<a class="anchor" aria-label="anchor" href="#mtcars"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.3.1</span> mtcars<a class="anchor" aria-label="anchor" href="#mtcars"><i class="fas fa-link"></i></a>
 </h3>
 <p><code>mtcars</code> data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).</p>
 <div class="sourceCode" id="cb186"><pre class="downlit sourceCode r">
@@ -129,9 +129,9 @@
 <div class="sourceCode" id="cb192"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">mtcars</span></span></code></pre></div>
 </div>
-<div id="iris" class="section level3" number="7.3.2">
+<div id="iris" class="section level3" number="6.3.2">
 <h3>
-<span class="header-section-number">7.3.2</span> iris<a class="anchor" aria-label="anchor" href="#iris"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.3.2</span> iris<a class="anchor" aria-label="anchor" href="#iris"><i class="fas fa-link"></i></a>
 </h3>
 <p><code>iris</code> data set gives the measurements in centimeters of the variables sepal length, sepal width, petal length and petal width, respectively, for 50 flowers from each of 3 species of iris. The species are <em>Iris setosa</em>, <em>versicolor</em>, and <em>virginica</em>.</p>
 <div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
@@ -148,9 +148,9 @@
 <div class="sourceCode" id="cb195"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">iris</span></span></code></pre></div>
 </div>
-<div id="toothgrowth" class="section level3" number="7.3.3">
+<div id="toothgrowth" class="section level3" number="6.3.3">
 <h3>
-<span class="header-section-number">7.3.3</span> ToothGrowth<a class="anchor" aria-label="anchor" href="#toothgrowth"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.3.3</span> ToothGrowth<a class="anchor" aria-label="anchor" href="#toothgrowth"><i class="fas fa-link"></i></a>
 </h3>
 <p>The results of an experiment examining the impact of vitamin C on tooth development in 60 Guinea pigs are included in the data set. Each rat received one of three vitamin C dose levels (0.5, 1, and 2 mg/day) using either ascorbic acid or orange juice as the delivery mechanism (a form of vitamin C and coded as VC).</p>
 <div class="sourceCode" id="cb196"><pre class="downlit sourceCode r">
@@ -167,9 +167,9 @@
 <div class="sourceCode" id="cb198"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">?</span><span class="va">ToothGrowth</span></span></code></pre></div>
 </div>
-<div id="plantgrowth" class="section level3" number="7.3.4">
+<div id="plantgrowth" class="section level3" number="6.3.4">
 <h3>
-<span class="header-section-number">7.3.4</span> PlantGrowth<a class="anchor" aria-label="anchor" href="#plantgrowth"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.3.4</span> PlantGrowth<a class="anchor" aria-label="anchor" href="#plantgrowth"><i class="fas fa-link"></i></a>
 </h3>
 <p>Results from an experiment comparing yields between two distinct treatment conditions and a control condition (as determined by the dry weight of plants).</p>
 <div class="sourceCode" id="cb199"><pre class="downlit sourceCode r">
@@ -183,9 +183,9 @@
 ## 5   4.50  ctrl
 ## 6   4.61  ctrl</code></pre>
 </div>
-<div id="usarrests" class="section level3" number="7.3.5">
+<div id="usarrests" class="section level3" number="6.3.5">
 <h3>
-<span class="header-section-number">7.3.5</span> USArrests<a class="anchor" aria-label="anchor" href="#usarrests"><i class="fas fa-link"></i></a>
+<span class="header-section-number">6.3.5</span> USArrests<a class="anchor" aria-label="anchor" href="#usarrests"><i class="fas fa-link"></i></a>
 </h3>
 <p>Statistics on the rates of violent crime in each US state</p>
 <div class="sourceCode" id="cb201"><pre class="downlit sourceCode r">
@@ -203,21 +203,21 @@
 </div>
 </div>
   <div class="chapter-nav">
-<div class="prev"><a href="import.html"><span class="header-section-number">6</span> Importing data files</a></div>
-<div class="next"><a href="descriptive-statistics.html"><span class="header-section-number">8</span> Descriptive Statistics</a></div>
+<div class="prev"><a href="import.html"><span class="header-section-number">5</span> Importing data files</a></div>
+<div class="next"><a href="descriptive-statistics.html"><span class="header-section-number">7</span> Descriptive Statistics</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#dataset"><span class="header-section-number">7</span> Datasets in R</a></li>
-<li><a class="nav-link" href="#pre-loaded-data"><span class="header-section-number">7.1</span> Pre-loaded data</a></li>
-<li><a class="nav-link" href="#loading-a-built-in-r-data"><span class="header-section-number">7.2</span> Loading a built-in R data</a></li>
+<li><a class="nav-link" href="#dataset"><span class="header-section-number">6</span> Datasets in R</a></li>
+<li><a class="nav-link" href="#pre-loaded-data"><span class="header-section-number">6.1</span> Pre-loaded data</a></li>
+<li><a class="nav-link" href="#loading-a-built-in-r-data"><span class="header-section-number">6.2</span> Loading a built-in R data</a></li>
 <li>
-<a class="nav-link" href="#most-used-data-sets-in-r"><span class="header-section-number">7.3</span> Most used data sets in R</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#mtcars"><span class="header-section-number">7.3.1</span> mtcars</a></li>
-<li><a class="nav-link" href="#iris"><span class="header-section-number">7.3.2</span> iris</a></li>
-<li><a class="nav-link" href="#toothgrowth"><span class="header-section-number">7.3.3</span> ToothGrowth</a></li>
-<li><a class="nav-link" href="#plantgrowth"><span class="header-section-number">7.3.4</span> PlantGrowth</a></li>
-<li><a class="nav-link" href="#usarrests"><span class="header-section-number">7.3.5</span> USArrests</a></li>
+<a class="nav-link" href="#most-used-data-sets-in-r"><span class="header-section-number">6.3</span> Most used data sets in R</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#mtcars"><span class="header-section-number">6.3.1</span> mtcars</a></li>
+<li><a class="nav-link" href="#iris"><span class="header-section-number">6.3.2</span> iris</a></li>
+<li><a class="nav-link" href="#toothgrowth"><span class="header-section-number">6.3.3</span> ToothGrowth</a></li>
+<li><a class="nav-link" href="#plantgrowth"><span class="header-section-number">6.3.4</span> PlantGrowth</a></li>
+<li><a class="nav-link" href="#usarrests"><span class="header-section-number">6.3.5</span> USArrests</a></li>
 </ul>
 </li>
 </ul>

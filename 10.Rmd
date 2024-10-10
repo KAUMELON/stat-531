@@ -1,0 +1,255 @@
+# Time series Analysis using R 
+
+We will be using the following data to demonstrate Time series analysis in R. Download the data and save in your system for practice.  
+
+-[kings.csv](https://drive.google.com/file/d/1pnuS4YMPMOuH1V-Ay-oHI2QA1DN6bGJw/view?usp=drive_link) contains data on the age of death of successive kings of England, starting with William the Conqueror.  
+
+-[births.csv](https://drive.google.com/file/d/1Z7JrhsO1CyYl2dQakLw5BrdBrIOFePAf/view?usp=drive_link) is a data set of the number of births per month in New York city, from January 1946 to December 1959
+(originally collected by Newton).  
+
+-[souvenir.csv](https://drive.google.com/file/d/1yZQpaOUH5PqWj_tC_l9spFGiuWvq0-yd/view?usp=drive_link) contains monthly sales for a souvenir shop at a beach resort town in Queensland, Australia, for January 1987-December 1993.  
+
+-[rain.csv](https://drive.google.com/file/d/1WbA8Vpgoed_pinj8W3IBCoxUYQYxRsxZ/view?usp=drive_link) data contains total annual rainfall in inches for London, from 1813-1912.  
+
+
+## Getting Started  
+
+After importing the time series data `kings.csv` into R in the name `kings`, the next step is to save it as a time series object using R's `ts()` function. For example, to store the data from your imported CSV file in the variable 'kings' as a time series, you would write: 
+```{r, echo=FALSE, include=FALSE}
+kings <- scan("http://robjhyndman.com/tsdldata/misc/kings.dat", skip=3)
+
+```  
+Import kings.csv and call it as kings in R. (We assume the reader knows the basics of importing csv in R)
+```{r, eval=TRUE}
+kingsts <- ts(kings)
+kingsts
+```  
+If your time series data is collected at intervals shorter than a year, like monthly or quarterly, you can use the `frequency` parameter in the `ts()` function. For monthly data, set `frequency=12`, and for quarterly data, set `frequency=4`. You can also indicate the starting year and interval with the `start` parameter. For instance, if the data begins in the second quarter of 1986, you'd use `start=c(1986, 2)`.  
+```{r, echo=FALSE, include=FALSE}
+births <- scan("http://robjhyndman.com/tsdldata/data/nybirths.dat")
+```  
+Download `birth.csv` file form first section which contains number of births per month in New York city, from January 1946 to December 1959. So it can be converted to ts object in R as follows. It is a monthly data so frequency 12.
+```{r, eval=TRUE}
+birthsts<- ts(births, frequency=12, start=c(1946,1))
+birthsts
+```  
+
+similarly for `souvenir.csv`  
+
+```{r, echo=FALSE, include=FALSE}
+souvenir <- scan("http://robjhyndman.com/tsdldata/data/fancy.dat")
+```  
+```{r, eval=TRUE}
+souvenirts <- ts(souvenir, frequency=12, start=c(1987,1))
+souvenirts
+``` 
+
+## Plotting time series data   
+
+After importing a time series into R, the next step is often to create a plot of the data. You can do this using the `plot.ts()` function. For example, to plot the time series of the ages at death of 42 successive English kings, you would write:  
+```{r, eval=TRUE}
+plot.ts(kingsts)
+```  
+In the time plot, the fluctuations in the data appear to be relatively consistent in size throughout the series. This suggests that an additive model could be appropriate for describing this time series. In an additive model, the components (trend, seasonality, and residuals) are added together, which works well when the variability (the size of fluctuations) does not change much over time.  
+
+```{r, eval=TRUE}
+plot.ts(birthsts)
+```  
+The time series shows a pattern of seasonal variation in monthly births, with peaks in the summer and dips in the winter. This suggests that an additive model could be suitable, as the size of the seasonal fluctuations remains fairly constant and does not seem influenced by the overall level of the series. Additionally, the random variations in the data appear to stay relatively stable over time.  
+
+```{r, eval=TRUE}
+plot.ts(souvenirts)
+```  
+In this case, an additive model doesn't seem suitable because both the seasonal and random fluctuations increase as the time series level rises. To make the data more suitable for an additive model, we may need to apply a transformation. One common approach is to take the natural logarithm of the original data, which can help stabilize the variance and make the fluctuations more consistent across the series.  
+```{r, eval=TRUE}
+logsouvenirts <- log(souvenirts)
+plot.ts(logsouvenirts)
+```  
+In the log-transformed time series, the size of both the seasonal and random fluctuations appears relatively stable over time and does not seem to vary with the overall level of the series. This suggests that the log-transformed data is now more suitable for an additive model, as the fluctuations are more uniform throughout the time series.  
+
+## Decomposing Time Series  
+
+Decomposing a time series involves breaking it down into distinct elements to better understand its underlying patterns. Typically, this process separates the data into three key components:  
+
+1. **Trend Component**: This reflects the long-term direction of the data, showing whether there is an overall upward or downward movement over time. It helps to identify the general course of the series without short-term fluctuations.  
+  
+2. **Seasonal Component**: If the data exhibits regular patterns at consistent intervals, this component captures those repeating cycles. For example, monthly sales data may show higher sales during the holiday season every year. This helps to isolate predictable fluctuations from the rest of the data.  
+
+3. **Irregular (or Residual) Component**: After removing the trend and seasonal components, what's left is the irregular component, which represents random noise or short-term variations that cannot be attributed to a clear pattern. These fluctuations are unpredictable and often occur due to unforeseen events or natural variability.  
+
+By decomposing a time series, you can better analyze and model the individual components, making it easier to forecast future values or understand the underlying behaviors of the data.  
+
+### Decomposing Non-Seasonal Data
+
+A non-seasonal time series typically consists of a trend component and an irregular component. Decomposing this type of time series involves estimating these two components separately.
+
+To estimate the trend component of a non-seasonal time series that can be modeled using an additive approach, a common technique is to apply a smoothing method. One effective method for this is the simple moving average (SMA), which helps to smooth out short-term fluctuations and highlight longer-term trends.
+
+In R, you can use the `SMA()` function from the "TTR" package to calculate the simple moving average of your time series data. Here’s how to do it:
+  
+  1. **Install the "TTR" Package**: If you haven't already installed the "TTR" package, you can do so by running the following command in R:
+```{r, eval=FALSE, include=TRUE}
+install.packages("TTR")
+```  
+
+2. **Load the "TTR" Package**: Once the package is installed, you can load it into your R session with the following command:
+
+```{r, eval=TRUE, include=TRUE}
+library(TTR)
+```
+
+After loading the package, you can then use the `SMA()` function to compute the simple moving average and obtain the trend component of your non-seasonal time series. This process allows you to better understand the underlying trend in the data by reducing noise from irregular fluctuations. 
+```{r, eval=TRUE}
+kingstsSMA3 <- SMA(kingsts,n=3)
+plot.ts(kingstsSMA3)
+```  
+Although smoothing the time series with a simple moving average of order 3 has helped reduce some fluctuations, there are still considerable random variations present. To achieve a more accurate estimation of the trend component, it may be beneficial to apply a higher-order moving average. 
+
+Finding the optimal level of smoothing often requires some trial and error to determine the best order that balances noise reduction while preserving the essential patterns in the data. 
+
+For instance, you can experiment with a simple moving average of order 8 to see if this provides a clearer representation of the trend. Here’s how you can do that in R:
+
+```{r, eval=TRUE}
+kingstsSMA8 <- SMA(kingsts,n=8)
+plot.ts(kingstsSMA8)
+```
+
+Using a higher order like 8 should help smooth the data further, potentially reducing the random fluctuations and allowing for a clearer view of the underlying trend. This iterative approach can lead to a more accurate understanding of the time series behavior.  
+
+### Decomposing Seasonal Data
+
+A seasonal time series is characterized by three components: a trend component, a seasonal component, and an irregular component. Decomposing this time series involves separating it into these three distinct elements to better understand its structure.
+
+To estimate the trend and seasonal components of a seasonal time series that can be modeled using an additive approach, you can utilize the `decompose()` function in R. This function effectively breaks down the time series into its constituent components, providing estimates for each.
+
+Here’s how to use the `decompose()` function:
+
+1. **Apply the `decompose()` Function**: You can call this function on your seasonal time series object. For example:
+
+```{r, eval=TRUE}
+birthstscomp <- decompose(birthsts)
+```
+
+2. **Accessing Components**: The `decompose()` function returns a list object containing the estimates of the seasonal, trend, and irregular components. You can access these components using the following names:
+
+   - `birthstscomp$seasonal`: This element holds the estimated seasonal component.
+   - `birthstscomp$trend`: This contains the estimated trend component.
+   - `birthstscomp$random`: This represents the irregular component.
+
+By decomposing the time series, you can analyze each component separately, which can enhance your understanding of the data and improve forecasting accuracy.  
+
+The estimated seasonal factors for the months from January to December indicate consistent patterns across each year. Notably, July has the highest seasonal factor at approximately 1.46, suggesting a peak in births during that month. Conversely, February has the lowest seasonal factor at around -2.08, indicating a trough in births during this time of year.
+
+To visualize these components—trend, seasonal, and irregular—you can use the `plot()` function in R. Here’s how to do it:
+
+1. **Plot the Components**: After decomposing your time series, you can create plots for each component as follows:
+
+```{r, eval=TRUE}
+plot(birthstscomp)
+```
+
+This command will generate a series of plots showing the estimated trend, seasonal, and irregular components of your time series, allowing you to analyze and interpret the behavior of each component visually.  
+
+The plot presented above displays the original time series at the top, followed by the estimated trend component, the estimated seasonal component, and finally, the estimated irregular component at the bottom. The trend component reveals a slight decline from approximately 24 in 1947 to around 22 in 1948. After this dip, there is a consistent upward trend, reaching about 27 by 1959.  
+
+## Seasonally Adjusting a Time Series  
+
+Seasonal adjustment of a time series involves removing the seasonal effects to reveal the underlying trends and irregularities more clearly. If the time series can be described using an additive model, this process is relatively straightforward. By estimating the seasonal component and subtracting it from the original data, you can remove the seasonal variation and obtain a seasonally adjusted time series.
+
+Here’s how to achieve this in R using the `decompose()` function:
+
+1. **Estimate the Seasonal Component**: First, decompose the time series to estimate its seasonal component using the `decompose()` function. This function calculates the seasonal, trend, and irregular components of the data.
+   
+```{r, eval=TRUE}
+birthstscomp<- decompose(birthsts)
+```
+
+2. **Subtract the Seasonal Component**: Once you have the seasonal component, subtract it from the original time series to remove the seasonality. This gives you a seasonally adjusted series:
+
+```{r, eval=TRUE}
+birthstsadj<- birthsts - birthstscomp$seasonal
+```  
+
+
+3. **Interpretation**: The result is a time series without the repetitive seasonal fluctuations, making it easier to focus on trends and irregular components. For example, if you're analyzing the number of births per month in New York City, this adjustment will help you see whether the overall trend in births is increasing or decreasing, without being influenced by regular seasonal peaks and troughs.
+
+By seasonally adjusting the data, analysts can make more accurate comparisons and forecasts without seasonal noise. This process is crucial in understanding the true underlying behavior of time series data, especially when making decisions based on long-term trends.  
+
+We can then plot the seasonally adjusted time series using the `plot()` function  
+```{r, eval=TRUE}
+plot(birthstsadj)
+```  
+
+## Forecasts Using Exponential Smoothing  
+
+Exponential smoothing, first introduced by Robert Goodell Brown in 1956 and later refined by Charles C. Holt in 1957, is a widely effective technique for smoothing time-series data. Unlike methods like the simple moving average, which apply equal weights to past data points, exponential smoothing uses an exponentially decreasing weight function. This approach assigns more significance to recent observations and less to older ones. A key parameter in this method is the smoothing constant, which determines the rate of decay for the weights. Due to its straightforward nature and ease of application, exponential smoothing is frequently employed in time-series analysis, often incorporating factors like seasonality based on user-defined assumptions.  
+Exponential smoothing is generally used to make short term forecasts, but longer-term forecasts using this technique can be quite unreliable.  
+
+When the smoothing factor (α) is larger, the level of smoothing decreases. An α value close to 1 results in less smoothing, giving more weight to recent changes in the data. Conversely, an α value closer to 0 leads to greater smoothing, making the model less responsive to recent fluctuations.
+
+There is no universally accepted method for selecting the ideal α value. In some cases, the statistician’s expertise is used to choose an appropriate factor. Alternatively, statistical methods can be applied to optimize α, such as using the least squares method to find the value that minimizes the sum of errors in the model.  
+
+
+### Types of Exponential Smoothing  
+
+1. **Simple Exponential Smoothing**:
+  - Best suited for data without trend or seasonality.
+- The forecast for the next period is a weighted average of past observations, where weights decrease exponentially for older observations.
+- The smoothing parameter (\(\alpha\)) controls the degree of weighting; values range from 0 to 1. A higher \(\alpha\) gives more weight to recent observations.
+
+**Formula**:
+  \[
+    F_{t+1} = \alpha Y_t + (1 - \alpha) F_t
+    \]
+where \(F_{t+1}\) is the forecast for the next period, \(Y_t\) is the actual observation at time \(t\), and \(F_t\) is the forecast for time \(t\).
+
+2. **Holt’s Linear Exponential Smoothing**:
+  - Extends simple exponential smoothing to account for trends in the data.
+- It uses two smoothing parameters: one for the level (\(\alpha\)) and one for the trend (\(\beta\)).
+- This method allows for forecasts that can accommodate linear trends.
+
+**Formulas**:
+  - Level: 
+  \[
+    l_t = \alpha Y_t + (1 - \alpha)(l_{t-1} + b_{t-1})
+    \]
+- Trend:
+  \[
+    b_t = \beta (l_t - l_{t-1}) + (1 - \beta)b_{t-1}
+    \]
+- Forecast:
+  \[
+    F_{t+m} = l_t + mb_t
+    \]
+
+3. **Holt-Winters Exponential Smoothing**:
+  - An extension of Holt’s method that also incorporates seasonality.
+- It uses three parameters: \(\alpha\) for the level, \(\beta\) for the trend, and \(\gamma\) for the seasonal component.
+- There are two variants: additive (for seasonal effects that are roughly constant) and multiplicative (for seasonal effects that change with the level of the series).
+
+**Formulas**:
+  - Level:
+  \[
+    l_t = \alpha (Y_t / s_{t-s}) + (1 - \alpha)(l_{t-1} + b_{t-1})
+    \]
+- Trend:
+  \[
+    b_t = \beta (l_t - l_{t-1}) + (1 - \beta)b_{t-1}
+    \]
+- Seasonal:
+  \[
+    s_t = \gamma (Y_t / l_t) + (1 - \gamma)s_{t-s}
+    \]
+- Forecast:
+  \[
+    F_{t+m} = (l_t + mb_t)s_{t-m}
+    \]
+
+
+### Advantages of Exponential Smoothing
+
+- **Simplicity**: It is relatively easy to implement and understand.
+- **Flexibility**: Different types can accommodate various data patterns (trends and seasonality).
+- **Adaptability**: The method can quickly adjust to changes in the data patterns.  
+
+Exponential smoothing is a powerful technique for forecasting time series data. By applying weighted averages to past observations, it effectively captures trends and seasonal patterns, making it a valuable tool for analysts and decision-makers. The method's adaptability and ease of use make it an essential part of any forecasting toolkit.  

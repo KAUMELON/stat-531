@@ -13,7 +13,6 @@ fig:saving3
 fig:hex
 fig:hex1
 fig:box
-section
 introduction
 statistical-software
 types-of-statistical-software
@@ -98,3 +97,13 @@ how-to-get-hex-codes
 boxplot
 anatomy-of-boxplot
 minimum-value
+time-series-analysis-using-r
+getting-started
+plotting-time-series-data
+decomposing-time-series
+decomposing-non-seasonal-data
+decomposing-seasonal-data
+seasonally-adjusting-a-time-series
+forecasts-using-exponential-smoothing
+types-of-exponential-smoothing
+advantages-of-exponential-smoothing

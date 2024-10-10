@@ -4,21 +4,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 6 Importing data files | DATA ANALYSIS USING STATISTICAL PACKAGES</title>
+<title>Chapter 5 Importing data files | DATA ANALYSIS USING STATISTICAL PACKAGES</title>
 <meta name="author" content="Dr. Pratheesh P. Gopinath">
 <meta name="description" content="In the previous chapter we have discussed the very basics of R programming including installation, launching, basic data types and arithmetic functions. Here, you will learn how to import data...">
-<meta name="generator" content="bookdown 0.36 with bs4_book()">
-<meta property="og:title" content="Chapter 6 Importing data files | DATA ANALYSIS USING STATISTICAL PACKAGES">
+<meta name="generator" content="bookdown 0.40.3 with bs4_book()">
+<meta property="og:title" content="Chapter 5 Importing data files | DATA ANALYSIS USING STATISTICAL PACKAGES">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.PNG">
 <meta property="og:description" content="In the previous chapter we have discussed the very basics of R programming including installation, launching, basic data types and arithmetic functions. Here, you will learn how to import data...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 6 Importing data files | DATA ANALYSIS USING STATISTICAL PACKAGES">
+<meta name="twitter:title" content="Chapter 5 Importing data files | DATA ANALYSIS USING STATISTICAL PACKAGES">
 <meta name="twitter:description" content="In the previous chapter we have discussed the very basics of R programming including installation, launching, basic data types and arithmetic functions. Here, you will learn how to import data...">
 <meta name="twitter:image" content="/images/cover.PNG">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.1/transition.js"></script><script src="libs/bs3compat-0.5.1/tabs.js"></script><script src="libs/bs3compat-0.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
     
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
@@ -47,15 +47,15 @@
 <li><a class="" href="index.html">Welcome</a></li>
 <li><a class="" href="preface.html">Preface</a></li>
 <li><a class="" href="syllabus.html">Syllabus</a></li>
-<li><a class="" href="section.html"><span class="header-section-number">1</span></a></li>
-<li><a class="" href="introduction.html"><span class="header-section-number">2</span> Introduction</a></li>
-<li><a class="" href="r-and-r-studio.html"><span class="header-section-number">3</span> R and R studio</a></li>
-<li><a class="" href="rbase.html"><span class="header-section-number">4</span> R basics</a></li>
-<li><a class="" href="packages-and-libraries.html"><span class="header-section-number">5</span> Packages and libraries</a></li>
-<li><a class="active" href="import.html"><span class="header-section-number">6</span> Importing data files</a></li>
-<li><a class="" href="dataset.html"><span class="header-section-number">7</span> Datasets in R</a></li>
-<li><a class="" href="descriptive-statistics.html"><span class="header-section-number">8</span> Descriptive Statistics</a></li>
-<li><a class="" href="graphical-representation.html"><span class="header-section-number">9</span> Graphical Representation</a></li>
+<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="r-and-r-studio.html"><span class="header-section-number">2</span> R and R studio</a></li>
+<li><a class="" href="rbase.html"><span class="header-section-number">3</span> R basics</a></li>
+<li><a class="" href="packages-and-libraries.html"><span class="header-section-number">4</span> Packages and libraries</a></li>
+<li><a class="active" href="import.html"><span class="header-section-number">5</span> Importing data files</a></li>
+<li><a class="" href="dataset.html"><span class="header-section-number">6</span> Datasets in R</a></li>
+<li><a class="" href="descriptive-statistics.html"><span class="header-section-number">7</span> Descriptive Statistics</a></li>
+<li><a class="" href="graphical-representation.html"><span class="header-section-number">8</span> Graphical Representation</a></li>
+<li><a class="" href="time-series-analysis-using-r.html"><span class="header-section-number">9</span> Time series Analysis using R</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -64,18 +64,18 @@
         </div>
       </nav>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="import" class="section level1" number="6">
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="import" class="section level1" number="5">
 <h1>
-<span class="header-section-number">6</span> Importing data files<a class="anchor" aria-label="anchor" href="#import"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5</span> Importing data files<a class="anchor" aria-label="anchor" href="#import"><i class="fas fa-link"></i></a>
 </h1>
 <p>In the previous chapter we have discussed the very basics of R
 programming including installation, launching, basic data types and
 arithmetic functions. Here, you will learn how to import data into R. It
 is important to ensure that your data is well prepared before importing
 it into R to avoid errors.</p>
-<div id="preparing-your-file" class="section level2" number="6.1">
+<div id="preparing-your-file" class="section level2" number="5.1">
 <h2>
-<span class="header-section-number">6.1</span> Preparing your file<a class="anchor" aria-label="anchor" href="#preparing-your-file"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.1</span> Preparing your file<a class="anchor" aria-label="anchor" href="#preparing-your-file"><i class="fas fa-link"></i></a>
 </h2>
 <ul>
 <li><p>File can be prepared in MS Excel</p></li>
@@ -88,9 +88,9 @@ analysis of experiments , there each row name is treatment name,
 which should be repeated for each replication</p></li>
 </ul>
 <p>Column names should be compatible with R naming conventions.</p>
-<div id="naming-conventions" class="section level3" number="6.1.1">
+<div id="naming-conventions" class="section level3" number="5.1.1">
 <h3>
-<span class="header-section-number">6.1.1</span> Naming conventions:<a class="anchor" aria-label="anchor" href="#naming-conventions"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.1.1</span> Naming conventions:<a class="anchor" aria-label="anchor" href="#naming-conventions"><i class="fas fa-link"></i></a>
 </h3>
 <ul>
 <li><p>Avoid names with blank spaces. Bad column name <code>Sepal width</code>; Good
@@ -112,13 +112,13 @@ Good format: 01/01/2016. Bad format: 01/01/16</p></li>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:goodfile"></span>
 <img src="images/data1c4.png" alt="An example file" width="50%"><p class="caption">
-Figure 6.1: An example file
+Figure 5.1: An example file
 </p>
 </div>
 </div>
-<div id="saving-file" class="section level3" number="6.1.2">
+<div id="saving-file" class="section level3" number="5.1.2">
 <h3>
-<span class="header-section-number">6.1.2</span> Saving file<a class="anchor" aria-label="anchor" href="#saving-file"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.1.2</span> Saving file<a class="anchor" aria-label="anchor" href="#saving-file"><i class="fas fa-link"></i></a>
 </h3>
 <p>I recommend you to save your file in .csv (comma separated value file)
 format.</p>
@@ -146,56 +146,56 @@ complicated data. The CSV file format may be more advantageous if you
 intend to move your data between platforms or export and import it
 between interfaces.</p>
 </div>
-<div id="how-to-save-as-csv" class="section level3" number="6.1.3">
+<div id="how-to-save-as-csv" class="section level3" number="5.1.3">
 <h3>
-<span class="header-section-number">6.1.3</span> How to save as csv<a class="anchor" aria-label="anchor" href="#how-to-save-as-csv"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.1.3</span> How to save as csv<a class="anchor" aria-label="anchor" href="#how-to-save-as-csv"><i class="fas fa-link"></i></a>
 </h3>
 <p>Under the "File name" section in the "Save As" tab, you can select
 "Save as type" and change it to "CSV (Comma delimited) (*.csv).</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:saving"></span>
 <img src="images/data2c4.png" alt="How to save as csv" width="50%"><p class="caption">
-Figure 6.2: How to save as csv
+Figure 5.2: How to save as csv
 </p>
 </div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:saving1"></span>
 <img src="images/data3c4.png" alt="How to save as csv (1)" width="80%"><p class="caption">
-Figure 6.3: How to save as csv (1)
+Figure 5.3: How to save as csv (1)
 </p>
 </div>
 </div>
 </div>
-<div id="importing-data-set-in-rstudio" class="section level2" number="6.2">
+<div id="importing-data-set-in-rstudio" class="section level2" number="5.2">
 <h2>
-<span class="header-section-number">6.2</span> Importing Data set in Rstudio<a class="anchor" aria-label="anchor" href="#importing-data-set-in-rstudio"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.2</span> Importing Data set in Rstudio<a class="anchor" aria-label="anchor" href="#importing-data-set-in-rstudio"><i class="fas fa-link"></i></a>
 </h2>
 <p>To import a csv file in Rstudio</p>
 <p>click on <code>File</code> then click on <code>Import Dataset</code> then select <code>from Text (base)</code></p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:saving2"></span>
 <img src="images/data4c4.png" alt="Importing data set" width="50%"><p class="caption">
-Figure 6.4: Importing data set
+Figure 5.4: Importing data set
 </p>
 </div>
 <p>Select the file and click open</p>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:saving3"></span>
 <img src="images/data5c4.png" alt="Import Dataset dialogue box" width="80%"><p class="caption">
-Figure 6.5: Import Dataset dialogue box
+Figure 5.5: Import Dataset dialogue box
 </p>
 </div>
 <p>In the <em>Import Dataset</em> dialogue box you can change the name of the
 dataset in the Box under <code>Name</code>. Heading radio button will be default
 ‘yes’. Click on <code>import</code>. The dataset will be now imported and ready to
 work on.</p>
-<div id="alternate-methods" class="section level3" number="6.2.1">
+<div id="alternate-methods" class="section level3" number="5.2.1">
 <h3>
-<span class="header-section-number">6.2.1</span> Alternate methods<a class="anchor" aria-label="anchor" href="#alternate-methods"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.2.1</span> Alternate methods<a class="anchor" aria-label="anchor" href="#alternate-methods"><i class="fas fa-link"></i></a>
 </h3>
-<div id="importing-csv-files" class="section level4" number="6.2.1.1">
+<div id="importing-csv-files" class="section level4" number="5.2.1.1">
 <h4>
-<span class="header-section-number">6.2.1.1</span> Importing csv files<a class="anchor" aria-label="anchor" href="#importing-csv-files"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.2.1.1</span> Importing csv files<a class="anchor" aria-label="anchor" href="#importing-csv-files"><i class="fas fa-link"></i></a>
 </h4>
 <p>Data can be also imported using read.csv() function in R.
 read.csv('path to the file')</p>
@@ -226,9 +226,9 @@ read.csv('path to the file')</p>
 ##                    
 ## </code></pre>
 </div>
-<div id="importing-excel-files" class="section level4" number="6.2.1.2">
+<div id="importing-excel-files" class="section level4" number="5.2.1.2">
 <h4>
-<span class="header-section-number">6.2.1.2</span> Importing excel files<a class="anchor" aria-label="anchor" href="#importing-excel-files"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.2.1.2</span> Importing excel files<a class="anchor" aria-label="anchor" href="#importing-excel-files"><i class="fas fa-link"></i></a>
 </h4>
 <p>To import from xlsx file, we need the package xlsx</p>
 <pre><code><a href="https://github.com/colearendt/xlsx">library(xlsx)  
@@ -239,9 +239,9 @@ df &lt;-read.xlsx("path/file.xlsx", n)
 </div>
 </div>
 </div>
-<div id="accessing-the-variables" class="section level2" number="6.3">
+<div id="accessing-the-variables" class="section level2" number="5.3">
 <h2>
-<span class="header-section-number">6.3</span> Accessing the variables<a class="anchor" aria-label="anchor" href="#accessing-the-variables"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.3</span> Accessing the variables<a class="anchor" aria-label="anchor" href="#accessing-the-variables"><i class="fas fa-link"></i></a>
 </h2>
 <p>The variables in the data can be accessed using <code>$</code> symbol to the data name</p>
 <div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
@@ -257,9 +257,9 @@ df &lt;-read.xlsx("path/file.xlsx", n)
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">$</span><span class="va">Petal_length</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   1.300   1.450   4.600   3.873   5.350   6.000</code></pre>
-<div id="function-to-access-variables-easily" class="section level3" number="6.3.1">
+<div id="function-to-access-variables-easily" class="section level3" number="5.3.1">
 <h3>
-<span class="header-section-number">6.3.1</span> Function to access variables easily<a class="anchor" aria-label="anchor" href="#function-to-access-variables-easily"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.3.1</span> Function to access variables easily<a class="anchor" aria-label="anchor" href="#function-to-access-variables-easily"><i class="fas fa-link"></i></a>
 </h3>
 <p>Without using the name of the data frame, you can access the variables in the data framework using the <code><a href="https://rdrr.io/r/base/attach.html">attach()</a></code> function in the R language. The data framework attachment created by the <code><a href="https://rdrr.io/r/base/attach.html">attach()</a></code> function is removed using the <code><a href="https://rdrr.io/r/base/detach.html">detach()</a></code> function.</p>
 <p>The database is attached to the R search path. This means that the database is searched by R when evaluating a variable, so objects in the database can be accessed by simply giving their names.</p>
@@ -286,13 +286,13 @@ df &lt;-read.xlsx("path/file.xlsx", n)
 <span><span class="kw"><a href="https://rdrr.io/r/base/detach.html">detach</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="some-useful-functions" class="section level2" number="6.4">
+<div id="some-useful-functions" class="section level2" number="5.4">
 <h2>
-<span class="header-section-number">6.4</span> Some useful functions<a class="anchor" aria-label="anchor" href="#some-useful-functions"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.4</span> Some useful functions<a class="anchor" aria-label="anchor" href="#some-useful-functions"><i class="fas fa-link"></i></a>
 </h2>
-<div id="str" class="section level3" number="6.4.1">
+<div id="str" class="section level3" number="5.4.1">
 <h3>
-<span class="header-section-number">6.4.1</span> str()<a class="anchor" aria-label="anchor" href="#str"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.4.1</span> str()<a class="anchor" aria-label="anchor" href="#str"><i class="fas fa-link"></i></a>
 </h3>
 <p>R object structures are displayed by <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code>. <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> is frequently used to display a list’s contents.It is used particularly when the data set is huge.</p>
 <div class="sourceCode" id="cb180"><pre class="downlit sourceCode r">
@@ -309,9 +309,9 @@ df &lt;-read.xlsx("path/file.xlsx", n)
 ##  $ Species     : chr  "setosa" "setosa" "setosa" "setosa" ...</code></pre>
 </div>
 </div>
-<div id="view" class="section level2" number="6.5">
+<div id="view" class="section level2" number="5.5">
 <h2>
-<span class="header-section-number">6.5</span> View()<a class="anchor" aria-label="anchor" href="#view"><i class="fas fa-link"></i></a>
+<span class="header-section-number">5.5</span> View()<a class="anchor" aria-label="anchor" href="#view"><i class="fas fa-link"></i></a>
 </h2>
 <div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_data</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">'data/iris.csv'</span><span class="op">)</span>  </span>
@@ -319,44 +319,39 @@ df &lt;-read.xlsx("path/file.xlsx", n)
 <span><span class="co"># Using str() function</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/View.html">View</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code></pre></div>
-
-<div class="rmdnote">
-<p><strong>Self assesment</strong></p>
-<ol style="list-style-type: decimal">
-<li>Create any dataset in excel with 4 coloumns, save it as a csv file</li>
-<li>Import the dataset into R, rename as my_data</li>
-<li>Calculate the summary of my_data
-</li>
-</ol>
-</div>
-
+<!-- ```{block2 item4, type='rmdnote'} -->
+<!-- **Self assesment** -->
+<!-- 1. Create any dataset in excel with 4 coloumns, save it as a csv file -->
+<!-- 2. Import the dataset into R, rename as my_data -->
+<!-- 3. Calculate the summary of my_data -->
+<!-- ``` -->
 
 </div>
 </div>
   <div class="chapter-nav">
-<div class="prev"><a href="packages-and-libraries.html"><span class="header-section-number">5</span> Packages and libraries</a></div>
-<div class="next"><a href="dataset.html"><span class="header-section-number">7</span> Datasets in R</a></div>
+<div class="prev"><a href="packages-and-libraries.html"><span class="header-section-number">4</span> Packages and libraries</a></div>
+<div class="next"><a href="dataset.html"><span class="header-section-number">6</span> Datasets in R</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#import"><span class="header-section-number">6</span> Importing data files</a></li>
+<li><a class="nav-link" href="#import"><span class="header-section-number">5</span> Importing data files</a></li>
 <li>
-<a class="nav-link" href="#preparing-your-file"><span class="header-section-number">6.1</span> Preparing your file</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#naming-conventions"><span class="header-section-number">6.1.1</span> Naming conventions:</a></li>
-<li><a class="nav-link" href="#saving-file"><span class="header-section-number">6.1.2</span> Saving file</a></li>
-<li><a class="nav-link" href="#how-to-save-as-csv"><span class="header-section-number">6.1.3</span> How to save as csv</a></li>
+<a class="nav-link" href="#preparing-your-file"><span class="header-section-number">5.1</span> Preparing your file</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#naming-conventions"><span class="header-section-number">5.1.1</span> Naming conventions:</a></li>
+<li><a class="nav-link" href="#saving-file"><span class="header-section-number">5.1.2</span> Saving file</a></li>
+<li><a class="nav-link" href="#how-to-save-as-csv"><span class="header-section-number">5.1.3</span> How to save as csv</a></li>
 </ul>
 </li>
 <li>
-<a class="nav-link" href="#importing-data-set-in-rstudio"><span class="header-section-number">6.2</span> Importing Data set in Rstudio</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#alternate-methods"><span class="header-section-number">6.2.1</span> Alternate methods</a></li></ul>
+<a class="nav-link" href="#importing-data-set-in-rstudio"><span class="header-section-number">5.2</span> Importing Data set in Rstudio</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#alternate-methods"><span class="header-section-number">5.2.1</span> Alternate methods</a></li></ul>
 </li>
 <li>
-<a class="nav-link" href="#accessing-the-variables"><span class="header-section-number">6.3</span> Accessing the variables</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#function-to-access-variables-easily"><span class="header-section-number">6.3.1</span> Function to access variables easily</a></li></ul>
+<a class="nav-link" href="#accessing-the-variables"><span class="header-section-number">5.3</span> Accessing the variables</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#function-to-access-variables-easily"><span class="header-section-number">5.3.1</span> Function to access variables easily</a></li></ul>
 </li>
 <li>
-<a class="nav-link" href="#some-useful-functions"><span class="header-section-number">6.4</span> Some useful functions</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#str"><span class="header-section-number">6.4.1</span> str()</a></li></ul>
+<a class="nav-link" href="#some-useful-functions"><span class="header-section-number">5.4</span> Some useful functions</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#str"><span class="header-section-number">5.4.1</span> str()</a></li></ul>
 </li>
-<li><a class="nav-link" href="#view"><span class="header-section-number">6.5</span> View()</a></li>
+<li><a class="nav-link" href="#view"><span class="header-section-number">5.5</span> View()</a></li>
 </ul>
 
       <div class="book-extra">
