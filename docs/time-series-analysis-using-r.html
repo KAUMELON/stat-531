@@ -7,7 +7,7 @@
 <title>Chapter 9 Time series Analysis using R | DATA ANALYSIS USING STATISTICAL PACKAGES</title>
 <meta name="author" content="Dr. Pratheesh P. Gopinath">
 <meta name="description" content="We will be using the following data to demonstrate Time series analysis in R. Download the data and save in your system for practice. -kings.csv contains data on the age of death of successive...">
-<meta name="generator" content="bookdown 0.40.3 with bs4_book()">
+<meta name="generator" content="bookdown 0.40 with bs4_book()">
 <meta property="og:title" content="Chapter 9 Time series Analysis using R | DATA ANALYSIS USING STATISTICAL PACKAGES">
 <meta property="og:type" content="book">
 <meta property="og:image" content="/images/cover.PNG">
@@ -373,6 +373,149 @@ where <span class="math inline">\(F_{t+1}\)</span> is the forecast for the next 
 <strong>Adaptability</strong>: The method can quickly adjust to changes in the data patterns.</li>
 </ul>
 <p>Exponential smoothing is a powerful technique for forecasting time series data. By applying weighted averages to past observations, it effectively captures trends and seasonal patterns, making it a valuable tool for analysts and decision-makers. The method’s adaptability and ease of use make it an essential part of any forecasting toolkit.</p>
+<p>Consider the data <code>rain.csv</code></p>
+<div class="sourceCode" id="cb282"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rainseries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html">ts</a></span><span class="op">(</span><span class="va">rain</span>,start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1813</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/plot.ts.html">plot.ts</a></span><span class="op">(</span><span class="va">rainseries</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="lecture_note_files/figure-html/unnamed-chunk-90-1.png" width="672"></div>
+<p>In the above plot we can observe that the mean remains approximately constant at around 25 inches, and the random fluctuations appear to be relatively stable over time. Given this, it seems appropriate to apply an additive model for the time series. Consequently, we can generate forecasts using simple exponential smoothing.</p>
+<p>In R, we can fit a simple exponential smoothing model using the <code><a href="https://rdrr.io/r/stats/HoltWinters.html">HoltWinters()</a></code> function. For simple exponential smoothing, we must set the parameters <code>beta = FALSE</code> and <code>gamma = FALSE</code>, as these parameters are utilized for Holt’s or Holt-Winters exponential smoothing.</p>
+<p>The <code><a href="https://rdrr.io/r/stats/HoltWinters.html">HoltWinters()</a></code> function returns a list containing several key components. To forecast a time series, such as London’s annual rainfall, with simple exponential smoothing, we would use the following R code:</p>
+<div class="sourceCode" id="cb283"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rainforecast</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/HoltWinters.html">HoltWinters</a></span><span class="op">(</span><span class="va">rainseries</span>, beta <span class="op">=</span> <span class="cn">FALSE</span>, gamma <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">rainforecast</span></span></code></pre></div>
+<pre><code>## Holt-Winters exponential smoothing without trend and without seasonal component.
+## 
+## Call:
+## HoltWinters(x = rainseries, beta = FALSE, gamma = FALSE)
+## 
+## Smoothing parameters:
+##  alpha: 0.02412151
+##  beta : FALSE
+##  gamma: FALSE
+## 
+## Coefficients:
+##       [,1]
+## a 24.67819</code></pre>
+<p>The <code><a href="https://rdrr.io/r/stats/HoltWinters.html">HoltWinters()</a></code> function estimates an alpha value of approximately 0.024, indicating that the forecasts consider both recent and past observations, though they slightly prioritize recent data. By default, the function generates forecasts for the same time range as the original time series—in this case, London’s rainfall data from 1813 to 1912. The forecast results are saved in a list variable like <code>rainseriesforecasts</code>, and the predicted values can be accessed through its <code>fitted</code> element.</p>
+<div class="sourceCode" id="cb285"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rainforecast</span><span class="op">$</span><span class="va">fitted</span></span></code></pre></div>
+<pre><code>## Time Series:
+## Start = 1814 
+## End = 1912 
+## Frequency = 1 
+##          xhat    level
+## 1814 23.56000 23.56000
+## 1815 23.62054 23.62054
+## 1816 23.57808 23.57808
+## 1817 23.76290 23.76290
+## 1818 23.76017 23.76017
+## 1819 23.76306 23.76306
+## 1820 23.82691 23.82691
+## 1821 23.79900 23.79900
+## 1822 23.98935 23.98935
+## 1823 23.98623 23.98623
+## 1824 23.98921 23.98921
+## 1825 24.19282 24.19282
+## 1826 24.17032 24.17032
+## 1827 24.13171 24.13171
+## 1828 24.10442 24.10442
+## 1829 24.19549 24.19549
+## 1830 24.22261 24.22261
+## 1831 24.24329 24.24329
+## 1832 24.32812 24.32812
+## 1833 24.21938 24.21938
+## 1834 24.23290 24.23290
+## 1835 24.13369 24.13369
+## 1836 24.13867 24.13867
+## 1837 24.21782 24.21782
+## 1838 24.10257 24.10257
+## 1839 24.04293 24.04293
+## 1840 24.12608 24.12608
+## 1841 24.01280 24.01280
+## 1842 24.18448 24.18448
+## 1843 24.15808 24.15808
+## 1844 24.19889 24.19889
+## 1845 24.16153 24.16153
+## 1846 24.12748 24.12748
+## 1847 24.18133 24.18133
+## 1848 24.02499 24.02499
+## 1849 24.16454 24.16454
+## 1850 24.13476 24.13476
+## 1851 24.01621 24.01621
+## 1852 23.93453 23.93453
+## 1853 24.20964 24.20964
+## 1854 24.25018 24.25018
+## 1855 24.11509 24.11509
+## 1856 24.08964 24.08964
+## 1857 24.04430 24.04430
+## 1858 23.99933 23.99933
+## 1859 23.87319 23.87319
+## 1860 23.97780 23.97780
+## 1861 24.17710 24.17710
+## 1862 24.13110 24.13110
+## 1863 24.21405 24.21405
+## 1864 24.15075 24.15075
+## 1865 23.97658 23.97658
+## 1866 24.10933 24.10933
+## 1867 24.29001 24.29001
+## 1868 24.33729 24.33729
+## 1869 24.31468 24.31468
+## 1870 24.34134 24.34134
+## 1871 24.26847 24.26847
+## 1872 24.28659 24.28659
+## 1873 24.51752 24.51752
+## 1874 24.47295 24.47295
+## 1875 24.33660 24.33660
+## 1876 24.43558 24.43558
+## 1877 24.47717 24.47717
+## 1878 24.56625 24.56625
+## 1879 24.79573 24.79573
+## 1880 25.01341 25.01341
+## 1881 25.14045 25.14045
+## 1882 25.20750 25.20750
+## 1883 25.25411 25.25411
+## 1884 25.23351 25.23351
+## 1885 25.11571 25.11571
+## 1886 25.15248 25.15248
+## 1887 25.19729 25.19729
+## 1888 25.05286 25.05286
+## 1889 25.11768 25.11768
+## 1890 25.08710 25.08710
+## 1891 24.99407 24.99407
+## 1892 25.07019 25.07019
+## 1893 25.01085 25.01085
+## 1894 24.88515 24.88515
+## 1895 24.95884 24.95884
+## 1896 24.87469 24.87469
+## 1897 24.84201 24.84201
+## 1898 24.79420 24.79420
+## 1899 24.62284 24.62284
+## 1900 24.57259 24.57259
+## 1901 24.54141 24.54141
+## 1902 24.48421 24.48421
+## 1903 24.39631 24.39631
+## 1904 24.72686 24.72686
+## 1905 24.62852 24.62852
+## 1906 24.58852 24.58852
+## 1907 24.58059 24.58059
+## 1908 24.54271 24.54271
+## 1909 24.52166 24.52166
+## 1910 24.57541 24.57541
+## 1911 24.59433 24.59433
+## 1912 24.59905 24.59905</code></pre>
+<p>We can plot the original time series against the forecasts</p>
+<div class="sourceCode" id="cb287"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">rainforecast</span><span class="op">)</span></span></code></pre></div>
+<p><img src="lecture_note_files/figure-html/unnamed-chunk-93-1.png" width="672">
+The plot displays the original time series in black, with the forecasts represented by a red line. The forecasted time series appears much smoother compared to the original data. To assess the accuracy of these forecasts, we can calculate the sum of squared errors (SSE) for the in-sample forecast errors, which refer to the forecast errors over the period covered by the original time series. This SSE value is stored in the <code>SSE</code> element of the <code>rainforecast</code> list.</p>
+<div class="sourceCode" id="cb288"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rainforecast</span><span class="op">$</span><span class="va">SSE</span></span></code></pre></div>
+<pre><code>## [1] 1828.855</code></pre>
+<p>In this case, the sum of squared errors (SSE) is 1828.855. In simple exponential smoothing, the initial value for the level is often set to the first value of the time series. For instance, in London’s rainfall data, the initial value is 23.56 inches for the year 1813. To specify this initial level value in the HoltWinters() function, you can use the l.start parameter. For example, to set the initial level to 23.56, you would use the following command:</p>
+<div class="sourceCode" id="cb290"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rainforecast</span><span class="op">$</span><span class="va">SSE</span></span></code></pre></div>
+<pre><code>## [1] 1828.855</code></pre>
 
 </div>
 </div>

@@ -256,7 +256,7 @@ Exponential smoothing is a powerful technique for forecasting time series data. 
 
 Consider the data `rain.csv`  
 ```{r, echo=FALSE, include=FALSE}
-rain <- scan("https://drive.google.com/file/d/1WbA8Vpgoed_pinj8W3IBCoxUYQYxRsxZ/view?usp=drive_link",skip=1)
+rain <- scan("http://robjhyndman.com/tsdldata/hurst/precip1.dat",skip=1)
 ```   
 
 ```{r, eval=TRUE}
@@ -270,7 +270,30 @@ In R, we can fit a simple exponential smoothing model using the `HoltWinters()` 
 
 The `HoltWinters()` function returns a list containing several key components. To forecast a time series, such as London’s annual rainfall, with simple exponential smoothing, we would use the following R code:
 
-```R
-HoltWinters(time_series, beta = FALSE, gamma = FALSE)
+```{r, eval=TRUE}
+rainforecast <-HoltWinters(rainseries, beta = FALSE, gamma = FALSE)
+rainforecast
+```  
+
+The `HoltWinters()` function estimates an alpha value of approximately 0.024, indicating that the forecasts consider both recent and past observations, though they slightly prioritize recent data. By default, the function generates forecasts for the same time range as the original time series—in this case, London's rainfall data from 1813 to 1912. The forecast results are saved in a list variable like `rainseriesforecasts`, and the predicted values can be accessed through its `fitted` element.  
+
+```{r, eval=TRUE}
+rainforecast$fitted
+```  
+We can plot the original time series against the forecasts  
+
+```{r, eval=TRUE}
+plot(rainforecast)
+```  
+The plot displays the original time series in black, with the forecasts represented by a red line. The forecasted time series appears much smoother compared to the original data. To assess the accuracy of these forecasts, we can calculate the sum of squared errors (SSE) for the in-sample forecast errors, which refer to the forecast errors over the period covered by the original time series. This SSE value is stored in the `SSE` element of the `rainforecast` list.  
+```{r, eval=TRUE}
+rainforecast$SSE
+```  
+In this case, the sum of squared errors (SSE) is 1828.855. In simple exponential smoothing, the initial value for the level is often set to the first value of the time series. For instance, in London's rainfall data, the initial value is 23.56 inches for the year 1813. To specify this initial level value in the HoltWinters() function, you can use the l.start parameter. For example, to set the initial level to 23.56, you would use the following command:  
+```{r, eval=TRUE}
+rainforecast$SSE
 ```
+
+
+
 
