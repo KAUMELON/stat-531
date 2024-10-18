@@ -256,7 +256,7 @@ Exponential smoothing is a powerful technique for forecasting time series data. 
 
 Consider the data `rain.csv`  
 ```{r, echo=FALSE, include=FALSE}
-souvenir <- scan("http://robjhyndman.com/tsdldata/hurst/precip1.dat",skip=1)
+rain <- scan("https://drive.google.com/file/d/1WbA8Vpgoed_pinj8W3IBCoxUYQYxRsxZ/view?usp=drive_link",skip=1)
 ```   
 
 ```{r, eval=TRUE}
