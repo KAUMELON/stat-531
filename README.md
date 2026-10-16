@@ -1,6 +1,6 @@
 # R Programming for Agricultural Data Analysis
 
-Undergraduate textbook for the supplied seven-module 0+2 practical syllabus, developed from Dr. Pratheesh P. Gopinath's earlier lecture notes. This is a separate Quarto project; the original bookdown checkout is unchanged.
+Undergraduate textbook for the supplied seven-module 0+2 practical syllabus, developed from Dr. Pratheesh P. Gopinath's earlier lecture notes. The Quarto edition lives alongside the original bookdown sources and preserves the repository's history. The original rendered book remains in `docs/`; rendering Quarto writes the new edition to `_book/`.
 
 ## Open and render
 

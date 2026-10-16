@@ -1,0 +1,34 @@
+# Syllabus {-}  
+
+## Objective {-}   
+
+This course is meant for exposing the students in the usage of various statistical
+packages for analysis of data. It would provide the students an hands on experience in
+the analysis of their research data. This course is useful to all disciplines.  
+
+## UNIT I {-}  
+
+Use of Software packages for: Summarization and tabulation of data; Descriptive
+statistics; Graphical representation of data, Exploratory data analysis.
+
+## UNIT II {-}  
+
+Fitting and testing the goodness of fit of discrete and continuous probability
+distributions; Testing of hypothesis based on large sample test statistics; Testing of
+hypothesis using chi-square, t and F statistics.  
+
+## UNIT III {-}  
+
+Concept of analysis of variance and covariance of data for single factor, multi-factor,
+one-way and multi-classified experiments, contrast analysis, multiple comparisons.  
+
+## UNIT IV {-}  
+
+Analysis of mixed models; Estimation of variance components; Testing the significance
+of contrasts; Correlation and regression including multiple regression.  
+
+## UNIT V {-}  
+
+Discriminant function; Factor analysis; Principal component analysis; Analysis of time
+series data, Fitting of non-linear models; Time series data. 
+
