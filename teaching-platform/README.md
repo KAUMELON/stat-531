@@ -17,7 +17,7 @@ The classroom has replaced the original public narration-first preview. The stud
 ## Registration and administration
 
 1. Student requests an account with name, email and password.
-2. Firebase sends an email verification link on registration/sign-in while unverified.
+2. Firebase sends an email verification link on registration or an explicit resend request. Ordinary sign-ins do not issue competing links. The verification email includes a return link to the classroom.
 3. The student remains in a waiting room until the department approves the account.
 4. Verified administrators **pratheesh.pg@kau.in** and **statoberry@gmail.com** have the Admin navigation item and can approve or suspend students. The requested Pratheesh account was provisioned through Firebase Authentication with an approved profile. Its supplied password was handled only in memory and verified by a password sign-in; it is never stored in source or logs. Email verification remains required.
 5. Approval checks use the current Firestore profile on every protected request. An email-verified account alone is insufficient. An approved student cannot approve others, import books, or release examination grades.
@@ -25,6 +25,8 @@ The classroom has replaced the original public narration-first preview. The stud
 The admin desk supports an approval queue, suspensions, provisional examination review/release and importing prepared JSON book manifests. Imported books are private departmental reading material. Rich interactive activities, practical checks, narration and slides for additional books still need preparation and academic review; arbitrary PDF/DOCX ingestion is not implemented.
 
 ## Authentication and private content
+
+The landing page renders immediately while session validation happens in the background. Unverified accounts show separate email-verification and department-approval states, a Check email verification button, and an explicit resend action requiring password confirmation.
 
 The old public Firebase browser-SDK sign-in failure was resolved by moving the app to same-origin Firebase session endpoints. Email/password authentication remains Firebase Authentication. Passwords pass over TLS to Identity Toolkit, are not logged or saved in Firestore, and are never written into project files.
 

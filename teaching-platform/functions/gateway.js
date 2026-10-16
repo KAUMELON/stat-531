@@ -22,9 +22,10 @@ module.exports=({db,handlers,instructorEmail,course,bank})=>async(req,res)=>{
    if(typeof email!=='string'||typeof password!=='string'||email.length>254||password.length>128)throw fail(400,'Enter your email and password.');
    if(route==='register')await handlers.registerStudent.run({data:{email,password,name},rawRequest:req});
    const signed=await identity('signInWithPassword',{email,password,returnSecureToken:true});
-   if(!signed.emailVerified&&!email.endsWith('@example.invalid')){const decoded=await auth().verifyIdToken(signed.idToken);if(!decoded.email_verified)await identity('sendOobCode',{requestType:'VERIFY_EMAIL',idToken:signed.idToken}).catch(()=>{});}
+   const decoded=await auth().verifyIdToken(signed.idToken);let verificationSent=false,verificationError=false;
+   if(!decoded.email_verified&&(route==='register'||req.body.resendVerification===true)&&!email.endsWith('@example.invalid')){try{await identity('sendOobCode',{requestType:'VERIFY_EMAIL',idToken:signed.idToken,continueUrl:'https://kau-agstat-teaching.web.app/'});verificationSent=true;}catch{verificationError=true;}}
    const session=await auth().createSessionCookie(signed.idToken,{expiresIn:cookieOptions.maxAge});
-   res.cookie('__session',session,cookieOptions);return res.json({ok:true});
+   res.cookie('__session',session,cookieOptions);return res.json({ok:true,verified:decoded.email_verified===true,verificationSent,verificationError});
   }
   if(req.method==='POST'&&route==='reset'){
    await quota('reset',5);if(typeof req.body?.email!=='string'||req.body.email.length>254)throw fail(400,'Enter your email.');
