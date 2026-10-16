@@ -86,6 +86,50 @@ Representing block as a factor avoids imposing a linear trend in arbitrary block
 
 Ignoring blocks can waste precision and misrepresent the design. Conversely, adding terms without understanding randomization does not create a valid analysis. The default ANOVA sums of squares are sequential; in unbalanced designs, term order and the exact hypothesis require attention. The balanced examples here keep that issue visible without treating advanced factorial analysis as a one-line extension.
 
+## Reading treatment comparisons in their experimental context
+
+Let us distinguish three quantities that are often placed in the same results table: a treatment mean, the standard deviation of individual plots in that treatment, and the standard error of an estimated treatment contrast. The mean describes a central response. The SD describes plot variation. The contrast's standard error depends on the model and design, including the number of replicates and any blocking adjustment.
+
+For a balanced independent one-way design with `r` plots per treatment and residual mean square `MSE`, the standard error of a difference between two treatment means is $\sqrt{2\,MSE/r}$. In a balanced additive RCBD the analogous contrast uses the residual variance after accounting for blocks. This is why treatment comparisons should use the appropriate model's error term rather than the spread of the three treatment means.
+
+```{r}
+anova_table <- anova(blocked)
+residual_mse <- anova_table["Residuals", "Mean Sq"]
+r <- length(unique(rcbd$block))
+c(residual_mse = residual_mse,
+  standard_error_difference = sqrt(2 * residual_mse / r))
+```
+
+This standard error does not itself adjust for examining all treatment pairs. Multiplicity adjustments change the critical comparison or interval construction. A planned comparison identified before data collection may ask a more focused question than all pairwise comparisons, such as average response under two management treatments versus the control. Its weights and intended hypothesis should be stated explicitly.
+
+## A factorial extension: treatment and variety
+
+In agricultural research, two factors may be applied together. A factorial experiment observes combinations of their levels. Here the larger simulated crop dataset contains three management treatments and two varieties in each of five blocks, with two independently measured plot replicates for each combination. This allows us to illustrate a treatment-by-variety interaction.
+
+```{r}
+crop <- read.csv("data/crop_trial.csv")
+crop$block <- factor(crop$block)
+crop$treatment <- factor(crop$treatment)
+crop$variety <- factor(crop$variety)
+with(crop, interaction.plot(treatment, variety, yield_t_ha,
+                            xlab = "Management treatment", ylab = "Mean yield (t/ha)",
+                            trace.label = "Variety", type = "b", pch = c(16, 17)))
+factorial_fit <- aov(yield_t_ha ~ block + treatment * variety, data = crop)
+summary(factorial_fit)
+```
+
+The expression `treatment * variety` expands to both main effects and their interaction. An interaction means that the difference between varieties depends on management treatment, or equivalently that a management contrast depends on variety. A single overall treatment difference can then conceal an important pattern. Nonparallel sample lines suggest an interaction to examine, but sampling variation can also make them nonparallel.
+
+If interaction is important scientifically, report comparisons within relevant levels with an appropriate simultaneous procedure. Do not interpret a nonsignificant interaction as proof that responses are identical across varieties. Likewise, do not remove an interaction solely to make a main effect significant. Consider the question, precision, and experimental design.
+
+The factorial example assumes both factors were randomized at the plot level within blocks. If irrigation is applied to whole field sections and variety to smaller subplots, the error structure changes. A split-plot experiment needs a split-plot analysis; entering the same factor names into an ordinary one-error ANOVA is not sufficient.
+
+## Reporting an ANOVA analysis
+
+A useful report identifies the design, factor levels, independent replication, model, and any exclusions before presenting the table. Report treatment estimates with units, the global test and relevant degrees of freedom, the method used for comparisons, and the main diagnostic findings. An agronomic interpretation should explain the size of a response, not merely its statistical label.
+
+For example, a small positive difference with a wide interval may justify a larger experiment rather than a recommendation. A precisely estimated increase may still be uneconomic if the treatment is costly. A trial at one site and season does not establish performance under all environments. These are not flaws that another p-value can repair; they define the scope of the evidence.
+
 ## Practical 13 and exercises
 
 1. Explain the global null in `PlantGrowth` and identify residual degrees of freedom.
@@ -95,3 +139,27 @@ Ignoring blocks can waste precision and misrepresent the design. Conversely, add
 5. Propose a suitable randomization scheme for a three-treatment experiment on a field with a fertility gradient.
 
 **Chapter review.** ANOVA partitions variation according to a model. The model should follow randomization, and a global comparison must be distinguished from individual treatment contrasts.
+
+## Live R laboratory
+
+::: {.live-r}
+**Compare three treatment means**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+data(PlantGrowth)
+fit <- aov(weight ~ group, data = PlantGrowth)
+summary(fit)
+TukeyHSD(fit)
+boxplot(weight ~ group, PlantGrowth,
+        col = c("#abc4e2", "#ebc276", "#87c4a3"),
+        xlab = "Group", ylab = "Dried weight")
+```
+
+**Investigate.** The omnibus F test and Tukey comparisons answer different questions. Consult the chapter for randomization, independence, residual checks, and how an ANOVA model changes for blocked designs.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

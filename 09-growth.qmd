@@ -76,6 +76,62 @@ A curved residual pattern suggests a missing feature of the growth curve. Increa
 
 The curve predicts a mean trajectory, not a guaranteed individual observation. `predict.nls()` does not automatically provide valid confidence or prediction intervals from an `interval` argument as `predict.lm()` does. Uncertainty may require an appropriate bootstrap or another justified method. Avoid presenting an unqualified long-term biomass forecast from a short growth experiment.
 
+## Seeing the role of each parameter
+
+It is easy to read a formula and still be unsure how its parameters affect the graph. Let us change one parameter at a time while keeping the others fixed. Begin with a logistic curve having an asymptote of 1,000 g/m², a rate parameter of 0.07 per day, and an inflection time of day 50.
+
+```{r}
+logistic_curve <- function(t, A = 1000, k = .07, ti = 50) {
+  A / (1 + exp(-k * (t - ti)))
+}
+t <- seq(0, 120, length.out = 200)
+old <- par(mfrow = c(1, 3))
+matplot(t, cbind(logistic_curve(t, A = 800), logistic_curve(t),
+                logistic_curve(t, A = 1200)), type = "l", lty = 1,
+        xlab = "Days", ylab = "Biomass (g/m²)", main = "Asymptote A")
+matplot(t, cbind(logistic_curve(t, k = .04), logistic_curve(t),
+                logistic_curve(t, k = .10)), type = "l", lty = 1,
+        xlab = "Days", ylab = "Biomass (g/m²)", main = "Rate k")
+matplot(t, cbind(logistic_curve(t, ti = 35), logistic_curve(t),
+                logistic_curve(t, ti = 65)), type = "l", lty = 1,
+        xlab = "Days", ylab = "Biomass (g/m²)", main = "Inflection time")
+par(old)
+```
+
+Increasing `A` raises the upper plateau. Increasing `k` makes the transition from early growth to the plateau more rapid. Increasing `ti` moves the rapid-growth phase later in time. These changes can compensate for one another over a short observed interval, which explains why parameters may be unstable when observations do not cover the whole trajectory.
+
+The logistic scale parameter used by R's `SSlogis()` is another way of expressing the same curve. In its usual form, `scal` is `1/k`. Thus a larger `scal` corresponds to a slower transition, whereas a larger `k` corresponds to a faster transition. Comparing printed parameter names without checking formulas can therefore reverse an interpretation.
+
+## Absolute and relative growth rates
+
+Absolute growth rate describes an increase in biomass per unit time. If biomass is in g/m² and time in days, its unit is g/m²/day. For the logistic curve, differentiating with respect to time gives
+
+$$\frac{dW}{dt}=kW\left(1-\frac{W}{A}\right).$$
+
+At small `W`, the factor `1 - W/A` is close to one. As biomass approaches the asymptote, that factor approaches zero and absolute growth slows. Relative growth rate divides absolute growth by current biomass:
+
+$$\frac{1}{W}\frac{dW}{dt}=k\left(1-\frac{W}{A}\right).$$
+
+Its unit is per day. Relative growth can decrease even while the absolute amount accumulated each day is increasing. A small seedling adding 1 g to 2 g has a larger proportional increase than a large plant adding 10 g to 200 g, although the large plant adds more biomass in absolute terms.
+
+```{r}
+predicted_w <- logistic_curve(t)
+absolute_rate <- .07 * predicted_w * (1 - predicted_w / 1000)
+relative_rate <- absolute_rate / predicted_w
+head(data.frame(day = t, biomass = predicted_w,
+                absolute_rate, relative_rate))
+```
+
+For sampled growth data, a finite difference `(W2 - W1)/(t2 - t1)` estimates an average absolute rate over an interval. It is not an exact instantaneous derivative. With destructive sampling, the two means come from different quadrats and both contribute uncertainty. Avoid interpreting differences between noisy individual observations as exact physiological rates.
+
+## Choosing an error model is part of choosing a growth model
+
+Ordinary nonlinear least squares assumes that residual variation is additive on the response scale. A large plant and a small plant are then assumed to have the same residual variance. If variability grows in proportion to mean biomass, a logarithmic response or an explicitly modelled variance structure may be more appropriate. These choices change the statistical question.
+
+Taking logarithms is possible only for positive values. It also changes how large discrepancies are weighted: a difference of 20 g is relatively substantial near 40 g and relatively small near 1,000 g. Do not fit on a transformed scale and then describe every back-transformed prediction as an unbiased arithmetic mean without considering the transformation.
+
+When comparing curves, examine their behaviour over the measured interval, residual plots, parameter plausibility, and uncertainty. A nearly flat late-growth phase can support estimation of `A`; early observations alone cannot guarantee it. An agronomically unreasonable asymptote is a reason to reconsider coverage and model structure even if the numerical optimizer converged.
+
 ## A real-data extension
 
 R's `Orange` dataset records circumference repeatedly on five orange trees. It is useful for recognizing the difference between longitudinal observations and independent destructive samples.
@@ -97,3 +153,30 @@ Read `?Orange` before analysis. Fitting each tree separately can illustrate curv
 4. Explain why weighing the same plant weekly violates the independent-error assumption used in this chapter.
 
 **Chapter review.** A biologically interpretable curve is useful only when the sampling design, observed growth phases, numerical fit, and residual assumptions support it.
+
+## Live R laboratory
+
+::: {.live-r}
+**Compare logistic growth parameters**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+time <- seq(0, 100, length.out = 101)
+K <- 100
+r <- 0.08
+midpoint <- 50
+logistic <- K / (1 + exp(-r * (time - midpoint)))
+plot(time, logistic, type = "l", lwd = 3, col = "#278879",
+     xlab = "Time (days)", ylab = "Simulated biomass (g)",
+     main = "Logistic growth")
+abline(v = midpoint, h = K / 2, lty = 2, col = "#ba8126")
+c(asymptote = K, inflection_day = midpoint)
+```
+
+**Investigate.** Double r, then change midpoint to 40. Distinguish an increase in steepness from an earlier inflection. K, r, and midpoint are illustrative parameters, not fitted estimates.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

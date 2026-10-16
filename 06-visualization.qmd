@@ -4,7 +4,157 @@
 
 Choose graphs that match variable types; create and customize common plots; assemble panels and heatmaps; and provide static alternatives to interactive graphics.
 
-## Match the graph to the question
+In this section we will see how to draw basic and commonly used graphs and charts in R. Advanced plotting and graphs will be discussed later. Following graphs and charts are discussed here.  
+
+- Bar Plot or Bar Chart
+- Pie Diagram or Pie Chart
+- Histogram
+- Scatter Plot
+- Box Plot  
+
+
+## Bar Plot  
+let us suppose, we have a vector of maximum temperatures (in degree Celsius) for seven days as follows.  
+
+```{r fig-original-09-bar, eval=TRUE}
+max.temp <- c(22, 27, 26, 24, 23, 26, 28)
+```  
+Drawing barplot for the data  
+
+```{r fig-original-09-bar1, eval=TRUE}
+barplot(max.temp)
+```
+To modify the way our data is plotted, `barplot()` function may require a great deal of input. About them may be found in the help area.  
+
+```{r original-09-3, eval=FALSE}   
+# To know more about barplot
+?barplot  
+```
+Some of the often used ones include `main`, which assigns a title, `xlab` and `ylab`, which offer axis labels, `names.arg`, which names each bar, `col`, which specifies colour, and others.
+
+By adding the option `horiz = TRUE`, we can also plot bars in a horizontal direction.  
+```{r original-09-4, eval= TRUE}
+# barchart with added parameters
+barplot(max.temp,
+main = "Maximum Temperatures in a Week",
+xlab = "Day",
+ylab = "Maximum temperature (degrees Celsius)",
+names.arg = c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"),
+col = "#F9E79F", # hex colour code
+horiz = FALSE)
+```
+
+### Hex colour codes  
+
+Hexadecimal colors are the visual language to tell a colour. When you want your graph to have a certain color, you tell it in the hex code.  
+
+```{r fig-original-09-hex, echo=FALSE,fig.cap='Hex codes for colour',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/graphs/hex.png"))
+```  
+A 6-symbol code made up of up to three 2-symbol parts is known as a hex colour code. Each of the elements' two symbols represents a colour value between 0 and 255. Hex colour code begins with a hash symbol(#).   
+
+Element 1: Red value  
+Element 2: Green value  
+Element 3: Blue value  
+
+The code converts each value into a distinct 2-digit alphanumeric code. For instance, the hexadecimal representation of the RGB value (224, 105, 16) is E06910.  
+
+More than 16 million distinct colours may be shown using hexadecimal coding, which is estimated to be more than the human eye can distinguish.  
+
+**Popular hex codes**  
+
+**Color**|**RGB**|**Hex Color Code**
+:-----:|:-----:|:-----:
+Black|(0, 0, 0)|#000000
+Blue|(0, 0, 255)|#0000FF
+Gray|(128, 128, 128)|#808080
+Green|(0, 128, 0)|#008000
+Purple|(128, 0, 128)|#800080
+Red|(255, 0, 0)|#FF0000
+White|(255, 255, 255)|#FFFFFF  
+
+#### How to get hex codes  
+
+You can easily find the hex code for the colour you want using a [colour picker](https://g.co/kgs/91J9Do). Just copy the hex code and use it in the R code.  
+
+```{r fig-original-09-hex1, echo=FALSE,fig.cap='Colour picker',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/graphs/cp.png"))
+```  
+
+## Boxplot  
+A box and whisker plot, often known as a box plot, shows a data set's five-number summary. The minimum, first quartile, median, third quartile, and maximum make up the five-number summary.  
+
+A box is drawn from the first quartile to the third quartile in a box plot. At the median, a vertical line passes through the box. In the usual R convention, whiskers extend to the most extreme observations within 1.5 IQR of the hinges. Observations outside them are drawn separately; whiskers need not reach the sample minimum and maximum.  
+
+### Anatomy of boxplot
+
+Figure @fig-original-09-box below shows the parts of a box plot  
+
+```{r fig-original-09-box, echo=FALSE,fig.cap='Anatomy of boxplot',out.width="100%", fig.align='center'}
+knitr::include_graphics(rep("images/lecture9/boxplot.png"))
+``` 
+
+#### Minimum Value  
+The lower outlier fence is $Q_1 - 1.5\times IQR$. It is a threshold, not the sample minimum. The lower whisker reaches the smallest observed value within that fence. The upper fence is $Q_3 + 1.5\times IQR$. The retained illustration should be read with this distinction in mind.
+
+## Completing the base-R graphical toolkit
+
+The original notes list bar charts, pie charts, histograms, scatter plots, and boxplots. The detailed bar-chart and colour lessons above are retained. Let us now complete the remaining base-R examples before moving to the layered graphics system. The purpose is to understand which information each graph displays, not to memorize several commands without a question.
+
+### Histogram: the distribution of a quantitative measurement
+
+```{r}
+#| label: fig-base-histogram
+#| fig-cap: "Frequency distribution of simulated plot yields, drawn with base R."
+plot_yield <- read.csv("data/crop_trial.csv")
+hist(plot_yield$yield_t_ha, breaks = "Sturges", col = "#A9D0B5", border = "white",
+     main = "Distribution of grain yield", xlab = "Grain yield (t/ha)",
+     ylab = "Number of plots")
+```
+
+Adjacent histogram rectangles represent intervals on a quantitative scale. A bar chart, by contrast, represents distinct categories. Moving a category bar does not change its meaning; reordering the numeric intervals of a histogram would destroy its meaning. With unequal-width histogram intervals, density rather than raw height is needed for area to represent frequency correctly. Start with equal-width intervals while learning the distinction.
+
+### Scatter plot: relating two quantitative variables
+
+```{r}
+#| label: fig-base-scatter
+#| fig-cap: "Simulated yield and nitrogen application; points are individual plots."
+with(plot_yield, plot(nitrogen_kg_ha, yield_t_ha, pch = 19, col = "#3C6E51",
+                      xlab = "Applied nitrogen (kg/ha)", ylab = "Grain yield (t/ha)",
+                      main = "Yield and nitrogen application"))
+```
+
+Look for direction, curvature, clusters, and unusual observations. A positive pattern means that larger values of one variable tend to occur with larger values of the other in these observations. It does not establish that increasing nitrogen alone would cause the same change. Later figures retain treatment information to help inspect that limitation.
+
+### Pie diagram: parts of one whole
+
+```{r}
+#| label: fig-base-pie
+#| fig-cap: "Illustrative harvested-area shares; the values form one total."
+crop_area_ha <- c(Rice = 40, Maize = 25, Pulses = 20, Vegetables = 15)
+pie(crop_area_ha, labels = paste0(names(crop_area_ha), " ", crop_area_ha, "%"),
+    col = c("#34704C", "#91B77D", "#E6C86C", "#B69BC5"),
+    main = "Illustrative allocation of 100 ha")
+```
+
+The example totals 100 ha, so the numerical areas happen also to equal percentages. That is not generally true. Calculate percentages as `100 * area/sum(area)`. A pie chart is meaningful only when categories are nonoverlapping parts of the same total. A bar chart usually makes close numerical comparisons easier. Avoid three-dimensional perspective, which distorts apparent area.
+
+### Boxplot: comparing distributions
+
+```{r}
+#| label: fig-base-boxplot
+#| fig-cap: "Simulated treatment yields; points show the underlying plot observations."
+boxplot(yield_t_ha ~ treatment, data = plot_yield, col = "#DDEBDD",
+        xlab = "Treatment", ylab = "Grain yield (t/ha)", outline = FALSE)
+stripchart(yield_t_ha ~ treatment, data = plot_yield, vertical = TRUE,
+           method = "jitter", add = TRUE, pch = 19, col = "#245A42")
+```
+
+The formula `yield_t_ha ~ treatment` tells R to compare yield distributions across treatment categories. The added points reveal sample size and clustering that a box alone can hide. `outline = FALSE` suppresses separate boxplot outlier symbols here because all observations are already added by the strip chart; it does not remove those observations from the data or the calculation.
+
+## Agricultural applications, interpretation, and further practice
+
+### Match the graph to the question
 
 A histogram shows the distribution of one quantitative variable. A scatter plot shows the relationship between two quantitative variables. A bar chart compares counts or explicit summaries across categories. A boxplot compares distributions. A line plot connects observations in a meaningful order, usually time. Avoid connecting unrelated plots simply because their records are adjacent.
 
@@ -19,7 +169,7 @@ barplot(max_temp, names.arg = c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
         xlab = "Day", ylab = "Maximum temperature (degrees C)", col = "#66A182")
 ```
 
-## Build plots in layers
+### Build plots in layers
 
 In `ggplot2`, `data` supplies observations, `aes()` maps variables to visual properties, and a geometry draws marks. Set a fixed colour outside `aes()`; map a grouping variable to colour inside it.
 
@@ -51,7 +201,7 @@ histogram
 
 Bin width changes the apparent shape of a histogram. Compare several widths before describing skewness or multiple peaks. Use a common scale when comparing groups.
 
-## Distribution plots and truthful summaries
+### Distribution plots and truthful summaries
 
 ```{r}
 #| label: fig-yield-boxes
@@ -79,7 +229,7 @@ ggplot(means, aes(treatment, yield_t_ha)) +
   labs(x = "Treatment", y = "Mean grain yield (t/ha)") + theme_minimal()
 ```
 
-## Heatmaps, panels, and interaction
+### Heatmaps, panels, and interaction
 
 A heatmap uses colour to encode a numeric value. Nutrients measured on different scales need careful handling. Here each nutrient is standardized across plots, so colour describes relative position within that nutrient, not an absolute concentration or a fertility recommendation.
 
@@ -109,7 +259,7 @@ ggsave("outputs/yield_scatter.png", scatter, width = 7, height = 4.5, dpi = 300)
 
 Interactive tooltips support exploration in HTML. They cannot carry essential information that disappears in PDF or Word; provide a static counterpart and describe the finding in prose.
 
-## Practicals 6–7 and exercises
+### Practicals 6–7 and exercises
 
 1. Draw a scatter plot, a histogram, and a boxplot. Write one sentence stating what each reveals and one limitation.
 2. Compare histogram bin widths of 0.15, 0.3, and 0.6 t/ha. Which features persist?
@@ -118,3 +268,27 @@ Interactive tooltips support exploration in HTML. They cannot carry essential in
 5. Explain why a standardized soil heatmap cannot directly classify a field as nitrogen-deficient.
 
 **Chapter review.** A good figure makes comparisons clear and preserves units, distributions, and relevant grouping. Attractive decoration cannot compensate for a misleading scale.
+
+## Live R laboratory
+
+::: {.live-r}
+**Make a colourful crop plot**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+fertilizer <- c(0, 30, 60, 90, 120, 150)
+yield_t_ha <- c(2.1, 2.9, 3.6, 4.0, 4.2, 4.1)
+plot(fertilizer, yield_t_ha, pch = 19, cex = 1.5,
+     col = "#237f83", xlab = "Nitrogen (kg/ha)",
+     ylab = "Yield (t/ha)", main = "Simulated nitrogen response")
+lines(fertilizer, yield_t_ha, col = "#bd7921", lwd = 2)
+grid()
+```
+
+**Investigate.** Replace pch = 19 with pch = 17 and choose a new colour. Describe the apparent plateau, while remembering that these illustrative points do not establish an optimum fertilizer dose.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

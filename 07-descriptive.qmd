@@ -4,7 +4,297 @@
 
 Calculate and interpret measures of centre, spread, frequency, and uncertainty; distinguish standard deviation from standard error; and summarize data with honest denominators.
 
-## Centre and spread answer different questions
+Before proceeding further please go through the first 6 chapters from my book [Textbook of Agricultural Statistics](https://kaumelon.github.io/stat3202/).  
+
+You can download iris data from [here](https://drive.google.com/file/d/1AcAeL0XKOcYA3z99qmaQFvTr7gw3gxRB/view?usp=sharing) or use the inbuilt data set as discussed in chapter @sec-datasets.  
+
+
+To do any analysis we first import data, see Chapter @sec-import. You can inspect your data using the functions `head()` and `tail()`, which will display the first and the last part of the data, respectively.
+
+```{r original-08-1, eval=TRUE}
+
+# import data set in to R
+# here we are using iris dataset
+
+my_data<-iris # iris dataset is called in to variable my_data
+
+# display first 6 rows
+head(my_data, 6)  
+
+# display last 6 rows
+tail(my_data,6)
+
+```  
+## List of R functions  
+
+**Descriptive Statistics**|**R Function**
+:-----:|:-----:
+Mean|mean()
+Standard deviation|sd()
+Variance|var()
+Minimum|min()
+Maximum|max()
+Median|median()
+Range of values (minimum and maximum)|range()
+Sample quantiles|quantile()
+Generic function|summary()
+Interquartile range|IQR()  
+  
+The function `mfv()`, for most frequent value, [in `modeest` package] can be used to find the statistical mode of a numeric vector.  
+
+## Measures of central tendancy  
+Know more about [Measures of central tendency](https://kaumelon.github.io/stat3202/measures-of-central-tendency---i.html#measures-of-central-tendency---i)  
+
+```{r original-08-2, eval=TRUE}
+# Compute the mean value
+mean(iris$Sepal.Length)
+
+# Compute the median value
+median(iris$Sepal.Length)  
+
+# Compute the mode
+# install.packages("modeest")
+# The optional modeest::mfv() has a base-R equivalent for this lesson.
+mfv <- function(x) {
+  x <- x[!is.na(x)]
+  if (!length(x)) return(x)
+  values <- unique(x)
+  counts <- tabulate(match(x, values))
+  values[counts == max(counts)]
+}
+mfv(iris$Sepal.Length)  
+
+# Compute the minimum value
+min(iris$Sepal.Length)
+
+# Compute the maximum value
+max(iris$Sepal.Length)  
+
+# Quartiles  
+quantile(iris$Sepal.Length)  
+
+# Compute the median
+median(iris$Sepal.Length)
+
+```   
+
+##  Measures of dispersion   
+Know more about [Measures of dispersion](https://kaumelon.github.io/stat3202/measures-of-dispersion.html#measures-of-dispersion)
+
+```{r original-08-3, eval=TRUE}
+
+# Range
+# minimum value and maximum value is displayed
+range(iris$Sepal.Length)  
+
+# Inter quartile range  
+IQR(iris$Sepal.Length)  
+
+# Compute the variance
+var(iris$Sepal.Length)
+
+# Compute the standard deviation 
+sd(iris$Sepal.Length)
+
+
+# Compute the median absolute deviation
+mad(iris$Sepal.Length)  
+
+```  
+
+## Overall summary   
+
+The overall summary statistics of One variable or an entire data frame can be displayed using the function `summary()`.  
+
+
+### Summary of single variable  
+
+The mean, median, 25th and 75th quartiles, minimum and maximum values are all returned in a single line call.  
+
+```{r original-08-4, eval=TRUE}
+summary(iris$Sepal.Length)
+```
+
+### Summary of a Data frame  
+
+In this instance, each column receives an automated use of the summary() method. The kind of data in the column determines how the output is formatted. For instance:  
+
+- The mean, median, min, max, and quartiles are returned if the column is a numeric variable.  
+
+- The total number of observations in each group is returned if the column is a factor variable.
+
+```{r original-08-5, eval=TRUE}
+summary(iris)
+```   
+
+
+
+## The sapply function  
+
+The `sapply()` method may also be used to apply a specific function on a list or vector. For example, we may use it to compute the mean, sd, var, min, quantile,... for each column in a data frame.  
+
+
+```{r original-08-6, eval=TRUE}
+sapply(iris[, -5], mean)
+# The command direct to find the mean of all columns in the dataset iris except 5th column, which is species and is non numeric 
+
+# Compute quartiles
+sapply(iris[, -5], quantile)
+
+```  
+
+## Some other useful functions  
+
+### stat.desc()
+
+The function `stat.desc()` [in pastecs package], provides lot of useful statistics in a single call
+
+```{r original-08-7, eval=TRUE}
+#Install 'pastecs' package
+#load the library
+library(pastecs)  
+
+res <- stat.desc(my_data[, -5]) # results were stored to the variable 'res'  
+
+# decimal digits were rounded to 2 using round()function
+round(res, 2)  
+
+```
+
+## Missing values  
+
+It should be noted that some R functions will return errors or NA even if just one item is missing or when the data contains missing values. For instance, if a vector has even a single missing value, the `mean()` method will return **NA**. The option `na.rm = TRUE`, which instructs the function to delete any NAs before computations, can be used to prevent this. Here's an example of how to use the mean function:
+
+```{r original-08-8, eval=FALSE}
+mean(iris$Sepal.Length, na.rm = TRUE)
+```  
+
+## Frequency table {#sec-freq}  
+For more theoretical details see [here](https://kaumelon.github.io/stat3202/introduction.html#frequency-distribution)
+Dataset below shows the number of children in 50 household collected as a part of survey. I will demonstrate how frequency table can be constructed.
+
+```{r fig-original-08-setup, eval=TRUE}
+# Create example vector  
+set.seed(99)
+survey_data<- floor(runif(50, min=0, max=10)) 
+survey_data                                                  
+```
+The frequency counts of the variables that appear in the chosen column of the dataframe are calculated using the `table()` function in R. The outcome is presented as a two-row tabular structure, with the first row displaying the value of each column and the second row displaying the matching frequencies.  
+
+```{r original-08-10, eval=TRUE}
+# Frequency Table
+
+freq_table<- table(survey_data)
+freq_table
+
+```  
+
+### Cumulative frequency  
+The total of all classes in a frequency distribution table, including this class below it, makes up the cumulative frequency distribution of a particular data set. The value at every cell location is calculated by adding the current value and all previous values encountered up to that point. This may be determined by using the `cumsum()` method.  
+
+```{r original-08-11, eval=TRUE}
+# cumulative frequency
+
+cumsum(freq_table)
+
+``` 
+From the above results now you can easily answer the question: number of families having 8 or less than 8 children?. Verify it from `sum(survey_data <= 8)`; the result depends on the simulated sample  
+
+
+### Grouped Frequency distribution  
+
+What is a [grouped frequency table?](https://kaumelon.github.io/stat3202/introduction.html#grouped-frequency-distribution)
+
+Before going in to the details of constructing frequency table read thoroughly [The construction of grouped frequency table](https://kaumelon.github.io/stat3202/introduction.html#construction-of-frequency-distribution-table).
+
+```{r original-08-12, eval=TRUE}
+
+# Constucting frequency table
+data<-iris$Sepal.Length  
+
+# Decide how many classes you wish to use using struges formula
+N<- length(data)
+k<-1+3.322*log(N,base=10)
+n_class<-ceiling(k) #Rounds value of k to nearest highest integer.
+  
+# Equal-width boundaries must include every observed value.
+class_width <- (max(data) - min(data)) / n_class
+breaks <- seq(min(data), max(data), length.out = n_class + 1)
+data.cut <- cut(data, breaks = breaks, right = FALSE, include.lowest = TRUE)
+
+# Generate frequency table of classes
+data.freq = table(data.cut)
+data.freq
+```
+## R function  
+
+This section extends the data-analysis examples into a reusable function. Read the calculation first, then see how the same steps are collected into one named operation. You do not need advanced programming to benefit from a small, clearly written function.  
+
+A function is a block of code which only runs when it is called. You can pass data, known as parameters, into a function. A function can return data as a result.   
+
+### Creating a Function
+To create a function, use the `function()` keyword:
+```{r original-08-13, eval=FALSE}
+#General Format
+function_name<- function(){
+  #function_body
+}
+```
+
+For example, here I'm creating a function named `print_me()`, on calling `print_me()`, it automatically prints "Hello world!"
+```{r original-08-14}
+# create a function with the name print_me
+print_me <- function() { 
+  print("Hello World!")
+}
+```
+```{r original-08-15}  
+# calling function print_me()
+print_me()
+```
+In the above section we have written at least 12 lines of code to construct a grouped frequency table from a data. Each time we need to run all these code individually, which is a difficult task. You can create a **Function** to perform this task in a single call. I'm creating a function called `construct()` to create a grouped frequency table.  
+
+```{r fig-original-08-setup2}  
+
+construct <- function(x) 
+  {
+  #This function will take in a numeric vector x and gives its frequency table
+  x <- x[is.finite(x)]
+  if (!length(x)) stop("No finite observations")
+  if (length(unique(x)) == 1) return(table(x))
+  N <- length(x)
+  n_class <- ceiling(1 + 3.322 * log(N, base = 10))
+  breaks <- seq(min(x), max(x), length.out = n_class + 1)
+  data.cut <- cut(x, breaks, right = FALSE, include.lowest = TRUE)
+  data.freq <- table(data.cut)
+  stopifnot(sum(data.freq) == N)
+  data.freq
+
+}
+```
+
+Constructing frequency table of Petal.Length in iris dataset using the `construct` function we just created.  
+
+```{r original-08-17}
+construct(iris$Petal.Length)
+```
+
+
+
+
+::: {.callout-note}
+**Self assesment**
+
+1. Download the dataset by clicking [Here](https://drive.google.com/file/d/1_2U-_JbJlJyGOUhaDrTtXTGOgZZlx6Wx/view?usp=sharing)  
+2. Find the descriptive statistics for the data using the functions above.  
+3.Construct grouped frequency table of Petal.Width column in iris data.
+:::
+
+The boundary calculation above keeps the original Sturges-rule demonstration but ensures that the largest observation is counted. Rounding class boundaries too early can silently omit observations. Also, `mode()` in base R reports storage mode; it does not calculate the most frequent observation. The helper returns all tied most frequent values.
+
+## Agricultural applications, interpretation, and further practice
+
+### Centre and spread answer different questions
 
 The arithmetic mean is the sum divided by the number of observations. The median splits ordered observations in half. The statistical mode is the most frequent value and may be nonunique. In R, `mode()` describes an object's storage mode; it does not compute a statistical mode.
 
@@ -32,7 +322,7 @@ statistical_mode(c(2, 2, 3, 3, 4))
 
 For continuously measured yield, the most frequent rounded value may have little scientific meaning; it depends on recording precision. A mode is often more useful for a categorical variable such as soil class.
 
-## Worked example: a small harvest sample
+### Worked example: a small harvest sample
 
 Consider four independent plot yields of 4.2, 4.8, 5.1, and 4.5 t/ha. Their sum is 18.6 t/ha and their mean is 4.65 t/ha. The deviations from the mean are −0.45, 0.15, 0.45, and −0.15. Squaring and adding gives 0.45 (t/ha)². Dividing by `n - 1 = 3` gives a sample variance of 0.15 (t/ha)²; its square root is approximately 0.387 t/ha.
 
@@ -48,7 +338,7 @@ The denominator `n - 1` reflects the loss of one degree of freedom after estimat
 
 The median is the average of the two middle ordered values, 4.5 and 4.8, also 4.65 t/ha here. Equality of mean and median in this small example does not establish a symmetric population distribution.
 
-## Frequencies and grouped distributions
+### Frequencies and grouped distributions
 
 ```{r}
 table(crop$treatment)
@@ -62,7 +352,7 @@ stopifnot(sum(freq) == length(y))
 
 Class boundaries must cover every observation. This check avoids a weakness in hand-rounded class limits, where an extreme value may fall outside the final interval. Grouping loses within-class detail; retain the original measurements.
 
-## Standard deviation, standard error, and CV
+### Standard deviation, standard error, and CV
 
 Standard deviation describes variation among observations. For independent observations from a common population, the estimated standard error of a mean is $s/\sqrt{n}$. It describes the precision of the estimated mean, not the spread of individual yields. Independence must be established from sampling or randomization, not from the software output.
 
@@ -75,7 +365,7 @@ c(sd = sd(control), se_mean = sd(control) / sqrt(n),
 
 The coefficient of variation is `100 * SD / mean`. It is appropriate for ratio-scale measurements with a meaningful zero and a positive mean away from zero. It is inappropriate for comparing temperatures in degrees Celsius or pH. Also distinguish a raw-data CV from an experiment's residual CV based on an ANOVA error mean square.
 
-## Grouped summaries
+### Grouped summaries
 
 ```{r}
 library(dplyr)
@@ -87,7 +377,7 @@ crop |>
 
 Pooling groups can inflate spread because it combines between-group differences with within-group variation. Report the group definitions and sample sizes. Avoid presenting many decimal places beyond measurement precision.
 
-## Practical 8A and exercises
+### Practical 8A and exercises
 
 1. Calculate mean, median, variance, SD, and IQR for available soil nitrogen. State each unit.
 2. Add one very large value to a copy of the yield vector. Which summaries change most?
@@ -96,3 +386,26 @@ Pooling groups can inflate spread because it combines between-group differences 
 5. Explain why ten leaves from one plant are not automatically ten independent experimental replicates.
 
 **Chapter review.** Describe centre and spread together. Report sample size, missingness, units, and grouping so the summary can be interpreted.
+
+## Live R laboratory
+
+::: {.live-r}
+**Describe yield and its variability**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+yield <- c(3.2, 3.8, 4.0, 3.5, 4.6, 3.9)
+c(mean = mean(yield), median = median(yield),
+  variance = var(yield), SD = sd(yield),
+  CV_percent = 100 * sd(yield) / mean(yield))
+summary(yield)
+boxplot(yield, col = "#8ecab1", ylab = "Yield (t/ha)")
+```
+
+**Investigate.** Change 4.6 to 8.6 and compare the mean, median, and SD. Explain the units of variance and why the coefficient of variation is unitless.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

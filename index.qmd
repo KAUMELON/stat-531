@@ -4,7 +4,7 @@ Agricultural data describe living systems. A yield measurement reflects a crop, 
 
 This textbook introduces R through questions that undergraduate students of agriculture can recognize: How variable is yield? Do treatments differ? How does a crop grow? Can weather records help us anticipate future conditions? Students begin with objects and simple calculations, then develop a complete workflow from data entry to a reproducible report.
 
-The book develops the author's earlier lecture notes for *Data Analysis Using Statistical Packages* into a new syllabus-aligned edition. It retains their emphasis on understanding statistics, their progression through R objects and data import, and their use of familiar built-in datasets. It expands these foundations with data cleaning, modern graphics, agricultural growth models, inference, regression, and Quarto. A source mapping is supplied in `SOURCE-MAP.md`.
+This book develops my earlier lecture notes for *Data Analysis Using Statistical Packages* into a detailed undergraduate textbook for the new syllabus. The original explanations, illustrated installation guide, step-by-step R commands, import lessons, descriptive-statistics examples, and time-series walkthrough form the main teaching text. Agricultural applications and additional worked examples extend those lessons. Data cleaning, modern graphics, growth models, inference, regression, and reproducible reporting complete the seven modules. The aim is to explain what each calculation does, why we use it, and how its result should be interpreted.
 
 ## How to study this book
 
@@ -13,7 +13,7 @@ Read an explanation, predict what its code will do, run the code, and compare th
 The text assumes basic arithmetic, elementary algebra, and introductory statistical concepts. It explains the additional ideas needed for each analysis. No previous programming experience is required. R 4.1 or later is needed for the native pipe `|>` used throughout.
 
 ::: {.callout-note title="Real observations and teaching simulations"}
-`PlantGrowth`, `Orange`, and `iris` are datasets distributed with R; their help pages document their origins. The book also supplies clearly labelled **simulated** crop, soil, weather, growth, and pest data. Simulated results illustrate methods and must never be reported as findings from a field experiment. The data appendix records units, observational units, and limitations.
+`PlantGrowth`, `Orange`, and `iris` are datasets distributed with R; their help pages document their origins. The original historical time-series examples are also retained with local data copies and documented sources. The book supplies clearly labelled **simulated** crop, soil, weather, growth, and pest data for agricultural practice. Simulated results illustrate methods and must never be reported as findings from a field experiment. The data appendix records units, observational units, and limitations.
 :::
 
 ## A recurring scientific workflow
@@ -27,3 +27,13 @@ The text assumes basic arithmetic, elementary algebra, and introductory statisti
 7. Save the code, data provenance, and report so another person can reproduce the work.
 
 This is an editable teaching edition. Instructors should review local terminology, course assessment rules, and the agricultural suitability of examples before adopting it. The earlier project's licence files are preserved with the source archive; this edition does not assign a new licence.
+
+## Learn by running R
+
+::: {.callout-tip title="An interactive practical in every chapter"}
+Each teaching chapter now ends with a **Live R laboratory**: editable code, a Run R button, console output, and plots where appropriate. Start with the [first live calculation](01-getting-started.qmd#live-r-laboratory), or explore [growth curves](09-growth.qmd#live-r-laboratory) and [regression](13-regression.qmd#live-r-laboratory). The browser downloads R on first use. Use a current browser and allow time for the initial download.
+
+Every ordinary code block also has a copy button. Copy commands into RStudio without console prompts or printed results. The full package-based analyses and report rendering are intended for your installed R environment.
+:::
+
+The reading layout follows the companion [Textbook of Agricultural Statistics](https://www.agrinoteskau.com/agstat-textbook.html): serif explanations, blue headings, gold navigation highlights, and coloured learning boxes. Your original detailed lecture explanations remain the foundation of this edition.

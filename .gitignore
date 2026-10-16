@@ -14,3 +14,4 @@ render-*.log
 *_files/
 
 /.quarto/
+/sites/

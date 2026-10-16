@@ -27,4 +27,17 @@ Save these files inside your project's `data/` folder before running chapter cod
 
 `PlantGrowth` contains 30 dry-weight observations in three groups. `Orange` contains 35 repeated measurements on five trees, with age in days and circumference in millimetres. `iris` contains floral measurements in centimetres for three iris species. Their official help pages are linked in the references. Consult those sources for original provenance rather than assigning a new location or treatment meaning.
 
-The project preserves the earlier author's lecture notes, images, rainfall CSV, assessment scripts, and document files in `source-notes/`. Those are archival sources, not the datasets that the new chapters automatically execute. The separately authored time-series PDF in the original folder is not repackaged as original textbook content.
+## Historical series retained from the original chapter
+
+The time-series chapter retains its original four worked datasets, followed by the agricultural weather application. All examples execute from local files. The retrieval script is `scripts/download-original-data.R`; running it is optional because the CSV copies are already supplied.
+
+| File | Observations | Meaning and source |
+|---|---:|---|
+| [original-kings.csv](data/original-kings.csv) | 42 | Ages at death, in years, of successive English kings beginning with William the Conqueror; [original teaching series](https://robjhyndman.com/tsdldata/misc/kings.dat). The index is succession order, not a regularly spaced calendar year. |
+| [original-births.csv](data/original-births.csv) | 168 | Monthly New York City births, in thousands, January 1946–December 1959; [original series](https://robjhyndman.com/tsdldata/data/nybirths.dat). |
+| [original-souvenir.csv](data/original-souvenir.csv) | 84 | Monthly Australian souvenir-shop sales, in Australian dollars, January 1987–December 1993; [original series](https://robjhyndman.com/tsdldata/data/fancy.dat). |
+| [original-rain.csv](data/original-rain.csv) | 100 | Annual London rainfall, in inches, 1813–1912; copied from the author's supplied `rain.csv`, originally linked to [the historical precipitation series](https://robjhyndman.com/tsdldata/hurst/precip1.dat). |
+
+These series are real historical teaching examples and are not agricultural simulations. Births and souvenir sales illustrate seasonal structure; the kings example illustrates smoothing of a sequence but should not be described as equally spaced annual observations. The original `iris.csv` is also preserved in `data/`, with the column capitalization used in the import lesson. The built-in `iris` object uses different capitalization and punctuation; inspect `names()` before selecting variables.
+
+The project preserves the author's unedited lecture notes, images, rainfall CSV, assessment scripts, and document files in `source-notes/`. Their substantive explanations and illustrations are now included in the reading chapters, with code repairs and additions. The separately authored time-series PDF in the original folder is not repackaged as original textbook content.

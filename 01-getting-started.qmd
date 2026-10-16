@@ -4,7 +4,490 @@
 
 After this chapter, you should be able to distinguish R from RStudio and Quarto, create a project, run and save commands, and install and load a package.
 
-## Why use a programming language?
+::: {.callout-note title="Statistical software in context"}
+The following overview retains the original lecture discussion. Product histories and dated examples provide context; use current official documentation for installation, ownership, licence terms, and supported features. Our course calculations use R.
+:::
+
+Data science is a fast growing field with the development of advanced
+statistical tools for data analysis and visualization. When the data
+volume is large and also when precision is required, we depend on
+statistical software to get better insights from the data. Statistical
+software makes analysis easy, produces more precise results, enables us
+to use complex statistical tools and generates advance complex graphical
+outputs.
+
+One cannot blindly depend upon statistical software for data analysis,
+as you can use any software for data analysis as per your convenience.
+Even some of the basic statistical tools, you can perform calculations
+manually. Without proper knowledge in statistics, every software is a
+garbage in garbage out. What that really matters is knowledge in
+statistical concepts and tools, so that effective interpretations can be
+made from the data.
+
+Agricultural experiments demand a wide range of statistical tools for
+analysis, which includes exploratory analysis, design of experiments,
+and statistical genetics. It is a challenge for scientists and students
+to find a suitable platform for data analysis and publish the research
+outputs in quality journals. Statistical software differs in cost, licensing, interface, and analytical capabilities. The open
+source programming language R and associated ecosystem of packages,
+provides an excellent platform for data analysis and is widely used in agricultural teaching and research.
+Insufficient programming and computational knowledge are the primary
+challenges for agricultural researchers using R for analysis.
+
+In our sessions, I will be using R studio. Agricultural scientists and students need not become professional software developers, but they should learn enough programming to understand, adapt, and reproduce their analyses. I have seen agricultural researchers take up R
+workshops and leave it behind as such workshops mainly deals with code
+chunks; user will get easily tired of that. Beauty of R is that, it is a
+free open-source software. Apart from the software used, I again insist
+that students and researchers should strengthen their basic statistics
+knowledge and they should be able to decide, what tool should be used
+and when. I strongly recommend that you should go through the basic
+statistical theory by visiting my e-book [Textbook of Agricultural Statistics](https://kaumelon.github.io/stat3202/). Before proceeding further, one
+should also have a basic knowledge about different statistical software
+available.
+
+## Statistical Software
+
+Statistical analysis software are specialized programs designed to allow
+users to perform complex statistical analysis. These software typically
+provide tools for the organization, interpretation, and presentation of
+selected data sets. Statistical analysis capabilities refer to
+capabilities that support analysis methodologies such as regression
+analysis, predictive analytics, and statistical modelling, among many
+other basic tools.
+
+### Types of statistical software
+
+#### Open-source software
+
+Open-source software (OSS) is non-proprietary software that allows
+anyone to modify, enhance, or simply view the source code behind it. It
+can enable programmers to work or collaborate on projects created by
+different teams, companies, and organizations. Open-source software
+authors do not view their creations as proprietary and instead release
+their software under licenses that grant users with the desire and
+know-how to view, copy, learn, alter, and share its code.
+
+OSS is shared in a public repository, granting access to anyone who
+wants to work on the source code. However, open-source software tends to
+come with a distribution license, which establishes how people can
+interact, modify, and share the OSS.
+
+Once changes are made to the source code, the OSS should signify those
+changes and what methods were used to make them. Also, depending on the
+license, the resulting OSS may or may not be required to be free. With
+that, most open-source software is free but some require up-front costs
+or subscription fees.
+
+Few open source software are
+
+-   **R** and **Rstudio** (GUI interface and development environment for R)
+
+-   **gretl** -- gnu regression, econometrics and time-series library
+
+-   **JASP** -- A free software alternative to IBM SPSS Statistics with
+    additional option for Bayesian methods
+
+-   **Orange** - a data mining, machine learning, and bioinformatics
+    software
+
+-   **Weka** (machine learning) -- a suite of machine learning software
+    written at the University of Waikato
+
+-   **Perl** Data Language -- Scientific computing with Perl
+
+#### Public Domain
+
+Public domain software is any software that has no legal, copyright or
+editing restrictions associated with it. It is free and open-source
+software that can be publicly modified, distributed or sold without any
+restrictions.
+
+-   **Dataplot** - It is a public domain software system for scientific
+    visualization and statistical analysis. It was developed and is
+    being maintained at the National Institute of Standards and
+    Technology. Dataplot\'s source code is available and in public
+    domain
+
+-   **CSPro** - CSPro is short for the Census and Survey Processing System,
+    is a public domain data processing software package developed by the
+    U.S. Census Bureau and ICF International.
+
+#### Freeware
+
+Freeware is software, most often proprietary, that is distributed at no
+monetary cost to the end user. There is no agreed-upon set of rights,
+license that defines freeware unambiguously; every publisher defines its
+own rules for the freeware it offers. For instance, modification,
+redistribution by third parties, and reverse engineering are permitted
+by some publishers but prohibited by others. Unlike with free and
+open-source software, which are also often distributed free of charge,
+the source code for freeware is typically not made available. Freeware
+may be intended to benefit its producer by, for example, encouraging
+sales of a more capable version
+
+-   **BV4.1**- The application software BV4.1 is an easy-to-use tool for
+    decomposing and seasonally adjusting monthly or quarterly economic
+    time series by version 4.1 of the Berlin procedure. It is being
+    developed by the Federal Statistical Office of Germany. The software
+    is released as freeware for non-commercial purposes.
+
+-   **GeoDa** - It is a free software package that conducts spatial data
+    analysis, geo-visualization, spatial autocorrelation and spatial
+    modeling. Maintained from 2016 by Centre for Spatial Data Science
+    (CSDS) at the University of Chicago, originally developed by Spatial
+    Analysis Laboratory of the University of Illinois at
+    Urbana-Champaign
+
+-   **WinPepi** - It is a freeware package of statistical programs for
+    epidemiologists, comprising seven programs with over 120 modules.
+
+##### Proprietary software
+
+It is also known as non-free software or closed-source software, is
+computer software for which the software\'s publisher or another person
+reserves some licensing rights to use, modify, share modifications, or
+share the software, restricting user freedom with the software they
+lease. It is the opposite of open-source or free software. Non-free
+software sometimes includes patent rights. Some of the few well known
+proprietary statistical software are:-
+
+**SAS** - SAS (previously \"Statistical Analysis System\") is a statistical
+software suite developed by SAS Institute for data management, advanced
+analytics, multivariate analysis, business intelligence, criminal
+investigation and predictive analytics. SAS was developed at North
+Carolina State University from 1966 until 1976, when SAS Institute was
+incorporated. SAS was further developed in the 1980s and 1990s with the
+addition of new statistical procedures, additional components and the
+introduction of JMP.
+
+**SPSS Statistics** -- SPSS Statistics is a statistical software suite
+developed by IBM for data management, advanced analytics, multivariate
+analysis, business intelligence, and criminal investigation. Long
+produced by SPSS Inc., it was acquired by IBM in 2009. Current versions
+(post 2015) have the brand name: IBM SPSS Statistics. The software name
+originally stood for Statistical Package for the Social Sciences (SPSS),
+reflecting the original market, then later changed to Statistical
+Product and Service Solutions.
+
+**Stata** -- It is a general-purpose statistical software package developed
+by StataCorp for data manipulation, visualization, statistics, and
+automated reporting. It is used by researchers in many fields, including
+biomedicine, epidemiology, sociology and science. Stata was initially
+developed by Computing Resource Center in California and the first
+version was released in 1985. In 1993, the company was renamed Stata
+Corporation, now known as StataCorp.
+
+**Genstat** (General Statistics) - It is a statistical software package with
+data analysis capabilities, particularly in the field of agriculture. It
+was developed in 1968 by Rothamsted Research in the United Kingdom and
+was designed to provide modular design, linear mixed models and graphic
+functions. It is developed and distributed by VSN International (VSNi),
+which is owned by The Numerical Algorithms Group and Rothamsted
+Research.
+
+**Minitab** -- Minitab is a statistics package developed at the Pennsylvania
+State University by researchers Barbara F. Ryan, Thomas A. Ryan, Jr.,
+and Brian L. Joiner in conjunction with Triola Statistics Company in
+1972. It began as a light version of OMNITAB 80, a statistical analysis
+program by National Institute of Standards and Technology.
+
+**MATLAB** -- MATLAB an abbreviation of \"MATrix LABoratory\" is a
+proprietary multi-paradigm programming language and numeric computing
+environment developed by MathWorks. MATLAB allows matrix manipulations,
+plotting of functions and data, implementation of algorithms, creation
+of user interfaces, and interfacing with programs written in other
+languages.
+
+**EViews** -- EViews is a statistical package for Windows, used mainly for
+time-series oriented econometric analysis. It is developed by
+Quantitative Micro Software (QMS). EViews can be used for general
+statistical analysis and econometric analyses, such as cross-section and
+panel data analysis and time series estimation and forecasting. EViews
+combines spreadsheet and relational database technology with the
+traditional tasks found in statistical software, and uses a Windows GUI
+(Graphical User Interface).
+
+For agricultural researchers I recommend using RStudio for data
+analysis, as it is easy to use. RStudio allows users to develop and edit
+programs in R by supporting a large number of statistical packages,
+higher quality graphics, and the ability to manage your workspace. We have developed a R package `grapesAgri1` for agricultural research. The package is an additional agricultural resource; the core lessons below also show the underlying R calculations. To read more on please see [grapesAgri1](https://joss.theoj.org/papers/10.21105/joss.03437)
+
+## R and RStudio: the illustrated guide
+
+::: {.callout-note title="Using the illustrated installation guide"}
+The original step-by-step screenshots are retained below. They illustrate the installation sequence; release numbers, button wording, and screen layout may differ on your computer. Use the official download links given in the text.
+:::
+
+This training program is tailored to equip you with the skills needed for agricultural data analysis using R and RStudio. In this introductory section, we will provide you with a brief overview and guide you through the process of installing R and RStudio.  
+
+
+### R  
+R is a programming language for statistical computing and graphics supported by the R Core Team and the R Foundation for Statistical Computing. Created by statisticians Ross Ihaka and Robert Gentleman. R is an implementation of the S programming language. R is used among data miners, bioinformaticians and statisticians for data analysis and developing statistical software. Users have created packages to augment the functions of the R language.
+According to user surveys and studies of scholarly literature databases, R is one of the most commonly used programming languages used in data mining. The official R software environment is an open-source free software environment within the GNU package, available under the [GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html). It is written primarily in C, Fortran, and R itself (partially self-hosting). R has a command line interface. Multiple third-party graphical user interfaces are also available, such as RStudio, an integrated development environment.  
+
+```{r fig-original-03-rlogo, echo=FALSE,fig.cap='R logo',out.width="30%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/rlogo.png"))
+```
+
+### Rstudio  
+RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. RStudio is available in open source and commercial editions and runs on the desktop (Windows, Mac, and Linux) or in a browser connected to RStudio Server. RStudio is a free and open-source integrated development environment (IDE) for R, a programming language for statistical computing and graphics. JJ Allaire, creator of the programming language ColdFusion, founded RStudio. RStudio is available in two editions: RStudio Desktop, where the program is run locally as a regular desktop application; and RStudio Server, which allows accessing RStudio using a web browser while it is running on a remote Linux server.  
+
+The original RStudio interface used the Qt framework; the current desktop application uses Electron. RStudio combines components written in several programming languages. Work on RStudio started at around December 2010, and the first public beta version (v0.92) was officially announced in February 2011.  
+
+```{r fig-original-03-rstudio1, echo=FALSE,fig.cap='R studio logo',out.width="30%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/rstudiologo.png"))
+```
+
+Typical RStudio window has four panes as explained below  
+
+```{r fig-original-03-rstudio2, echo=FALSE,fig.cap='RStudio pane layout from the original lecture notes; appearance varies in current releases',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/downloadR/rstudiowindow.png"))
+```
+
+1. **Console**
+
+This is where the action happens. Here any authentic R code typed after the ‘>’ prompt will be executed after pressing ‘Enter’ to generate the output. We will use the Console to run and inspect the commands developed in this book.  
+
+2. **Source Editor**
+
+This is where R scripts (collection of code) can be created and edited. New R script can be opened by clicking File --> New File --> R Script or using short cut `ctrl+shift+N`. You can type your codes here. To run a code in console or execute, place the cursor in the line which code is written and press `ctrl+enter` or highlight the code you wish to evaluate and clicking on the “Run” button on the top right of the Source. You can save your R codes, written in script.   
+
+3. **Environment|History|Connections**
+
+All of the data objects (such as vectors, matrices, and dataframes) that you have defined in your current R session are listed under the Environment tab of this panel. In data objects, you may also examine details like the quantity of observations and rows. A few other clickable options are available on the tab, such as `Import Dataset`, which will launch a graphical user interface (GUI) for inputting data into R.  
+
+This panel's History tab only provides a history of all the code that you have previously evaluated in the Console.  
+
+The Environment / History panel could be helpful as you become more accustomed to R. However, you can ignore it right now. You can simply just reduce the window by clicking the minimise button in the panel's upper right corner if you wish to clear up space on your screen. 
+
+4. **Files|Plots|Packages|Help|Viewer**  
+
+You can find a collection of useful information in the Files|Plots|Packages|Help panel. Let's examine each tab in more detail:  
+- The file directory on your hard disc is accessible through the files panel. You can utilise the "Files" panel to set your working directory by clicking "More" and then "Set As Working Directory" once you've navigated to the folder where you wish to read and save files.  
+
+- All of your plots are displayed in the Plots panel. There are buttons to export the plot as a pdf or jpg and to open the plot in a separate window.  
+We are interested in the install button in this pane, to install packages required for our analysis.
+
+### Installing the current R release
+
+::: {.callout-note title="Installation guide updated 16 October 2026"}
+At the date of this update, CRAN offers **R 4.6.1** for Windows and Posit offers **RStudio Desktop 2026.10.0, build 233**. The screenshots below are genuine captures of the official download pages on that date. Download the stable release displayed when you study this chapter; the version number will change. These are download-page screenshots, rather than screenshots of an installer running on your computer.
+:::
+
+Install **R first**, then **RStudio Desktop**. R performs the calculations; RStudio provides the editor and working environment.
+
+#### Step 1: choose your operating system
+
+Open [CRAN](https://cran.r-project.org/). Choose **Download R for Windows** on a Windows computer. macOS users should select the macOS download and the installer appropriate to their processor; Linux users should follow CRAN's instructions for their distribution.
+
+![CRAN: choose the download for your operating system. Captured 16 October 2026.](images/install-current/cran-platforms-2026-10-16.jpg){width=100%}
+
+#### Step 2: choose the base installation
+
+On the Windows page, select **base** or **install R for the first time**. Rtools is a separate collection of build tools; it is not the R application. Students installing precompiled Windows packages can begin with base R.
+
+![CRAN for Windows: choose the base installation. Captured 16 October 2026.](images/install-current/cran-windows-base-2026-10-16.jpg){width=100%}
+
+#### Step 3: download and install R
+
+Open the [current Windows release page](https://cran.r-project.org/bin/windows/base/) and select its **Download R** link. At this update it offers R 4.6.1. Check the operating-system requirement on the page: the current R Windows release requires Windows 10 or later and the Universal C Runtime (UCRT).
+
+![Current official R for Windows download page, showing R 4.6.1. Captured 16 October 2026.](images/install-current/cran-r-windows-2026-10-16.jpg){width=100%}
+
+After downloading, open the installer from your Downloads folder. Select the installation language, read the installation information, and follow **Next** through the destination and component choices. The defaults are suitable for a typical first installation. Allow installation to finish, then select **Finish**. Open R from the Start menu to confirm that its console launches. The exact installer screens depend on the release and your system permissions; an institution-managed computer may require laboratory support.
+
+### Installing RStudio Desktop
+
+#### Step 4: download the free desktop edition
+
+Open the [official RStudio download page](https://docs.posit.co/ide/user/download.html). Choose **RStudio Desktop**, then the installer matching your operating system. The current Windows card lists **Windows 11**; do not assume RStudio and R have identical operating-system requirements. Select the open-source Desktop installer, rather than the Server or commercial Pro editions, for the course.
+
+![Official RStudio Desktop platform choices, release 2026.10.0. Captured 16 October 2026.](images/install-current/rstudio-platforms-2026-10-16.jpg){width=100%}
+
+Run the downloaded RStudio installer and follow its installation steps. Launch **RStudio** after completion. RStudio should detect the installed R; if asked to select an R installation, choose the current installation you just installed. On macOS, open the downloaded disk image and follow the application's installation instructions. Linux users should select the package for their distribution.
+
+#### Step 5: verify the R session
+
+Type the following in RStudio's **Console**, without typing the `>` prompt. These commands report the version actually running on your computer and perform a small calculation.
+
+```{r}
+R.version.string
+2 + 3
+```
+
+The version printed in this textbook's rendered output is the R installation used to build the book; it need not match the latest downloadable release. Your calculation should return `5`.
+
+Create a script with **File → New File → R Script**, enter `2 + 3`, and press **Ctrl+Enter** (Windows/Linux) or **Command+Enter** (macOS). Save the script as `first-practical.R`. If the Source pane is initially absent, opening a script reveals it. The Console, Source, Environment, and Files/Plots/Help areas are described above; modern RStudio also supports an optional Sidebar and customizable pane layouts. See the [current official pane guide](https://docs.posit.co/ide/user/ide/guide/ui/ui-panes.html).
+
+::: {.callout-tip title="Checkpoint before the first practical"}
+You can open RStudio, run `2 + 3`, save an R script, and identify the R version in your Console. Next create a course project and install the packages used in the practicals. Keep an internet connection for the initial package installation.
+:::
+
+The original installation pictures are retained with the archived lecture notes in `source-notes/` and `images/downloadR/`; the teaching instructions above use the updated download pages.
+
+##### The above descriptions are sourced from: {-}
+
+[The R Project for Statistical Computing](https://www.r-project.org/)
+
+[RStudio](https://www.rstudio.com/)
+
+[Wikipedia R (programming language)](https://en.wikipedia.org/wiki/R_(programming_language))
+
+[Wikipedia RStudio](https://en.wikipedia.org/wiki/RStudio)
+
+## Packages and libraries
+
+### Packages
+Packages are organised collections of R functions, data, and compiled code. Packages have useful functions to perform specific tasks. Some of the useful packages for agricultural research are `agricolae`, `grapesAgri1` etc.  
+In the R environment, packages are kept in a directory called "library". R installs a group of packages by default during installation. Only the default packages are initially available once the R console has been launched. The R application that is getting to use other installed packages needs to be explicitly loaded from package library in order to use them.
+
+### Repositories  
+
+A repository is where packages are located so that they can be installed from it. Organizations and developers each have their own local repository, which is often online and open to all. The most well-liked R package repositories include: **CRAN**, **BIOCONDUCTOR**, **GITHUB**.  
+
+#### CRAN
+**C**omprehensive **R** **A**rchive **N**etwork(**CRAN**) is the official repository, It is an international network of ftp and web servers run and managed by the R community. It is coordinated by the R community, and before a package can be published in CRAN, it must pass a number of tests to guarantee that it complies with CRAN rules.  
+
+#### Bioconductor 
+Open source software for bioinformatics is designed for the topic-specific repository known as Bioconductor. In keeping with CRAN, it has its own submission and review procedures, and its community is quite active, holding numerous conferences and meetings each year.  
+
+#### Github  
+
+The most well-known repository for open source projects is Github. Its popularity is due to the unrestricted open source storage space, integration with the version control programme git, and simplicity of sharing and teamwork.  
+
+### Base packages  
+
+Base packages or standard pacakges come pre-installed with R installations and are regarded as being a part of the R source code. The fundamental R functions are found in base packages, which make it possible to perform common statistical and graphical operations on datasets. Examples of Base packages include `stats`, `graphics`, `grDevices`, `utils`, `datasets`, `methods` and `base`. The functions available in these Base packages can be used for basic operations on the data set. Some of the functions we have discussed earlier in Section @sec-language, like `mean()`,`min`, `log10`,`as.data.frame` etc.  
+
+The standard installation contains base packages for essential language, statistical, graphics, and utility functions. The exact installed list can be inspected with `installed.packages()`.
+
+In addition, there are fifteen "recommended packages" from CRAN which are included with binary distributions of R: `KernSmooth`, `MASS`, `Matrix`, `boot`, `class`, `cluster`, `codetools`, `foreign`, `lattice`, `mgcv`, `nlme`, `nnet`, `rpart`, `spatial`, and `survival`.
+
+### Other packages  
+
+Any user could develop a package and make it available through any of the repositories. There are thousands of helpful R packages.  
+
+### Installing R Packages  
+
+There are numerous ways to install R Packages, which are listed below. You need an active internet connectivity for installing packages.  
+
+#### From CRAN  
+
+Installing Packages From CRAN: For installing Package from `CRAN` we need the name of the package and use the following command:  
+
+```{r original-05-1, eval=FALSE}
+install.packages("package name")  
+```  
+Simply express package name as a character vector in the first argument of the `install.packages()` function to install more than one package at once:  
+
+```{r original-05-2, eval=FALSE}
+install.packages(c("grapesAgri1", "MASS"))  
+```  
+
+#### From Bioconductor
+
+Bioconductor provides packages for biological data analysis. The original notes used `biocLite()`. That installation mechanism has been replaced by `BiocManager`. The distinction between installing its manager and installing a selected package remains useful.
+
+```{r}
+#| eval: false
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+BiocManager::install(c("GenomicFeatures", "AnnotationDbi"))
+```
+
+Consult the [official Bioconductor installation guide](https://www.bioconductor.org/install/) for compatibility with your R version. These optional examples are not executed while building the textbook.
+
+#### From github  
+
+To install a R package from github, start by installing the devtools package. The best way to do this is from CRAN.  
+
+```{r original-05-6, eval=FALSE}
+install.packages("devtools")  
+
+```  
+
+Install the package of interest from GitHub using the following code, where you need to remember to list both the author and the name of the package. In this example, we are installing the `grapesAgri1` package created by *pratheesh3780*.  
+
+```{r original-05-7, eval=FALSE}  
+devtools::install_github("pratheesh3780/grapesAgri1")  
+
+```
+
+### Load packages  
+
+Once you successfully install an R package; you need to load the package for use in the session. `library()` function can be used to load package. 
+
+**Example**  
+```{r original-05-8, eval=FALSE}  
+library(grapesAgri1)
+```  
+
+#### Load Multiple Packages at Once  
+
+We need to first specify a vector of package names:  
+```{r original-05-9, eval=FALSE}  
+my_packages <- c("dplyr", "mice", "stringr") # vector of package names 
+lapply(my_packages, require, character.only = TRUE)    # Load multiple packages  
+ 
+```
+After running the code, inspect the returned logical values: `require()` returns FALSE for packages it could not load. Do not assume that every package loaded successfully.  
+
+
+### Check, Update and Remove  
+
+To check what packages are installed on your computer, type this command:  
+
+```{r original-05-10, eval=FALSE}
+installed.packages()  
+```  
+
+To update all the packages, type this command:  
+
+```{r original-05-11, eval=FALSE}  
+
+update.packages()  
+```   
+
+To update a specific package, type this command:`install.packages("package name")`  
+
+```{r original-05-12, eval=FALSE}  
+
+install.packages("grapesAgri1")  
+
+```
+
+### Installation using R studio UI  
+
+The packages can be installed using Rstudio User interface. Step by step installation of package `grapesAgri1` is shown below. All other packages can be installed in similar way  
+
+-  **Step 1**: Click on the install button as shown below 
+
+```{r fig-original-05-1, echo=FALSE,fig.cap='Step 1',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/packages/1.PNG"))
+```    
+
+-  **Step 2**: Type the name of the package in the window that appears
+
+```{r fig-original-05-2, echo=FALSE,fig.cap='Step 2',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/packages/2.PNG"))
+```  
+
+-  **Step 3**: Select the package name and click install  
+
+```{r fig-original-05-3, echo=FALSE,fig.cap='Step 3',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/packages/3.PNG"))
+```  
+
+-  **Step 4**: Load the package name by clicking on the check box.  
+
+```{r fig-original-05-4, echo=FALSE,fig.cap='Step 4',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/packages/4.PNG"))
+```
+
+## Agricultural applications, interpretation, and further practice
+
+### Why use a programming language?
 
 A spreadsheet is convenient for recording observations. A script records the operations performed on them. If a corrected observation arrives, the script can repeat the same analysis. This makes a programming language valuable even for a modest experiment.
 
@@ -14,7 +497,7 @@ Download R from [CRAN](https://cran.r-project.org/), RStudio Desktop from [Posit
 
 The Source pane holds saved scripts; the Console evaluates commands; the Environment pane lists objects; and the Files, Plots, Packages, and Help tabs provide supporting tools. Pane positions may differ. In the Source pane, Ctrl+Enter on Windows runs the selected code or current line. Save your script even when the commands also appear in Console history.
 
-## A first agricultural calculation
+### A first agricultural calculation
 
 Suppose a 20-square-metre harvested plot produces 9.6 kg of grain. One hectare contains 10,000 square metres, and one tonne contains 1,000 kg.
 
@@ -29,7 +512,7 @@ The answer is 4.8 t/ha. The expression makes the unit conversion explicit. It do
 
 `<-` assigns a value. A line beginning with `#` is a comment. R is case sensitive: `grain_kg` and `Grain_kg` are different names. The Console's `>` prompt is not part of the code. A `+` prompt usually means that a bracket or quotation mark has not been closed; press Escape and inspect the command.
 
-## Packages and help
+### Packages and help
 
 A package supplies functions, documentation, and sometimes datasets. Install a package once into an R library, then load it in each new session where it is needed. Installation should be a deliberate setup step, not part of rendering an analysis.
 
@@ -43,11 +526,11 @@ example(mean)
 
 The notation `dplyr::filter()` calls a function explicitly from a package. It is useful when packages provide functions with the same name. For Bioconductor packages, use the current Bioconductor installation instructions and `BiocManager`; the old `biocLite()` approach in the earlier notes is obsolete.
 
-## Errors are information
+### Errors are information
 
 “Object not found” suggests a misspelt name, an unrun assignment, or an object from a previous session. “Could not find function” suggests a misspelling or an unloaded package. “Cannot open file” suggests an incorrect relative path. Start with the first error and run a small piece of code that reproduces it. Restart R periodically and run your saved script from the beginning; this reveals hidden dependencies on old objects.
 
-## Practical 1 and exercises
+### Practical 1 and exercises
 
 1. Create a course project and save a script containing the yield calculation. Change the harvested mass to 11.2 kg. State the new yield and its unit.
 2. Explain why `9.6 / 20` is not yet a yield in t/ha.
@@ -55,3 +538,24 @@ The notation `dplyr::filter()` calls a function explicitly from a package. It is
 4. Find the help for `sqrt()` and calculate the square root of 144.
 
 **Chapter review.** A saved script records an analysis; a project makes file paths portable; packages extend R; and units remain the analyst's responsibility.
+
+## Live R laboratory
+
+::: {.live-r}
+**Your first agricultural calculation**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+yield_t_ha <- c(3.2, 3.8, 4.1, 3.5, 4.4)
+mean(yield_t_ha)
+range(yield_t_ha)
+length(yield_t_ha)
+```
+
+**Investigate.** The five simulated plot yields have a mean of 3.8 t/ha. Change the last yield to 5.4. Predict how the mean and range will change before running again.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

@@ -58,6 +58,53 @@ An effective memo states the question, source and design, cleaning decisions, tw
 
 Do not invent numerical findings in prose. Extract values from your executed summaries and identify the relevant table or figure. Separate what the data show from what you propose as an explanation.
 
+## From an agricultural question to a sequence of comparisons
+
+A common difficulty in EDA is deciding where to begin. Students often calculate every available summary and draw several graphs, but cannot explain why each was needed. A more useful approach is to translate the question into a small sequence of comparisons.
+
+For our yield question, begin with the response: is yield measured on the same basis for every plot? Next inspect treatment and variety balance. Then examine whether block differences are large enough to affect pooled comparisons. Finally examine measured predictors such as soil nitrogen. This order prevents a persuasive scatter plot from distracting us from an error in the underlying experimental table.
+
+```{r}
+block_summary <- dat |>
+  group_by(block) |>
+  summarise(n = n(), mean_yield = mean(yield_t_ha),
+            lowest_yield = min(yield_t_ha), highest_yield = max(yield_t_ha),
+            .groups = "drop")
+block_summary
+ggplot(dat, aes(factor(block), yield_t_ha, colour = treatment)) +
+  geom_point(position = position_jitter(width = .12, height = 0, seed = 531)) +
+  labs(x = "Block", y = "Grain yield (t/ha)", colour = "Treatment") +
+  theme_minimal()
+```
+
+The table shows how many observations contribute to each block summary. The graph retains treatment information. If a block appears high-yielding, ask whether all its treatments tend to be higher or whether the pattern is driven by one treatment. An overall block mean alone cannot answer that second question.
+
+## Marginal patterns and conditional patterns
+
+A marginal comparison combines observations over other variables. A conditional comparison examines a relationship within specified groups or after accounting for specified predictors. The distinction matters when varieties or management practices occur under different environmental conditions.
+
+Imagine that improved seed is used mainly on irrigated farms and local seed mainly on rainfed farms. A marginal difference in yield between seed types includes differences in water availability. A graph stratified by irrigation status may reveal a smaller seed difference, a larger one, or even a reversal. This is a problem of the comparison being made, not a software malfunction.
+
+In our simulated trial, treatment and nitrogen application are linked by construction. The following table makes that relationship visible before any regression is fitted.
+
+```{r}
+dat |>
+  group_by(treatment) |>
+  summarise(mean_nitrogen = mean(nitrogen_kg_ha),
+            minimum_nitrogen = min(nitrogen_kg_ha),
+            maximum_nitrogen = max(nitrogen_kg_ha), .groups = "drop")
+```
+
+If groups occupy largely separate nitrogen ranges, a model claiming to estimate a treatment effect “at the same nitrogen rate” may rely on comparisons with little support in the observed data. Including both variables in a formula does not automatically solve that lack of overlap. Describe it in the EDA memo so the eventual model is judged against the actual information available.
+
+## Recording exploratory decisions
+
+Keep a short analysis diary. Record which patterns prompted a transformation, a subgroup comparison, or a proposed model. For example: “The initial histogram suggested a long upper tail, so I compared the original and logarithmic scales.” This is more transparent than presenting the final choice as if it had been specified before the observations were examined.
+
+An exploratory plot may reveal an unexpected association worth studying. It is appropriate to report that observation as exploratory and propose a follow-up experiment. It is inappropriate to search many subsets, keep only the strongest association, and describe its ordinary p-value as though only one question had been asked.
+
+There is also a difference between a data limitation and an analytical limitation. A missing weather-station identifier is a data limitation that may prevent assessment of clustering. Choosing not to fit a sophisticated model because it is beyond this course is an analytical boundary. State both clearly. A thoughtful descriptive conclusion is preferable to an inferential claim that the dataset cannot support.
+
 ## Practical 8B and exercises
 
 1. Prepare a one-page EDA memo with a grouped table and two figures.
@@ -66,3 +113,28 @@ Do not invent numerical findings in prose. Extract values from your executed sum
 4. Explain why selecting only the five highest-yielding plots cannot identify the best management practice for all farms.
 
 **Chapter review.** EDA is a disciplined way to learn from data and uncover design problems. It does not turn observational patterns into causal effects.
+
+## Live R laboratory
+
+::: {.live-r}
+**Explore before explaining**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+data(PlantGrowth)
+aggregate(weight ~ group, PlantGrowth, mean)
+boxplot(weight ~ group, PlantGrowth,
+        col = c("#a6bddb", "#f5ce7b", "#8dcbb0"),
+        xlab = "Treatment group", ylab = "Dried weight",
+        main = "PlantGrowth: distribution and overlap")
+stripchart(weight ~ group, PlantGrowth, vertical = TRUE,
+           method = "jitter", add = TRUE, pch = 19)
+```
+
+**Investigate.** Compare the centres and the overlap. Read ?PlantGrowth in RStudio for the dataset context before making an agricultural interpretation.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

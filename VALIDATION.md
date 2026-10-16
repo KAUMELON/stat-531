@@ -2,6 +2,16 @@
 
 Teaching edition developed on 16 October 2026, Asia/Calcutta.
 
+## Restored and expanded edition
+
+The revised edition restores the nine substantive original lecture sources to the reading chapters. `RETENTION-AUDIT.md` records 95.5% matching original prose in sequence (8,871 of 9,288 normalized original prose words, excluding code). The eleven tasks from the original DOCX self-assessment are also restored. The original import DOCX was inspected and its overlapping lesson is retained through Chapter 3.
+
+The complete revised HTML build passed with all evaluated R chunks executed. `scripts/check-book.py` found 20 HTML documents, 69 image elements, and zero missing local targets or unresolved cross-references. A normalized prose count across the 20 QMD files is 26,385 words, excluding fenced code; this is not a printed page count.
+
+Historical source datasets were downloaded successfully and checked for lengths 42 (kings), 168 (births), 84 (souvenir), and 100 (rainfall). The supplied rainfall copy begins at 23.56 inches. All restored time-series examples run on local CSVs. No online download is executed by the book. Required `pastecs` and `TTR` packages are now included in setup scripts.
+
+The complete restored edition has been computationally checked. The prior Word/PDF limitations below remain; no new print-layout validation is claimed.
+
 ## Environment
 
 - Windows, R 4.5.2, Quarto 1.6.39.
@@ -26,3 +36,6 @@ The restricted execution environment required a workspace-local Quarto cache. Fo
 R emitted startup warnings that the requested `C.UTF-8` locale could not be applied. The HTML computations completed. No chapter-level statistical or execution error was suppressed; Quarto is configured with `error: false` and visible warnings.
 
 The optional internet-download example is deliberately not executed during rendering. Its Rdatasets CSV endpoint is external and can change. Final institutional, agricultural subject-matter, copyright, and external textbook peer review remain the author's editorial steps; successful execution does not claim those reviews have occurred.
+
+See INTERACTIVE-EDITION.md for the installation, styling, and live R update and its additional validation.
+

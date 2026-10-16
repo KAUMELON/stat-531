@@ -95,6 +95,58 @@ fisher.test(tab)
 
 Report infestation proportions and their contrast, not only a test result. Because this example is simulated, no real pest-control efficacy claim follows. In a clustered field survey, observations from the same field may require a model that accounts for clustering.
 
+## What Welch's test calculates
+
+Suppose two independent groups have sample means $\bar{x}_1$ and $\bar{x}_2$, sample variances $s_1^2$ and $s_2^2$, and sizes $n_1$ and $n_2$. Under a null difference of zero, Welch's statistic is
+
+$$t=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{s_1^2/n_1+s_2^2/n_2}}.$$
+
+The numerator is the estimated effect. The denominator is its estimated standard error. A difference can therefore produce a larger absolute t-statistic when within-group variation is lower or sample sizes are larger. This does not make the underlying biological difference larger; it changes its precision relative to noise.
+
+```{r}
+n1 <- length(treated); n2 <- length(control)
+v1 <- var(treated); v2 <- var(control)
+se_difference <- sqrt(v1 / n1 + v2 / n2)
+t_manual <- (mean(treated) - mean(control)) / se_difference
+df_welch <- (v1 / n1 + v2 / n2)^2 /
+  ((v1 / n1)^2 / (n1 - 1) + (v2 / n2)^2 / (n2 - 1))
+c(manual_t = t_manual, R_t = unname(welch$statistic),
+  manual_df = df_welch, R_df = unname(welch$parameter))
+```
+
+The degrees of freedom need not be an integer. They account approximately for uncertainty in the two variance estimates. In contrast, the pooled-variance t-test assumes a common population variance and estimates it using both groups. Choose the method from the design and assumptions rather than selecting whichever one gives a smaller p-value.
+
+## Reading a contingency table cell by cell
+
+Under independence, a contingency table's expected count is its row total multiplied by its column total and divided by the grand total. For example, if there are 60 control plots and 50 infested plots among 120 plots overall, independence predicts `60 * 50 / 120 = 25` infested control plots. The observed number need not be 25; the difference contributes to the test statistic.
+
+```{r}
+expected_manual <- outer(rowSums(tab), colSums(tab)) / sum(tab)
+expected_manual
+cell_contributions <- (tab - expected_manual)^2 / expected_manual
+cell_contributions
+c(manual_chisq = sum(cell_contributions), R_chisq = unname(chi$statistic))
+```
+
+Squaring prevents positive and negative discrepancies from cancelling. Dividing by the expected count scales discrepancies relative to their expected magnitude. In a two-by-two table the independence test has one degree of freedom. In a general `r`-by-`c` table it has `(r - 1)(c - 1)` degrees of freedom when the usual assumptions apply.
+
+A test of association does not by itself give the direction or size of an efficacy effect. Inspect row proportions and define a contrast such as risk difference or risk ratio. If treatments were randomized to independent plots, the contrast can support a treatment interpretation within the experiment's scope. If farmers chose their treatments, management and pest risk may already differ before treatment.
+
+## Type I error, Type II error, and power
+
+A Type I error rejects a true null hypothesis. The chosen significance level controls its probability under the stated test model. A Type II error fails to reject a false null. Power is the probability of rejecting the null for a specified alternative effect and design. Power is therefore not one fixed characteristic of a test: it depends on the effect size, variability, sample size, and significance level.
+
+When planning a trial, specify the smallest difference that would matter scientifically or economically and use a defensible estimate of variation. A pilot trial can inform that estimate, but its uncertainty should be acknowledged. The following planning calculation asks for the approximate sample size per group needed to detect a difference of 0.5 t/ha when the within-group SD is 0.6 t/ha, using a two-sided two-sample test at level 0.05 and power 0.80.
+
+```{r}
+planning <- power.t.test(delta = .5, sd = .6, sig.level = .05,
+                         power = .80, type = "two.sample", alternative = "two.sided")
+planning
+ceiling(planning$n)
+```
+
+This is a simple equal-size independent-group planning example. Blocking, clustering, repeated measurements, unequal allocation, and expected missingness require additional design considerations. Do not use a planning result to justify treating subsamples as independent units. Also, calculating “observed power” from the same estimated effect and p-value after a test adds little information; report the effect and interval instead.
+
 ## Confidence intervals and decisions
 
 A 95% confidence procedure has 95% coverage under repeated sampling when its assumptions hold. A particular computed interval is not a 95% probability statement about a fixed parameter in frequentist inference. Wide intervals indicate that both small and large effects may be compatible with the data. Equivalence requires a prespecified margin and an appropriate equivalence analysis; a nonsignificant t-test is insufficient.
@@ -110,3 +162,24 @@ If many outcomes or comparisons are tested, false positives become more likely. 
 5. Distinguish random sampling, random treatment assignment, and repeated subsampling.
 
 **Chapter review.** Valid inference begins with design. State the contrast, quantify its size and uncertainty, and interpret the p-value conditionally on the model.
+
+## Live R laboratory
+
+::: {.live-r}
+**Estimate a mean difference with uncertainty**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+control <- c(3.1, 3.4, 3.2, 3.5, 3.3, 3.0)
+compost <- c(3.7, 3.9, 3.6, 4.0, 3.8, 3.5)
+t.test(compost, control, conf.level = 0.95)
+mean(compost) - mean(control)
+```
+
+**Investigate.** For this simulated independent-group example, identify the estimated difference, confidence interval, and null hypothesis. A small p-value alone does not measure the practical value of a treatment.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

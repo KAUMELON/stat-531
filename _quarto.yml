@@ -4,6 +4,8 @@ project:
   execute-dir: project
   resources:
     - data/
+    - images/
+    - assets/
     - practicals/*.qmd
     - practicals/*.Rmd
 book:
@@ -53,6 +55,10 @@ format:
     toc: true
     code-copy: true
     code-overflow: wrap
+    highlight-style: github
+    include-after-body:
+      text: |
+        <script type="module" src="assets/live-r.js"></script>
   pdf:
     documentclass: scrreprt
     toc: true

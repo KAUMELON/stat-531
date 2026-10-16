@@ -80,6 +80,55 @@ head(soil_long)
 
 Do not average nitrogen and phosphorus merely because both are expressed in mg/kg. They are distinct quantities. Reshaping changes representation, not scientific meaning.
 
+## Understanding what happens inside a grouped operation
+
+When we write `group_by(treatment)`, R does not immediately replace the observations with treatment means. It adds grouping information to the table. The next operation then acts within each group. This distinction explains why `mutate()` and `summarise()` can give very different tables after the same grouping command.
+
+```{r}
+within_treatment <- crop |>
+  group_by(treatment) |>
+  mutate(treatment_mean = mean(yield_t_ha),
+         deviation_from_treatment = yield_t_ha - treatment_mean) |>
+  ungroup()
+head(within_treatment[, c("plot_id", "treatment", "yield_t_ha",
+                          "treatment_mean", "deviation_from_treatment")])
+nrow(within_treatment)
+nrow(treatment_summary)
+```
+
+The first result still has 60 plot rows. Every plot carries its treatment's mean and its own deviation from that mean. The summary table has only three treatment rows. If the purpose is to investigate within-treatment variation, the first table is useful. If the purpose is a compact reporting table, the second is useful. Neither representation should be confused with additional independent replication.
+
+The word `n()` counts rows in a group. It does not automatically count nonmissing yields. Thus a group can have ten rows but only eight observed yields. The quantities `n()`, `sum(!is.na(yield_t_ha))`, and `mean(yield_t_ha, na.rm = TRUE)` must be interpreted together.
+
+## Weighted means and unequal harvested areas
+
+Let us suppose two farms harvest 1 ha and 9 ha, with yields of 2 and 6 t/ha respectively. Their arithmetic mean yield is 4 t/ha. However, total production is 56 tonnes on 10 ha, so the area-weighted yield is 5.6 t/ha. Both calculations are arithmetically correct; they answer different questions.
+
+```{r}
+farms <- data.frame(farm = c("Small", "Large"), area_ha = c(1, 9),
+                    yield_t_ha = c(2, 6))
+farms <- farms |>
+  mutate(production_t = area_ha * yield_t_ha)
+c(mean_farm_yield = mean(farms$yield_t_ha),
+  yield_from_totals = sum(farms$production_t) / sum(farms$area_ha),
+  weighted_mean = weighted.mean(farms$yield_t_ha, farms$area_ha))
+```
+
+The arithmetic mean describes the average yield of these two farm records when each farm receives equal weight. The weighted mean describes production per hectare across their combined harvested area. Before reporting a district, season, or treatment summary, ask what should receive equal weight. A column of weights must have a scientific interpretation; arbitrary weights cannot improve an analysis merely by changing the result.
+
+## Joining is not matching by row position
+
+If soil rows have been sorted by pH while crop rows remain sorted by plot number, using `cbind()` to combine them would attach soil measurements to the wrong plots. A join uses an identifier instead. We can demonstrate this by deliberately changing the soil row order.
+
+```{r}
+soil_reordered <- soil[order(soil$ph), ]
+joined_by_id <- left_join(crop, soil_reordered, by = "plot_id")
+stopifnot(identical(joined_by_id$plot_id, crop$plot_id))
+all.equal(joined_by_id$ph, linked$ph)
+```
+
+The pH values remain correctly aligned because the join uses `plot_id`. A correct key is therefore more valuable than a visually tidy row order. For data collected at several depths or dates, `plot_id` alone may not be unique; the key might need `plot_id`, `depth_cm`, and `sampling_date`. A one-to-many relationship can be legitimate, but the resulting observational unit must be stated.
+
 ## Practical 5 and exercises
 
 1. Produce treatment-by-variety summaries with sample size, mean, and standard deviation.
@@ -89,3 +138,26 @@ Do not average nitrogen and phosphorus merely because both are expressed in mg/k
 5. Introduce a repeated key into a copy of the soil table and investigate its effect on the joined row count.
 
 **Chapter review.** Grouping changes the level of a question. Check keys, denominators, units, and completeness whenever observations are combined.
+
+## Live R laboratory
+
+::: {.live-r}
+**Summarize treatment groups**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+trial <- data.frame(
+  treatment = rep(c("Control", "Compost"), each = 4),
+  yield_t_ha = c(3.1, 3.4, 3.2, 3.5, 3.9, 4.1, 3.8, 4.2)
+)
+aggregate(yield_t_ha ~ treatment, trial,
+          function(x) c(n = length(x), mean = mean(x), sd = sd(x)))
+```
+
+**Investigate.** This base R example mirrors the grouped summaries explained with dplyr in the chapter. The simulated difference is descriptive; an experimental design is needed for causal interpretation.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

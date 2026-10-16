@@ -73,6 +73,50 @@ head(sort(cooks.distance(multiple), decreasing = TRUE))
 
 The residual-versus-fitted plot checks mean structure, the Q–Q plot checks the error distribution, the scale-location plot checks spread, and leverage/influence diagnostics identify observations that can strongly affect estimates. Check influential records against source information; do not delete them merely to improve fit. Classical t-tests and intervals need assumptions about errors, including independence and constant variance. Normality concerns the errors for small-sample inference, not every predictor's marginal distribution.
 
+## Categorical predictors and reference levels
+
+Regression can include categorical variables through indicator coding. A two-variety example illustrates this without requiring the varieties to be interpreted as numeric doses. The reference level determines the intercept's meaning, while the fitted mean for each observation remains unchanged under a consistent recoding.
+
+```{r}
+trial <- read.csv("data/crop_trial.csv")
+trial$variety <- factor(trial$variety, levels = c("A", "B"))
+trial$block <- factor(trial$block)
+variety_model <- lm(yield_t_ha ~ block + treatment + variety, data = trial)
+coef(variety_model)
+```
+
+The `varietyB` coefficient compares B with A conditional on the other terms in this additive model. It assumes a common variety difference across treatments. The preceding ANOVA chapter explains how a treatment-by-variety interaction relaxes that assumption. ANOVA and regression are connected expressions of linear modelling, rather than unrelated procedures selected solely by the appearance of a response column.
+
+## Residual standard error and explained variation
+
+The residual sum of squares measures unexplained squared deviations after fitting. Dividing by residual degrees of freedom and taking a square root gives the residual standard error, in yield units. $R^2$ compares residual sum of squares with the total sum of squares around the observed mean:
+
+$$R^2=1-\frac{\sum(y_i-\widehat{y}_i)^2}{\sum(y_i-\bar{y})^2}.$$
+
+```{r}
+rss <- sum(residuals(multiple)^2)
+tss <- sum((farm$yield_t_ha - mean(farm$yield_t_ha))^2)
+c(manual_R_squared = 1 - rss / tss,
+  reported_R_squared = summary(multiple)$r.squared,
+  residual_standard_error = sqrt(rss / df.residual(multiple)))
+```
+
+An in-sample $R^2$ describes fit to the observed response variation under that model. It is not the percentage probability that a prediction is correct. A narrow predictor range can produce a low $R^2$ even when a small slope is estimated usefully; a common time trend can produce a high $R^2$ for an unsuitable causal interpretation. Compare models in relation to their purpose and predictor domain.
+
+## Nonlinearity and an apparent fertilizer optimum
+
+Crop response to a nutrient may increase initially and then approach a plateau or decline. A straight line over a restricted range can approximate part of that response without defining a biological optimum. A quadratic model adds a squared predictor term. In R formulas, write `I(x^2)` so the power is interpreted arithmetically.
+
+```{r}
+quadratic <- lm(yield_t_ha ~ nitrogen_kg_ha + I(nitrogen_kg_ha^2) + rainfall_mm,
+                 data = farm)
+summary(quadratic)
+```
+
+For a concave quadratic $a+bN+cN^2$ with $c<0$, its mathematical maximum occurs at $-b/(2c)$. If `c` is positive, the stationary point is a minimum, not an optimum. Even a concave fitted curve may place its maximum outside the observed nitrogen range, where it is unsupported extrapolation. The supplied simulation is generated with a linear mean response, so a quadratic term should not be presented as discovering a true fertilizer optimum.
+
+An economic optimum additionally depends on crop price, input cost, and an appropriate response function. A fitted yield curve alone cannot supply those missing quantities. A defensible recommendation also needs replicated evidence across relevant environments and an assessment of uncertainty. In this introductory course, use nonlinear patterns to motivate questions and model checks before offering recommendations.
+
 ## Predict and evaluate honestly
 
 ```{r}
@@ -106,3 +150,28 @@ A random holdout is suitable for these independent simulated records. For repeat
 5. Evaluate the held-out model against the training-mean baseline. Identify a realistic setting where a random row split would be inappropriate.
 
 **Chapter review.** Correlation describes association; regression specifies a conditional response; prediction requires separate evaluation. Design and domain knowledge remain necessary for causal interpretation.
+
+## Live R laboratory
+
+::: {.live-r}
+**Fit and interpret a yield model**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+trial <- data.frame(nitrogen = c(0, 20, 40, 60, 80, 100),
+                    yield = c(2.0, 2.6, 3.0, 3.7, 3.9, 4.5))
+model <- lm(yield ~ nitrogen, data = trial)
+summary(model)
+predict(model, newdata = data.frame(nitrogen = 50), interval = "prediction")
+plot(yield ~ nitrogen, trial, pch = 19, col = "#237f83",
+     xlab = "Nitrogen (kg/ha)", ylab = "Simulated yield (t/ha)")
+abline(model, col = "#bc7c21", lwd = 2)
+```
+
+**Investigate.** Interpret the slope with units and distinguish a prediction interval for a new observation from a confidence interval for the mean. Do not extrapolate this simulated linear response to arbitrary doses.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

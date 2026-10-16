@@ -77,6 +77,56 @@ PDF output requires a working LaTeX distribution, for example TinyTeX installed 
 
 Before sharing, restart R and render from source. Include source files, permitted data, metadata, package requirements, and instructions. `sessionInfo()` records R and loaded package versions. For a stable course release, consider a reviewed `renv` lockfile; do not claim that a package list alone pins an environment.
 
+## Building the report in stages
+
+Let us develop a report in the same order as an analysis. First create the document with its question, data source, and design, even before the final model is chosen. Then add a data-check section, followed by descriptive tables and figures. Only after examining those results should the methods and model sections be completed. This sequence makes the scientific argument visible rather than hiding it behind a final table of p-values.
+
+An effective data section identifies the observational unit, sample size, variable units, collection period, and treatment or sampling scheme. State how the raw file was obtained and whether permission is needed to share it. In the cleaning section, explain missingness, corrections, and exclusions with their consequences for the analysis. Avoid including personal or confidential identifiers merely because they happen to be in the original spreadsheet.
+
+The methods section should name the response, predictors or factors, model, and assumptions in terms that match the actual code. If the text describes a paired test but the code fits an unpaired test, a successful render has reproduced an inconsistency. Read both parts together. The results section should lead with the size and direction of important effects, followed by uncertainty and evidence. Keep mechanistic explanations and generalization limits in the discussion.
+
+## Managing code chunks and dependencies
+
+Each document is easiest to understand when it can be executed from top to bottom in a new session. The first chunk loads packages and reads inputs. Later chunks depend on those named objects. Avoid loading data by hand into the Environment pane and then assuming they will be available during rendering.
+
+````markdown
+```{r}
+#| label: setup
+#| include: false
+library(dplyr)
+library(ggplot2)
+trial <- read.csv("data/crop_trial.csv")
+stopifnot(!anyDuplicated(trial$plot_id))
+```
+
+```{r}
+#| label: tbl-treatment-means
+#| tbl-cap: "Mean simulated grain yield by management treatment."
+means <- trial |>
+  group_by(treatment) |>
+  summarise(n = n(), mean_yield = mean(yield_t_ha), .groups = "drop")
+knitr::kable(means, digits = 2)
+```
+````
+
+The setup chunk is hidden in the displayed report but remains in the source. It does not install packages. The table chunk visibly records the summary operation. A future reader can distinguish a count of plot records from an estimate of mean yield and can rerun both.
+
+Caching and freezing can save time in large projects, but they can also leave stale output when dependencies are misunderstood. During textbook revision, this project uses `freeze: false` so examples are executed again. Do not use old cached results to claim that revised code has been checked. For serious projects, record the environment and consider a lockfile, while recognizing that external data sources can change independently of package versions.
+
+## Tables, figures, and numerical precision
+
+A table title should say what was measured, how observations were grouped, and what the numbers represent. Put units in column headings where possible. Report enough digits for interpretation without suggesting unrealistic measurement precision. A yield measured to 0.01 t/ha should not normally be presented to eight decimal places merely because R printed them.
+
+A figure caption should allow the graph to be understood away from the surrounding paragraph. Distinguish observed points from fitted lines, and describe error bars or shaded intervals precisely. “Error bars” is insufficient: are they SD, SE, confidence intervals, or prediction intervals? If an interactive figure permits hovering, retain axis labels and a caption so the static version remains meaningful.
+
+Cross-references are preferable to manually typed numbers. After inserting a new table, `@tbl-treatment-means` updates its reference automatically. Manually writing “Table 3” can become wrong after reorganization. The same applies to chapter references and figure references. The final review should include checking that a referenced object actually supports the claim made in the sentence.
+
+## Reproducibility is also a classroom assessment
+
+Ask a classmate to open a copy of the complete project, restart R, and render the report. If it fails, identify whether the missing component is a file, package, path, or undocumented manual step. Record the correction in the project instead of asking the classmate to imitate your Console history.
+
+Finally, read the rendered document as a reader. Are headings in a logical order? Do tables fit? Are captions readable? Do the conclusions match the estimates? A report can be computationally reproducible and scientifically weak, or scientifically thoughtful but computationally incomplete. Undergraduate training should develop both skills together.
+
 ## Practical 15 and exercises
 
 1. Replace the example report's question with a question you can answer from a documented dataset. Include source, units, design, one table, one figure, and an interpretation.
@@ -86,3 +136,25 @@ Before sharing, restart R and render from source. Include source files, permitte
 5. Give the complete project to a classmate. Ask them to render it without relying on your Console history.
 
 **Chapter review.** Reproducibility means that data, code, and computational environment support the report's claims. A successful render is a necessary check, not a substitute for scientific review.
+
+## Live R laboratory
+
+::: {.live-r}
+**Generate a reproducible result sentence**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+yield <- c(3.2, 3.8, 4.0, 3.5, 4.6, 3.9)
+result <- data.frame(n = length(yield), mean = mean(yield), SD = sd(yield))
+result
+cat(sprintf("Across %d simulated plots, mean yield was %.2f t/ha (SD %.2f).\n",
+            result$n, result$mean, result$SD))
+```
+
+**Investigate.** Change a yield and rerun: both the table and sentence update. In a Quarto or R Markdown report, use an executable chunk for the table and inline R for values in the narrative. Rendering an entire report requires RStudio and Quarto.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

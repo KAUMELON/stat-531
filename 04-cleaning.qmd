@@ -70,6 +70,57 @@ write.csv(clean, "outputs/crop_cleaned.csv", row.names = FALSE)
 write.csv(audit, "outputs/cleaning_log.csv", row.names = FALSE)
 ```
 
+## Distinguishing missing, zero, and below-detection observations
+
+Let us consider three entries in a soil analysis sheet: `0`, an empty cell, and `<2`. These entries do not mean the same thing. Zero claims that the measured quantity is zero on the stated scale. An empty cell usually says that the measurement is unavailable. `<2` says that the laboratory could not quantify the concentration below a reporting limit of 2 in the stated unit. If all three are converted to zero, information about the measurement process is lost.
+
+Before converting a character column to numeric, inspect the distinct entries. Suppose a technician used `-999` for a missing reading. That number may be numerically valid to R even though it is not a possible crop yield. The program cannot infer the field-sheet convention on its own.
+
+```{r}
+recorded <- c("4.8", "", "-999", "5.2", "NA")
+missing_codes <- c("", "-999", "NA")
+recorded[recorded %in% missing_codes] <- NA_character_
+validated_yield <- as.numeric(recorded)
+validated_yield
+```
+
+Here the missing-code list comes from the example's recording protocol. Do not assume that a negative value is always missing; negative temperature or a negative change in biomass can be meaningful. A below-detection entry needs a separate indicator or a method appropriate to censored measurements. Substituting half the detection limit by habit can distort a distribution, especially when many values are below the limit.
+
+The same principle applies to dates and units. A date such as `03/04/2024` could mean 3 April or 4 March. A number recorded in kilograms cannot be combined with tonnes merely because the column has a numeric type. Resolve these ambiguities using the source and document the resolution before fitting a model.
+
+## Checking the design while cleaning
+
+Data quality includes the arrangement of observations. In a trial with three treatments in each of six blocks, a missing treatment-by-block combination may signal a lost plot or an import error. A missing response and a missing entire row are different: `is.na()` detects the former but cannot detect a plot that is absent from the table.
+
+```{r}
+rcbd <- read.csv("data/rcbd.csv")
+expected_design <- expand.grid(block = 1:6,
+                              treatment = c("Control", "Compost", "Mineral"),
+                              stringsAsFactors = FALSE)
+missing_plots <- dplyr::anti_join(expected_design, rcbd,
+                                  by = c("block", "treatment"))
+missing_plots
+with(rcbd, table(block, treatment))
+```
+
+The empty result from `anti_join()` means every expected combination is represented. It does not prove that the treatments were randomized correctly or that identifiers were transcribed correctly. Those questions require the field layout and randomization record. Cleaning and experimental design therefore meet at the point where a row is interpreted as an experimental unit.
+
+## A sensitivity analysis for a doubtful observation
+
+Sometimes a value remains doubtful after checking the source. It may be reasonable to report analyses with and without that observation, while identifying the choice as a sensitivity analysis. The aim is to discover how strongly a conclusion depends on one record, not to select whichever analysis gives the desired answer.
+
+```{r}
+trial <- read.csv("data/crop_trial.csv")
+high_id <- trial$plot_id[which.max(trial$yield_t_ha)]
+mean_all <- mean(trial$yield_t_ha)
+mean_without_highest <- mean(trial$yield_t_ha[trial$plot_id != high_id])
+data.frame(analysis = c("All observations", "Highest observation omitted"),
+           n = c(nrow(trial), nrow(trial) - 1),
+           mean_yield_t_ha = c(mean_all, mean_without_highest))
+```
+
+This calculation does not justify removing the highest plot. It makes the effect of an exclusion visible. For treatment inference, repeat the appropriate design-based model rather than comparing overall means alone. If the conclusion changes substantially, discuss that instability and the reason for the disputed observation.
+
 ## Practical 4 and exercises
 
 1. Reproduce the cleaning workflow and report the row counts before and after duplicate removal.
@@ -79,3 +130,27 @@ write.csv(audit, "outputs/cleaning_log.csv", row.names = FALSE)
 5. Give one example of a biological extreme that should remain in an agricultural dataset.
 
 **Chapter review.** Cleaning should preserve evidence. Every correction needs a reason; exclusions need justification; missingness needs a denominator.
+
+## Live R laboratory
+
+::: {.live-r}
+**Keep an explicit cleaning record**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+soil <- data.frame(plot = c(1, 2, 2, 3, 4),
+                   pH = c(5.8, 6.2, 6.2, NA, 65))
+soil$duplicate <- duplicated(soil[c("plot", "pH")])
+soil$needs_check <- is.na(soil$pH) | soil$pH < 0 | soil$pH > 14
+soil
+clean <- subset(soil, !duplicate & !needs_check)
+mean(clean$pH)
+```
+
+**Investigate.** The value 65 needs verification against the field record. Flagging it does not establish its correct replacement. Explain which rows were excluded from this temporary summary.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

@@ -4,13 +4,332 @@
 
 Prepare a rectangular data file, import CSV and Excel files, retrieve a documented online file, validate imported values, and export data without accidental row-number columns.
 
-## Prepare the table before analysis
+In the previous chapter we have discussed the very basics of R
+programming including installation, launching, basic data types and
+arithmetic functions. Here, you will learn how to import data into R. It
+is important to ensure that your data is well prepared before importing
+it into R to avoid errors.
+
+## Preparing your file
+
+-   File can be prepared in MS Excel
+
+-   Use the first row as column headers (or column names). Generally,
+    columns represent variables.
+
+-   Keep a unique observation identifier in an ordinary column. Generally rows represent observations; an identifier need not be assigned as R row names.
+
+-   Make each observation identifier unique. In experiments, treatment labels should repeat across replicates in a separate treatment column; treatment names are not unique plot identifiers.
+
+Column names should be compatible with R naming conventions.
+
+### Naming conventions:
+
+-   Avoid names with blank spaces. Bad column name `Sepal width`; Good
+    convention `Sepal_width`
+
+-   Avoid names with special symbols: ?, \$, \*, +, #, (, ), -, /, }, {,
+    \|, \>, \< etc. Letters, digits, underscores, and dots can be used in ordinary syntactic names; a simple naming convention is easier to maintain.
+
+-   Avoid beginning variable names with a number. Use letter instead.
+    Good column names: obs_100m or x100m. Bad column name: 100m
+
+-   Column names must be unique. Duplicated names are not allowed.
+
+-   R is case sensitive. This means that Name, NAME and name, naMe all
+    are treated as different.
+
+-   Avoid blank rows in your data
+
+-   Delete any comments in your file
+
+-   Replace missing values by NA (denotes **N**ot **A**vailable)
+
+-   If you have a column containing date, use the four digit format.
+    Good format: 01/01/2016. Bad format: 01/01/16
+
+A final good looking file  
+
+```{r fig-original-06-goodfile, echo=FALSE,fig.cap='An example file',out.width="50%", fig.align='center'}
+knitr::include_graphics(rep("images/data1c4.png"))
+```
+
+
+### Saving file  
+
+I recommend you to save your file in .csv (comma separated value file)
+format.
+
+**Why CSV?**
+
+The usual file we save in MS Excel will be saved as XLS files or XLSX
+files. Workbook files for Microsoft Excel from 97 to 2003 are known as
+XLS files. The XLSX extension is used by later versions of Excel. All of
+the data from the worksheets in a workbook, including formatting,
+charts, graphics, calculations, and more, is contained in the XLS and
+XLSX file formats.
+
+The Comma Separated Values (CSV) format is a plain text format in which
+values are separated by commas, whereas the Excel Sheets binary file
+format (XLS) contains information on all of the worksheets in a file,
+including both content and formatting. Any spreadsheet programme,
+including Microsoft Excel, Open Office, Google Sheets, etc., can open
+CSV files. A straightforward text editor can also be used to open CSV
+files. Because it is straightforward and compatible with the majority of
+platforms, it is a very prevalent and well-liked file format for storing
+and accessing data. But there are certain drawbacks to this simplicity.
+CSV files can only contain a single sheet without any formatting or
+formulas.
+
+While CSV files are supported by almost all data upload interfaces,
+Excel (XLS and XLSX) file types are preferable for storing more
+complicated data. The CSV file format may be more advantageous if you
+intend to move your data between platforms or export and import it
+between interfaces.
+
+### How to save as csv
+
+Under the \"File name\" section in the \"Save As\" tab, you can select
+\"Save as type\" and change it to \"CSV (Comma delimited) (\*.csv).  
+
+```{r fig-original-06-saving, echo=FALSE,fig.cap='How to save as csv',out.width="50%", fig.align='center'}
+knitr::include_graphics(rep("images/data2c4.png"))
+```  
+
+```{r fig-original-06-saving1, echo=FALSE,fig.cap='How to save as csv (1)',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/data3c4.png"))
+```
+
+
+## Importing Data set in Rstudio
+
+To import a csv file in Rstudio
+
+click on `File` then click on `Import Dataset` then select `from Text (base)`  
+
+```{r fig-original-06-saving2, echo=FALSE,fig.cap='Importing data set',out.width="50%", fig.align='center'}
+knitr::include_graphics(rep("images/data4c4.png"))
+```    
+
+Select the file and click open  
+
+```{r fig-original-06-saving3, echo=FALSE,fig.cap='Import Dataset dialogue box',out.width="80%", fig.align='center'}
+knitr::include_graphics(rep("images/data5c4.png"))
+```    
+
+In the *Import Dataset* dialogue box you can change the name of the
+dataset in the Box under `Name`. Heading radio button will be default
+'yes'. Click on `import`. The dataset will be now imported and ready to
+work on.
+
+### Alternate methods
+
+#### Importing csv files  
+
+Data can be also imported using read.csv() function in R.
+read.csv(\'path to the file\')  
+
+```{r original-06-6} 
+
+# example
+
+my_data<-read.csv(file = 'data/iris.csv')
+
+# here now the data set iris.csv is stored in the name my_data
+
+# You can now directly do operations on the my_data
+
+summary(my_data)
+
+``` 
+
+#### Importing excel files  
+
+Excel import requires an additional package. The original `xlsx` example is retained as an optional alternative; the worked agricultural import below uses `readxl`, which does not require Java.  
+
+```
+library(xlsx)  
+
+df <-read.xlsx("path/file.xlsx", n)
+
+# n is n-th worksheet to import
+```
+
+## Accessing the variables 
+
+The variables in the data can be accessed using `$` symbol to the data name  
+
+```{r original-06-7} 
+my_data<-read.csv(file = 'data/iris.csv')
+
+# Accessing variable Petal_length
+
+my_data$Petal_length
+
+# You can perform functions on them
+
+summary(my_data$Petal_length)
+
+
+```
+
+### Understanding attach() and detach() in existing scripts  
+
+Without using the name of the data frame, you can access the variables in the data framework using the `attach()` function in the R language. The data framework attachment created by the `attach()` function is removed using the `detach()` function.
+
+The database is attached to the R search path. This means that the database is searched by R when evaluating a variable, so objects in the database can be accessed by simply giving their names.
+
+```{r original-06-8} 
+my_data<-read.csv(file = 'data/iris.csv')
+
+# Using function attach  
+
+attach(my_data)
+
+# Accessing variable Petal_length, now you can call variable name directly without using my_data
+
+Petal_length
+
+# You can perform functions on them
+
+summary(Petal_length)
+
+# Using detach function
+
+detach(my_data)
+
+```  
+
+## Some useful functions  
+
+### str()  
+
+R object structures are displayed by `str()`. `str()` is frequently used to display a list's contents.It is used particularly when the data set is huge.
+
+```{r original-06-9} 
+my_data<-read.csv(file = 'data/iris.csv')  
+
+# Using str() function
+
+str(my_data)
+
+```  
+
+## View()  
+
+```{r original-06-10, eval=F, echo=T}
+my_data<-read.csv(file = 'data/iris.csv')  
+
+# Using str() function
+
+View(my_data)
+
+```
+
+In the example above, `attach()` temporarily copies names onto the search path. Editing the original data frame afterwards can leave those attached values out of date. Use explicit column references in your practical submissions.
+
+## Datasets in R {#sec-datasets}
+
+There are various pre-built data sets included with R, which are typically used as practice sets for playing with R functions. We'll first go through how to load and use built-in R data sets in this lecture. The most popular R demo data sets will then be discussed, including `mtcars`, `iris`, `ToothGrowth`, `PlantGrowth`, and `USArrests`.   
+
+## Pre-loaded data
+To see the list of pre-loaded data in your system, type the function `data()`:  
+
+```{r original-07-1, eval=FALSE}  
+data()
+```  
+  
+## Loading a built-in R data  
+
+Load and print `mtcars` data as follow:
+
+```{r original-07-2, eval=TRUE}  
+# Loading
+data(mtcars)
+# Print the first 6 rows
+head(mtcars, 6)
+```  
+
+
+
+## Most used data sets in R  
+
+### mtcars  
+`mtcars` data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models).  
+  
+```{r original-07-3, eval=TRUE}  
+# 1. Loading 
+data("mtcars")  
+
+# 2. Print
+head(mtcars)  
+
+# Number of rows (observations)
+nrow(mtcars)  
+
+# Number of columns (variables)
+ncol(mtcars)
+```  
+If you want learn more about `mtcars` data sets, type this: `?mtcars`  
+```{r original-07-4, eval=FALSE}  
+?mtcars
+```   
+
+### iris  
+
+`iris` data set gives the measurements in centimeters of the variables sepal length, sepal width, petal length and petal width, respectively, for 50 flowers from each of 3 species of iris. The species are *Iris setosa*, *versicolor*, and *virginica*.  
+
+```{r original-07-5, eval=TRUE}  
+data("iris")
+head(iris)
+```   
+If you want learn more about `iris` data sets, type this: `?iris`  
+```{r original-07-6, eval=FALSE}  
+?iris
+```   
+
+
+### ToothGrowth  
+
+The results of an experiment examining the impact of vitamin C on tooth development in 60 Guinea pigs are included in the data set. Each guinea pig received one of three vitamin C dose levels (0.5, 1, and 2 mg/day) using either ascorbic acid or orange juice as the delivery mechanism (a form of vitamin C and coded as VC).  
+
+```{r original-07-7, eval=TRUE} 
+data("ToothGrowth")
+head(ToothGrowth)
+```  
+
+If you want learn more about `ToothGrowth` data sets, type this: `?ToothGrowth`  
+```{r original-07-8, eval=FALSE}  
+?ToothGrowth
+```   
+
+
+### PlantGrowth
+Results from an experiment comparing yields between two treatment conditions and a control condition, measured as plant dry weight. The group codes do not specify fertilizer names or application rates.
+
+```{r original-07-9, eval=TRUE} 
+data("PlantGrowth")
+head(PlantGrowth)
+```  
+
+### USArrests  
+
+Statistics on the rates of violent crime in each US state  
+
+```{r original-07-10, eval=TRUE} 
+data("USArrests")
+head(USArrests)
+```
+
+## Agricultural applications, interpretation, and further practice
+
+### Prepare the table before analysis
 
 Use one header row, one observational unit per row, and one variable per column. Record units in a data dictionary. Avoid merged cells, colour-coded values without a corresponding variable, and subtotals mixed into observations. Keep raw files unchanged. Store corrections in code and separate outputs. Use explicit identifiers rather than relying on row order.
 
 Names such as `yield_t_ha` and ISO dates such as `2024-06-15` reduce ambiguity. R can handle nonstandard column names with backticks, but simple unique names are easier to teach and maintain. CSV stores values in a single plain-text table; it does not preserve spreadsheet formatting, formulas, or multiple worksheets.
 
-## Import and inspect a CSV
+### Import and inspect a CSV
 
 ```{r}
 crop <- read.csv("data/crop_trial.csv", na.strings = c("", "NA"))
@@ -26,7 +345,7 @@ crop$treatment <- factor(crop$treatment,
 
 Importing is not validation. Confirm row counts, identifiers, plausible ranges, category spelling, and numeric types against the field sheet. A decimal comma or a text entry such as `"5 kg"` can cause a measurement column to be imported as text. `read.csv2()` is useful for semicolon-separated files with decimal commas; inspect the actual file rather than guessing.
 
-## Excel round trip
+### Excel round trip
 
 `readxl` reads Excel workbooks without requiring Java. The supplied workbook contains a `trial` sheet with the same simulated observations as the CSV.
 
@@ -44,7 +363,7 @@ identical(crop, restored_crop)
 
 Use CSV for broad interchange and RDS when R-specific classes must be preserved. Excel supports multiple sheets. CSV may lose factor levels and other metadata. Always reopen an export and inspect it.
 
-## Online sources and provenance
+### Online sources and provenance
 
 Online agricultural databases may offer downloadable CSV files or an API. Consult the provider's documentation, select the crop, location, unit, time period, and aggregation level, and save the query and retrieval date. A district's annual yield is not an individual farmer's yield. Do not mix administrative totals with plot-level measurements.
 
@@ -62,7 +381,7 @@ writeLines(c(paste("Source:", url), paste("Retrieved:", Sys.Date())),
 
 Check the downloaded schema before analysis; providers can revise URLs and file formats. For the main lessons, use the bundled local datasets. The data appendix links to official R dataset documentation and describes the generated examples.
 
-## Practical 3 and exercises
+### Practical 3 and exercises
 
 1. Import the CSV and Excel files. Compare dimensions, column names, and the first six yields.
 2. Export only `plot_id`, `treatment`, and `yield_t_ha`; reopen the file and confirm that no extra row-number column appeared.
@@ -70,3 +389,28 @@ Check the downloaded schema before analysis; providers can revise URLs and file 
 4. With instructor guidance, locate an official crop-production table. Record its source, time coverage, unit, geographical level, and reuse conditions before importing it. Explain whether its rows are independent experimental units.
 
 **Chapter review.** Successful data exchange includes a check of meaning, units, and structure, not just a successful read command.
+
+## Live R laboratory
+
+::: {.live-r}
+**Read CSV text into a data frame**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+csv_text <- "plot,crop,yield_t_ha
+1,Rice,4.2
+2,Rice,4.8
+3,Maize,5.1"
+harvest <- read.csv(text = csv_text)
+harvest
+str(harvest)
+mean(harvest$yield_t_ha)
+```
+
+**Investigate.** The CSV is included in the code so no file upload is required. In RStudio, replace text = csv_text with a quoted CSV file path to read your own data.
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::
