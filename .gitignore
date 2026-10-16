@@ -15,3 +15,4 @@ render-*.log
 
 /.quarto/
 /sites/
+/firebase-debug.log

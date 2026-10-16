@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgStat Academy · Department of Agricultural Statistics</title>
+  <meta name="description" content="Guided learning in agricultural statistics: textbooks, narrated lessons, R practicals, and chapter assessments.">
+  <meta name="theme-color" content="#164b3e">
+  <link rel="stylesheet" href="app.css"><link rel="icon" href="mark.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<aside class="sidebar">
+ <a class="brand" href="#home"><img src="mark.svg" width="42" height="42" alt=""><span>AgStat<span class="brand-sub">ACADEMY</span></span></a>
+ <p class="department">Department of<br>Agricultural Statistics</p>
+ <div class="nav-label">YOUR CLASSROOM</div>
+ <nav aria-label="Main navigation">
+  <a href="#home" data-nav="home"><span>⌂</span> Learning home</a>
+  <a href="#library" data-nav="library"><span>▤</span> Book library <small>1</small></a>
+  <a href="#progress" data-nav="progress"><span>◴</span> My progress</a>
+  <a href="#exam" data-nav="exam"><span>✓</span> Assessments</a>
+  <a href="#instructor" data-nav="instructor"><span>▧</span> Teaching desk</a>
+ </nav>
+ <div class="sidebar-note"><span class="seed">✧</span><strong>Understanding grows<br>with practice.</strong><p>Read a little. Try the code.<br>Ask a better question.</p></div>
+ <button class="profile" id="account-button"><span class="avatar">↗</span><span id="account-label">Join your classroom<small>Sign in to save your progress</small></span></button>
+</aside>
+<div class="workspace">
+ <header class="topbar"><button id="mobile-menu" class="icon-button" aria-label="Toggle navigation">☰</button><div class="breadcrumb">YOUR LEARNING SPACE <span>/</span> <b id="page-label">Overview</b></div><div class="top-actions"><span class="status-dot"></span><span>Teaching preview</span><button class="button small" id="signin-top">Student sign in ↗</button></div></header>
+ <main id="main" tabindex="-1"><div class="loading">Opening your classroom…</div></main>
+ <footer>Department of Agricultural Statistics <span>Thoughtful analysis. Better agriculture.</span></footer>
+</div>
+<dialog id="auth-dialog" aria-labelledby="auth-title"><button class="close" aria-label="Close sign-in">×</button><span class="eyebrow">YOUR CLASSROOM</span><h2 id="auth-title">Welcome to AgStat</h2><p>Save your chapter progress and return to your learning.</p><form id="auth-form"><label>Your name<input name="name" autocomplete="name" maxlength="80" placeholder="Name for your learning profile"></label><label>Email address<input name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label><label>Password<input name="password" type="password" autocomplete="current-password" minlength="8" required placeholder="At least 8 characters"></label><button type="submit" class="button">Sign in</button><button type="button" id="register" class="button secondary">Create student account</button><button type="button" id="reset-password" class="text-button">Forgot your password?</button><p id="auth-message" role="status"></p></form><div id="signed-in-actions" hidden><button id="verify-email" class="button secondary">Send verification email</button><button id="signout" class="button secondary">Sign out</button></div><small>Use your own account. Assessment records are private to you and the instructor.</small></dialog>
+<div id="toast" role="status" hidden></div>
+<script type="module" src="app.js"></script>
+</body></html>

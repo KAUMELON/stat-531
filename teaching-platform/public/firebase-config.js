@@ -1,0 +1,1 @@
+export const firebaseConfig = {"projectId":"kau-agstat-teaching","appId":"1:672942988770:web:810138e8cb6e855019edbb","storageBucket":"kau-agstat-teaching.firebasestorage.app","apiKey":"AIzaSyBnHkVzqOzPJhroJArV_peZgh4fx9oyRPc","authDomain":"kau-agstat-teaching.firebaseapp.com","messagingSenderId":"672942988770","projectNumber":"672942988770","version":"2"};

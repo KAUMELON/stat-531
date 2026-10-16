@@ -1,0 +1,12 @@
+node_modules/
+functions/node_modules/
+firebase-debug.log
+firestore-debug.log
+.firebase/
+.env*
+!.env.example
+qa/
+.build/
+public/audio/
+public/decks/
+public/books/
