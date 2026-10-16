@@ -1,0 +1,112 @@
+# Hypothesis tests and confidence intervals {#sec-inference}
+
+## Learning outcomes
+
+Translate an agricultural question into a null and alternative hypothesis, select an independent or paired t-test, analyze a contingency table, and interpret effect sizes, intervals, and p-values.
+
+## From description to inference
+
+Descriptive statistics summarize observed data. Inference uses a sampling or randomization model to reason about an unobserved population or treatment effect. The experimental unit is the smallest unit independently assigned a treatment. Five leaves measured on each of four treated plants do not create twenty independently treated plants.
+
+A null hypothesis specifies a reference claim, such as zero difference in population means. A test statistic measures discrepancy from that claim relative to sampling variation. A p-value is the probability, under the null model and its assumptions, of a test statistic at least as extreme as the observed one. It is not the probability that the null hypothesis is true, nor the probability that a result will replicate.
+
+Choose the significance level and primary question before inspecting outcomes. Report an estimated effect and an interval alongside the p-value. Statistical significance does not imply agricultural or economic importance. Failure to reject is not proof of equality.
+
+## Worked example: uncertainty in a mean
+
+For independent observations with unknown population variance, a two-sided confidence interval for a population mean is
+
+$$\bar{x}\ \pm\ t_{1-\alpha/2,n-1}\frac{s}{\sqrt{n}}.$$
+
+The critical value comes from a Student t distribution with `n - 1` degrees of freedom. It is larger than the normal critical value when the sample is small, reflecting additional uncertainty in estimating the variance.
+
+```{r}
+y <- c(4.2, 4.8, 5.1, 4.5)
+se <- sd(y) / sqrt(length(y))
+critical <- qt(.975, df = length(y) - 1)
+c(mean = mean(y), se = se, lower = mean(y) - critical * se,
+  upper = mean(y) + critical * se)
+t.test(y)$conf.int
+```
+
+The interval is approximately 4.03 to 5.27 t/ha. It estimates a population mean under the sampling assumptions; it is not an interval containing 95% of individual plot yields. Four conveniently selected plots would not justify population inference merely because the formula can be evaluated.
+
+For a two-sample comparison, the same principle estimates a difference and its standard error. Welch's method estimates variance contributions separately and adjusts the reference degrees of freedom. For a paired comparison, apply the one-sample idea to within-pair differences.
+
+## One-sample and two-sample t-tests
+
+`PlantGrowth` is a real dataset supplied with R containing dry-weight measurements for a control and two treatment groups. The documentation does not identify the treatments as fertilizer rates, so do not invent that interpretation.
+
+```{r}
+data("PlantGrowth", package = "datasets")
+aggregate(weight ~ group, PlantGrowth, function(x) c(n = length(x), mean = mean(x), sd = sd(x)))
+control <- subset(PlantGrowth, group == "ctrl")$weight
+t.test(control, mu = 5)
+```
+
+The one-sample example asks whether the population mean control weight differs from 5 in the dataset's measurement units. The reference value is an illustrative benchmark, not a verified agronomic target.
+
+For two independent groups, Welch's t-test allows unequal population variances and is R's default. Define the contrast order explicitly so the sign of the estimate is unambiguous.
+
+```{r}
+treated <- subset(PlantGrowth, group == "trt2")$weight
+welch <- t.test(treated, control, alternative = "two.sided")
+welch
+data.frame(difference_trt2_minus_ctrl = mean(treated) - mean(control),
+           lower_95 = welch$conf.int[1], upper_95 = welch$conf.int[2],
+           p_value = welch$p.value)
+```
+
+The t-test assumes independent observations and appropriate conditions for inference on the mean. With small samples, inspect strong skewness and outliers; normality of model errors matters more than the appearance of a pooled distribution. Welch's test relaxes equal variance, not independence. Do not choose a one-sided alternative after seeing the sign of the difference.
+
+## Paired observations
+
+A paired design compares linked observations, such as before-and-after measurements on the same plots. The analysis uses within-pair differences. It differs from treating the two measurements as unrelated groups.
+
+```{r}
+paired <- read.csv("data/paired_soil.csv")
+stopifnot(!anyDuplicated(paired$plot_id), complete.cases(paired))
+paired$change <- paired$after_mg_kg - paired$before_mg_kg
+hist(paired$change, xlab = "Change in available N (mg/kg)", main = "Within-plot changes")
+t.test(paired$after_mg_kg, paired$before_mg_kg, paired = TRUE)
+```
+
+Pairs must be correctly matched; the differences should be independent across pairs. Normality is assessed for differences, not separately for before and after values. Without an untreated comparison, a before–after increase may reflect time or seasonal effects as well as management.
+
+## Chi-square tests for pest observations
+
+A contingency table cross-classifies counts. In the simulated pest dataset, each independently treated plot contributes one yes/no infestation status at a specified assessment date. The table is not composed of repeated observations of the same insects.
+
+```{r}
+pest <- read.csv("data/pest.csv")
+tab <- with(pest, table(treatment, infested))
+tab
+proportions(tab, margin = 1)
+chi <- chisq.test(tab, correct = FALSE)
+chi$expected
+chi
+```
+
+The null hypothesis is independence between treatment and infestation status. Expected counts are calculated under independence, not taken from observed counts. The chi-square approximation needs adequate expected frequencies and independent units. For sparse 2-by-2 tables, Fisher's exact test is often suitable; it does not fix dependence or poor sampling.
+
+```{r}
+fisher.test(tab)
+```
+
+Report infestation proportions and their contrast, not only a test result. Because this example is simulated, no real pest-control efficacy claim follows. In a clustered field survey, observations from the same field may require a model that accounts for clustering.
+
+## Confidence intervals and decisions
+
+A 95% confidence procedure has 95% coverage under repeated sampling when its assumptions hold. A particular computed interval is not a 95% probability statement about a fixed parameter in frequentist inference. Wide intervals indicate that both small and large effects may be compatible with the data. Equivalence requires a prespecified margin and an appropriate equivalence analysis; a nonsignificant t-test is insufficient.
+
+If many outcomes or comparisons are tested, false positives become more likely. Prespecify primary comparisons, distinguish exploratory results, and use an appropriate multiplicity method when needed. The next chapter introduces Tukey comparisons after ANOVA.
+
+## Practicals 11–12 and exercises
+
+1. Interpret the `trt2 - ctrl` estimate and its interval in words without claiming a fertilizer response.
+2. Compare paired and unpaired tests on the soil example. Explain which matches the design.
+3. Calculate the infestation proportion in each treatment. State the observational unit and examine expected counts.
+4. A test returns p = 0.08. Explain why “there is no effect” is too strong.
+5. Distinguish random sampling, random treatment assignment, and repeated subsampling.
+
+**Chapter review.** Valid inference begins with design. State the contrast, quantify its size and uncertainty, and interpret the p-value conditionally on the model.

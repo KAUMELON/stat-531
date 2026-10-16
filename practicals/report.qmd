@@ -1,0 +1,53 @@
+---
+title: "Plant growth: a reproducible practical report"
+author: "Student name"
+format:
+  html: default
+  pdf: default
+  docx: default
+---
+
+# Question and data
+
+How do dry-weight measurements differ among the three groups in R's documented `PlantGrowth` dataset? The data contain 30 observations. Consult `?PlantGrowth` for provenance and units; the group labels do not justify assigning fertilizer names.
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Observed group means and standard deviations."
+data("PlantGrowth", package = "datasets")
+summary_table <- PlantGrowth |>
+  dplyr::group_by(group) |>
+  dplyr::summarise(n = dplyr::n(), mean = mean(weight), sd = sd(weight), .groups = "drop")
+knitr::kable(summary_table, digits = 2)
+```
+
+# Distribution and model
+
+```{r}
+#| label: fig-groups
+#| fig-cap: "Dry-weight observations by documented treatment group."
+boxplot(weight ~ group, data = PlantGrowth, xlab = "Group", ylab = "Dry weight")
+stripchart(weight ~ group, data = PlantGrowth, vertical = TRUE,
+           method = "jitter", add = TRUE, pch = 19, col = "#245A42")
+fit <- aov(weight ~ group, data = PlantGrowth)
+summary(fit)
+TukeyHSD(fit)
+```
+
+# Diagnostics
+
+```{r}
+par(mfrow = c(1, 2))
+plot(fit, which = 1)
+plot(fit, which = 2)
+```
+
+# Interpretation
+
+The observed mean for group trt2 is `r round(summary_table$mean[summary_table$group == "trt2"], 2)`. Discuss @tbl-summary and @fig-groups, the global F-test, one adjusted pairwise interval, residual behaviour, and the limits of the documented design. Replace this instruction with your own interpretation before submission.
+
+# Computational record
+
+```{r}
+sessionInfo()
+```

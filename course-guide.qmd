@@ -1,0 +1,42 @@
+# Course guide {.unnumbered}
+
+**R Programming for Agricultural Data Analysis (0+2)** introduces programming, data management, graphics, exploratory analysis, growth and time series models, statistical inference, and reproducible communication through practical work.
+
+By completing the course, students should be able to import and validate a dataset; write and modify R scripts; summarize crop, soil, and weather measurements; construct informative figures; fit and diagnose introductory models; and prepare a report that connects evidence to an agricultural question.
+
+## Suggested practical schedule
+
+The following 16 meetings are a teaching proposal, not an institutional credit-hour rule. Each can be organized as a short demonstration, guided practice, independent work, and discussion. Extend or combine meetings according to the academic calendar.
+
+| Meeting | Reading | Practical product |
+|---|---|---|
+| 1 | Chapter 1 | RStudio project and annotated script |
+| 2 | Chapter 2 | Vectors, matrices, lists, and a field data frame |
+| 3 | Chapter 3 | Validated CSV and Excel import/export |
+| 4 | Chapter 4 | Cleaning audit and corrected dataset |
+| 5 | Chapter 5 | Grouped yield and soil summaries |
+| 6 | Chapter 6 | Scatter, histogram, and treatment plots |
+| 7 | Chapter 6 | Panels, heatmap, and interactive figure |
+| 8 | Chapters 7–8 | Descriptive analysis and EDA memo |
+| 9 | Chapter 9 | Logistic and Gompertz growth comparison |
+| 10 | Chapter 10 | Seasonal plot, moving average, forecast evaluation |
+| 11 | Chapter 11 | t-tests with confidence intervals |
+| 12 | Chapter 11 | Pest contingency-table analysis |
+| 13 | Chapter 12 | One-way ANOVA and blocked experiment |
+| 14 | Chapter 13 | Correlation and regression diagnostics |
+| 15 | Chapter 14 | Rendered Quarto and R Markdown reports |
+| 16 | Integrated project | Reproducible analysis and oral explanation |
+
+## Assessment and integrated project
+
+A suggested assessment is 40% practical records, 20% an individual practical test, and 40% an integrated project. Institutions may replace these weights. Assess explanations as well as code.
+
+For the project, select a documented agricultural dataset approved by the instructor. State its source, units, sampling or randomization scheme, and reuse conditions. Ask one primary question. Deliver the raw data or an authorized retrieval script, a cleaning log, a data dictionary, a `.qmd` report, and a rendered HTML report. Include a table, two complementary figures, an appropriate analysis, diagnostics, and a discussion of limitations. A descriptive project is appropriate when the design does not support inference.
+
+Use this project rubric: question and design (15 marks), data integrity and provenance (20), analysis and diagnostics (25), interpretation and uncertainty (25), reproducibility and presentation (15). A small, carefully justified analysis is preferable to a collection of unrelated tests.
+
+## Classroom workflow
+
+Before class, the instructor runs `Rscript scripts/check-environment.R` and renders the book. Students open `agri-r.Rproj`, keep the project folder together, and save work in `outputs/`. All core datasets are local. Internet access is needed for initial software/package installation and the optional online-import exercise, not for the ordinary chapter examples.
+
+Selected solutions appear in the appendix. Use the other questions for assessment; alternate defensible interpretations are possible. The separate `INSTRUCTOR.md` gives common misconceptions and teaching advice.

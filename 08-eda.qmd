@@ -1,0 +1,68 @@
+# An exploratory study of crop yield {#sec-eda}
+
+## Learning outcomes
+
+Organize an exploratory analysis around a question, combine summaries with graphics, distinguish observed association from causation, and formulate a defensible follow-up analysis.
+
+## Begin with a question and design
+
+Our teaching question is: **Which recorded characteristics are associated with differences in grain yield?** The simulated trial has 60 plot records: five blocks, three management treatments, and two varieties with two replicate plots per combination. Nitrogen application is closely linked to management treatment. Thus, an association between nitrogen and yield may also reflect other treatment differences. Soil observations are linked by plot identifier.
+
+EDA is a structured investigation of distributions, patterns, anomalies, and relationships. It generates and refines questions. Repeatedly searching for a small p-value and reporting only the successful test would give a misleading impression of evidence.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+crop <- read.csv("data/crop_trial.csv")
+soil <- read.csv("data/soil.csv")
+dat <- left_join(crop, soil, by = "plot_id")
+stopifnot(nrow(dat) == 60, !anyDuplicated(dat$plot_id))
+colSums(is.na(dat))
+with(dat, table(treatment, variety))
+with(dat, table(block, treatment))
+```
+
+## Examine distributions before relationships
+
+```{r}
+dat |>
+  group_by(treatment, variety) |>
+  summarise(n = n(), mean = mean(yield_t_ha), sd = sd(yield_t_ha),
+            .groups = "drop")
+ggplot(dat, aes(treatment, yield_t_ha, colour = variety)) +
+  geom_point(position = position_jitterdodge(jitter.width = .1, seed = 531)) +
+  facet_wrap(~ block) +
+  labs(x = "Treatment", y = "Yield (t/ha)") + theme_minimal()
+```
+
+Look for balance, within-group variation, block shifts, and unusual observations. A high-yielding treatment in one block may behave differently elsewhere. A graph of every plot is more informative than treatment means alone.
+
+## Examine candidate relationships
+
+```{r}
+#| label: fig-eda-relationships
+#| fig-cap: "Exploratory relationships in simulated observations; grouping is retained to reveal possible confounding."
+ggplot(dat, aes(available_n_mg_kg, yield_t_ha, colour = treatment)) +
+  geom_point() + facet_wrap(~ variety) +
+  labs(x = "Available soil N (mg/kg)", y = "Yield (t/ha)") + theme_minimal()
+ggplot(dat, aes(rainfall_mm, yield_t_ha, colour = treatment)) +
+  geom_point() + labs(x = "Seasonal rainfall (mm)", y = "Yield (t/ha)") +
+  theme_minimal()
+```
+
+These relationships need scientific interpretation. Does the predictor precede the response? Was it manipulated or only measured? Are measurements at the same spatial scale? In a real trial, assigning the same weather-station value to many plots does not create independent rainfall replicates. The teaching dataset varies plot-level water exposure for illustration; this must not be mistaken for many independent weather stations.
+
+## Write an EDA memo
+
+An effective memo states the question, source and design, cleaning decisions, two or three supported patterns, and their limitations. For example: “Treatment-specific plots suggest differences in yield, with additional variation among blocks. Nitrogen and treatment are linked, so their separate effects cannot be inferred from a pooled scatter plot. A model should represent the experimental design before adding exploratory predictors.”
+
+Do not invent numerical findings in prose. Extract values from your executed summaries and identify the relevant table or figure. Separate what the data show from what you propose as an explanation.
+
+## Practical 8B and exercises
+
+1. Prepare a one-page EDA memo with a grouped table and two figures.
+2. Identify one apparent relationship that could be confounded and explain the mechanism.
+3. Write a confirmatory question that would require a new experiment or independent dataset.
+4. Explain why selecting only the five highest-yielding plots cannot identify the best management practice for all farms.
+
+**Chapter review.** EDA is a disciplined way to learn from data and uncover design problems. It does not turn observational patterns into causal effects.

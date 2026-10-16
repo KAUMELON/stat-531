@@ -1,0 +1,8 @@
+:root { --bs-primary: #245a42; --bs-link-color: #245a42; }
+body { line-height: 1.7; }
+p { max-width: 76ch; }
+.sidebar-title { font-weight: 650; }
+.callout { margin-block: 1.5rem; }
+pre { border-radius: .35rem; }
+table { font-variant-numeric: tabular-nums; }
+@media print { body { font-size: 11pt; } }

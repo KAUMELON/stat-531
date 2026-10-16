@@ -1,0 +1,14 @@
+# References and further reading {.unnumbered}
+
+These sources document the software and datasets used in the text. Package help is also available offline after installation, for example `?t.test`, `?aov`, `?nls`, and `?PlantGrowth`.
+
+- R Core Team. *An Introduction to R*. [Official manual](https://cran.r-project.org/doc/manuals/r-release/R-intro.html).
+- Quarto. *Creating a Book* and related authoring guides. [Book documentation](https://quarto.org/docs/books/).
+- Posit. *RStudio Desktop*. [Installation and product documentation](https://posit.co/download/rstudio-desktop/).
+- Wickham, H., and contributors. *dplyr reference: summarise*. [Grouped summaries](https://dplyr.tidyverse.org/reference/summarise.html).
+- Wickham, H., and contributors. *ggplot2 reference*. [Plotting documentation](https://ggplot2.tidyverse.org/reference/).
+- R datasets documentation. [PlantGrowth](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/PlantGrowth.html), [Orange](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/Orange.html), and [iris](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/iris.html).
+- R stats documentation. [Nonlinear least squares](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nls.html) and [Gompertz model](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/SSgompertz.html). The chapter uses an explicit inflection-time parameterization rather than the exact parameter symbols in `SSgompertz`.
+- Hyndman, R. J., and Athanasopoulos, G. *Forecasting: Principles and Practice*, third edition. [Open textbook](https://otexts.com/fpp3/).
+- Xie, Y., Allaire, J. J., and Grolemund, G. *R Markdown: The Definitive Guide*. [Open guide](https://bookdown.org/yihui/rmarkdown/).
+- Gopinath, P. P. Earlier lecture notes for *Data Analysis Using Statistical Packages*, preserved locally in `source-notes/`. [Textbook of Agricultural Statistics](https://kaumelon.github.io/stat3202/).

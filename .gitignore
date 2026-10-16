@@ -1,0 +1,15 @@
+.Rproj.user/
+.Rhistory
+.RData
+.quarto/
+.quarto-cache/
+_book/
+outputs/
+output/
+qa/
+render-*.log
+*.knit.md
+*.utf8.md
+*_files/
+
+/.quarto/

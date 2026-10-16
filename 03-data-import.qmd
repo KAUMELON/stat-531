@@ -1,0 +1,72 @@
+# Importing, validating, and exporting data {#sec-import}
+
+## Learning outcomes
+
+Prepare a rectangular data file, import CSV and Excel files, retrieve a documented online file, validate imported values, and export data without accidental row-number columns.
+
+## Prepare the table before analysis
+
+Use one header row, one observational unit per row, and one variable per column. Record units in a data dictionary. Avoid merged cells, colour-coded values without a corresponding variable, and subtotals mixed into observations. Keep raw files unchanged. Store corrections in code and separate outputs. Use explicit identifiers rather than relying on row order.
+
+Names such as `yield_t_ha` and ISO dates such as `2024-06-15` reduce ambiguity. R can handle nonstandard column names with backticks, but simple unique names are easier to teach and maintain. CSV stores values in a single plain-text table; it does not preserve spreadsheet formatting, formulas, or multiple worksheets.
+
+## Import and inspect a CSV
+
+```{r}
+crop <- read.csv("data/crop_trial.csv", na.strings = c("", "NA"))
+head(crop)
+str(crop)
+dim(crop)
+summary(crop)
+stopifnot(!anyDuplicated(crop$plot_id), nrow(crop) == 60,
+          all(crop$yield_t_ha > 0))
+crop$treatment <- factor(crop$treatment,
+                         levels = c("Control", "Compost", "Mineral"))
+```
+
+Importing is not validation. Confirm row counts, identifiers, plausible ranges, category spelling, and numeric types against the field sheet. A decimal comma or a text entry such as `"5 kg"` can cause a measurement column to be imported as text. `read.csv2()` is useful for semicolon-separated files with decimal commas; inspect the actual file rather than guessing.
+
+## Excel round trip
+
+`readxl` reads Excel workbooks without requiring Java. The supplied workbook contains a `trial` sheet with the same simulated observations as the CSV.
+
+```{r}
+excel_crop <- readxl::read_excel("data/crop_trial.xlsx", sheet = "trial")
+head(excel_crop)
+stopifnot(nrow(excel_crop) == nrow(crop))
+dir.create("outputs", showWarnings = FALSE)
+write.csv(crop, "outputs/crop_export.csv", row.names = FALSE)
+writexl::write_xlsx(list(trial = crop), "outputs/crop_export.xlsx")
+saveRDS(crop, "outputs/crop.rds")
+restored_crop <- readRDS("outputs/crop.rds")
+identical(crop, restored_crop)
+```
+
+Use CSV for broad interchange and RDS when R-specific classes must be preserved. Excel supports multiple sheets. CSV may lose factor levels and other metadata. Always reopen an export and inspect it.
+
+## Online sources and provenance
+
+Online agricultural databases may offer downloadable CSV files or an API. Consult the provider's documentation, select the crop, location, unit, time period, and aggregation level, and save the query and retrieval date. A district's annual yield is not an individual farmer's yield. Do not mix administrative totals with plot-level measurements.
+
+The following optional example retrieves a botanical dataset from the Rdatasets mirror of R datasets. The authoritative dataset description remains R's `?iris` documentation. It teaches a download workflow; a production agricultural database will have its own schema and access rules. It is excluded from routine rendering because it requires network access.
+
+```{r}
+#| eval: false
+url <- "https://vincentarelbundock.github.io/Rdatasets/csv/datasets/iris.csv"
+download.file(url, "data/iris_online.csv", mode = "wb")
+online <- read.csv("data/iris_online.csv")
+str(online)
+writeLines(c(paste("Source:", url), paste("Retrieved:", Sys.Date())),
+           "data/iris_online_provenance.txt")
+```
+
+Check the downloaded schema before analysis; providers can revise URLs and file formats. For the main lessons, use the bundled local datasets. The data appendix links to official R dataset documentation and describes the generated examples.
+
+## Practical 3 and exercises
+
+1. Import the CSV and Excel files. Compare dimensions, column names, and the first six yields.
+2. Export only `plot_id`, `treatment`, and `yield_t_ha`; reopen the file and confirm that no extra row-number column appeared.
+3. Explain why a blank yield cannot safely be changed to zero.
+4. With instructor guidance, locate an official crop-production table. Record its source, time coverage, unit, geographical level, and reuse conditions before importing it. Explain whether its rows are independent experimental units.
+
+**Chapter review.** Successful data exchange includes a check of meaning, units, and structure, not just a successful read command.

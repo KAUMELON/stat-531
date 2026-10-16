@@ -1,0 +1,99 @@
+# Modelling crop growth {#sec-growth}
+
+## Learning outcomes
+
+Interpret logistic and Gompertz growth parameters, fit nonlinear models, assess residuals and parameter plausibility, and recognize the limits of extrapolation and repeated measurements.
+
+## Why straight lines are often inadequate
+
+During establishment a crop may accumulate little biomass; rapid growth follows, then growth slows as resources become limiting or maturity approaches. A straight line cannot represent all three phases. A sigmoid model describes an S-shaped trajectory using parameters that have biological interpretations.
+
+Let $W(t)$ denote biomass at time $t$. One parameterization of the logistic curve is
+
+$$W(t)=\frac{A}{1+\exp\{-k(t-t_i)\}}, \qquad A>0,\ k>0.$$
+
+$A$ is the asymptotic biomass, $k$ controls the rate of approach, and $t_i$ is the time of inflection. At $t_i$, biomass is $A/2$ and absolute growth rate is maximal at $Ak/4$. The Gompertz form used here is
+
+$$W(t)=A\exp\{-\exp[-k(t-t_i)]\}.$$
+
+Its inflection occurs at biomass $A/e$, and its maximum absolute growth rate is $Ak/e$. Both have an upper asymptote, but the logistic is symmetric around its inflection whereas the Gompertz is asymmetric. Parameter meanings depend on the chosen formula; a package using other symbols may use a different parameterization.
+
+## Understand the growth dataset
+
+`growth.csv` contains simulated biomass in g/m² at 12 sampling times, with three independently harvested quadrats at each time. The independence assumption is part of this teaching design. Repeated measurements on the same plants require a model accounting for within-plant dependence, beyond ordinary independent-error `nls()`.
+
+```{r}
+#| label: fig-growth-observations
+#| fig-cap: "Simulated biomass measurements from independent quadrats sampled through time."
+#| fig-alt: "Biomass observations rise along an S-shaped trajectory toward a plateau."
+growth <- read.csv("data/growth.csv")
+plot(biomass_g_m2 ~ day, growth, pch = 19,
+     xlab = "Days after sowing", ylab = "Biomass (g/m²)")
+```
+
+Before fitting, ask whether the observations span early growth, the inflection region, and a plateau. Without late observations the asymptote can be poorly identified even when the fitted curve looks convincing.
+
+## Fit and compare curves
+
+Nonlinear least squares chooses parameters that minimize the sum of squared residuals. Starting values guide its numerical search; they are not prior evidence. Here a plateau near 1,000 g/m², an inflection near day 50, and a positive growth rate are reasonable visual starting points.
+
+```{r}
+logistic <- nls(biomass_g_m2 ~ A / (1 + exp(-k * (day - ti))),
+                data = growth, start = list(A = 1000, k = .07, ti = 50),
+                algorithm = "port", lower = c(A = 0, k = .0001, ti = -Inf))
+gompertz <- nls(biomass_g_m2 ~ A * exp(-exp(-k * (day - ti))),
+                data = growth, start = list(A = 1000, k = .06, ti = 45),
+                algorithm = "port", lower = c(A = 0, k = .0001, ti = -Inf))
+summary(logistic)
+coef(gompertz)
+AIC(logistic, gompertz)
+grid <- data.frame(day = seq(min(growth$day), max(growth$day), length.out = 200))
+plot(biomass_g_m2 ~ day, growth, pch = 19,
+     xlab = "Days after sowing", ylab = "Biomass (g/m²)")
+lines(grid$day, predict(logistic, grid), col = "#245A42", lwd = 2)
+lines(grid$day, predict(gompertz, grid), col = "#B45C21", lwd = 2, lty = 2)
+legend("topleft", c("Logistic", "Gompertz"),
+       col = c("#245A42", "#B45C21"), lty = c(1, 2), bty = "n")
+```
+
+Compare AIC only for fits to the same response observations under comparable error assumptions. Lower AIC suggests a better balance of fit and complexity among the candidates; it does not prove biological truth. Do not compare raw-response and log-response AIC values without accounting for the transformed likelihood.
+
+## Diagnostics and interpretation
+
+```{r}
+old <- par(mfrow = c(1, 2))
+plot(fitted(logistic), residuals(logistic), pch = 19,
+     xlab = "Fitted biomass", ylab = "Residual")
+abline(h = 0, lty = 2)
+qqnorm(residuals(logistic)); qqline(residuals(logistic))
+par(old)
+pars <- coef(logistic)
+c(asymptote_g_m2 = pars[["A"]], inflection_day = pars[["ti"]],
+  max_rate_g_m2_day = pars[["A"]] * pars[["k"]] / 4)
+```
+
+A curved residual pattern suggests a missing feature of the growth curve. Increasing residual spread suggests changing error variance. Check convergence, sensible parameter values, and sensitivity to starting values. Nonconvergence may reflect poor starting values, inadequate data coverage, or an unsuitable model; increasing iteration limits alone is not a scientific solution.
+
+The curve predicts a mean trajectory, not a guaranteed individual observation. `predict.nls()` does not automatically provide valid confidence or prediction intervals from an `interval` argument as `predict.lm()` does. Uncertainty may require an appropriate bootstrap or another justified method. Avoid presenting an unqualified long-term biomass forecast from a short growth experiment.
+
+## A real-data extension
+
+R's `Orange` dataset records circumference repeatedly on five orange trees. It is useful for recognizing the difference between longitudinal observations and independent destructive samples.
+
+```{r}
+data("Orange", package = "datasets")
+head(Orange)
+with(Orange, interaction.plot(age, Tree, circumference,
+                             xlab = "Age (days)", ylab = "Circumference (mm)"))
+```
+
+Read `?Orange` before analysis. Fitting each tree separately can illustrate curve shapes; a population analysis should account for repeated measurements and differences among trees.
+
+## Practical 9 and exercises
+
+1. Fit both curves and tabulate their parameters, residual standard errors, and AIC values. Explain why their inflection biomasses differ.
+2. Refit using only observations up to day 60. Compare asymptote estimates and discuss their stability; report any convergence failure honestly.
+3. Predict biomass at day 75. Identify whether this is interpolation or extrapolation for the supplied data.
+4. Explain why weighing the same plant weekly violates the independent-error assumption used in this chapter.
+
+**Chapter review.** A biologically interpretable curve is useful only when the sampling design, observed growth phases, numerical fit, and residual assumptions support it.

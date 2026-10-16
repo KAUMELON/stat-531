@@ -1,0 +1,91 @@
+# Transforming and summarizing data with dplyr {#sec-wrangling}
+
+## Learning outcomes
+
+Use selection, filtering, transformation, sorting, grouping, joins, and reshaping to answer agricultural questions while preserving observational units.
+
+## A grammar of data manipulation
+
+`select()` chooses columns, `filter()` chooses rows, `mutate()` creates or changes columns, `arrange()` orders rows, and `summarise()` reduces observations to summaries. `group_by()` controls the groups within which later operations occur. These verbs express a sequence of data operations; the pipe passes each result to the next step.
+
+```{r}
+library(dplyr)
+crop <- read.csv("data/crop_trial.csv")
+crop |>
+  filter(treatment != "Control", yield_t_ha > 4) |>
+  select(plot_id, treatment, yield_t_ha) |>
+  arrange(desc(yield_t_ha)) |>
+  head()
+```
+
+`filter()` keeps rows where its condition is `TRUE`; an `NA` condition is not retained. State explicitly whether missing records should be included. `mutate()` generally preserves the number of rows; `summarise()` changes the observational level.
+
+```{r}
+crop <- crop |>
+  mutate(yield_kg_ha = yield_t_ha * 1000,
+         nitrogen_band = if_else(nitrogen_kg_ha >= 80, "Higher", "Lower"))
+treatment_summary <- crop |>
+  group_by(treatment) |>
+  summarise(n_plots = n(), n_yield = sum(!is.na(yield_t_ha)),
+            mean_yield = mean(yield_t_ha, na.rm = TRUE),
+            sd_yield = sd(yield_t_ha, na.rm = TRUE), .groups = "drop")
+treatment_summary
+```
+
+The treatment table has one row per treatment, whereas the original table has one row per plot. It cannot support analyses that require individual plot variation. `.groups = "drop"` prevents accidental retention of grouping in later operations. If every yield in a group is missing, `mean(..., na.rm = TRUE)` returns `NaN`; handle that group as having no usable estimate.
+
+## Soil and weather summaries
+
+```{r}
+soil <- read.csv("data/soil.csv")
+soil |>
+  group_by(soil_class) |>
+  summarise(n = n(), mean_ph = mean(ph),
+            median_n = median(available_n_mg_kg), .groups = "drop")
+weather <- read.csv("data/weather.csv") |>
+  mutate(date = as.Date(date), year = format(date, "%Y"))
+weather |>
+  group_by(year) |>
+  summarise(n_months = n(), annual_rain_mm = sum(rain_mm),
+            mean_temp_c = mean(temp_c), .groups = "drop") |>
+  head()
+```
+
+Summing monthly rainfall gives annual rainfall when all 12 months are present. Averaging monthly temperature means gives equal weight to months, not days; use day weights if the question requires a mean over days. A mean of yields is not a production-weighted regional yield unless the areas are equal.
+
+## Joining tables safely
+
+A join links records by keys. Here the soil table has one record per plot. Verify key uniqueness and unmatched records before accepting a join. Many-to-many joins can silently multiply observations and change subsequent averages.
+
+```{r}
+stopifnot(!anyDuplicated(soil$plot_id))
+anti_join(crop, soil, by = "plot_id")
+linked <- left_join(crop, soil, by = "plot_id")
+stopifnot(nrow(linked) == nrow(crop))
+head(linked[, c("plot_id", "yield_t_ha", "ph")])
+```
+
+`left_join()` retains all rows of the first table, adding `NA` when there is no match. `inner_join()` retains only matched rows. A row count check is necessary but not sufficient: inspect identifier meaning and measurement timing too.
+
+## Wide and long forms
+
+Wide tables put several measurements in separate columns; long tables use a variable column and a value column. Long form is convenient for grouped graphics.
+
+```{r}
+soil_long <- soil |>
+  select(plot_id, available_n_mg_kg, available_p_mg_kg) |>
+  tidyr::pivot_longer(-plot_id, names_to = "nutrient", values_to = "mg_kg")
+head(soil_long)
+```
+
+Do not average nitrogen and phosphorus merely because both are expressed in mg/kg. They are distinct quantities. Reshaping changes representation, not scientific meaning.
+
+## Practical 5 and exercises
+
+1. Produce treatment-by-variety summaries with sample size, mean, and standard deviation.
+2. Find the five highest-yielding plots. Why is choosing their treatment after looking at the data an exploratory decision?
+3. Join crop and soil data, then summarize available nitrogen by treatment.
+4. Calculate annual rainfall only for years with 12 recorded months. Explain why `sum(..., na.rm = TRUE)` could understate rainfall in an incomplete year.
+5. Introduce a repeated key into a copy of the soil table and investigate its effect on the joined row count.
+
+**Chapter review.** Grouping changes the level of a question. Check keys, denominators, units, and completeness whenever observations are combined.

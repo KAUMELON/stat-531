@@ -1,0 +1,8 @@
+book_filename: "lecture_note"
+output_dir: "docs"
+delete_merged_file: true
+#edit: https://github.com/pratheesh3780/lecture_notes/edit/master/%s
+#view: https://github.com/pratheesh3780/lecture_notes/blob/master/%s
+language:
+  ui:
+    chapter_name: "Chapter "

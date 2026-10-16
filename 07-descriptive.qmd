@@ -1,0 +1,98 @@
+# Describing agricultural variation {#sec-descriptive}
+
+## Learning outcomes
+
+Calculate and interpret measures of centre, spread, frequency, and uncertainty; distinguish standard deviation from standard error; and summarize data with honest denominators.
+
+## Centre and spread answer different questions
+
+The arithmetic mean is the sum divided by the number of observations. The median splits ordered observations in half. The statistical mode is the most frequent value and may be nonunique. In R, `mode()` describes an object's storage mode; it does not compute a statistical mode.
+
+For measurements $x_1,\ldots,x_n$, the sample variance and sample standard deviation are
+
+$$s^2=\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}, \qquad s=\sqrt{s^2}.$$
+
+Variance has squared units; standard deviation has the same units as the observations. The median and IQR are less sensitive to a few extreme values than the mean and standard deviation. Describe the distribution before choosing a summary.
+
+```{r}
+crop <- read.csv("data/crop_trial.csv")
+y <- crop$yield_t_ha
+c(n = length(y), mean = mean(y), median = median(y),
+  variance = var(y), sd = sd(y), min = min(y), max = max(y), IQR = IQR(y))
+quantile(y)
+statistical_mode <- function(x) {
+  x <- x[!is.na(x)]
+  if (!length(x)) return(x)
+  values <- unique(x)
+  counts <- tabulate(match(x, values))
+  values[counts == max(counts)]
+}
+statistical_mode(c(2, 2, 3, 3, 4))
+```
+
+For continuously measured yield, the most frequent rounded value may have little scientific meaning; it depends on recording precision. A mode is often more useful for a categorical variable such as soil class.
+
+## Worked example: a small harvest sample
+
+Consider four independent plot yields of 4.2, 4.8, 5.1, and 4.5 t/ha. Their sum is 18.6 t/ha and their mean is 4.65 t/ha. The deviations from the mean are −0.45, 0.15, 0.45, and −0.15. Squaring and adding gives 0.45 (t/ha)². Dividing by `n - 1 = 3` gives a sample variance of 0.15 (t/ha)²; its square root is approximately 0.387 t/ha.
+
+```{r}
+small_yield <- c(4.2, 4.8, 5.1, 4.5)
+deviation <- small_yield - mean(small_yield)
+data.frame(yield = small_yield, deviation, squared_deviation = deviation^2)
+sum(deviation^2) / (length(small_yield) - 1)
+sd(small_yield)
+```
+
+The denominator `n - 1` reflects the loss of one degree of freedom after estimating the mean from these same observations. This is the sample-variance convention used by `var()`. If the four plots constitute an entire finite population of interest and the goal is its descriptive population variance, a denominator of four answers a different question. State the target rather than treating the two formulas as contradictory.
+
+The median is the average of the two middle ordered values, 4.5 and 4.8, also 4.65 t/ha here. Equality of mean and median in this small example does not establish a symmetric population distribution.
+
+## Frequencies and grouped distributions
+
+```{r}
+table(crop$treatment)
+proportions(table(crop$treatment))
+classes <- cut(y, breaks = pretty(range(y), n = 6), include.lowest = TRUE)
+freq <- table(classes)
+data.frame(interval = names(freq), frequency = as.integer(freq),
+           cumulative = cumsum(as.integer(freq)))
+stopifnot(sum(freq) == length(y))
+```
+
+Class boundaries must cover every observation. This check avoids a weakness in hand-rounded class limits, where an extreme value may fall outside the final interval. Grouping loses within-class detail; retain the original measurements.
+
+## Standard deviation, standard error, and CV
+
+Standard deviation describes variation among observations. For independent observations from a common population, the estimated standard error of a mean is $s/\sqrt{n}$. It describes the precision of the estimated mean, not the spread of individual yields. Independence must be established from sampling or randomization, not from the software output.
+
+```{r}
+control <- subset(crop, treatment == "Control")$yield_t_ha
+n <- length(control)
+c(sd = sd(control), se_mean = sd(control) / sqrt(n),
+  cv_percent = 100 * sd(control) / mean(control))
+```
+
+The coefficient of variation is `100 * SD / mean`. It is appropriate for ratio-scale measurements with a meaningful zero and a positive mean away from zero. It is inappropriate for comparing temperatures in degrees Celsius or pH. Also distinguish a raw-data CV from an experiment's residual CV based on an ANOVA error mean square.
+
+## Grouped summaries
+
+```{r}
+library(dplyr)
+crop |>
+  group_by(treatment, variety) |>
+  summarise(n = n(), mean = mean(yield_t_ha), median = median(yield_t_ha),
+            sd = sd(yield_t_ha), iqr = IQR(yield_t_ha), .groups = "drop")
+```
+
+Pooling groups can inflate spread because it combines between-group differences with within-group variation. Report the group definitions and sample sizes. Avoid presenting many decimal places beyond measurement precision.
+
+## Practical 8A and exercises
+
+1. Calculate mean, median, variance, SD, and IQR for available soil nitrogen. State each unit.
+2. Add one very large value to a copy of the yield vector. Which summaries change most?
+3. Explain why doubling a sample size does not halve the SD of the underlying observations.
+4. Compute a frequency table for the supplied soil classes and explain what its denominator represents.
+5. Explain why ten leaves from one plant are not automatically ten independent experimental replicates.
+
+**Chapter review.** Describe centre and spread together. Report sample size, missingness, units, and grouping so the summary can be interpreted.

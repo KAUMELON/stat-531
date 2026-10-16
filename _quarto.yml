@@ -1,0 +1,75 @@
+project:
+  type: book
+  output-dir: _book
+  execute-dir: project
+  resources:
+    - data/
+    - practicals/*.qmd
+    - practicals/*.Rmd
+book:
+  title: "R Programming for Agricultural Data Analysis"
+  subtitle: "An undergraduate textbook and practical companion · 0+2"
+  author: "Dr. Pratheesh P. Gopinath"
+  chapters:
+    - index.qmd
+    - course-guide.qmd
+    - part: "Module 1 · Foundations and data exchange"
+      chapters:
+        - 01-getting-started.qmd
+        - 02-r-language.qmd
+        - 03-data-import.qmd
+    - part: "Module 2 · Data wrangling and cleaning"
+      chapters:
+        - 04-cleaning.qmd
+        - 05-wrangling.qmd
+    - part: "Module 3 · Data visualization"
+      chapters:
+        - 06-visualization.qmd
+    - part: "Module 4 · Descriptive and exploratory analysis"
+      chapters:
+        - 07-descriptive.qmd
+        - 08-eda.qmd
+    - part: "Module 5 · Growth and time series"
+      chapters:
+        - 09-growth.qmd
+        - 10-time-series.qmd
+    - part: "Module 6 · Statistical analysis"
+      chapters:
+        - 11-inference.qmd
+        - 12-anova.qmd
+        - 13-regression.qmd
+    - part: "Module 7 · Reproducible research"
+      chapters:
+        - 14-reporting.qmd
+    - references.qmd
+  appendices:
+    - data-dictionary.qmd
+    - solutions.qmd
+    - glossary.qmd
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    code-copy: true
+    code-overflow: wrap
+  pdf:
+    documentclass: scrreprt
+    toc: true
+    number-sections: true
+    keep-tex: true
+  docx:
+    toc: true
+    number-sections: true
+execute:
+  echo: true
+  warning: true
+  message: false
+  error: false
+  freeze: false
+knitr:
+  opts_chunk:
+    fig.width: 7
+    fig.height: 4.5
+    dpi: 144
+lang: en

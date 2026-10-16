@@ -1,0 +1,88 @@
+# Reproducible reports with R Markdown and Quarto {#sec-reporting}
+
+## Learning outcomes
+
+Combine explanation with executable analysis, distinguish `.Rmd` from `.qmd`, add tables and figures, render HTML/PDF/Word reports, and share a project that runs in a fresh session.
+
+## A report is an argument supported by evidence
+
+A useful report states a question, describes data and design, explains decisions, presents results, and discusses limitations. Embedding R code keeps numerical evidence connected to its computation. If a dataset changes, re-rendering updates the results. This reduces transcription errors but cannot correct an unsuitable analysis.
+
+R Markdown usually uses `.Rmd` source files and `rmarkdown::render()`. Quarto uses `.qmd` source files and the `quarto render` command. Both can execute R through knitr. Their configuration differs: R Markdown uses `output:` whereas Quarto uses `format:`. Simply renaming an old bookdown file is not a complete migration; chapter configuration, references, chunk options, and dependencies need checking.
+
+## Anatomy of a Quarto document
+
+The following is a complete small document. The YAML header defines metadata and formats, ordinary Markdown supplies prose, and the R chunk computes a table. Save it as `report.qmd` in the project folder. The separate `practicals/report.qmd` provides a fuller working example.
+
+````markdown
+---
+title: "Plant growth: a reproducible analysis"
+author: "Student name"
+format:
+  html: default
+  pdf: default
+  docx: default
+---
+
+# Question
+
+How do dry-weight measurements vary among the documented groups?
+
+```{r}
+#| label: tbl-weight
+#| tbl-cap: "Mean dry weight by group in PlantGrowth."
+data("PlantGrowth", package = "datasets")
+tab <- aggregate(weight ~ group, PlantGrowth, mean)
+knitr::kable(tab, digits = 2)
+```
+
+Interpret the estimates in @tbl-weight using the dataset documentation.
+````
+
+Use descriptive chunk labels; figure labels begin with `fig-` and table labels with `tbl-` for cross-references. A figure chunk can use `#| fig-cap: "..."`. A hidden setup chunk may set `#| include: false`, but keep the source available to readers. `echo: false` hides code, not results. `eval: false` displays an example without executing it. Avoid hiding warnings until they have been investigated.
+
+## Dynamic values, figures, and interactive output
+
+Inline R inserts a computed value into a sentence. For example, write the literal source `` `r nrow(PlantGrowth)` `` to report the number of observations. This keeps prose synchronized with the data. Do not hard-code a p-value in the discussion while the model updates elsewhere.
+
+Use `knitr::kable()` for simple portable tables and ordinary R plots for graphics. HTML widgets such as Plotly need an HTML output context. In multi-format documents, test `knitr::is_html_output()` and use a static plot for PDF and Word, as demonstrated in the visualization chapter.
+
+## R Markdown remains part of the syllabus
+
+The supplied `practicals/report.Rmd` demonstrates the same analysis in R Markdown. Its header lists `html_document`, `pdf_document`, and `word_document`. Run these commands in the R Console from the project root:
+
+```{r}
+#| eval: false
+rmarkdown::render("practicals/report.Rmd", output_format = "html_document",
+                  knit_root_dir = getwd())
+rmarkdown::render("practicals/report.Rmd", output_format = "word_document",
+                  knit_root_dir = getwd())
+rmarkdown::render("practicals/report.Rmd", output_format = "pdf_document",
+                  knit_root_dir = getwd())
+```
+
+## Render and share
+
+Run shell commands in the Terminal, not in the R Console:
+
+```bash
+quarto preview
+quarto render --to html
+quarto render --to docx
+quarto render --to pdf
+quarto render practicals/report.qmd --to html
+```
+
+PDF output requires a working LaTeX distribution, for example TinyTeX installed through `quarto install tinytex`. Install it only if PDF is needed. HTML is the default classroom format in the README instructions. Rendering the entire book to Word or PDF combines chapters into a single document. Opening an HTML file locally is not the same as publishing it to a public server.
+
+Before sharing, restart R and render from source. Include source files, permitted data, metadata, package requirements, and instructions. `sessionInfo()` records R and loaded package versions. For a stable course release, consider a reviewed `renv` lockfile; do not claim that a package list alone pins an environment.
+
+## Practical 15 and exercises
+
+1. Replace the example report's question with a question you can answer from a documented dataset. Include source, units, design, one table, one figure, and an interpretation.
+2. Render HTML and Word. If LaTeX is available, render PDF and inspect all pages.
+3. Change one observation in a teaching copy of the data and re-render. Identify every result that should change.
+4. Explain the difference between `echo: false` and `eval: false`.
+5. Give the complete project to a classmate. Ask them to render it without relying on your Console history.
+
+**Chapter review.** Reproducibility means that data, code, and computational environment support the report's claims. A successful render is a necessary check, not a substitute for scientific review.

@@ -1,0 +1,92 @@
+# Selected exercise solutions {#sec-solutions}
+
+These solutions illustrate reasoning and provide runnable checks. They do not replace explanations in a student's own words. Interpretations of simulated data apply only to the teaching exercise.
+
+## Foundations and import
+
+For Chapter 1, 11.2 kg harvested from 20 m² gives 5.6 t/ha. Dividing mass by area initially gives kg/m², so the conversion to t/ha is still required.
+
+```{r}
+11.2 / 20 * 10
+numbers <- 1:30
+numbers[numbers < 8]
+numbers[numbers < 8 | numbers > 12]
+numbers[numbers %in% c(2, 6, 12)]
+m <- matrix(1:20, nrow = 4, ncol = 5)
+rowMeans(m)
+m[2, 3]
+class(c(1, "2"))
+```
+
+The matrix fills by column unless `byrow = TRUE` is specified. The combined numeric/text vector is character. A character column cannot be averaged as though it were numeric without a validated conversion.
+
+```{r}
+crop <- read.csv("data/crop_trial.csv")
+small <- crop[, c("plot_id", "treatment", "yield_t_ha")]
+dir.create("outputs", showWarnings = FALSE)
+write.csv(small, "outputs/three_columns.csv", row.names = FALSE)
+reopened <- read.csv("outputs/three_columns.csv")
+stopifnot(identical(names(small), names(reopened)), ncol(reopened) == 3)
+```
+
+## Cleaning and wrangling
+
+```{r}
+dirty <- read.csv("data/crop_dirty.csv")
+deduplicated <- unique(dirty)
+c(before = nrow(dirty), after = nrow(deduplicated))
+deduplicated$treatment <- trimws(deduplicated$treatment)
+deduplicated$treatment[deduplicated$treatment == "control"] <- "Control"
+with(deduplicated, tapply(is.na(yield_t_ha), treatment, sum))
+library(dplyr)
+crop |>
+  group_by(treatment, variety) |>
+  summarise(n = n(), mean = mean(yield_t_ha), sd = sd(yield_t_ha), .groups = "drop")
+```
+
+There are 61 entry records and 60 after removal of the exact duplicate. Missingness counts are reported by treatment, not silently discarded. A conflicting duplicate requires checking identifiers, harvest dates, and source sheets before resolution.
+
+## Graphics, description, and EDA
+
+```{r}
+soil <- read.csv("data/soil.csv")
+x <- soil$available_n_mg_kg
+c(mean = mean(x), median = median(x), variance = var(x), sd = sd(x), IQR = IQR(x))
+table(soil$soil_class)
+```
+
+Nitrogen means, medians, SDs, and IQRs have units mg/kg; variance has units (mg/kg)². An extreme positive value generally shifts the mean and SD more than the median and IQR. More observations can improve precision of a mean without reducing biological variability among individual observations. Leaves from the same treated plant are subsamples unless treatment was independently assigned at the leaf level and the analysis supports that design.
+
+An EDA memo should identify treatment–nitrogen confounding, variation among blocks, the simulated source, and the observational unit. Numerical summaries must be taken from executed output. A pooled nitrogen–yield trend cannot separate management components that vary together.
+
+## Growth and time series
+
+```{r}
+growth <- read.csv("data/growth.csv")
+fit <- nls(biomass_g_m2 ~ A / (1 + exp(-k * (day - ti))), growth,
+           start = list(A = 1000, k = .07, ti = 50))
+predict(fit, data.frame(day = 75))
+```
+
+Day 75 is inside the observed 10–120 day range, so this is interpolation. It estimates a mean curve response under the model, not an exact new quadrat measurement. The logistic inflection biomass is `A/2`; the Gompertz value is `A/e`. A fit based only on early observations may not identify the plateau reliably.
+
+For forecasting, use the first eight years as training and the last two as holdout, as in Chapter 10. Report test MAE/RMSE for both methods. Fitting on all ten years first would let future information affect model selection and estimates. A centred moving average includes future values and is not a directly available real-time predictor.
+
+## Inference, ANOVA, and regression
+
+```{r}
+data("PlantGrowth", package = "datasets")
+fit_aov <- aov(weight ~ group, PlantGrowth)
+df.residual(fit_aov)
+TukeyHSD(fit_aov)
+```
+
+The one-way global null is equality of the three population group means. There are 27 residual degrees of freedom. A Tukey interval excluding zero indicates evidence of a difference for that pair under the simultaneous procedure and its assumptions. A p-value of 0.08 is not proof of no effect; the effect estimate and interval show which magnitudes remain compatible with the data.
+
+The paired soil test matches the same plots before and after. An unpaired analysis discards that pairing. The pest table has independent plot statuses as its units; expected counts must be inspected before trusting a chi-square approximation.
+
+In regression, a rainfall coefficient is a conditional change in predicted mean yield per millimetre, holding nitrogen fixed. A prediction interval is wider than a confidence interval because it also represents individual-outcome variation. A random row split is inappropriate when observations from the same farm, future period, or nearby spatial cluster would leak information across training and test sets.
+
+## Reporting and project evaluation
+
+`echo: false` executes code but hides the code listing; `eval: false` does not execute it. A complete project includes data provenance, raw inputs, cleaning code, analysis source, environment information, and rendered output. Interpretive exercises should be marked for the connection between question, design, method, uncertainty, and limitations rather than agreement with a preferred p-value.

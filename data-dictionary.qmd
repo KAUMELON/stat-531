@@ -1,0 +1,30 @@
+# Datasets and measurement units {#sec-data}
+
+## Supplied teaching files
+
+All CSV files use UTF-8 text, one header row, decimal points, and `NA` for missing values where applicable. `scripts/generate-data.R` deterministically regenerates the simulations using seed 531. They are educational constructions without a real geographical location or trial date.
+
+| File | Unit of observation and size | Main variables | Status and limitations |
+|---|---|---|---|
+| `crop_trial.csv`, `crop_trial.xlsx` | One experimental plot; 60 plots | `plot_id`; `block` (1–5); `treatment`; `variety` (A/B); `replicate` (1/2); `nitrogen_kg_ha`; `rainfall_mm`; `yield_t_ha` | Simulated balanced teaching trial. Water exposure varies by plot for illustration. Treatment and nitrogen are linked. |
+| `crop_dirty.csv` | Entry record; 61 rows | Same variables as crop trial | Simulated errors: exact duplicate, treatment spelling, two missing yields, P010 decimal error. |
+| `corrections.csv` | One checked correction | `plot_id`, `correct_yield_t_ha`, `reason` | Teaching ledger for P010 only; does not justify imputing missing yields. |
+| `soil.csv` | One composite soil sample per crop plot; 60 rows | `plot_id`, `soil_class`, `ph`, `available_n_mg_kg`, `available_p_mg_kg`, `available_k_mg_kg` | Simulated. pH is dimensionless; nutrient values are illustrative and not tied to a laboratory extraction method. |
+| `weather.csv` | One calendar month; 120 rows | `date` (2015-01-01 through 2024-12-01), `rain_mm`, `temp_c` | Simulated rainfall totals and monthly mean temperatures; not station observations. |
+| `growth.csv` | Independently harvested quadrat; 36 rows | `quadrat_id`, `day` (days after sowing), `biomass_g_m2` | Simulated logistic growth with additive measurement variation, 3 quadrats at each of 12 dates. |
+| `paired_soil.csv` | One plot measured twice; 20 pairs | `plot_id`, `before_mg_kg`, `after_mg_kg` | Simulated available N. No untreated temporal control. |
+| `pest.csv` | One independently treated plot; 120 plots | `plot_id`, `treatment`, `infested` (No/Yes) | Simulated binary status at one assessment, 60 plots per treatment. |
+| `rcbd.csv` | One randomized treatment plot; 18 plots | `plot_id`, `block` (1–6), `treatment`, `yield_t_ha` | Simulated three-treatment complete blocks, one plot per block-treatment combination. |
+| `farm_yield.csv` | One independent teaching farm record; 100 rows | `farm_id`, `nitrogen_kg_ha`, `rainfall_mm`, `yield_t_ha` | Simulated linear relationship for regression practice; no real recommendation follows. |
+
+`block` and `replicate` are labels, not continuous response measurements. The simulated soil nutrient names indicate quantity and units but omit extraction protocols; a real data dictionary must state the method, depth, date, laboratory, and quality controls.
+
+## Download the teaching data {.unnumbered}
+
+Save these files inside your project's `data/` folder before running chapter code: [crop trial CSV](data/crop_trial.csv), [crop trial Excel](data/crop_trial.xlsx), [dirty crop entries](data/crop_dirty.csv), [correction ledger](data/corrections.csv), [soil measurements](data/soil.csv), [monthly weather](data/weather.csv), [growth measurements](data/growth.csv), [paired soil measurements](data/paired_soil.csv), [pest observations](data/pest.csv), [blocked experiment](data/rcbd.csv), and [regression records](data/farm_yield.csv).
+
+## Real datasets bundled with R
+
+`PlantGrowth` contains 30 dry-weight observations in three groups. `Orange` contains 35 repeated measurements on five trees, with age in days and circumference in millimetres. `iris` contains floral measurements in centimetres for three iris species. Their official help pages are linked in the references. Consult those sources for original provenance rather than assigning a new location or treatment meaning.
+
+The project preserves the earlier author's lecture notes, images, rainfall CSV, assessment scripts, and document files in `source-notes/`. Those are archival sources, not the datasets that the new chapters automatically execute. The separately authored time-series PDF in the original folder is not repackaged as original textbook content.

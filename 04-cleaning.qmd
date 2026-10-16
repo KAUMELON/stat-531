@@ -1,0 +1,81 @@
+# Cleaning agricultural observations {#sec-cleaning}
+
+## Learning outcomes
+
+Identify missingness, duplicated records, inconsistent categories, and unusual observations; distinguish a correction from an analytical choice; and document cleaning decisions.
+
+## Why a cleaning log matters
+
+A field sheet may contain a repeated entry, a missed harvest, or a measurement in the wrong unit. These are different problems. A duplicate entry may be removed after checking its identity; a missing harvest remains unknown; and a unit error requires evidence before correction. A cleaning log records the identifier, issue, action, reason, and source of verification.
+
+The supplied `crop_dirty.csv` is a teaching copy with deliberate problems. It contains 61 rows for 60 unique plots, an inconsistent treatment label, two missing yields, and one suspiciously high yield. The clean file is a separate simulation, not evidence that students could ordinarily reconstruct unknown measurements.
+
+```{r}
+dirty <- read.csv("data/crop_dirty.csv", na.strings = c("", "NA"))
+colSums(is.na(dirty))
+dirty[duplicated(dirty$plot_id) |
+        duplicated(dirty$plot_id, fromLast = TRUE), ]
+table(dirty$treatment, useNA = "ifany")
+```
+
+An exact duplicate repeats every field. A repeated identifier with different measurements needs investigation, not automatic deletion. In this exercise the extra row is an exact duplicate, so removing it is defensible.
+
+```{r}
+clean <- unique(dirty)
+stopifnot(!anyDuplicated(clean$plot_id))
+clean$treatment <- trimws(clean$treatment)
+clean$treatment[clean$treatment == "control"] <- "Control"
+stopifnot(all(clean$treatment %in% c("Control", "Compost", "Mineral")))
+```
+
+## Missing data and denominators
+
+Missingness can be informative: flood-damaged plots may be harder to harvest, and the same flooding can reduce yield. Omitting them could bias a treatment comparison. `na.rm = TRUE` excludes missing measurements from a calculation; it does not repair the experiment. Report how many measurements were available and investigate why values are missing.
+
+```{r}
+data.frame(n_total = nrow(clean),
+           n_observed = sum(!is.na(clean$yield_t_ha)),
+           n_missing = sum(is.na(clean$yield_t_ha)),
+           mean_observed = mean(clean$yield_t_ha, na.rm = TRUE))
+```
+
+Do not replace all missing observations with the mean. This reduces apparent variation and understates uncertainty. Methods such as multiple imputation require explicit assumptions and are beyond this introductory course.
+
+## Flag outliers; do not delete them automatically
+
+An outlier is unusual relative to a distribution or model. A large yield may be a data-entry error, an unusually productive plot, or evidence that groups should be analyzed separately. The interquartile range (IQR) rule flags observations outside `Q1 - 1.5 IQR` and `Q3 + 1.5 IQR`; it does not establish that they are wrong.
+
+```{r}
+q <- quantile(clean$yield_t_ha, c(.25, .75), na.rm = TRUE)
+spread <- diff(q)
+clean$flag_yield <- !is.na(clean$yield_t_ha) &
+  (clean$yield_t_ha < q[1] - 1.5 * spread |
+   clean$yield_t_ha > q[2] + 1.5 * spread)
+clean[clean$flag_yield, c("plot_id", "yield_t_ha")]
+```
+
+For this exercise only, the provided correction ledger represents a checked field sheet. It confirms that plot P010 was entered with a decimal error. Missing yields remain missing. In real work, keep the actual supporting document and record who checked it.
+
+```{r}
+ledger <- read.csv("data/corrections.csv")
+clean$yield_t_ha[match(ledger$plot_id, clean$plot_id)] <- ledger$correct_yield_t_ha
+clean$flag_yield <- NULL
+audit <- data.frame(
+  issue = c("Exact duplicate", "Treatment spelling", "P010 decimal error", "Missing yields"),
+  action = c("Removed repeated row", "Standardized to Control",
+             "Used supplied verified ledger", "Retained as NA"))
+audit
+dir.create("outputs", showWarnings = FALSE)
+write.csv(clean, "outputs/crop_cleaned.csv", row.names = FALSE)
+write.csv(audit, "outputs/cleaning_log.csv", row.names = FALSE)
+```
+
+## Practical 4 and exercises
+
+1. Reproduce the cleaning workflow and report the row counts before and after duplicate removal.
+2. Calculate the mean before and after the verified correction. Explain why the difference is not evidence for a treatment effect.
+3. Count missing yields by treatment. Explain how unequal missingness could affect comparisons.
+4. A repeated plot identifier has two different yields. Describe what you would check before changing either record.
+5. Give one example of a biological extreme that should remain in an agricultural dataset.
+
+**Chapter review.** Cleaning should preserve evidence. Every correction needs a reason; exclusions need justification; missingness needs a denominator.

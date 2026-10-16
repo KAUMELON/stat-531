@@ -1,0 +1,88 @@
+# Agricultural time series and forecasting {#sec-time}
+
+## Learning outcomes
+
+Construct a regular time series, distinguish trend from seasonality, calculate moving averages, fit an introductory ARIMA model, and evaluate forecasts using a chronological holdout and a baseline.
+
+## Time order carries information
+
+Monthly rainfall, weekly pest counts, and annual crop yields are time series when observations have a meaningful chronological order. Nearby observations may be correlated. A random train/test split can leak future information into an analysis and exaggerate forecast accuracy.
+
+A trend is a sustained change in level. Seasonality is a recurring pattern at a known period, such as 12 months. Irregular variation remains after systematic components are described. An additive representation is $Y_t=T_t+S_t+E_t$. A multiplicative representation is more plausible when fluctuations increase with the series level, and may motivate a logarithmic transformation for strictly positive values.
+
+## Create and inspect a regular series
+
+```{r}
+weather <- read.csv("data/weather.csv")
+weather$date <- as.Date(weather$date)
+weather <- weather[order(weather$date), ]
+expected <- seq(as.Date("2015-01-01"), as.Date("2024-12-01"), by = "month")
+stopifnot(!anyDuplicated(weather$date), identical(weather$date, expected),
+          all(is.finite(weather$rain_mm)))
+rain <- ts(weather$rain_mm, start = c(2015, 1), frequency = 12)
+plot(rain, ylab = "Monthly rainfall (mm)", xlab = "Year")
+monthplot(rain, ylab = "Monthly rainfall (mm)", xlab = "Month")
+```
+
+`frequency = 12` declares 12 equally spaced observations per seasonal cycle; it does not fill gaps or verify dates. Irregular or missing months must be investigated before constructing the series. The simulation is smooth and complete for teaching; real rainfall often has zeros, skewness, extreme events, and structural changes.
+
+## Moving averages and decomposition
+
+```{r}
+trailing3 <- stats::filter(rain, rep(1 / 3, 3), sides = 1)
+plot(rain, col = "grey60", ylab = "Monthly rainfall (mm)")
+lines(trailing3, col = "#245A42", lwd = 2)
+decomposition <- stl(rain, s.window = "periodic")
+plot(decomposition)
+```
+
+A trailing three-month average uses the current and previous two months. A centred average also uses future observations relative to its centre, so it is suitable for retrospective description but not directly available at a forecast origin. Larger windows smooth more but can hide rapid changes. `stl()` here assumes a fixed seasonal pattern through `s.window = "periodic"`; inspect whether that is reasonable.
+
+## ARIMA as a starting model
+
+ARIMA combines autoregression (dependence on past values), differencing (changes between successive values), and moving-average error terms (dependence on past shocks). The notation ARIMA$(p,d,q)$ gives their orders. Seasonal terms have analogous orders and a seasonal period. The moving-average term in ARIMA is not the same as a simple rolling mean of observations.
+
+Automatic selection searches candidate models under an information criterion. It cannot determine whether a forecast is useful for an agricultural decision. Fit only on the training period and compare predictions with a simple alternative.
+
+```{r}
+library(forecast)
+train <- window(rain, end = c(2022, 12))
+test <- window(rain, start = c(2023, 1))
+fit <- auto.arima(train, seasonal = TRUE, stepwise = FALSE, approximation = FALSE)
+fit
+fc <- forecast(fit, h = length(test), level = c(80, 95))
+baseline <- snaive(train, h = length(test))
+accuracy(fc, test)
+accuracy(baseline, test)
+plot(fc, xlab = "Year", ylab = "Monthly rainfall (mm)")
+lines(test, col = "#B45C21", lwd = 2)
+```
+
+The seasonal naive baseline predicts each month using the value from the corresponding month of the previous year. Compare holdout RMSE and MAE, not only in-sample errors. MAPE is problematic near zero, common in rainfall. A model that loses to a baseline has not earned its complexity. For stronger evaluation, use rolling forecast origins and report accuracy by forecast horizon.
+
+## Check residuals and communicate uncertainty
+
+```{r}
+checkresiduals(fit)
+```
+
+The residual time plot reveals changing spread or isolated shocks; the autocorrelation function identifies remaining temporal patterns; and a Ljung–Box test checks a set of residual autocorrelations. A large p-value does not prove independence. A good forecast should also be plausible: an unconstrained Gaussian model may generate negative rainfall predictions. Consider suitable transformations or nonnegative models rather than silently replacing negative forecasts with zero.
+
+Prediction intervals describe uncertain future observations under the model. They do not guarantee that all future values lie inside them. Changes in climate, instrumentation, or management can invalidate historical relationships.
+
+After choosing a method using training and validation, refit it on all available historical data for an operational forecast. Keep the evaluation results separate from this final fit.
+
+```{r}
+final_fit <- auto.arima(rain, seasonal = TRUE)
+forecast(final_fit, h = 12)
+```
+
+## Practical 10 and exercises
+
+1. Compare three-month and twelve-month trailing means. Describe the patterns each suppresses.
+2. Compare ARIMA and seasonal-naive holdout MAE and RMSE. Write the conclusion supported by these results, even if the simpler method wins.
+3. Explain why fitting to all ten years before evaluating the last two years is invalid.
+4. Remove one month from a copy of the data. Show how the date check detects the gap.
+5. Explain why this simulated series cannot support an actual irrigation or climate forecast.
+
+**Chapter review.** Preserve chronology, verify regular spacing, compare a baseline, inspect residual dependence, and communicate prediction uncertainty.

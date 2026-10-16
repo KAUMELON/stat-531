@@ -1,0 +1,54 @@
+# Glossary and R reference {#sec-glossary}
+
+## Statistical language
+
+| Term | Meaning in this book |
+|---|---|
+| Population | The set of units about which a question is asked; define its crop, place, time, and management scope. |
+| Sample | Observed units selected from a population. Convenience samples can limit generalization. |
+| Experimental unit | Smallest unit independently assigned a treatment. |
+| Observational unit | Unit on which a measurement is recorded; it may be a subsample of an experimental unit. |
+| Replication | Independent repetition of treatment assignment at the experimental-unit level. |
+| Randomization | A chance-based assignment procedure that helps separate treatment from nuisance influences. |
+| Blocking | Grouping comparable experimental units before randomization to account for known variation. |
+| Confounding | A situation where influences vary together so their separate contributions cannot be identified from the comparison. |
+| Parameter | A quantity describing a population or a model, such as a mean or regression slope. |
+| Estimate | A value calculated from data to represent a parameter. |
+| Residual | Observed response minus its fitted model value. |
+| Standard deviation | Spread among observations, in the measurement's units. |
+| Standard error | Estimated sampling variation of a statistic, such as an estimated mean. |
+| Confidence interval | An interval constructed by a procedure with stated repeated-sampling coverage under assumptions. |
+| Prediction interval | An interval for a new response, including individual-response variation under a model. |
+| Effect size | Magnitude of a difference or association; its practical relevance depends on context and units. |
+| p-value | Tail probability for a statistic under a specified null model and assumptions. |
+| Interpolation | Prediction within the observed predictor domain. |
+| Extrapolation | Prediction beyond the observed domain; it requires additional justification. |
+| Holdout | Observations reserved from fitting for assessing prediction. |
+| Reproducibility | Ability to regenerate an analysis from its inputs, code, and environment. |
+
+## R language reminders
+
+| Task | Expression | Caution |
+|---|---|---|
+| Assign | `yield <- 4.8` | Names are case sensitive. |
+| Compare equality | `x == 5` | `=` also occurs in function arguments; it is not an equality test. |
+| Combine values | `c(1, 2, 3)` | Atomic vectors coerce to a common type. |
+| Make a sequence | `seq(0, 10, by = 2)` | Choose spacing appropriate to units. |
+| Select vector entries | `x[c(1, 3)]` | Indices begin at 1. |
+| Select a table | `dat[rows, columns]` | The comma distinguishes rows from columns. |
+| Extract a column | `dat$yield_t_ha` | Explicit names make provenance clearer. |
+| Detect missingness | `is.na(x)` | Do not compare with `x == NA`. |
+| Inspect | `str(dat)`, `summary(dat)` | An import needs validation beyond these summaries. |
+| Group and summarize | `group_by()`, `summarise()` | Summary rows represent a new observational level. |
+| Fit a linear model | `lm(y ~ x, data = dat)` | Formula terms express a model, not causal proof. |
+| Fit ANOVA | `aov(y ~ treatment, data = dat)` | The formula must represent the design. |
+| Fit nonlinear growth | `nls(y ~ formula, data = dat, start = ...)` | Convergence alone is insufficient. |
+| Inspect help | `?function_name` | Read arguments, returned values, assumptions, and examples. |
+
+## Common errors and a repair sequence
+
+When a command fails, read the first error, check spelling and object existence, inspect types and dimensions, and run the smallest relevant part. For file errors, check `getwd()` and `file.exists()`. For a missing package, check installation and loading. For a model failure, inspect the data and the model assumptions before changing optimizer settings. Keep a short note of the cause and resolution; debugging is a skill developed through explanation.
+
+## Before you submit an analysis
+
+State the question and unit; document the source and units; retain raw data; record cleaning decisions; show distributions; justify the model; examine residuals; report effects and uncertainty; distinguish association from causation; and render from a fresh session. These steps are scientific habits, not a substitute for judgment.

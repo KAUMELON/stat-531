@@ -1,0 +1,97 @@
+# Comparing treatments with analysis of variance {#sec-anova}
+
+## Learning outcomes
+
+Fit a one-way ANOVA, interpret sums of squares and the F-test, check residual diagnostics, use adjusted pairwise comparisons, and include blocks in a simple agricultural experiment.
+
+## Why ANOVA?
+
+Comparing three or more means by many unadjusted t-tests increases the chance of false-positive conclusions. One-way analysis of variance begins with a global null hypothesis that all group population means are equal. Its model is
+
+$$Y_{ij}=\mu+\tau_i+\epsilon_{ij},$$
+
+where $\tau_i$ represents a treatment effect and the errors are assumed independent with mean zero and common variance. Normal errors provide the classical small-sample F reference distribution. The test compares treatment mean square with residual mean square. A large F-statistic means between-group variation is large relative to unexplained within-group variation.
+
+## Worked calculation: separating sources of variation
+
+Suppose three independently randomized groups have yields `A = (3, 4, 5)`, `B = (4, 5, 6)`, and `C = (5, 6, 7)` t/ha. The group means are 4, 5, and 6 and the grand mean is 5. For equal group size 3, treatment sum of squares is $3[(4-5)^2+(5-5)^2+(6-5)^2]=6$. Within each group the squared deviations add to 2, giving residual sum of squares 6 across all groups.
+
+There are `3 - 1 = 2` treatment degrees of freedom and `9 - 3 = 6` residual degrees of freedom. Treatment mean square is `6/2 = 3`, residual mean square is `6/6 = 1`, and the F-statistic is 3.
+
+```{r}
+toy <- data.frame(group = factor(rep(c("A", "B", "C"), each = 3)),
+                  yield_t_ha = c(3, 4, 5, 4, 5, 6, 5, 6, 7))
+summary(aov(yield_t_ha ~ group, data = toy))
+pf(3, df1 = 2, df2 = 6, lower.tail = FALSE)
+```
+
+The p-value is 0.125. The observed means differ, but the data do not reject the global equality hypothesis at the conventional 0.05 level under this model. “Means differ in this sample” and “there is strong evidence of population differences” are distinct statements. Larger, well-designed replication may improve precision; repeating measurements of the same experimental units does not create new independent replication.
+
+## Worked example: plant dry weight
+
+```{r}
+data("PlantGrowth", package = "datasets")
+fit <- aov(weight ~ group, data = PlantGrowth)
+summary(fit)
+aggregate(weight ~ group, PlantGrowth, mean)
+```
+
+In the ANOVA table, `Df` gives degrees of freedom, `Sum Sq` partitions variation, `Mean Sq` divides sums of squares by degrees of freedom, and `Pr(>F)` gives the global p-value. Rejecting the global null indicates evidence that at least one mean differs; it does not show that every pair differs.
+
+```{r}
+TukeyHSD(fit)
+```
+
+Tukey's method adjusts simultaneous pairwise comparisons within the specified family. Each row reports a signed difference, interval, and adjusted p-value. Read the group order carefully. Avoid reducing the entire analysis to letter groupings; report means, differences, uncertainty, and design.
+
+## Diagnose the errors, not just the raw observations
+
+```{r}
+old <- par(mfrow = c(1, 2))
+plot(fit, which = 1)
+plot(fit, which = 2)
+par(old)
+boxplot(weight ~ group, PlantGrowth, xlab = "Group", ylab = "Dry weight")
+```
+
+Residual-versus-fitted plots reveal unequal spread and patterns; normal quantile plots reveal departures from a normal error distribution. Neither a diagnostic plot nor a formal normality test can establish independence; that comes from the design. Small samples provide little information about distribution tails. A single normality p-value should not act as an automatic gatekeeper.
+
+If variances differ substantially, Welch's one-way test is an alternative for independent groups:
+
+```{r}
+oneway.test(weight ~ group, data = PlantGrowth, var.equal = FALSE)
+```
+
+Welch's test does not use the ordinary equal-variance ANOVA error term. Do not follow it automatically with classical `TukeyHSD()`; choose pairwise methods compatible with unequal variances if needed.
+
+## Blocking in agricultural experiments
+
+Field fertility may vary across space. A randomized complete block design assigns every treatment once within each block, with randomization within blocks. The additive model includes both treatment and block:
+
+$$Y_{ij}=\mu+\tau_i+\beta_j+\epsilon_{ij}.$$
+
+The supplied simulated `rcbd.csv` has six blocks and three treatment plots per block. It differs from the larger crop dataset, which also includes variety and replicate plots. Do not analyze that factorial dataset as though it were this simple RCBD.
+
+```{r}
+rcbd <- read.csv("data/rcbd.csv")
+rcbd$block <- factor(rcbd$block)
+rcbd$treatment <- factor(rcbd$treatment)
+with(rcbd, table(block, treatment))
+blocked <- aov(yield_t_ha ~ block + treatment, data = rcbd)
+summary(blocked)
+TukeyHSD(blocked, "treatment")
+```
+
+Representing block as a factor avoids imposing a linear trend in arbitrary block numbers. With one plot per treatment in each block, a separate treatment-by-block interaction cannot be estimated independently of residual error. The additive model assumes that interaction is negligible for its intended interpretation. Inference beyond the observed blocks and more complex designs may require mixed models.
+
+Ignoring blocks can waste precision and misrepresent the design. Conversely, adding terms without understanding randomization does not create a valid analysis. The default ANOVA sums of squares are sequential; in unbalanced designs, term order and the exact hypothesis require attention. The balanced examples here keep that issue visible without treating advanced factorial analysis as a one-line extension.
+
+## Practical 13 and exercises
+
+1. Explain the global null in `PlantGrowth` and identify residual degrees of freedom.
+2. Interpret one Tukey interval and its adjusted p-value.
+3. Fit the RCBD model with and without block. Compare residual mean squares and explain why the design supports including block.
+4. Explain why an ANOVA on three treatment means alone cannot estimate plot-to-plot error correctly.
+5. Propose a suitable randomization scheme for a three-treatment experiment on a field with a fertility gradient.
+
+**Chapter review.** ANOVA partitions variation according to a model. The model should follow randomization, and a global comparison must be distinguished from individual treatment contrasts.

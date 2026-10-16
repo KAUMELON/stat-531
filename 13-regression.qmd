@@ -1,0 +1,108 @@
+# Correlation and regression for agricultural prediction {#sec-regression}
+
+## Learning outcomes
+
+Distinguish Pearson and Spearman correlation, interpret simple and multiple regression coefficients, check model assumptions and influential observations, and evaluate prediction on held-out observations.
+
+## Association is not a treatment effect
+
+Pearson's correlation measures the strength and direction of a linear relationship between quantitative variables. Spearman's correlation applies Pearson's idea to ranks and describes monotonic association. Neither establishes causation, and a value near zero need not imply the absence of a nonlinear relationship. Both can be distorted by pooling unlike groups or by dependence among observations.
+
+The simulated `farm_yield.csv` contains 100 independent teaching records with nitrogen application, seasonal rainfall, and yield. It is constructed for a regression lesson and is not evidence for a real fertilizer recommendation.
+
+```{r}
+farm <- read.csv("data/farm_yield.csv")
+plot(yield_t_ha ~ nitrogen_kg_ha, farm, pch = 19,
+     xlab = "Nitrogen (kg/ha)", ylab = "Yield (t/ha)")
+cor.test(farm$nitrogen_kg_ha, farm$yield_t_ha, method = "pearson")
+cor.test(farm$nitrogen_kg_ha, farm$yield_t_ha, method = "spearman", exact = FALSE)
+```
+
+Inspect scatter plots before interpreting a correlation coefficient. Pearson's usual test assumes independent pairs and a suitable bivariate sampling model; ranks do not fix clustering or confounding. Spearman's test uses an approximation here because rounded measurements can create ties.
+
+## Simple linear regression
+
+The model $Y_i=\beta_0+\beta_1X_i+\epsilon_i$ describes a conditional mean response. The intercept is the predicted mean when $X=0$; the slope is a change in mean response per unit increase in $X$. Least squares minimizes squared residuals. The regression direction matters: a model predicting yield from nitrogen is not interchangeable with one predicting nitrogen from yield.
+
+```{r}
+simple <- lm(yield_t_ha ~ nitrogen_kg_ha, data = farm)
+summary(simple)
+confint(simple)
+```
+
+The slope has units t/ha of yield per kg/ha of applied nitrogen. Its estimate is an association in these data, conditional on the specified model. If zero nitrogen lies outside the observed range, the intercept is an extrapolation and need not have a useful agronomic interpretation.
+
+## Worked calculation: what least squares estimates
+
+For a simple regression with an intercept, the estimated slope is
+
+$$b_1=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2},\qquad b_0=\bar{y}-b_1\bar{x}.$$
+
+The slope is undefined when every predictor value is identical: the denominator is zero. A range of predictor values is necessary to estimate a relationship. The calculation below verifies the coefficients from `lm()` rather than treating its output as a black box.
+
+```{r}
+x <- farm$nitrogen_kg_ha
+y <- farm$yield_t_ha
+b1 <- sum((x - mean(x)) * (y - mean(y))) / sum((x - mean(x))^2)
+b0 <- mean(y) - b1 * mean(x)
+rbind(manual = c(intercept = b0, slope = b1), lm = unname(coef(simple)))
+```
+
+Residuals are observed minus fitted responses. With an intercept, least squares makes their sum approximately zero. This algebraic property does not show that their errors are independent or normally distributed. Those require design knowledge and diagnostics.
+
+## Multiple regression and conditional coefficients
+
+```{r}
+multiple <- lm(yield_t_ha ~ nitrogen_kg_ha + rainfall_mm, data = farm)
+summary(multiple)
+confint(multiple)
+```
+
+The nitrogen coefficient now describes a change while rainfall is held fixed in the model. It may differ from the simple-regression coefficient because the models ask different questions. Omitted confounders, measurement error, and nonlinearity can still bias interpretation. Adding predictors raises ordinary $R^2$ even if they contribute little; high $R^2$ does not establish causality or reliable future prediction.
+
+Strongly correlated predictors make separate coefficients unstable. In the crop trial, treatment and applied nitrogen are closely linked, so including both without thought can make individual effects hard to interpret. Select predictors using scientific reasoning, design, and an evaluation plan rather than repeated p-value searches.
+
+## Residuals, leverage, and influence
+
+```{r}
+old <- par(mfrow = c(2, 2))
+plot(multiple)
+par(old)
+head(sort(cooks.distance(multiple), decreasing = TRUE))
+```
+
+The residual-versus-fitted plot checks mean structure, the Q–Q plot checks the error distribution, the scale-location plot checks spread, and leverage/influence diagnostics identify observations that can strongly affect estimates. Check influential records against source information; do not delete them merely to improve fit. Classical t-tests and intervals need assumptions about errors, including independence and constant variance. Normality concerns the errors for small-sample inference, not every predictor's marginal distribution.
+
+## Predict and evaluate honestly
+
+```{r}
+new_farm <- data.frame(nitrogen_kg_ha = 80, rainfall_mm = 650)
+predict(multiple, new_farm, interval = "confidence")
+predict(multiple, new_farm, interval = "prediction")
+set.seed(531)
+train_id <- sample(seq_len(nrow(farm)), size = 75)
+train <- farm[train_id, ]
+test <- farm[-train_id, ]
+fit_train <- lm(yield_t_ha ~ nitrogen_kg_ha + rainfall_mm, data = train)
+pred <- predict(fit_train, test)
+baseline <- rep(mean(train$yield_t_ha), nrow(test))
+data.frame(method = c("Regression", "Training mean"),
+           RMSE = c(sqrt(mean((test$yield_t_ha - pred)^2)),
+                    sqrt(mean((test$yield_t_ha - baseline)^2))),
+           MAE = c(mean(abs(test$yield_t_ha - pred)),
+                   mean(abs(test$yield_t_ha - baseline))))
+```
+
+A confidence interval concerns the mean response at the specified predictors; a prediction interval includes variation in a new observation and is wider. Both rely on the model. Avoid extrapolation outside the training range and consider combinations of predictors that may be unusual even when each is individually within range.
+
+A random holdout is suitable for these independent simulated records. For repeated farms, spatial clusters, or time series, split by group, location, or time as appropriate. Fit preprocessing steps using training data only. One split gives an unstable estimate, so cross-validation may be needed for serious model comparison. The test set should not become another training set through repeated tuning.
+
+## Practical 14 and exercises
+
+1. Compare Pearson and Spearman coefficients and explain their target relationships.
+2. Interpret the rainfall coefficient and its units. Why is it not automatically a causal rainfall effect?
+3. Compare simple and multiple nitrogen slopes. Explain what changes in their interpretation.
+4. Compare a confidence and prediction interval for the same new record.
+5. Evaluate the held-out model against the training-mean baseline. Identify a realistic setting where a random row split would be inappropriate.
+
+**Chapter review.** Correlation describes association; regression specifies a conditional response; prediction requires separate evaluation. Design and domain knowledge remain necessary for causal interpretation.

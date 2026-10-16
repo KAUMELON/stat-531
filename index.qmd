@@ -1,0 +1,29 @@
+# Preface {.unnumbered}
+
+Agricultural data describe living systems. A yield measurement reflects a crop, its environment, a management decision, and a method of measurement. R helps us organize those observations and examine the evidence, but it cannot decide whether an experiment was well designed or whether a conclusion makes agricultural sense.
+
+This textbook introduces R through questions that undergraduate students of agriculture can recognize: How variable is yield? Do treatments differ? How does a crop grow? Can weather records help us anticipate future conditions? Students begin with objects and simple calculations, then develop a complete workflow from data entry to a reproducible report.
+
+The book develops the author's earlier lecture notes for *Data Analysis Using Statistical Packages* into a new syllabus-aligned edition. It retains their emphasis on understanding statistics, their progression through R objects and data import, and their use of familiar built-in datasets. It expands these foundations with data cleaning, modern graphics, agricultural growth models, inference, regression, and Quarto. A source mapping is supplied in `SOURCE-MAP.md`.
+
+## How to study this book
+
+Read an explanation, predict what its code will do, run the code, and compare the output with your prediction. Change one input and explain the result. At the end of each practical, submit both your script and a short interpretation. Code that runs is necessary; a defensible explanation is equally necessary.
+
+The text assumes basic arithmetic, elementary algebra, and introductory statistical concepts. It explains the additional ideas needed for each analysis. No previous programming experience is required. R 4.1 or later is needed for the native pipe `|>` used throughout.
+
+::: {.callout-note title="Real observations and teaching simulations"}
+`PlantGrowth`, `Orange`, and `iris` are datasets distributed with R; their help pages document their origins. The book also supplies clearly labelled **simulated** crop, soil, weather, growth, and pest data. Simulated results illustrate methods and must never be reported as findings from a field experiment. The data appendix records units, observational units, and limitations.
+:::
+
+## A recurring scientific workflow
+
+1. State a question and identify the observational or experimental unit.
+2. Inspect the design, variable definitions, units, and missing values.
+3. Clean data with a record of every decision.
+4. Summarize and visualize before fitting models.
+5. Select an analysis consistent with the question and design.
+6. Check assumptions and communicate uncertainty and limitations.
+7. Save the code, data provenance, and report so another person can reproduce the work.
+
+This is an editable teaching edition. Instructors should review local terminology, course assessment rules, and the agricultural suitability of examples before adopting it. The earlier project's licence files are preserved with the source archive; this edition does not assign a new licence.

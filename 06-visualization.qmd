@@ -1,0 +1,120 @@
+# Visualizing agricultural data {#sec-visualization}
+
+## Learning outcomes
+
+Choose graphs that match variable types; create and customize common plots; assemble panels and heatmaps; and provide static alternatives to interactive graphics.
+
+## Match the graph to the question
+
+A histogram shows the distribution of one quantitative variable. A scatter plot shows the relationship between two quantitative variables. A bar chart compares counts or explicit summaries across categories. A boxplot compares distributions. A line plot connects observations in a meaningful order, usually time. Avoid connecting unrelated plots simply because their records are adjacent.
+
+The earlier lecture notes introduced base R graphics. Their temperature example remains a useful first demonstration. Here the temperature axis is correctly labelled on the vertical axis.
+
+```{r}
+#| label: fig-temperature
+#| fig-cap: "Maximum temperatures during an illustrative seven-day period."
+#| fig-alt: "Bar chart showing maximum daily temperatures from 22 to 28 degrees Celsius."
+max_temp <- c(22, 27, 26, 24, 23, 26, 28)
+barplot(max_temp, names.arg = c("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"),
+        xlab = "Day", ylab = "Maximum temperature (degrees C)", col = "#66A182")
+```
+
+## Build plots in layers
+
+In `ggplot2`, `data` supplies observations, `aes()` maps variables to visual properties, and a geometry draws marks. Set a fixed colour outside `aes()`; map a grouping variable to colour inside it.
+
+```{r}
+#| label: fig-yield-nitrogen
+#| fig-cap: "Simulated plot yields and applied nitrogen, with management treatment identified by colour."
+#| fig-alt: "Scatter plot of simulated yield against nitrogen, with three treatment clusters."
+library(ggplot2)
+crop <- read.csv("data/crop_trial.csv")
+scatter <- ggplot(crop, aes(nitrogen_kg_ha, yield_t_ha, colour = treatment)) +
+  geom_point(size = 2, alpha = .8) +
+  labs(x = "Applied nitrogen (kg/ha)", y = "Grain yield (t/ha)",
+       colour = "Treatment", caption = "Simulated teaching observations") +
+  scale_colour_viridis_d(end = .85) + theme_minimal(base_size = 12)
+scatter
+```
+
+Ask whether the apparent relationship persists within treatments. Treatment and nitrogen differ together in this simulation, so a pooled trend cannot establish a causal nitrogen effect. Visual encodings should clarify this structure.
+
+```{r}
+#| label: fig-yield-histogram
+#| fig-cap: "Distribution of simulated grain yields using a bin width of 0.3 t/ha."
+#| fig-alt: "Histogram of the simulated trial's sixty grain yields."
+histogram <- ggplot(crop, aes(yield_t_ha)) +
+  geom_histogram(binwidth = .3, boundary = 0, fill = "#4C956C", colour = "white") +
+  labs(x = "Grain yield (t/ha)", y = "Number of plots") + theme_minimal()
+histogram
+```
+
+Bin width changes the apparent shape of a histogram. Compare several widths before describing skewness or multiple peaks. Use a common scale when comparing groups.
+
+## Distribution plots and truthful summaries
+
+```{r}
+#| label: fig-yield-boxes
+#| fig-cap: "Simulated treatment distributions with individual plot measurements."
+#| fig-alt: "Three treatment boxplots overlaid with individual yield observations."
+boxes <- ggplot(crop, aes(treatment, yield_t_ha)) +
+  geom_boxplot(outlier.shape = NA, fill = "#DDEBDD") +
+  geom_point(position = position_jitter(width = .12, height = 0, seed = 531),
+             alpha = .6, size = 1.5) +
+  labs(x = "Management treatment", y = "Grain yield (t/ha)") + theme_minimal()
+boxes
+ggplot(crop, aes(yield_t_ha, fill = treatment)) +
+  geom_density(alpha = .3) + facet_wrap(~ treatment) +
+  labs(x = "Grain yield (t/ha)", y = "Density") + theme_minimal()
+```
+
+In R's usual boxplot, the box spans Q1 to Q3, the internal line marks the median, and whiskers reach the most extreme observations within 1.5 IQR of the hinges. The whiskers are not necessarily the minimum and maximum, nor are their endpoints necessarily equal to the theoretical fences. Points beyond whiskers are flagged observations, not proven errors. Small-sample hinge conventions can differ slightly between plotting systems.
+
+A density curve is smoothed; its bandwidth affects the shape, and its vertical scale is density rather than counts. For small samples, show observations as well. When presenting means as bars, start the quantitative bar axis at zero and explain any uncertainty intervals. An interval describing standard deviation is different from a confidence interval for a mean.
+
+```{r}
+means <- aggregate(yield_t_ha ~ treatment, crop, mean)
+ggplot(means, aes(treatment, yield_t_ha)) +
+  geom_col(fill = "#427A5B") +
+  labs(x = "Treatment", y = "Mean grain yield (t/ha)") + theme_minimal()
+```
+
+## Heatmaps, panels, and interaction
+
+A heatmap uses colour to encode a numeric value. Nutrients measured on different scales need careful handling. Here each nutrient is standardized across plots, so colour describes relative position within that nutrient, not an absolute concentration or a fertility recommendation.
+
+```{r}
+soil <- read.csv("data/soil.csv")
+z <- scale(soil[, c("available_n_mg_kg", "available_p_mg_kg", "available_k_mg_kg")])
+heat <- data.frame(plot_id = soil$plot_id, z, check.names = FALSE)
+heat <- tidyr::pivot_longer(heat, -plot_id, names_to = "nutrient", values_to = "z")
+ggplot(heat, aes(nutrient, plot_id, fill = z)) + geom_tile() +
+  scale_fill_gradient2(low = "#3465A4", mid = "white", high = "#A52A2A", midpoint = 0) +
+  labs(x = "Soil variable", y = "Plot", fill = "Standardized\nvalue") +
+  theme_minimal() + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+patchwork::wrap_plots(scatter, histogram, boxes, ncol = 2)
+```
+
+Facets create comparable panels from groups within one plot. `patchwork` combines different plots. Use readable labels, sufficient contrast, and shapes or panels when colour alone is insufficient. A figure caption should identify the dataset, units, sample, and any transformation.
+
+```{r}
+if (knitr::is_html_output()) {
+  plotly::ggplotly(scatter)
+} else {
+  scatter
+}
+dir.create("outputs", showWarnings = FALSE)
+ggsave("outputs/yield_scatter.png", scatter, width = 7, height = 4.5, dpi = 300)
+```
+
+Interactive tooltips support exploration in HTML. They cannot carry essential information that disappears in PDF or Word; provide a static counterpart and describe the finding in prose.
+
+## Practicals 6–7 and exercises
+
+1. Draw a scatter plot, a histogram, and a boxplot. Write one sentence stating what each reveals and one limitation.
+2. Compare histogram bin widths of 0.15, 0.3, and 0.6 t/ha. Which features persist?
+3. Create treatment panels coloured by variety. Explain any difference from the pooled plot.
+4. Create a two-panel figure and export it at 300 dpi with readable labels.
+5. Explain why a standardized soil heatmap cannot directly classify a field as nitrogen-deficient.
+
+**Chapter review.** A good figure makes comparisons clear and preserves units, distributions, and relevant grouping. Attractive decoration cannot compensate for a misleading scale.

@@ -1,0 +1,5 @@
+numbers <- c(1, 2, 3)
+length(numbers)
+class(fruits)
+fruits <- c("banana", "apple", "orange")
+length(fruits)

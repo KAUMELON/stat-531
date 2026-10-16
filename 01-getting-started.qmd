@@ -1,0 +1,57 @@
+# Getting started with R {#sec-start}
+
+## Learning outcomes
+
+After this chapter, you should be able to distinguish R from RStudio and Quarto, create a project, run and save commands, and install and load a package.
+
+## Why use a programming language?
+
+A spreadsheet is convenient for recording observations. A script records the operations performed on them. If a corrected observation arrives, the script can repeat the same analysis. This makes a programming language valuable even for a modest experiment.
+
+R evaluates instructions and stores results as objects. RStudio is an integrated development environment that helps edit scripts, inspect objects, and view plots. Quarto combines prose, executable code, tables, and figures into documents. Installing one does not necessarily install the others.
+
+Download R from [CRAN](https://cran.r-project.org/), RStudio Desktop from [Posit](https://posit.co/download/rstudio-desktop/), and Quarto from its [official site](https://quarto.org/docs/get-started/). Follow the installer for your operating system. Open RStudio and create a project in a folder for the course. Keep raw data in `data/`, scripts in `scripts/`, and exported results in `outputs/`. Avoid hard-coded drive names so your work can run on another computer.
+
+The Source pane holds saved scripts; the Console evaluates commands; the Environment pane lists objects; and the Files, Plots, Packages, and Help tabs provide supporting tools. Pane positions may differ. In the Source pane, Ctrl+Enter on Windows runs the selected code or current line. Save your script even when the commands also appear in Console history.
+
+## A first agricultural calculation
+
+Suppose a 20-square-metre harvested plot produces 9.6 kg of grain. One hectare contains 10,000 square metres, and one tonne contains 1,000 kg.
+
+```{r}
+grain_kg <- 9.6
+plot_area_m2 <- 20
+yield_t_ha <- grain_kg / plot_area_m2 * 10000 / 1000
+yield_t_ha
+```
+
+The answer is 4.8 t/ha. The expression makes the unit conversion explicit. It does not adjust for grain moisture, harvested border rows, or sampling errors; those require additional information. Names such as `grain_kg` help prevent unit mistakes.
+
+`<-` assigns a value. A line beginning with `#` is a comment. R is case sensitive: `grain_kg` and `Grain_kg` are different names. The Console's `>` prompt is not part of the code. A `+` prompt usually means that a bracket or quotation mark has not been closed; press Escape and inspect the command.
+
+## Packages and help
+
+A package supplies functions, documentation, and sometimes datasets. Install a package once into an R library, then load it in each new session where it is needed. Installation should be a deliberate setup step, not part of rendering an analysis.
+
+```{r}
+#| eval: false
+install.packages(c("dplyr", "ggplot2", "readxl"))
+library(dplyr)
+?mean
+example(mean)
+```
+
+The notation `dplyr::filter()` calls a function explicitly from a package. It is useful when packages provide functions with the same name. For Bioconductor packages, use the current Bioconductor installation instructions and `BiocManager`; the old `biocLite()` approach in the earlier notes is obsolete.
+
+## Errors are information
+
+“Object not found” suggests a misspelt name, an unrun assignment, or an object from a previous session. “Could not find function” suggests a misspelling or an unloaded package. “Cannot open file” suggests an incorrect relative path. Start with the first error and run a small piece of code that reproduces it. Restart R periodically and run your saved script from the beginning; this reveals hidden dependencies on old objects.
+
+## Practical 1 and exercises
+
+1. Create a course project and save a script containing the yield calculation. Change the harvested mass to 11.2 kg. State the new yield and its unit.
+2. Explain why `9.6 / 20` is not yet a yield in t/ha.
+3. Deliberately type `Grain_kg`, read the error, and correct it.
+4. Find the help for `sqrt()` and calculate the square root of 144.
+
+**Chapter review.** A saved script records an analysis; a project makes file paths portable; packages extend R; and units remain the analyst's responsibility.

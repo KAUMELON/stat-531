@@ -1,0 +1,104 @@
+# Objects, data structures, and functions {#sec-language}
+
+## Learning outcomes
+
+Create and subset vectors, matrices, data frames, and lists; recognize numeric, character, logical, and factor variables; and write a small reusable function.
+
+## Values and vectors
+
+An atomic vector holds values of one underlying type. Combining numbers and text causes coercion, usually to character. Numeric values support arithmetic; character values describe names; logical values represent `TRUE` or `FALSE`. A factor records categories with a specified set of levels.
+
+```{r}
+yield <- c(4.2, 4.8, 5.1, 4.5)
+variety <- c("A", "A", "B", "B")
+irrigated <- c(TRUE, TRUE, FALSE, FALSE)
+class(yield)
+yield[2]
+yield[c(1, 3)]
+yield[yield > 4.5]
+yield * 1000                    # t/ha to kg/ha
+factor(variety, levels = c("A", "B"))
+```
+
+R indexes from 1. Square brackets select elements. `>` compares values; `==` tests equality; `!=` tests inequality; and `%in%` tests membership. Use `&` and `|` for elementwise “and” and “or”. Arithmetic is vectorized. R can recycle a shorter vector, so check lengths when combining measurements; recycling does not establish which observations belong together.
+
+```{r}
+plot_id <- 1:4
+plot_id[plot_id %in% c(2, 4)]
+yield[yield >= 4.5 & variety == "B"]
+length(yield)
+```
+
+## Matrices
+
+A matrix is a rectangular atomic vector with dimensions. It is useful for numeric arrays such as soil measurements at grid positions. A data frame is usually better for a table containing measurements and treatment labels.
+
+```{r}
+soil_grid <- matrix(21:32, nrow = 4, byrow = TRUE)
+colnames(soil_grid) <- c("west", "centre", "east")
+soil_grid
+soil_grid[2, 3]
+soil_grid[, "west"]
+rowMeans(soil_grid)
+colMeans(soil_grid)
+t(soil_grid)
+```
+
+`x * y` multiplies corresponding elements, whereas `x %*% y` performs matrix multiplication and requires conformable dimensions. Transposing a mixed data frame can coerce its contents to character; select numeric columns before numerical matrix operations.
+
+## Data frames and experimental units
+
+A data frame can hold a different type in each column. For a simple field trial, each row should represent one harvested experimental plot, and each column one variable. Treatment labels are ordinary columns and may repeat. Plot identifiers should uniquely identify experimental units; do not use treatment names as unique row names.
+
+```{r}
+field <- data.frame(plot_id, variety = factor(variety), yield_t_ha = yield,
+                    irrigated = irrigated)
+str(field)
+field$yield_t_ha
+field[field$yield_t_ha >= 4.5, c("plot_id", "yield_t_ha")]
+field$yield_kg_ha <- field$yield_t_ha * 1000
+summary(field)
+```
+
+`field[rows, columns]` separates row and column selection by a comma. A blank position means all rows or all columns. Prefer explicit names and `data =` arguments over `attach()`, which can obscure where a variable comes from.
+
+## Lists, missing values, and functions
+
+A list can contain objects of different structures. Statistical model results are often lists. `$` or `[[ ]]` extracts a component, while `[ ]` keeps a sublist.
+
+```{r}
+trial <- list(site = "Teaching farm", observations = field,
+              units = "t/ha")
+trial$site
+trial[["observations"]]
+x <- c(4.2, NA, 5.1)
+is.na(x)
+mean(x)
+mean(x, na.rm = TRUE)
+```
+
+`NA` records an unknown value. It is neither zero nor the character string `"NA"`. Use `is.na(x)`, not `x == NA`. `NaN` is an undefined numeric result and `Inf` represents infinity. Removing missing values from a calculation changes its denominator and may change the population represented by the result.
+
+A function names a repeatable calculation. Arguments supply inputs and the final expression supplies the return value.
+
+```{r}
+to_t_ha <- function(mass_kg, area_m2) {
+  stopifnot(is.numeric(mass_kg), all(is.finite(mass_kg)),
+            all(mass_kg >= 0), is.numeric(area_m2),
+            length(area_m2) == 1, is.finite(area_m2), area_m2 > 0)
+  mass_kg / area_m2 * 10
+}
+to_t_ha(c(9.6, 11.2), 20)
+```
+
+The checks stop the calculation for invalid inputs. Later, the pipe `|>` passes a result into the first argument of the next function: `sqrt(16)` and `16 |> sqrt()` are equivalent. A pipe expresses a sequence, not a new statistical method.
+
+## Practical 2 and exercises
+
+1. Create a vector from 1 to 30. Select values below 8, then values below 8 or above 12, and finally 2, 6, and 12. This extends the earlier self-assessment exercises.
+2. Create a four-row, five-column matrix from 1 to 20. Calculate its row means and select row 2, column 3.
+3. Construct a six-plot data frame with a unique identifier, variety, and yield. Select yields above the overall mean.
+4. Store the data frame and a description in a list. Explain why an atomic vector is unsuitable for this task.
+5. Predict the type of `c(1, "2")`; verify it. Why could this matter when importing data?
+
+**Chapter review.** Choose structures according to the information they represent. An identifier, a category, and a measurement may all look like numbers but play different analytical roles.
