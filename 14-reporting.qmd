@@ -158,3 +158,79 @@ cat(sprintf("Across %d simulated plots, mean yield was %.2f t/ha (SD %.2f).\n",
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+## Vibe coding and AI-assisted R programming {#vibe-coding}
+
+### From an idea to a first draft
+
+**Vibe coding** is an informal term for developing software by describing what you want in ordinary language, asking an AI system to generate code, running it, and requesting changes. The term is often associated with accepting implementation details without examining them closely. For a statistical analysis, we need to go further: understand the code, verify the calculations, and justify the model. In this book, we use the conversational approach as an entry into **reviewed AI-assisted programming**. See the [overview of the term](https://cloud.google.com/discover/what-is-vibe-coding).
+
+For example, a student might begin with “Make a colourful graph of crop yields.” An AI assistant can draft a plot quickly, but that request omits the data structure, units, experimental unit, and purpose. A graph of treatment means, a distribution of individual plot yields, and a fitted response curve answer different questions. Clear agricultural reasoning makes a better prompt and a better analysis.
+
+### Using AI with R
+
+One approach is to ask an AI chat assistant for a small R code draft, inspect it, and run it in RStudio. Another is to use an assistant integrated into an R development environment. Current examples include Posit Assistant in RStudio and Positron; their capabilities, access requirements, and settings are described in the [RStudio guide](https://docs.posit.co/ide/user/ide/guide/tools/posit-ai.html) and [Positron documentation](https://positron.posit.co/assistant). This lesson does not require a paid assistant or a particular model.
+
+Begin with a small task: explain a function, summarize a table, improve axis labels, or diagnose a reproducible error. Ask for the reason behind each change. Read unfamiliar functions in R's help system and confirm that suggested packages and arguments exist. A plausible function name is not evidence that a function is available.
+
+### Write a prompt that specifies the analysis
+
+::: {.callout-note title="A model prompt for an agricultural practical"}
+I am learning R. I have independent plot observations from a teaching experiment. The columns are `treatment` and `yield_t_ha`; yield is measured in tonnes per hectare. Use base R. Produce a table with total records, nonmissing yields, missing yields, mean, and standard deviation for each treatment. Keep missing values in the data and exclude them only from calculations that require observed yields. Do not replace missing values with zero, delete outliers, or run significance tests. Include a small simulated example, explain the code, and show how I can check the results manually.
+:::
+
+Specify the **question**, **experimental unit**, **column names and units**, **design**, **missing-value rule**, and **requested output**. State restrictions such as “use base R” or “do not install packages.” Ask for one step at a time so you can inspect its result before proceeding. Share a small simulated example or a permitted, de-identified excerpt when explaining a problem; check your institution's rules before sending research data to an external service.
+
+### Worked example: review a generated summary
+
+The following is a teaching reference solution to the prompt, not a transcript of a particular AI response. The simulated data contain a missing yield in the Control group. We deliberately count both rows and observed yields so the denominator is visible.
+
+```{r}
+ai_trial <- data.frame(
+  treatment = c("Control", "Control", "Control", "Compost", "Compost", "Compost"),
+  yield_t_ha = c(3.0, 4.0, NA, 4.0, 4.5, 5.0)
+)
+
+summarize_yield <- function(x) {
+  observed <- x[!is.na(x)]
+  c(total = length(x), observed = length(observed),
+    missing = sum(is.na(x)),
+    mean = if (length(observed)) mean(observed) else NA_real_,
+    SD = if (length(observed) > 1) sd(observed) else NA_real_)
+}
+
+ai_summary <- do.call(rbind, lapply(
+  split(ai_trial$yield_t_ha, ai_trial$treatment), summarize_yield
+))
+ai_summary
+
+# Independent checks against calculations we can do by hand
+stopifnot(ai_summary["Control", "total"] == 3,
+          ai_summary["Control", "observed"] == 2,
+          ai_summary["Control", "missing"] == 1,
+          isTRUE(all.equal(unname(ai_summary["Control", "mean"]), 3.5)),
+          isTRUE(all.equal(unname(ai_summary["Compost", "mean"]), 4.5)))
+```
+
+The Control mean is $(3+4)/2=3.5$ t/ha. Dividing by three, or replacing the missing observation with zero, would answer a different question. Its sample SD is approximately 0.707 t/ha; the Compost SD is 0.5 t/ha. With no observed yields, the mean is undefined; with only one observed yield, the sample SD is undefined. The function returns `NA` for those cases. Summary values alone do not demonstrate a treatment effect.
+
+### Refine, debug, and verify
+
+Useful follow-up prompts include:
+
+- “Explain why the number of observed yields differs from the number of records.”
+- “My error is `object 'yield' not found`. Here is `names(ai_trial)` and the failing line. Explain the mismatch and change only that line.”
+- “Review this model for a randomized block experiment. Explain how the block factor enters the formula before changing the code.”
+- “Add units and a caption to this plot without changing the observations or fitted model.”
+
+When a draft fails, provide the exact error and the smallest example that reproduces it. Avoid repeatedly asking an assistant to repair a long script without checking what it changes. A coding error and a statistical error are different: `aov(yield ~ treatment)` can execute successfully while omitting a block factor required by the design. A paired test, an independent-samples test, and a repeated-measures model are not interchangeable repairs.
+
+::: {.callout-warning title="Successful execution is only the first check"}
+Inspect row counts, units, missingness, group sizes, model formulas, and assumptions. Verify at least one result independently. Check that plots and written conclusions match the computed output. Do not ask AI to keep changing an analysis until a p-value becomes significant. You remain responsible for the method and interpretation.
+:::
+
+### Save a reproducible record
+
+Keep the accepted R code in the project and render the report in a fresh session. Record package versions, relevant prompts, substantive AI contributions, and the corrections you made. Follow course and publication rules for acknowledging assistance. AI may help draft a methods paragraph, but the paragraph must describe the analysis actually performed. Never invent citations, observations, or results to complete a report.
+
+**Closing practical.** Give an assistant the model prompt above, or write your own proposed solution if no assistant is available. Compare its code with the reference calculation. Test an all-missing group and a group with one observed yield. Submit the prompt, reviewed code, verification results, and a short account of what you accepted or corrected. Explain every line you submit.
