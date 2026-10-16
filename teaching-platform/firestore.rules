@@ -1,7 +1,7 @@
 rules_version = '2';
 service cloud.firestore {
  match /databases/{database}/documents {
-  function instructor() { return request.auth != null && request.auth.token.email_verified == true && request.auth.token.email == 'statoberry@gmail.com'; }
+  function instructor() { return request.auth != null && request.auth.token.email_verified == true && request.auth.token.email in ['statoberry@gmail.com','pratheesh.pg@kau.in']; }
   function approved() { return request.auth != null && request.auth.token.email_verified == true && (instructor() || get(/databases/$(database)/documents/students/$(request.auth.uid)).data.status == 'approved'); }
   match /students/{uid} {
    allow read: if request.auth != null && (request.auth.uid == uid || instructor());

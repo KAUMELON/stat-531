@@ -10,13 +10,13 @@ const bank=require('./content/questions.json');
 const learning=require('./content/learning.json');
 initializeApp();const db=getFirestore();
 setGlobalOptions({region:'asia-south1',maxInstances:2,minInstances:0,timeoutSeconds:60,memory:'256MiB'});
-const instructorEmail=defineString('INSTRUCTOR_EMAIL',{default:'statoberry@gmail.com'});
+const instructorEmail=defineString('INSTRUCTOR_EMAIL',{default:'statoberry@gmail.com,pratheesh.pg@kau.in'});
 const model=defineString('AI_MODEL',{default:'gemini-3.8-flash'});
 const examsOpen=defineBoolean('EXAMS_OPEN',{default:false});
 const googleAuth=new GoogleAuth({scopes:['https://www.googleapis.com/auth/cloud-platform']});
 function identity(r){if(!r.auth)throw new HttpsError('unauthenticated','Please sign in.');if(!r.auth.token.email_verified)throw new HttpsError('failed-precondition','Verify your email before learning.');return r.auth.uid;}
 async function student(r){const uid=identity(r);const {hasAccess}=require('./access');const profile=(await db.doc(`students/${uid}`).get()).data();if(!hasAccess(r.auth.token,profile,instructorEmail.value()))throw new HttpsError('permission-denied','Department approval is required.');return uid;}
-function teacher(r){identity(r);if(r.auth.token.email!==instructorEmail.value())throw new HttpsError('permission-denied','Instructor access required.');}
+function teacher(r){identity(r);if(!require('./access').isInstructor(r.auth.token,instructorEmail.value()))throw new HttpsError('permission-denied','Instructor access required.');}
 function inputId(s){if(typeof s!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(s))throw new HttpsError('invalid-argument','Invalid record identifier.');return s;}
 async function getCourse(id){if(id===course.id)return course;const doc=await db.doc(`books/${inputId(id)}`).get();if(!doc.exists)throw new HttpsError('not-found','Course not found.');return{...doc.data(),id};}
 const attemptPublic=(d)=>{const a=d.data();return{id:d.id,type:a.type,courseId:a.courseId,score:a.score??null,total:a.total,status:a.status,uid:a.uid,name:a.name||'',createdAt:a.createdAt?.toMillis?.()||null};};

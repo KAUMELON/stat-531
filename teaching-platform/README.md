@@ -19,7 +19,7 @@ The classroom has replaced the original public narration-first preview. The stud
 1. Student requests an account with name, email and password.
 2. Firebase sends an email verification link on registration/sign-in while unverified.
 3. The student remains in a waiting room until the department approves the account.
-4. The verified owner **statoberry@gmail.com** has the Admin navigation item and can approve or suspend students. The owner must create their own password and verify their email. No human password or owner account was created by the agent.
+4. Verified administrators **pratheesh.pg@kau.in** and **statoberry@gmail.com** have the Admin navigation item and can approve or suspend students. The requested Pratheesh account was provisioned through Firebase Authentication with an approved profile. Its supplied password was handled only in memory and verified by a password sign-in; it is never stored in source or logs. Email verification remains required.
 5. Approval checks use the current Firestore profile on every protected request. An email-verified account alone is insufficient. An approved student cannot approve others, import books, or release examination grades.
 
 The admin desk supports an approval queue, suspensions, provisional examination review/release and importing prepared JSON book manifests. Imported books are private departmental reading material. Rich interactive activities, practical checks, narration and slides for additional books still need preparation and academic review; arbitrary PDF/DOCX ingestion is not implemented.
@@ -69,10 +69,10 @@ Publish functions and Firestore rules, then publish Hosting separately. Keeping 
 
 ## Verification evidence
 
-- Nine unit tests cover approval, suspension, instructor identity, origin checks, asset traversal, answer validation and grading.
+- Ten unit tests cover approval, suspension, instructor identity, origin checks, asset traversal, answer validation and grading.
 - Seventeen live classroom checks cover secure registration/session cookies, verification and approval gating, private assets, student/admin boundaries, saved drafts/conversations, live activity-grounded AI, persistent chapter ratings, exam eligibility, suspension and logout. Synthetic users are removed afterward.
 - Nineteen exam regression checks passed, including private record isolation, deadlines, saved answers, repeat submission and result-release restrictions.
 - All 14 practical challenge solutions passed their checks in real browser R; the transcript is `qa/r-practical-verification.txt`.
 - `check-learning.py` verifies all 218 original R blocks, unique activity IDs, the checkpoint bank and Hosting exclusions. Browser QA verifies registration, the waiting room, approval, actual plots, tutor feedback, question retry, practical checks, adjustable simulations, saved work and responsive layout.
 
-QA reports and screenshots are under ignored `qa/`. The owner must complete their own administrator registration and email verification before approving real students. Instructor release of real grades was not performed on anyone's behalf.
+QA reports and screenshots are under ignored `qa/`. The requested administrator account must complete email verification before approving real students. The existing owner can still register and verify their own administrator account. Instructor release of real grades was not performed on anyone's behalf.

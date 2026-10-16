@@ -1,6 +1,6 @@
 const path = require('node:path');
 function isInstructor(token, email) {
-  return !!token && token.email_verified === true && token.email?.toLowerCase() === email.toLowerCase();
+  return !!token && token.email_verified === true && String(email).split(',').map(x=>x.trim().toLowerCase()).includes(token.email?.toLowerCase());
 }
 function hasAccess(token, profile, email) {
   return isInstructor(token,email) || (!!token?.email_verified && profile?.status === 'approved');
