@@ -12,13 +12,14 @@ async function api(url, method='GET', body) {
   return data;
 }
 async function main() {
-  if(['ui-verify','ui-cleanup'].includes(process.argv[2])) {
+  if(['ui-verify','ui-approve','ui-suspend','ui-cleanup'].includes(process.argv[2])) {
     const email=process.argv[3];
     if(!/^agstat-ui-qa-\d+@example.invalid$/.test(email||''))throw new Error('Only isolated UI QA accounts are accepted.');
     const r=require('node:module').createRequire(require('node:path').resolve(__dirname,'../functions/index.js'));
     r('firebase-admin/app').initializeApp({projectId:project,credential:{async getAccessToken(){const a=auth.getGlobalDefaultAccount();const t=await auth.getAccessToken(a.tokens.refresh_token,['https://www.googleapis.com/auth/cloud-platform','https://www.googleapis.com/auth/firebase']);return{access_token:t.access_token,expires_in:3000};}}});
     const user=await r('firebase-admin/auth').getAuth().getUserByEmail(email);
     if(process.argv[2]==='ui-verify'){await r('firebase-admin/auth').getAuth().updateUser(user.uid,{emailVerified:true});console.log('UI QA email marked verified');}
+    else if(['ui-approve','ui-suspend'].includes(process.argv[2])){const status=process.argv[2]==='ui-approve'?'approved':'suspended';await api(`https://firestore.googleapis.com/v1/projects/${project}/databases/(default)/documents/students/${user.uid}?updateMask.fieldPaths=status`,'PATCH',{fields:{status:{stringValue:status}}});console.log('Synthetic UI QA status: '+status);}
     else{
       const base=`https://firestore.googleapis.com/v1/projects/${project}/databases/(default)/documents/students/${user.uid}`;
       for(const name of ['progress','practice']){const list=await api(`${base}/${name}`);for(const d of list.documents||[])await api('https://firestore.googleapis.com/v1/'+d.name,'DELETE');}

@@ -1,47 +1,15 @@
 rules_version = '2';
 service cloud.firestore {
-  match /databases/{database}/documents {
-    function signedIn() { return request.auth != null; }
-    function instructor() {
-      return signedIn() && request.auth.token.email_verified == true
-        && request.auth.token.email == 'statoberry@gmail.com';
-    }
-    match /students/{uid} {
-      allow read: if signedIn() && (request.auth.uid == uid || instructor());
-      allow create, update: if signedIn() && request.auth.uid == uid
-        && request.resource.data.keys().hasOnly(['name','updatedAt'])
-        && request.resource.data.name is string
-        && request.resource.data.name.size() <= 80
-        && request.resource.data.updatedAt == request.time;
-      match /progress/{chapter} {
-        allow read: if signedIn() && (request.auth.uid == uid || instructor());
-        allow create, update: if signedIn() && request.auth.uid == uid
-          && request.resource.data.keys().hasOnly(['courseId','chapterId','completed','updatedAt'])
-          && request.resource.data.courseId is string
-          && request.resource.data.chapterId is string
-          && request.resource.data.completed is bool
-          && request.resource.data.updatedAt == request.time;
-      }
-      match /practice/{chapter} {
-        // Practice is self-assessment, never used as an official grade.
-        allow read: if signedIn() && (request.auth.uid == uid || instructor());
-        allow create, update: if signedIn() && request.auth.uid == uid
-          && request.resource.data.keys().hasOnly(['courseId','chapterId','score','total','updatedAt'])
-          && request.resource.data.score is int && request.resource.data.total is int
-          && request.resource.data.total > 0 && request.resource.data.total <= 100
-          && request.resource.data.score >= 0 && request.resource.data.score <= request.resource.data.total
-          && request.resource.data.courseId is string && request.resource.data.chapterId is string
-          && request.resource.data.updatedAt == request.time;
-      }
-    }
-    match /books/{book} {
-      allow read: if signedIn();
-      allow create, update, delete: if instructor();
-    }
-    match /attempts/{attempt} {
-      allow read: if signedIn() && (resource.data.uid == request.auth.uid || instructor());
-      allow write: if false; // Only authenticated server functions issue grades.
-    }
-    match /{document=**} { allow read, write: if false; }
+ match /databases/{database}/documents {
+  function instructor() { return request.auth != null && request.auth.token.email_verified == true && request.auth.token.email == 'statoberry@gmail.com'; }
+  function approved() { return request.auth != null && request.auth.token.email_verified == true && (instructor() || get(/databases/$(database)/documents/students/$(request.auth.uid)).data.status == 'approved'); }
+  match /students/{uid} {
+   allow read: if request.auth != null && (request.auth.uid == uid || instructor());
+   allow write: if false;
+   match /{record=**} { allow read: if approved() && (request.auth.uid == uid || instructor()); allow write: if false; }
   }
+  match /books/{book} { allow read: if approved(); allow write: if false; }
+  match /attempts/{attempt} { allow read: if approved() && (resource.data.uid == request.auth.uid || instructor()); allow write: if false; }
+  match /{document=**} { allow read, write: if false; }
+ }
 }

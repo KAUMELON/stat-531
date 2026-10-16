@@ -1,54 +1,78 @@
-# Department of Agricultural Statistics — AgStat Academy
+# STAT MAASH — interactive agricultural statistics classroom
 
-**AI teacher: STAT MAASH — Mentor AI for Academic Success and Help.**
+Live: https://kau-agstat-teaching.web.app/
 
-Firebase project: `kau-agstat-teaching` (created 16 October 2026).
+Department of Agricultural Statistics. STAT MAASH means **Mentor AI for Academic Success and Help**.
 
-Hosting URL: https://kau-agstat-teaching.web.app
+## Current build — 16 October 2026
 
-The initial course imports the author's approved Quarto textbook. The book itself remains editable in the parent directory. This platform adds a course library, 14 chapter paths, 84 overview lecture slides, narration clips and transcripts, 14 downloadable editable PowerPoints, runnable webR exercises, chapter self-assessment, and account-linked student progress. Browser-local progress remains available for guests.
+The classroom has replaced the original public narration-first preview. The student interface has a colourful learning pathway and a three-panel laboratory: activity, real R workspace, and STAT MAASH. The original Quarto textbook is retained.
 
-## Activation status
+- 14 chapters, 726 activities: 391 explanations, 218 original R code blocks, 70 interleaved self-assessment questions, 14 practical coding challenges, 14 reflections, 14 server-marked chapter checkpoints, and 5 adjustable R simulations.
+- The importer follows all chapter prose and preserves nested R examples inside Quarto document demonstrations. The complete rendered book remains available for original formatting, figures, tables, and cross-references. This is a paced adaptation of the author's chapters, not a claim that every card has undergone a separate instructional-design review.
+- Syntax-coloured script editor, real R console, plot gallery, environment inspection, CSV import, supported webR package installation, script download, and session stop/reset. R is webR 0.6.0, executed in a browser worker. Browser R cannot execute desktop installers, Quarto/LaTeX rendering, arbitrary native packages, or local disk paths without adaptation. CSV files and R objects exist in that running session; scripts, progress, chapter marks and recent tutor conversations are saved to the account.
+- STAT MAASH receives the current approved activity, the student's code, actual client-reported execution transcript, and recent conversation. It gives guidance rather than claiming to execute R. Data shared with the AI are disclosed next to the question box. Never use confidential field/student data in an AI prompt.
+- Learning XP and local R challenge checks are formative. They are not official examination marks and do not independently prove attendance or prevent cheating.
 
-On 16 October 2026 the owner approved Blaze activation. The teaching project now uses the existing billing account shared by RAISINS and RAISINS-AI. Email/password Firebase Authentication is enabled. All nine Cloud Functions are ACTIVE in `asia-south1`, and the Vertex AI teacher is connected to `gemini-3.8-flash` through the global endpoint.
+## Registration and administration
 
-Nineteen live integration checks passed using isolated QA students, including sign-in, chapter-grounded teaching, server marks, private-record isolation, exam eligibility, answer persistence, deadline enforcement, repeat-submission handling, and student/instructor access boundaries. The script removed its synthetic users and records afterward. Local browser tests passed for registration through the rate-limited endpoint, sign-in, live tutoring, chapter feedback, and saved progress. The published classroom loads, but sign-in on both Firebase hosting domains still returns auth/network-request-failed in the Codex in-app browser. The cause is unresolved; do not declare public student enrolment ready until a normal-browser sign-in is verified. Changing Firebase app names and persistence modes did not fix that public-browser failure.
+1. Student requests an account with name, email and password.
+2. Firebase sends an email verification link on registration/sign-in while unverified.
+3. The student remains in a waiting room until the department approves the account.
+4. The verified owner **statoberry@gmail.com** has the Admin navigation item and can approve or suspend students. The owner must create their own password and verify their email. No human password or owner account was created by the agent.
+5. Approval checks use the current Firestore profile on every protected request. An email-verified account alone is insufficient. An approved student cannot approve others, import books, or release examination grades.
 
-The initial instructor identity is the verified owner email in `public/platform-config.json`. The owner should register with that email, verify it, and open Teaching desk. No password or human account was created on the owner's behalf.
+The admin desk supports an approval queue, suspensions, provisional examination review/release and importing prepared JSON book manifests. Imported books are private departmental reading material. Rich interactive activities, practical checks, narration and slides for additional books still need preparation and academic review; arbitrary PDF/DOCX ingestion is not implemented.
 
-An optional seven-day Artifact Registry image-deletion policy was rejected by automatic approval review because that retention period lacked explicit authorization. No image-deletion policy was applied. Existing deployment images are preserved. This does not stop the running functions.
+## Authentication and private content
 
-## Deployment and instructor administration
+The old public Firebase browser-SDK sign-in failure was resolved by moving the app to same-origin Firebase session endpoints. Email/password authentication remains Firebase Authentication. Passwords pass over TLS to Identity Toolkit, are not logged or saved in Firestore, and are never written into project files.
 
-1. Enable the Cloud Functions, Cloud Run, Artifact Registry, Cloud Build, and Vertex AI APIs in this project. Use the CLI to deploy `functions` after installing its dependencies.
-2. Set the `INSTRUCTOR_EMAIL`, `AI_MODEL`, and `EXAMS_OPEN` function parameters. The prepared model is `gemini-3.8-flash` through the Vertex AI global endpoint; confirm provider availability before activation. The runtime service account needs Vertex AI user access. Credentials stay on the server through Application Default Credentials; the browser never receives an AI provider secret.
-3. Initialize Email/Password Firebase Authentication and verify a teacher account using the configured instructor email. The Firebase CLI owner's email is the initial instructor identity. Change both Firestore rules and function configuration if the departmental owner changes.
-4. Test real sign-in, progress isolation, teaching responses, a timed examination, late submissions, and instructor release before opening student assessments. The server grader's pure tests pass, and the live student integration checks are recorded in `qa/live-integration.json`.
-5. Review the starter question bank for academic suitability. It contains 28 practice questions and 14 private final questions. The final is a short objective assessment, not a complete R programming practical examination or proctored exam. The current app does not automatically grade arbitrary student R programs.
-6. Set `authenticationReady`, `backendReady`, and `aiReady` only after their checks pass. Set `EXAMS_OPEN=true` and the matching `examsOpen` UI flag only after instructor approval. Keep `false` flags for services that are not active.
+The gateway sets the Firebase `__session` cookie with Secure, HttpOnly and SameSite=Strict for five days. Mutating requests require the classroom's exact Origin and a custom request header. Registration and login have server-side request limits. Reset responses do not disclose whether an email exists. Account revocation, current verification and approval state are checked on the server.
 
-## Data and grading
+Firebase Hosting serves only the application shell and public configuration. It excludes `course.json`, `practice.json`, `books/**`, `audio/**`, and `decks/**`. Protected resources are delivered through `/learning-assets/**`; lesson data use `/api/classroom`. Anonymous requests return 401; pending/suspended students receive 403. The old public resource routes return 404. Private responses use `Cache-Control: private, no-store`.
 
-- Student profiles, completion, and practice scores are private to that student and the verified instructor. Browser-local preview progress is a convenience, not a trusted grade.
-- Only server functions can write `attempts`. Final answer keys ship inside the Functions source, never in Hosting. Public practice answers are intentionally available for learning.
-- The server issues an exam deadline, saves answers, marks submissions, and makes marks provisional. An instructor releases results. One final attempt per student/course is enforced with a transactional lock. Additional attempts currently require instructor administration of that lock.
-- Completion flags are self-reported. They do not independently prove learning or attendance. The platform does not claim to prevent outside AI assistance or provide proctoring.
-- AI tutoring requires verified authentication, uses approved chapter context, and refuses service during an active exam. Limits: 30 requests per student/day, 300 project requests/day, 1,000 output tokens per response, max 2 function instances. These are usage controls, not a guaranteed monetary spending cap. Billing budget alerts do not cap expenditure.
+Firestore client rules deny profile/status/progress/grade writes. The authenticated gateway saves learning records. The original callable tutor and assessment endpoints also enforce approval. Browser code cannot grant itself admission by changing a UI flag. Previously downloaded material cannot be recalled from a student's device.
 
-## More books
+## Exams and chapter marks
 
-Verified instructors can import a JSON course manifest or a selection of chapter `.qmd` files through Teaching desk. A manifest example is `public/book-template.json`. QMD import extracts text and a first R example; instructors must review the lesson slides and provide questions. PDF/DOCX conversion and automatic generation of high-quality full lectures for arbitrary uploads are not implemented. Imported books remain in Firestore, readable by signed-in students. The original static course stays intact.
+Each chapter ends with a server-marked practice checkpoint. Ratings persist in the student's private practice records. Learners can retry these formative checks.
 
-## Narration and PowerPoint
+The final exam has 14 objective questions, a 25-minute server-issued deadline, saved answers, resume support, and one attempt per student/course. Late submissions use only answers saved before the deadline. AI tutoring is blocked during an active examination. Marks remain provisional until instructor release. This is not a proctored exam or automatic marking of arbitrary R programs; an instructor-led R practical is still appropriate.
 
-The lesson player uses generated WAV files, with transcripts and speed controls. Narration uses the installed Microsoft Zira Desktop voice and is synthetic. PowerPoints contain editable slide text and speaker notes; the WAV tracks play in the web platform, rather than being embedded in the PPTX. Original author prose remains in the complete textbook; overview lectures do not replace all chapter detail.
+Completion and learning XP are self-reported/formative. The final answer key is in Functions source, never in public hosting. Additional final attempts require instructor administration of the attempt lock.
 
-## Local checks
+## Firebase and costs
 
-Serve `public` with an HTTP server. Run `python scripts/check-platform.py`, `node --check public/app.js`, and `node --test functions/test/grading.test.js`. Dependencies for server deployment are in `functions/package.json`. Presentation validation reports and previews are under ignored `qa/`. Browser checks cover routes, practice feedback, local persistence, code execution, lecture playback, retrieval, access states, and mobile layout. Live student API integration passed; the owner must complete their own instructor registration and email verification.
+Project: `kau-agstat-teaching`; functions and Firestore: `asia-south1`. The owner approved Blaze billing. The project uses the existing billing account associated with RAISINS/RAISINS-AI. Vertex AI uses `gemini-3.8-flash` through its global endpoint, with server credentials only. The runtime has project-scoped access for Auth, Firestore, and Vertex AI.
 
-Deployment: `firebase deploy --only hosting,firestore:rules --project kau-agstat-teaching`. Keep credentials out of source and logs. The public Firebase web configuration is not an administrative secret; Firestore rules enforce access.
+Tutor limits are 30 requests per learner/day and 300 per project/day, at most 1,000 output tokens per response. Functions have maxInstances=2, minInstances=0. These are usage controls, not a guaranteed monetary cap.
 
-Student registration uses a rate-limited callable endpoint (100 registrations per network/day, 500 project/day). Passwords travel over TLS to the Firebase registration service and are never logged or stored in Firestore. Firebase Authentication manages password storage. Newly registered users must verify their email before AI tutoring and assessed learning.
+An optional seven-day deployment-image deletion policy was previously rejected by automatic approval review; no retention/deletion policy was applied. Images are preserved. Firebase CLI reports the successful function deployments before exiting with that optional cleanup-policy warning. Use API tests and function status to distinguish this from a deployment failure. Do not use `--force` to bypass the decision.
 
-If a restrictive browser prevents token refresh after email verification, the app asks the student to sign in again to obtain a fresh verified session. Authentication uses local browser persistence and Firestore uses long polling for network compatibility.
+## Build and verify
+
+From the book root, render the original Quarto book when the source changes. Existing scripts prepare the original book, PPTX and narration assets. From this directory:
+
+```text
+python scripts/build-course.py
+python scripts/build-learning.py
+python scripts/prepare-private-assets.py
+python scripts/check-learning.py
+node --check public/classroom.js
+node --test functions/test/*.test.js
+```
+
+`build-course.py` refreshes the original six-slide overview decks' source manifest; the new interactive pathway comes from `build-learning.py`. Generated books/audio/PPTX are ignored by Git and must be regenerated or retained locally for a full deployment. The editable overview PowerPoints do not embed audio. The interactive classroom offers browser narration per explanation; protected WAV files remain available as original lecture resources.
+
+Publish functions and Firestore rules, then publish Hosting separately. Keeping hosting separate allows its release after the optional function-image cleanup warning. Keep `.env*`, credentials, debug logs, generated media, and QA accounts out of version control.
+
+## Verification evidence
+
+- Nine unit tests cover approval, suspension, instructor identity, origin checks, asset traversal, answer validation and grading.
+- Seventeen live classroom checks cover secure registration/session cookies, verification and approval gating, private assets, student/admin boundaries, saved drafts/conversations, live activity-grounded AI, persistent chapter ratings, exam eligibility, suspension and logout. Synthetic users are removed afterward.
+- Nineteen exam regression checks passed, including private record isolation, deadlines, saved answers, repeat submission and result-release restrictions.
+- All 14 practical challenge solutions passed their checks in real browser R; the transcript is `qa/r-practical-verification.txt`.
+- `check-learning.py` verifies all 218 original R blocks, unique activity IDs, the checkpoint bank and Hosting exclusions. Browser QA verifies registration, the waiting room, approval, actual plots, tutor feedback, question retry, practical checks, adjustable simulations, saved work and responsive layout.
+
+QA reports and screenshots are under ignored `qa/`. The owner must complete their own administrator registration and email verification before approving real students. Instructor release of real grades was not performed on anyone's behalf.
