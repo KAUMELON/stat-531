@@ -5,7 +5,7 @@
 After this chapter, you should be able to distinguish R from RStudio and Quarto, create a project, run and save commands, and install and load a package.
 
 ::: {.callout-note title="Statistical software in context"}
-The following overview retains the original lecture discussion. Product histories and dated examples provide context; use current official documentation for installation, ownership, licence terms, and supported features. Our course calculations use R.
+This overview updates the original lecture discussion with a focused selection of current tools and a dedicated RAISINS lesson. The original notes remain archived; the course calculations use R.
 :::
 
 Data science is a fast growing field with the development of advanced
@@ -45,177 +45,48 @@ statistical theory by visiting my e-book [Textbook of Agricultural Statistics](h
 should also have a basic knowledge about different statistical software
 available.
 
-## Statistical Software
+## Statistical software for agricultural analysis {#statistical-software}
 
-Statistical analysis software are specialized programs designed to allow
-users to perform complex statistical analysis. These software typically
-provide tools for the organization, interpretation, and presentation of
-selected data sets. Statistical analysis capabilities refer to
-capabilities that support analysis methodologies such as regression
-analysis, predictive analytics, and statistical modelling, among many
-other basic tools.
+Statistical software helps us organize observations, fit models, visualize relationships, and communicate results. Agricultural applications include summarizing soil properties, comparing treatments in field experiments, modelling growth, and examining associations between weather and yield. The choice of software should follow the scientific question, experimental design, and need to reproduce the analysis.
 
-### Types of statistical software
+### Understanding access, licences, and interfaces
 
-#### Open-source software
+**Open-source software** provides source code under a licence that specifies how it may be used, modified, and redistributed. **Free of charge** describes cost; it does not, by itself, establish that source code is available. **Public-domain software** has a different legal status from software distributed under an open-source licence. **Commercial software and hosted services** may require a licence or subscription, although trials, educational access, or limited preview modes may be available.
 
-Open-source software (OSS) is non-proprietary software that allows
-anyone to modify, enhance, or simply view the source code behind it. It
-can enable programmers to work or collaborate on projects created by
-different teams, companies, and organizations. Open-source software
-authors do not view their creations as proprietary and instead release
-their software under licenses that grant users with the desire and
-know-how to view, copy, learn, alter, and share its code.
+An interface is another consideration. A command-based environment records an analysis as instructions that can be inspected and rerun. A graphical interface lets the analyst choose variables and options through menus. A web application runs through a browser. These categories can overlap: a graphical web application may use R for its calculations, while R itself can be used through an editor such as RStudio. Check the current provider documentation for access conditions and supported analyses.
 
-OSS is shared in a public repository, granting access to anyone who
-wants to work on the source code. However, open-source software tends to
-come with a distribution license, which establishes how people can
-interact, modify, and share the OSS.
+### A focused comparison of current tools
 
-Once changes are made to the source code, the OSS should signify those
-changes and what methods were used to make them. Also, depending on the
-license, the resulting OSS may or may not be required to be free. With
-that, most open-source software is free but some require up-front costs
-or subscription fees.
+The following selection was reviewed on **16 October 2026**. It emphasizes tools relevant to this course rather than attempting a catalogue of every statistical program.
 
-Few open source software are
+| Tool | Main role | Relevance to an undergraduate agricultural practical |
+|---|---|---|
+| **R** | Open-source language and environment for statistics and graphics | The computational foundation of this book; students save commands, inspect models, and reproduce results. |
+| **RStudio** | An integrated development environment with an open-source Desktop edition | Provides the script editor, Console, object browser, plots, and project tools used in the practicals. Install R as well. |
+| **Quarto** | An open-source scientific publishing system | Combines explanations, executable R code, tables, and figures into reports and books. |
+| **RAISINS** | A browser-based agricultural analysis platform | Offers guided modules for statistical analysis and experimental designs; useful for demonstrations and comparison with an R analysis. Access depends on the module and available plan. |
+| **jamovi** | A free, open statistical spreadsheet powered by R | Provides an approachable graphical route into statistical analysis and a useful bridge to R. |
+| **JASP** | Free, open-source statistical software with a graphical interface | Supports classical and Bayesian analyses, helping students compare statistical approaches and read structured output. |
+| **Genstat** | Commercial statistical software with agricultural applications | Provides another environment for experimental-design analysis and related research methods where an institutional licence is available. |
 
--   **R** and **Rstudio** (GUI interface and development environment for R)
+Official sources: [R Project](https://www.r-project.org/), [RStudio documentation](https://docs.posit.co/ide/user/), [Quarto](https://quarto.org/), [RAISINS](https://www.raisins.live/), [jamovi](https://www.jamovi.org/about.html), [JASP](https://jasp-stats.org/), and [Genstat](https://vsni.co.uk/software/genstat/).
 
--   **gretl** -- gnu regression, econometrics and time-series library
+The earlier long list of general and specialist programs has been replaced with this teaching-focused selection. Software absent from the table is not necessarily discontinued or unsuitable for another discipline. For this course, students need R, RStudio, and Quarto; other interfaces provide complementary learning opportunities.
 
--   **JASP** -- A free software alternative to IBM SPSS Statistics with
-    additional option for Bayesian methods
+### RAISINS {#raisins}
 
--   **Orange** - a data mining, machine learning, and bioinformatics
-    software
+**RAISINS (R and AI Solutions in INferential Statistics)** is a browser-based platform for agricultural data analysis developed by Statoberry LLP with mentorship from agricultural statisticians at Kerala Agricultural University. It combines R, Python, and AI assistance in a graphical interface, without requiring a local installation. Its modules include descriptive statistics, t-tests, correlation, regression, experimental designs, nonparametric methods, and statistical genetics. Students can explore completely randomized, randomized block, factorial, and split-plot analyses through guided modules. [RAISINS website](https://www.raisins.live/).
 
--   **Weka** (machine learning) -- a suite of machine learning software
-    written at the University of Waikato
+To begin, choose a module, inspect its sample dataset or data template, select the required variables, and run the analysis. Preview mode uses built-in datasets; analysing your own data requires suitable access. RAISINS complements the R programming taught in this book: students should understand the experimental design, check model assumptions, and interpret the output themselves, including any AI-generated explanation. See the [getting-started guide](https://www.raisins.live/tutorial/Intro/raisinsIntro.html).
 
--   **Perl** Data Language -- Scientific computing with Perl
+### Why this textbook uses R
 
-#### Public Domain
-
-Public domain software is any software that has no legal, copyright or
-editing restrictions associated with it. It is free and open-source
-software that can be publicly modified, distributed or sold without any
-restrictions.
-
--   **Dataplot** - It is a public domain software system for scientific
-    visualization and statistical analysis. It was developed and is
-    being maintained at the National Institute of Standards and
-    Technology. Dataplot\'s source code is available and in public
-    domain
-
--   **CSPro** - CSPro is short for the Census and Survey Processing System,
-    is a public domain data processing software package developed by the
-    U.S. Census Bureau and ICF International.
-
-#### Freeware
-
-Freeware is software, most often proprietary, that is distributed at no
-monetary cost to the end user. There is no agreed-upon set of rights,
-license that defines freeware unambiguously; every publisher defines its
-own rules for the freeware it offers. For instance, modification,
-redistribution by third parties, and reverse engineering are permitted
-by some publishers but prohibited by others. Unlike with free and
-open-source software, which are also often distributed free of charge,
-the source code for freeware is typically not made available. Freeware
-may be intended to benefit its producer by, for example, encouraging
-sales of a more capable version
-
--   **BV4.1**- The application software BV4.1 is an easy-to-use tool for
-    decomposing and seasonally adjusting monthly or quarterly economic
-    time series by version 4.1 of the Berlin procedure. It is being
-    developed by the Federal Statistical Office of Germany. The software
-    is released as freeware for non-commercial purposes.
-
--   **GeoDa** - It is a free software package that conducts spatial data
-    analysis, geo-visualization, spatial autocorrelation and spatial
-    modeling. Maintained from 2016 by Centre for Spatial Data Science
-    (CSDS) at the University of Chicago, originally developed by Spatial
-    Analysis Laboratory of the University of Illinois at
-    Urbana-Champaign
-
--   **WinPepi** - It is a freeware package of statistical programs for
-    epidemiologists, comprising seven programs with over 120 modules.
-
-##### Proprietary software
-
-It is also known as non-free software or closed-source software, is
-computer software for which the software\'s publisher or another person
-reserves some licensing rights to use, modify, share modifications, or
-share the software, restricting user freedom with the software they
-lease. It is the opposite of open-source or free software. Non-free
-software sometimes includes patent rights. Some of the few well known
-proprietary statistical software are:-
-
-**SAS** - SAS (previously \"Statistical Analysis System\") is a statistical
-software suite developed by SAS Institute for data management, advanced
-analytics, multivariate analysis, business intelligence, criminal
-investigation and predictive analytics. SAS was developed at North
-Carolina State University from 1966 until 1976, when SAS Institute was
-incorporated. SAS was further developed in the 1980s and 1990s with the
-addition of new statistical procedures, additional components and the
-introduction of JMP.
-
-**SPSS Statistics** -- SPSS Statistics is a statistical software suite
-developed by IBM for data management, advanced analytics, multivariate
-analysis, business intelligence, and criminal investigation. Long
-produced by SPSS Inc., it was acquired by IBM in 2009. Current versions
-(post 2015) have the brand name: IBM SPSS Statistics. The software name
-originally stood for Statistical Package for the Social Sciences (SPSS),
-reflecting the original market, then later changed to Statistical
-Product and Service Solutions.
-
-**Stata** -- It is a general-purpose statistical software package developed
-by StataCorp for data manipulation, visualization, statistics, and
-automated reporting. It is used by researchers in many fields, including
-biomedicine, epidemiology, sociology and science. Stata was initially
-developed by Computing Resource Center in California and the first
-version was released in 1985. In 1993, the company was renamed Stata
-Corporation, now known as StataCorp.
-
-**Genstat** (General Statistics) - It is a statistical software package with
-data analysis capabilities, particularly in the field of agriculture. It
-was developed in 1968 by Rothamsted Research in the United Kingdom and
-was designed to provide modular design, linear mixed models and graphic
-functions. It is developed and distributed by VSN International (VSNi),
-which is owned by The Numerical Algorithms Group and Rothamsted
-Research.
-
-**Minitab** -- Minitab is a statistics package developed at the Pennsylvania
-State University by researchers Barbara F. Ryan, Thomas A. Ryan, Jr.,
-and Brian L. Joiner in conjunction with Triola Statistics Company in
-1972. It began as a light version of OMNITAB 80, a statistical analysis
-program by National Institute of Standards and Technology.
-
-**MATLAB** -- MATLAB an abbreviation of \"MATrix LABoratory\" is a
-proprietary multi-paradigm programming language and numeric computing
-environment developed by MathWorks. MATLAB allows matrix manipulations,
-plotting of functions and data, implementation of algorithms, creation
-of user interfaces, and interfacing with programs written in other
-languages.
-
-**EViews** -- EViews is a statistical package for Windows, used mainly for
-time-series oriented econometric analysis. It is developed by
-Quantitative Micro Software (QMS). EViews can be used for general
-statistical analysis and econometric analyses, such as cross-section and
-panel data analysis and time series estimation and forecasting. EViews
-combines spreadsheet and relational database technology with the
-traditional tasks found in statistical software, and uses a Windows GUI
-(Graphical User Interface).
-
-For agricultural researchers I recommend using RStudio for data
-analysis, as it is easy to use. RStudio allows users to develop and edit
-programs in R by supporting a large number of statistical packages,
-higher quality graphics, and the ability to manage your workspace. We have developed a R package `grapesAgri1` for agricultural research. The package is an additional agricultural resource; the core lessons below also show the underlying R calculations. To read more on please see [grapesAgri1](https://joss.theoj.org/papers/10.21105/joss.03437)
+For agricultural researchers I recommend learning R through RStudio: students can develop scripts, inspect objects, produce graphics, and keep a record of their decisions. A package supplies additional functions; an interface helps us use them. Our agricultural package [grapesAgri1](https://joss.theoj.org/papers/10.21105/joss.03437) is an additional resource, while the core lessons show the underlying R calculations. RAISINS offers a complementary guided route, and Quarto brings code and explanation together in the final report.
 
 ## R and RStudio: the illustrated guide
 
 ::: {.callout-note title="Using the illustrated installation guide"}
-The original step-by-step screenshots are retained below. They illustrate the installation sequence; release numbers, button wording, and screen layout may differ on your computer. Use the official download links given in the text.
+The download screenshots below were updated on 16 October 2026. The original pane illustration is labelled as historical. Release numbers and screen layouts change; use the official download links given in the text.
 :::
 
 This training program is tailored to equip you with the skills needed for agricultural data analysis using R and RStudio. In this introductory section, we will provide you with a brief overview and guide you through the process of installing R and RStudio.  

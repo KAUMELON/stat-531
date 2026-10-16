@@ -1,5 +1,7 @@
 # Original-content retention audit
 
+**Historical baseline:** the percentages below describe the restored edition before the subsequent installation and software updates. On 16 October 2026, the author requested that outdated software entries be removed and RAISINS be added. Chapter 1 now deliberately replaces that catalogue with current teaching material; these percentages must not be read as current chapter-1 retention measurements. The archived original notes are unchanged.
+
 This audit compares the prose word sequence of each original substantive lecture with its adapted reading-chapter text. Code, comments, and punctuation are excluded. Matching words are measured directionally against the original; this is an editorial traceability measure, not a quality score.
 
 | Original lecture | Reading chapter | Original prose words | Matching prose retained |
