@@ -19,6 +19,16 @@ function inputId(s){if(typeof s!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(s))th
 async function getCourse(id){if(id===course.id)return course;const doc=await db.doc(`books/${inputId(id)}`).get();if(!doc.exists)throw new HttpsError('not-found','Course not found.');return{...doc.data(),id};}
 const attemptPublic=(d)=>{const a=d.data();return{id:d.id,type:a.type,courseId:a.courseId,score:a.score??null,total:a.total,status:a.status,uid:a.uid,name:a.name||'',createdAt:a.createdAt?.toMillis?.()||null};};
 
+exports.registerStudent=onCall(async r=>{
+ const {email,password,name}=r.data||{};
+ if(typeof email!=='string'||email.length>254||!/^\S+@\S+\.\S+$/.test(email)||typeof password!=='string'||password.length<8||password.length>128||typeof name!=='string'||!name.trim()||name.length>80)throw new HttpsError('invalid-argument','Enter your name, a valid email, and a password of 8–128 characters.');
+ const day=new Date().toISOString().slice(0,10),ip=require('node:crypto').createHash('sha256').update(`${day}:${r.rawRequest.ip||'unknown'}`).digest('hex');
+ const local=db.doc(`registrationLimits/${day}_${ip}`),global=db.doc(`registrationLimits/platform_${day}`);
+ await db.runTransaction(async tx=>{const[a,b]=await Promise.all([tx.get(local),tx.get(global)]);if((a.data()?.count||0)>=100||(b.data()?.count||0)>=500)throw new HttpsError('resource-exhausted','The registration allowance has been reached. Please contact the department.');tx.set(local,{count:(a.data()?.count||0)+1});tx.set(global,{count:(b.data()?.count||0)+1});});
+ try{const u=await require('firebase-admin/auth').getAuth().createUser({email:email.trim(),password,displayName:name.trim(),emailVerified:false});await db.doc(`students/${u.uid}`).set({name:name.trim(),updatedAt:FieldValue.serverTimestamp()});return{created:true};}
+ catch(error){if(error.code==='auth/email-already-exists')throw new HttpsError('already-exists','This email already has an account. Sign in or reset its password.');throw new HttpsError('unavailable','The account could not be created. Please try again or sign in if you already registered.');}
+});
+
 exports.gradeChapter=onCall(async r=>{
  const uid=student(r),chapterId=inputId(r.data.chapterId);if(r.data.courseId!==course.id)throw new HttpsError('failed-precondition','Assessed checks for this course have not been configured.');
  const qs=bank.chapters[chapterId];if(!qs||!validAnswers(qs,r.data.answers))throw new HttpsError('invalid-argument','Invalid answers.');
