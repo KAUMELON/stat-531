@@ -9,8 +9,8 @@ for(const c of course.chapters){
 const groups=vm.runInContext(`topicGroups('${c.id}')`,context);topics+=groups.length;
 for(let i=0;i<groups.length;i++){
 const html=vm.runInContext(`studyView('${c.id}',${i})`,context);
-assert.ok(html.includes('Investigation for this chapter'));
-for(const step of groups[i].items.filter(s=>s.kind==='code')){examples++;assert.ok(html.includes('data-copy-example="'+step.index+'"'));}
+assert.ok(html.includes('Complete chapter reading'));assert.ok(!html.includes('Pause and think'));
+for(const step of groups[i].items.filter(s=>s.kind==='code')){examples++;assert.ok(step.code.length>0);}
 }
 assert.ok(vm.runInContext(`bookView('${c.id}')`,context).includes(c.bookUrl));
 }
@@ -21,9 +21,14 @@ console.log(JSON.stringify({chapters:14,topics,originalRExamples:examples,allTop
 
 
 vm.runInContext('data={...fixture,learning:{chapters:[fixture.learning.chapters[0]]},unlocked:["01"]};chapterProgress={};',context);
-let dashboard=vm.runInContext('studentHome()',context);assert.ok(dashboard.includes('Continue learning'));assert.ok(!dashboard.includes('Objects, data structures, and functions'));
-vm.runInContext('chapterProgress["r-agriculture_01"]={stepIds:data.learning.chapters[0].steps.filter(s=>["learn","code"].includes(s.kind)).map(s=>s.id)};',context);
-assert.ok(vm.runInContext('studentHome()',context).includes('Start R practice'));
-vm.runInContext('chapterProgress["r-agriculture_01"].stepIds.push("01-lab")',context);
-assert.ok(vm.runInContext('studentHome()',context).includes('Start chapter assessment'));
-console.log('Student dashboard shows one next action for learn, practise and assess.');
+let dashboard=vm.runInContext('studentHome()',context);assert.ok(dashboard.includes('Video lecture coming soon'));assert.ok(dashboard.includes('Read chapter'));assert.ok(!dashboard.includes('Pause and think'));assert.ok(!dashboard.includes('Objects, data structures, and functions'));
+assert.ok(vm.runInContext('studentRead("01")',context).includes('Complete chapter reading'));
+assert.equal(vm.runInContext('assessmentReady("01")',context),false);
+vm.runInContext('chapterProgress["r-agriculture_01"]={readComplete:true};',context);
+assert.equal(vm.runInContext('assessmentReady("01")',context),true);
+vm.runInContext('data.videos={"01":{provider:"file",url:"https://example.com/lecture.mp4"}};',context);
+assert.equal(vm.runInContext('assessmentReady("01")',context),false);
+vm.runInContext('chapterProgress["r-agriculture_01"].videoComplete=true;',context);
+assert.equal(vm.runInContext('assessmentReady("01")',context),true);
+assert.ok(vm.runInContext('studentWatch("01")',context).includes('<video'));
+console.log('Video, full chapter reading and assessment flow verified. R practice is optional.');

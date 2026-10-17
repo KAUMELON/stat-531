@@ -1,0 +1,4 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),{lectureVideo}=require('../lecture-video');
+test('YouTube watch and share links use a constrained player',()=>{assert.equal(lectureVideo('https://youtu.be/dQw4w9WgXcQ').url,'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ');assert.equal(lectureVideo('https://www.youtube.com/watch?v=dQw4w9WgXcQ').provider,'youtube');});
+test('Vimeo private hashes and direct video files are retained',()=>{assert.equal(lectureVideo('https://vimeo.com/123456/abc').url,'https://player.vimeo.com/video/123456?h=abc');assert.equal(lectureVideo('https://example.com/lecture.mp4?token=sample').provider,'file');});
+test('Removing a video is explicit and unsafe embeds are rejected',()=>{assert.equal(lectureVideo(''),null);for(const url of ['javascript:alert(1)','http://example.com/a.mp4','https://evil.example/embed/123','<iframe>','https://user:password@example.com/a.mp4'])assert.throws(()=>lectureVideo(url));});
