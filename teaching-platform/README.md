@@ -95,3 +95,7 @@ Reviewed the author's local WINE source (`D:\STATOBERRY\Training-APP`, including
 The full original rendered book opens inside the platform with persistent chapter navigation, introduction, course guide, dictionary, glossary and references. The original edition preserves figures, tables, cross-references and appendices; the study desk is a reading-and-practice companion. Existing approved-student access, real R, assessment and saved progress endpoints are unchanged. No narration starts automatically.
 
 `node scripts/check-study.cjs` renders every topic view and checks all 218 original R examples and chapter-reader links. This checks coverage and rendering, not a claim that every original passage has received a new academic review. The editable six-slide overview PPTX decks remain overview resources; they were not expanded into complete lecture decks in this update.
+
+### WINE visual design
+
+The dashboard now follows the local WINE UI: compact navigation, primary purple #6E59A5, pale-yellow Overview sidebar, purple/yellow/green action tiles, green Getting started card header, quick actions, lecture list, white rounded cards, and sage footer. The previous pathway remains under Course progress. On small screens the overview becomes a compact row of three actions. The study desk, full textbook and R workspace retain their functionality. Live browser verification confirmed the signed-in dashboard and navigation; screenshot capture was unavailable in the browser tool.
