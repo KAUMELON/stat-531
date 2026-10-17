@@ -80,6 +80,23 @@
             "value": "no-cache"
           }
         ]
+      },
+      {
+        "source": "/account-action.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-store"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "no-referrer"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          }
+        ]
       }
     ],
     "rewrites": [

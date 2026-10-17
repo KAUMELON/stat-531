@@ -21,6 +21,7 @@ function inputId(s){if(typeof s!=='string'||!/^[a-zA-Z0-9_-]{1,100}$/.test(s))th
 async function getCourse(id){if(id===course.id)return course;const doc=await db.doc(`books/${inputId(id)}`).get();if(!doc.exists)throw new HttpsError('not-found','Course not found.');return{...doc.data(),id};}
 const attemptPublic=(d)=>{const a=d.data();return{id:d.id,type:a.type,courseId:a.courseId,score:a.score??null,total:a.total,status:a.status,uid:a.uid,name:a.name||'',createdAt:a.createdAt?.toMillis?.()||null};};
 
+async function chapterAccess(r,id){if(require('./access').isInstructor(r.auth.token,instructorEmail.value()))return;const snap=await db.collection(`students/${r.auth.uid}/practice`).get();const records=Object.fromEntries(snap.docs.map(d=>[d.data().chapterId,d.data()]));if(!require('./progression').unlockedIds(course.chapters,records).includes(id))throw new HttpsError('permission-denied','Pass the current chapter assessment to unlock this chapter.');}
 exports.registerStudent=onCall(async r=>{
  const {email,password,name}=r.data||{};
  if(typeof email!=='string'||email.length>254||!/^\S+@\S+\.\S+$/.test(email)||typeof password!=='string'||password.length<8||password.length>128||typeof name!=='string'||!name.trim()||name.length>80)throw new HttpsError('invalid-argument','Enter your name, a valid email, and a password of 8–128 characters.');
@@ -33,16 +34,16 @@ exports.registerStudent=onCall(async r=>{
 
 exports.gradeChapter=onCall(async r=>{
  const uid=await student(r),chapterId=inputId(r.data.chapterId);if(r.data.courseId!==course.id)throw new HttpsError('failed-precondition','Assessed checks for this course have not been configured.');
- const qs=bank.chapters[chapterId];if(!qs||!validAnswers(qs,r.data.answers))throw new HttpsError('invalid-argument','Invalid answers.');
+ await chapterAccess(r,chapterId);if(!require('./access').isInstructor(r.auth.token,instructorEmail.value())){const progress=(await db.doc(`students/${uid}/progress/${course.id}_${chapterId}`).get()).data()||{};const ids=new Set(progress.stepIds||[]),required=learning.chapters.find(c=>c.id===chapterId)?.steps.filter(s=>s.kind==='learn'||s.kind==='challenge')||[];if(!required.length||required.some(s=>!ids.has(s.id)))throw new HttpsError('failed-precondition','Finish learning and R practice before the chapter assessment.');}const qs=bank.chapters[chapterId];if(!qs||!validAnswers(qs,r.data.answers))throw new HttpsError('invalid-argument','Invalid answers.');
  const score=grade(qs,r.data.answers);const ref=db.collection('attempts').doc();
  await ref.set({uid,name:r.auth.token.name||'Student',courseId:course.id,chapterId,type:'chapter',score,total:qs.length,status:'practice',createdAt:FieldValue.serverTimestamp()});
- await db.doc(`students/${uid}/practice/${course.id}_${chapterId}`).set({courseId:course.id,chapterId,score,total:qs.length,updatedAt:FieldValue.serverTimestamp()});
- return{score,total:qs.length};
+ const rating=db.doc(`students/${uid}/practice/${course.id}_${chapterId}`);await db.runTransaction(async tx=>{const previous=(await tx.get(rating)).data();tx.set(rating,{courseId:course.id,chapterId,score,total:qs.length,passed:require('./progression').cleared(previous)||score===qs.length,updatedAt:FieldValue.serverTimestamp()});});
+ return{score,total:qs.length,passed:require('./progression').cleared((await rating.get()).data())};
 });
 exports.startExam=onCall(async r=>{
  const uid=await student(r);if(!examsOpen.value())throw new HttpsError('failed-precondition','The instructor has not opened this exam.');
  if(r.data.courseId!==course.id)throw new HttpsError('failed-precondition','No final exam is configured for this course.');
- const p=await db.collection(`students/${uid}/progress`).get();const completed=new Set(p.docs.filter(d=>d.data().completed&&d.data().courseId===course.id).map(d=>d.data().chapterId));
+ const p=await db.collection(`students/${uid}/practice`).get();const completed=new Set(p.docs.filter(d=>require('./progression').cleared(d.data())&&d.data().courseId===course.id).map(d=>d.data().chapterId));
  if(course.chapters.some(c=>!completed.has(c.id)))throw new HttpsError('failed-precondition','Complete every chapter first.');
  const lock=db.doc(`examLocks/${uid}_${course.id}`);const proposed=db.collection('attempts').doc();
  const id=await db.runTransaction(async tx=>{const prior=await tx.get(lock);if(prior.exists)return prior.data().attemptId;const questions=shuffle(bank.final);tx.set(proposed,{uid,name:r.auth.token.name||'Student',courseId:course.id,type:'final',status:'active',questionIds:questions.map(q=>q.id),answers:{},total:questions.length,deadline:Timestamp.fromMillis(Date.now()+25*60*1000),createdAt:FieldValue.serverTimestamp()});tx.set(lock,{attemptId:proposed.id});return proposed.id;});
@@ -55,7 +56,7 @@ exports.myAttempts=onCall(async r=>{const uid=await student(r),snap=await db.col
 exports.reviewAttempts=onCall(async r=>{teacher(r);const snap=await db.collection('attempts').where('type','==','final').limit(250).get();return{attempts:snap.docs.map(attemptPublic)};});
 exports.releaseResult=onCall(async r=>{teacher(r);const ref=db.doc(`attempts/${inputId(r.data.attemptId)}`);await db.runTransaction(async tx=>{const doc=await tx.get(ref);if(!doc.exists||doc.data().status!=='provisional')throw new HttpsError('failed-precondition','Only provisional submissions can be released.');tx.update(ref,{status:'released',releasedAt:FieldValue.serverTimestamp(),releasedBy:r.auth.uid});});return{released:true};});
 exports.teach=onCall(async r=>{
- const uid=await student(r),question=r.data.question;if(typeof question!=='string'||!question.trim()||question.length>1600)throw new HttpsError('invalid-argument','Use a question of 1–1600 characters.');
+ const uid=await student(r),question=r.data.question;await chapterAccess(r,r.data.chapterId);if(typeof question!=='string'||!question.trim()||question.length>1600)throw new HttpsError('invalid-argument','Use a question of 1–1600 characters.');
  const examLock=await db.doc(`examLocks/${uid}_${course.id}`).get();
  if(examLock.exists){const active=await db.doc(`attempts/${examLock.data().attemptId}`).get();if(active.data()?.status==='active')throw new HttpsError('failed-precondition','Submit your active examination before using the tutor.');}
  const b=await getCourse(inputId(r.data.courseId)),chapter=b.chapters.find(c=>c.id===r.data.chapterId);if(!chapter)throw new HttpsError('not-found','Chapter not found.');

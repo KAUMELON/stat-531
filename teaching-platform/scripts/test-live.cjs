@@ -33,9 +33,9 @@ async function main(){
   await record('Student cannot write exam grades',async()=>{const r=await fetch(`https://firestore.googleapis.com/v1/projects/${project}/databases/(default)/documents/attempts/qa-forged-${a.uid}`,{method:'PATCH',headers:{Authorization:`Bearer ${a.token}`,'Content-Type':'application/json'},body:JSON.stringify({fields:{uid:{stringValue:a.uid},score:{integerValue:'14'}}})});assert.equal(r.status,403);});
   await record('Student cannot use instructor review',async()=>assert.equal((await callable('reviewAttempts',{},a.token)).error?.status,'PERMISSION_DENIED'));
   await record('STAT MAASH gives a grounded live AI response',async()=>{const r=await callable('teach',{courseId:course.id,chapterId:'01',question:'Explain how R differs from RStudio. Use a simple agricultural example.'},a.token);assert.ok(r.result?.answer?.length>100,JSON.stringify(r));assert.match(r.result.answer,/RStudio/i);console.log('Teaching response:',r.result.answer.slice(0,700));});
-  await record('Chapter marks come from server-side answers',async()=>{const answers=Object.fromEntries(bank.chapters['01'].map(q=>[q.id,q.answer]));const r=await callable('gradeChapter',{courseId:course.id,chapterId:'01',answers},a.token);assert.equal(r.result?.score,2,JSON.stringify(r));});
+  await record('Chapter assessment requires prior learning and practice',async()=>{const answers=Object.fromEntries(bank.chapters['01'].map(q=>[q.id,q.answer]));const r=await callable('gradeChapter',{courseId:course.id,chapterId:'01',answers},a.token);assert.equal(r.error?.status,'FAILED_PRECONDITION',JSON.stringify(r));});
   await record('Exam requires completion of chapter path',async()=>assert.equal((await callable('startExam',{courseId:course.id},a.token)).error?.status,'FAILED_PRECONDITION'));
-  for(const c of course.chapters)await db.doc(`students/${a.uid}/progress/${course.id}_${c.id}`).set({courseId:course.id,chapterId:c.id,completed:true,updatedAt:new Date()});
+  for(const c of course.chapters)await db.doc(`students/${a.uid}/practice/${course.id}_${c.id}`).set({courseId:course.id,chapterId:c.id,passed:true,score:2,total:2,updatedAt:new Date()});
   let exam;
   await record('Exam starts with private answer keys omitted',async()=>{const r=await callable('startExam',{courseId:course.id},a.token);exam=r.result;assert.equal(exam?.questions?.length,14,JSON.stringify(r));assert.ok(exam.questions.every(q=>!('answer'in q)&&!('explanation'in q)));});
   await record('Other students cannot save this exam',async()=>assert.equal((await callable('saveExam',{attemptId:exam.id,answers:{}},b.token)).error?.status,'PERMISSION_DENIED'));
@@ -46,7 +46,7 @@ async function main(){
   await record('Students cannot release their own grades',async()=>assert.equal((await callable('releaseResult',{attemptId:exam.id},a.token)).error?.status,'PERMISSION_DENIED'));
   await record('A second final attempt is rejected',async()=>assert.equal((await callable('startExam',{courseId:course.id},a.token)).error?.status,'FAILED_PRECONDITION'));
   // Test expiry without waiting 25 minutes, using a second isolated learner.
-  for(const c of course.chapters)await db.doc(`students/${b.uid}/progress/${course.id}_${c.id}`).set({courseId:course.id,chapterId:c.id,completed:true,updatedAt:new Date()});
+  for(const c of course.chapters)await db.doc(`students/${b.uid}/practice/${course.id}_${c.id}`).set({courseId:course.id,chapterId:c.id,passed:true,score:2,total:2,updatedAt:new Date()});
   const second=(await callable('startExam',{courseId:course.id},b.token)).result;
   // A fixed historical deadline avoids assuming the desktop and server clocks match.
   await db.doc(`attempts/${second.id}`).update({answers:{[bank.final[0].id]:bank.final[0].answer},deadline:functionsRequire('firebase-admin/firestore').Timestamp.fromMillis(0)});

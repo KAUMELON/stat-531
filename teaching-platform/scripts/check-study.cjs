@@ -19,3 +19,11 @@ assert.ok(vm.runInContext('chaptersView()',context).includes('chapter-search'));
 console.log(JSON.stringify({chapters:14,topics,originalRExamples:examples,allTopicViewsRender:true,readerLinks:true}));
 
 
+
+vm.runInContext('data={...fixture,learning:{chapters:[fixture.learning.chapters[0]]},unlocked:["01"]};chapterProgress={};',context);
+let dashboard=vm.runInContext('studentHome()',context);assert.ok(dashboard.includes('Continue learning'));assert.ok(!dashboard.includes('Objects, data structures, and functions'));
+vm.runInContext('chapterProgress["r-agriculture_01"]={stepIds:data.learning.chapters[0].steps.filter(s=>["learn","code"].includes(s.kind)).map(s=>s.id)};',context);
+assert.ok(vm.runInContext('studentHome()',context).includes('Start R practice'));
+vm.runInContext('chapterProgress["r-agriculture_01"].stepIds.push("01-lab")',context);
+assert.ok(vm.runInContext('studentHome()',context).includes('Start chapter assessment'));
+console.log('Student dashboard shows one next action for learn, practise and assess.');

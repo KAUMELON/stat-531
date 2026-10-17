@@ -12,6 +12,7 @@ async function api(url, method='GET', body) {
   return data;
 }
 async function main() {
+
   if(['ui-verify','ui-approve','ui-suspend','ui-cleanup'].includes(process.argv[2])) {
     const email=process.argv[3];
     if(!/^agstat-ui-qa-\d+@example.invalid$/.test(email||''))throw new Error('Only isolated UI QA accounts are accepted.');

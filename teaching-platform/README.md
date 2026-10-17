@@ -99,3 +99,17 @@ The full original rendered book opens inside the platform with persistent chapte
 ### WINE visual design
 
 The dashboard now follows the local WINE UI: compact navigation, primary purple #6E59A5, pale-yellow Overview sidebar, purple/yellow/green action tiles, green Getting started card header, quick actions, lecture list, white rounded cards, and sage footer. The previous pathway remains under Course progress. On small screens the overview becomes a compact row of three actions. The study desk, full textbook and R workspace retain their functionality. Live browser verification confirmed the signed-in dashboard and navigation; screenshot capture was unavailable in the browser tool.
+
+## Sequential student course and Teacher reporting — 17 October 2026
+
+Students now receive one current chapter and one next action: Learn → Practise → Assess → Next chapter. Topic reading preserves the author’s explanations and examples and saves reading progress. Interleaved quick checks remain formative. A guided R practical leads to the chapter assessment. Chapter assessment requires the learning and practical records; a server-marked full score clears the chapter. Retakes are allowed, and an earlier pass is preserved if a later retry has a lower score. Only contiguous passed chapters unlock the next chapter. The final examination requires all fourteen chapter passes.
+
+The server filters locked chapter content out of classroom responses and rejects locked chapter asset, progress, tutor and grading requests, including direct callable tutor/grade routes. Teachers retain all chapters. Learning/R activity records remain formative client-reported progress, not proof of supervised attendance or independent execution.
+
+The student navigation hides the catalogue, library and teacher controls. Completed chapters can be reviewed. The chapter reader retains access to the original formatted chapter; later chapters unlock sequentially. R practice uses Run my code, Results, Plots and My objects, with package installation under Extra tools. The assessment screen hides the R/tutor panes.
+
+`pratheesh.pg@kau.in` has a Teacher profile and Teacher navigation/badge, retaining department administration permissions. `pratheeshiasri@gmail.com` was created as an approved Student; password sign-in was verified, a verification email sent, and email ownership verification remains required. Passwords were handled through hidden stdin and never stored in files or logs. Existing teacher password and real learner marks were not changed.
+
+The Teacher page shows student activity progress, passed chapter counts, latest chapter scores, R runs and final-exam status. Its authenticated CSV includes one row per student/chapter, activity counts, R runs, latest marks, persistent pass state and final result/status. Student accounts cannot access reports or export. CSV cells are quoted and formula-prefixed inputs neutralized. Reporting currently supports up to 250 profiles and 250 final exam records per request.
+
+Verification: 23 unit tests; live classroom tests cover sequential locking, learning/practice prerequisites, next-chapter unlock and retained passes on retry; browser QA ran a synthetic student’s real R practical, marked the assessment and confirmed chapter 2 alone became current. Synthetic test reading fixtures were used only on disposable accounts; all their progress, scores and accounts were removed. The Teacher CSV was downloaded and checked. Proof: `qa/student-sequential-flow.png`.

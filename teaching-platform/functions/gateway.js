@@ -17,6 +17,7 @@ module.exports=({db,handlers,instructorEmail,course,bank})=>async(req,res)=>{
   if(req.method!=='GET'&&(req.method!=='POST'||req.get('X-Agstat-Request')!=='classroom'||!validOrigin(req.get('origin'),project)))throw fail(403,'This request must come from the classroom.');
   async function quota(kind,limit){const bucket=Math.floor(Date.now()/(15*60*1000));const hash=createHash('sha256').update(`${req.ip}:${bucket}`).digest('hex');const ref=db.doc(`gatewayLimits/${kind}_${hash}`);await db.runTransaction(async tx=>{const d=await tx.get(ref);if((d.data()?.count||0)>=limit)throw fail(429,'Too many attempts. Please try again later.');tx.set(ref,{count:(d.data()?.count||0)+1,expiresAt:new Date(Date.now()+86400000)});});}
   async function identity(method,body){const r=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:${method}?key=${webConfig.apiKey}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(20000)});const data=await r.json();if(!r.ok)throw fail(401,'Unable to sign in. Check your email and password.');return data;}
+  if(req.method==='POST'&&route==='email-action'){await quota('email-action',40);return res.json(await require('./email-actions')(req.body,identity));}
   if(req.method==='POST'&&['login','register'].includes(route)){
    await quota('login',20);const {email,password,name}=req.body||{};
    if(typeof email!=='string'||typeof password!=='string'||email.length>254||password.length>128)throw fail(400,'Enter your email and password.');
@@ -38,17 +39,28 @@ module.exports=({db,handlers,instructorEmail,course,bank})=>async(req,res)=>{
   const current=await auth().getUser(token.uid);token={...token,email:current.email,email_verified:current.emailVerified,name:current.displayName};
   const profile=(await db.doc(`students/${token.uid}`).get()).data()||{};
   const admin=isInstructor(token,instructorEmail.value());
-  if(req.method==='GET'&&route==='session')return res.json({user:{uid:token.uid,name:current.displayName||profile.name||'Learner',email:current.email,verified:current.emailVerified,admin,status:admin?'approved':profile.status||'pending'},access:hasAccess(token,profile,instructorEmail.value())});
+  if(req.method==='GET'&&route==='session')return res.json({user:{uid:token.uid,name:current.displayName||profile.name||'Learner',email:current.email,verified:current.emailVerified,admin,role:admin?'teacher':'student',status:admin?'approved':profile.status||'pending'},access:hasAccess(token,profile,instructorEmail.value())});
   if(!hasAccess(token,profile,instructorEmail.value()))throw fail(403,current.emailVerified?'Your account is awaiting department approval.':'Verify your email before entering your classroom.');
   const r={auth:{uid:token.uid,token},data:req.body||{},rawRequest:req};
+  const ratingsSnap=await db.collection(`students/${token.uid}/practice`).get();const ratings=Object.fromEntries(ratingsSnap.docs.map(d=>[d.id,d.data()]));const byChapter=Object.fromEntries(ratingsSnap.docs.map(d=>[d.data().chapterId,d.data()]));const unlocked=admin?course.chapters.map(c=>c.id):require('./progression').unlockedIds(course.chapters,byChapter);
+  function checkChapter(id){if(!unlocked.includes(id))throw fail(403,'Pass the current chapter assessment to unlock this chapter.');}
+  if(!admin&&req.method==='POST'&&['progress','teach','gradeChapter'].includes(route))checkChapter(req.body?.chapterId);
+  if(req.method==='GET'&&['student-report','scores.csv'].includes(route)){
+   if(!admin)throw fail(403,'Teacher access required.');const people=await db.collection('students').limit(250).get();const students=await Promise.all(people.docs.filter(d=>!isInstructor({email:d.data().email,email_verified:true},instructorEmail.value())).map(async d=>{const [progress,practice]=await Promise.all([db.collection(`students/${d.id}/progress`).get(),db.collection(`students/${d.id}/practice`).get()]);return{uid:d.id,name:d.data().name||'Student',email:d.data().email||'',status:d.data().status||'pending',lastActiveAt:d.data().lastActiveAt?.toMillis?.()||null,progress:Object.fromEntries(progress.docs.map(x=>[x.data().chapterId,x.data()])),scores:Object.fromEntries(practice.docs.map(x=>[x.data().chapterId,x.data()]))};}));
+   const finals=await db.collection('attempts').where('type','==','final').limit(250).get();const exams=finals.docs.map(d=>({id:d.id,...d.data()}));
+   if(route==='student-report')return res.json({students,chapters:course.chapters.map(c=>({id:c.id,title:c.title,activities:learning.chapters.find(l=>l.id===c.id).steps.length})),exams:exams.map(x=>({uid:x.uid,score:x.score??null,total:x.total,status:x.status}))});
+   const rows=[['Name','Email','Access status','Chapter','Chapter title','Activities explored','Total activities','R runs','Latest score','Total marks','Passed','Final score','Final total','Final status']];for(const person of students)for(const c of course.chapters){const p=person.progress[c.id]||{},score=person.scores[c.id]||{},exam=exams.find(e=>e.uid===person.uid)||{};rows.push([person.name,person.email,person.status,c.id,c.title,p.stepIds?.length||0,learning.chapters.find(l=>l.id===c.id).steps.length,p.codeRuns||0,score.score??'',score.total??'',require('./progression').cleared(score)?'Yes':'No',exam.score??'',exam.total??'',exam.status||'Not started']);}res.set('Content-Type','text/csv; charset=utf-8');res.set('Content-Disposition','attachment; filename="stat-maash-student-scores.csv"');return res.send('\ufeff'+rows.map(row=>row.map(require('./progression').csvCell).join(',')).join('\r\n'));
+  }
+
   if(req.method==='GET'&&req.path.startsWith('/learning-assets/')){
+   if(!admin){const name=decodeURIComponent(req.path);const match=name.match(/\/(\d{2})-[^/]+\.html$/)||name.match(/chapter-(\d{2})/);if(match)checkChapter(match[1]);if(/search\.json$/.test(name))throw fail(403,'Use the chapter reader.');}
    const target=safeAsset(path.join(__dirname,'assets'),decodeURIComponent(req.path.slice('/learning-assets/'.length)));
    if(!target||!fs.existsSync(target)||!fs.statSync(target).isFile())throw fail(404,'File not found.');
    return res.sendFile(target,{cacheControl:false});
   }
   if(req.method==='GET'&&route==='classroom'){
    const extra=await db.collection('books').limit(30).get();const p=await db.collection(`students/${token.uid}/progress`).get();
-   const ratings=await db.collection(`students/${token.uid}/practice`).get();return res.json({course,learning,practice:bank.chapters,ratings:Object.fromEntries(ratings.docs.map(d=>[d.id,d.data()])),books:extra.docs.map(d=>({...d.data(),id:d.id})),progress:Object.fromEntries(p.docs.map(d=>[d.id,d.data()]))});
+   return res.json({course:admin?course:{...course,chapters:course.chapters.map(c=>unlocked.includes(c.id)?c:{id:c.id,title:c.title,module:c.module})},learning:{...learning,chapters:learning.chapters.filter(c=>unlocked.includes(c.id))},practice:Object.fromEntries(Object.entries(bank.chapters).filter(([id])=>unlocked.includes(id))),ratings,unlocked,books:extra.docs.map(d=>({...d.data(),id:d.id})),progress:Object.fromEntries(p.docs.map(d=>[d.id,d.data()]))});
   }
   if(req.method==='GET'&&route==='students'){
    if(!admin)throw fail(403,'Administrator access required.');const people=await db.collection('students').limit(250).get();
