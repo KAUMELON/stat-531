@@ -3,7 +3,7 @@ function isInstructor(token, email) {
   return !!token && token.email_verified === true && String(email).split(',').map(x=>x.trim().toLowerCase()).includes(token.email?.toLowerCase());
 }
 function hasAccess(token, profile, email) {
-  return isInstructor(token,email) || (!!token?.email_verified && profile?.status === 'approved');
+  return isInstructor(token,email) || (!!token?.email_verified && profile?.status === 'approved' && require('./student-profile').completeProfile(profile));
 }
 function safeAsset(root, name) {
   const target = path.resolve(root, name);

@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
  match /databases/{database}/documents {
   function instructor() { return request.auth != null && request.auth.token.email_verified == true && request.auth.token.email in ['statoberry@gmail.com','pratheesh.pg@kau.in']; }
-  function approved() { return request.auth != null && request.auth.token.email_verified == true && (instructor() || get(/databases/$(database)/documents/students/$(request.auth.uid)).data.status == 'approved'); }
+  function approved() { return request.auth != null && request.auth.token.email_verified == true && (instructor() || get(/databases/$(database)/documents/students/$(request.auth.uid)).data.status == 'approved' && get(/databases/$(database)/documents/students/$(request.auth.uid)).data.profileComplete == true); }
   match /students/{uid} {
    allow read: if request.auth != null && (request.auth.uid == uid || instructor());
    allow write: if false;

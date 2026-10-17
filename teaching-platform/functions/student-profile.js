@@ -1,0 +1,5 @@
+const degrees=['BSc Hons Agriculture','BTech Biotechnology'];
+function studentDetails(input){const name=typeof input?.name==='string'?input.name.trim():'',rollNo=typeof input?.rollNo==='string'?input.rollNo.trim():'',degree=input?.degree,whatsapp=typeof input?.whatsapp==='string'?input.whatsapp.replace(/[ ()-]/g,''):'';if(name.length<2||name.length>80||/[\r\n\x00-\x1f]/.test(name))throw Error('Enter your full name (2–80 characters).');if(!/^[A-Za-z0-9][A-Za-z0-9./ -]{0,39}$/.test(rollNo))throw Error('Enter a valid roll number (up to 40 characters).');if(!degrees.includes(degree))throw Error('Choose one of the listed degree programmes.');if(!/^\+?[0-9]{8,15}$/.test(whatsapp))throw Error('Enter a valid WhatsApp number, including country code if needed.');return{name,rollNo,degree,whatsapp};}
+function completeProfile(profile){if(profile?.profileComplete!==true)return false;try{studentDetails(profile);return true;}catch{return false;}}
+function attendanceSeconds(last,now){const delta=now-last;return last>0&&delta>=30000&&delta<=90000?Math.min(60,Math.floor(delta/1000)):0;}
+module.exports={degrees,studentDetails,completeProfile,attendanceSeconds};
