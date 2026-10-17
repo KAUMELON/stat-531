@@ -71,10 +71,27 @@ Publish functions and Firestore rules, then publish Hosting separately. Keeping 
 
 ## Verification evidence
 
-- Ten unit tests cover approval, suspension, instructor identity, origin checks, asset traversal, answer validation and grading.
+- Seventeen unit tests cover approval, suspension, instructor identity, origin checks, asset traversal, answer validation and grading.
 - Seventeen live classroom checks cover secure registration/session cookies, verification and approval gating, private assets, student/admin boundaries, saved drafts/conversations, live activity-grounded AI, persistent chapter ratings, exam eligibility, suspension and logout. Synthetic users are removed afterward.
 - Nineteen exam regression checks passed, including private record isolation, deadlines, saved answers, repeat submission and result-release restrictions.
 - All 14 practical challenge solutions passed their checks in real browser R; the transcript is `qa/r-practical-verification.txt`.
 - `check-learning.py` verifies all 218 original R blocks, unique activity IDs, the checkpoint bank and Hosting exclusions. Browser QA verifies registration, the waiting room, approval, actual plots, tutor feedback, question retry, practical checks, adjustable simulations, saved work and responsive layout.
 
 QA reports and screenshots are under ignored `qa/`. The requested administrator account must complete email verification before approving real students. The existing owner can still register and verify their own administrator account. Instructor release of real grades was not performed on anyone's behalf.
+
+
+## Email action pages
+
+An optional custom handler is deployed at `/account-action.html`. Firebase rejected the template callback update with `EMAIL_TEMPLATE_UPDATE_NOT_ALLOWED`; outgoing emails still use the default Firebase handler. The page sends the one-time code to a same-origin endpoint for inspection. The server derives the action type from Firebase's validated code, so an absent or invalid URL `mode` does not cause Firebase's generic selected-page-mode error. It supports email verification, password reset and restoring an email address. A missing code displays guidance and a return-to-classroom link. Expired/used codes receive a clear recovery message.
+
+Inspection and merely opening the link never consume it. The user confirms the action explicitly. Account actions are rate-limited, require the classroom Origin/header, and use only the configured project's API key. The page has no external resources, removes action parameters from the address bar after reading them, and uses no-referrer/no-store headers. Passwords and one-time codes stay out of source and logs. Email verification is never simulated or bypassed for a human account.
+
+`node scripts/test-email-actions.cjs` checks actual one-time-code inspection, verification, reuse rejection and password reset with a disposable synthetic account, then removes that account. The seven action-handler unit tests cover malformed links, type inference, inspect-only behavior, mismatched actions and password validation.
+
+## WINE-inspired chapter study desk — 17 October 2026
+
+Reviewed the author's local WINE source (`D:\STATOBERRY\Training-APP`, including `ui.R`, `dir/train_ui.R` and lesson/quiz flow in `dir/train_server.R`). STAT MAASH now has a searchable lecture catalogue and a study desk for each chapter, with a topic contents sidebar, continuous topic explanations, worked code, copy buttons, links to the real R workspace and contextual tutor, and inline formative questions with immediate explanations. Fourteen individually written chapter briefs supply an agricultural investigation, prerequisites, a practical task and a misconception to examine. Original prose is grouped into 231 topic sections; it has not been replaced with short slide summaries.
+
+The full original rendered book opens inside the platform with persistent chapter navigation, introduction, course guide, dictionary, glossary and references. The original edition preserves figures, tables, cross-references and appendices; the study desk is a reading-and-practice companion. Existing approved-student access, real R, assessment and saved progress endpoints are unchanged. No narration starts automatically.
+
+`node scripts/check-study.cjs` renders every topic view and checks all 218 original R examples and chapter-reader links. This checks coverage and rendering, not a claim that every original passage has received a new academic review. The editable six-slide overview PPTX decks remain overview resources; they were not expanded into complete lecture decks in this update.
