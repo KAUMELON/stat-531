@@ -23,7 +23,7 @@ async function main() {
     else if(['ui-approve','ui-suspend'].includes(process.argv[2])){const status=process.argv[2]==='ui-approve'?'approved':'suspended';await api(`https://firestore.googleapis.com/v1/projects/${project}/databases/(default)/documents/students/${user.uid}?updateMask.fieldPaths=status`,'PATCH',{fields:{status:{stringValue:status}}});console.log('Synthetic UI QA status: '+status);}
     else{
       const base=`https://firestore.googleapis.com/v1/projects/${project}/databases/(default)/documents/students/${user.uid}`;
-      for(const name of ['progress','practice','attendance']){const list=await api(`${base}/${name}`);for(const d of list.documents||[])await api('https://firestore.googleapis.com/v1/'+d.name,'DELETE');}
+      for(const name of ['progress','practice','attendance','activity']){const list=await api(`${base}/${name}`);for(const d of list.documents||[])await api('https://firestore.googleapis.com/v1/'+d.name,'DELETE');}
       const docs=`https://firestore.googleapis.com/v1/projects/${project}/databases/(default)/documents`;
       const attempts=await api(`${docs}:runQuery`,'POST',{structuredQuery:{from:[{collectionId:'attempts'}],where:{fieldFilter:{field:{fieldPath:'uid'},op:'EQUAL',value:{stringValue:user.uid}}}}});
       for(const row of attempts)if(row.document)await api('https://firestore.googleapis.com/v1/'+row.document.name,'DELETE');
