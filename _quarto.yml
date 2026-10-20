@@ -59,6 +59,7 @@ format:
     include-after-body:
       text: |
         <script type="module" src="assets/live-r.js"></script>
+        <script defer src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
   pdf:
     documentclass: scrreprt
     toc: true
