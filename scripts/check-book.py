@@ -3,8 +3,9 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlsplit, unquote
 import json
+import sys
 
-root = Path('_book').resolve()
+root = Path(sys.argv[1] if len(sys.argv) > 1 else '_book').resolve()
 
 class Page(HTMLParser):
     def __init__(self, path):

@@ -1,5 +1,9 @@
 # R Programming for Agricultural Data Analysis
 
+**Read the published book:** https://kaumelon.github.io/stat-531/
+
+The public reading edition is deployed from `gh-pages`. Editable Quarto sources are on `codex/quarto-undergraduate-book`. See [PUBLISHING.md](PUBLISHING.md) for publishing updates.
+
 Undergraduate textbook for the supplied seven-module 0+2 practical syllabus, developed from Dr. Pratheesh P. Gopinath's earlier lecture notes. The Quarto edition lives alongside the original bookdown sources and preserves the repository's history. The original rendered book remains in `docs/`; rendering Quarto writes the new edition to `_book/`.
 
 ## Open and render
