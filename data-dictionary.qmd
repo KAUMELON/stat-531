@@ -2,7 +2,7 @@
 
 ## Supplied teaching files
 
-All CSV files use UTF-8 text, one header row, decimal points, and `NA` for missing values where applicable. `scripts/generate-data.R` deterministically regenerates the simulations using seed 531. They are educational constructions without a real geographical location or trial date.
+All CSV files use UTF-8 text, one header row, decimal points, and `NA` for missing values where applicable. `scripts/generate-data.R` deterministically regenerates the original simulations using seed 531; `scripts/generate-design-data.py` regenerates the experimental-design, transformation, and germination files (also seed 531). `field_book_messy.csv` was written by hand. They are educational constructions without a real geographical location or trial date.
 
 | File | Unit of observation and size | Main variables | Status and limitations |
 |---|---|---|---|
@@ -16,12 +16,20 @@ All CSV files use UTF-8 text, one header row, decimal points, and `NA` for missi
 | `pest.csv` | One independently treated plot; 120 plots | `plot_id`, `treatment`, `infested` (No/Yes) | Simulated binary status at one assessment, 60 plots per treatment. |
 | `rcbd.csv` | One randomized treatment plot; 18 plots | `plot_id`, `block` (1–6), `treatment`, `yield_t_ha` | Simulated three-treatment complete blocks, one plot per block-treatment combination. |
 | `farm_yield.csv` | One independent teaching farm record; 100 rows | `farm_id`, `nitrogen_kg_ha`, `rainfall_mm`, `yield_t_ha` | Simulated linear relationship for regression practice; no real recommendation follows. |
+| `field_book_messy.csv` | One plot entry; 12 rows | `plot`, `sowing_date` (dd/mm/yyyy text), `variety`, `plant_height_cm`, `tillers`, `grain_wt_g_plot` (net plot 5 m²), `remarks` | Constructed cleaning exercise: inconsistent labels, comma decimal, missing-value codes `n/a` and `-`, a weight entered in kg (P07), and a decimal slip (P10). |
+| `crd.csv` | One pot; 20 pots | `pot_id`, `nitrogen` (N0–N160), `dry_matter_g_pot` | Simulated completely randomized pot experiment, 4 pots per level. |
+| `rcbd_varieties.csv` | One plot; 24 plots | `plot_id`, `block` (1–4), `variety` (V1–V6), `yield_t_ha` | Simulated RCBD variety trial. Variety labels are generic, not real cultivars. |
+| `latin_square.csv` | One plot; 25 plots | `plot_id`, `row`, `column` (1–5), `treatment` (5 weed-management methods), `yield_t_ha` | Simulated 5 × 5 Latin square with gradients in both directions. |
+| `factorial_rcbd.csv` | One plot; 24 plots | `plot_id`, `block` (1–4), `nitrogen` (N0, N60, N120), `variety` (Tall, Dwarf), `yield_t_ha` | Simulated 3 × 2 factorial in an RCBD with a built-in nitrogen-by-variety interaction. |
+| `split_plot.csv` | One subplot; 36 subplots | `plot_id`, `block` (1–3), `irrigation` (I1–I3, main plots), `nitrogen` (N0–N150, subplots), `yield_t_ha` | Simulated split-plot with a separate main-plot error. |
+| `aphid_counts.csv` | One plant; 25 plants | `plant_id`, `treatment` (5), `aphids_per_plant` | Simulated counts whose variance rises with the mean, for the square-root transformation. |
+| `germination.csv` | One tray of 50 seeds; 16 trays | `tray_id`, `seed_treatment` (4), `replicate`, `seeds_sown`, `seeds_germinated`, `germination_pct` | Simulated percentages for the angular transformation. |
 
 `block` and `replicate` are labels, not continuous response measurements. The simulated soil nutrient names indicate quantity and units but omit extraction protocols; a real data dictionary must state the method, depth, date, laboratory, and quality controls.
 
 ## Download the teaching data {.unnumbered}
 
-Save these files inside your project's `data/` folder before running chapter code: [crop trial CSV](data/crop_trial.csv), [crop trial Excel](data/crop_trial.xlsx), [dirty crop entries](data/crop_dirty.csv), [correction ledger](data/corrections.csv), [soil measurements](data/soil.csv), [monthly weather](data/weather.csv), [growth measurements](data/growth.csv), [paired soil measurements](data/paired_soil.csv), [pest observations](data/pest.csv), [blocked experiment](data/rcbd.csv), and [regression records](data/farm_yield.csv).
+Save these files inside your project's `data/` folder before running chapter code: [crop trial CSV](data/crop_trial.csv), [crop trial Excel](data/crop_trial.xlsx), [dirty crop entries](data/crop_dirty.csv), [correction ledger](data/corrections.csv), [soil measurements](data/soil.csv), [monthly weather](data/weather.csv), [growth measurements](data/growth.csv), [paired soil measurements](data/paired_soil.csv), [pest observations](data/pest.csv), [blocked experiment](data/rcbd.csv), [regression records](data/farm_yield.csv), [messy field book](data/field_book_messy.csv), [CRD pot experiment](data/crd.csv), [RCBD variety trial](data/rcbd_varieties.csv), [Latin square](data/latin_square.csv), [factorial RCBD](data/factorial_rcbd.csv), [split plot](data/split_plot.csv), [aphid counts](data/aphid_counts.csv), and [germination trays](data/germination.csv).
 
 ## Real datasets bundled with R
 

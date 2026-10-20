@@ -87,6 +87,31 @@ The paired soil test matches the same plots before and after. An unpaired analys
 
 In regression, a rainfall coefficient is a conditional change in predicted mean yield per millimetre, holding nitrogen fixed. A prediction interval is wider than a confidence interval because it also represents individual-outcome variation. A random row split is inappropriate when observations from the same farm, future period, or nearby spatial cluster would leak information across training and test sets.
 
+## Field experimental designs
+
+```{r}
+rb <- read.csv("data/rcbd_varieties.csv")
+rb$block <- factor(rb$block); rb$variety <- factor(rb$variety)
+with_block <- anova(aov(yield_t_ha ~ block + variety, data = rb))
+without_block <- anova(aov(yield_t_ha ~ variety, data = rb))
+c(error_ms_rcbd = with_block["Residuals", "Mean Sq"],
+  error_ms_ignoring_blocks = without_block["Residuals", "Mean Sq"])
+```
+
+Ignoring blocks moves block variation into the error, so the error mean square rises from about 0.039 to 0.116 and the CD widens. The relative efficiency of about 2.6 says a CRD would need about 2.6 times as many replicates for the same precision. Blocks stay in the model in any case, because they were part of the randomization.
+
+In the Latin square, error degrees of freedom are $(t-1)(t-2) = 4 	imes 3 = 12$: from 24 total degrees of freedom, rows, columns, and treatments each use 4.
+
+In the split-plot, the wrong one-error analysis tests irrigation against a pooled error that is too small for main plots and too large for subplots. Its irrigation F-value is inflated, and the irrigation-by-nitrogen interaction, significant with error (b), becomes non-significant. The correct conclusions are those from the analysis with `Error(block / irrigation)`.
+
+## Tests for proportions and ratios
+
+For 212 of 250 seeds, `prop.test(212, 250, p = 0.85)` estimates 84.8% germination; the interval includes 85%, so the sample is consistent with the standard. For 152 purple and 48 white, `chisq.test(c(152, 48), p = c(3, 1) / 4)` gives expected counts 150 and 50 and a small chi-square statistic (about 0.11 on 1 df), consistent with a 3:1 ratio.
+
+## AI-assisted analysis
+
+A prompt without the design usually produces `aov(yield_t_ha ~ nitrogen * variety)` with no block term, or with `block` left numeric (1 df instead of 3). Both run. The design check is the degrees of freedom: for 4 blocks, 3 nitrogen levels, and 2 varieties, expect 3, 2, 1, 2, and 15 for block, nitrogen, variety, interaction, and error. A known-answer test for a CD function can use the toy data with error mean square 1, $r = 3$, and 6 error df: CD = `qt(0.975, 6) * sqrt(2 / 3)`, about 2.00.
+
 ## Reporting and project evaluation
 
 `echo: false` executes code but hides the code listing; `eval: false` does not execute it. A complete project includes data provenance, raw inputs, cleaning code, analysis source, environment information, and rendered output. Interpretive exercises should be marked for the connection between question, design, method, uncertainty, and limitations rather than agreement with a preferred p-value.

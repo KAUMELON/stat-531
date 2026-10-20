@@ -7,7 +7,7 @@ import os
 
 rscript = os.environ.get('BOOK_RSCRIPT', 'Rscript')
 count = 0
-for chapter in sorted(Path('.').glob('[0-9][0-9]-*.qmd')):
+for chapter in sorted(Path('.').glob('[0-9][0-9]*-*.qmd')):
     text = chapter.read_text(encoding='utf-8')
     block = text.split('::: {.live-r}', 1)[1].split('\n:::', 1)[0]
     code = re.search(r'```r\n(.*?)\n```', block, re.S).group(1)

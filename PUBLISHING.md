@@ -12,9 +12,15 @@
 
 GitHub previously served the older bookdown edition from `main/docs`. Pushing the revised sources to a different branch did not update that publication. Pages now uses the rendered Quarto edition on `gh-pages`. The original `main/docs` files remain in repository history and have not been overwritten by this publication.
 
-The public book contains the detailed retained chapters, current installation screenshots, the RAISINS software section, the final AI/vibe-coding section, copyable examples, and 14 browser R laboratories. It includes only textbook reading resources, not the teaching platform, authentication files, student records or local Site checkouts. STAT MAASH remains separately hosted at https://kau-agstat-teaching.web.app/ with its approved-student access controls.
+The public book contains the detailed retained chapters, current installation screenshots, the RAISINS software section, the experimental designs chapter, the vibe-coding chapter, copyable examples, and 16 browser R laboratories. It includes only textbook reading resources, not the teaching platform, authentication files, student records or local Site checkouts. STAT MAASH remains separately hosted at https://kau-agstat-teaching.web.app/ with its approved-student access controls.
 
 ## Updating the public edition
+
+### Automatic (recommended)
+
+`.github/workflows/publish-book.yml` publishes the book whenever `codex/quarto-undergraduate-book` changes (edits to `ppt/` alone are ignored). It installs R, the book's packages and Quarto 1.6.39, renders the HTML book, packages it with `scripts/prepare-github-pages.py`, validates it with `scripts/check-book.py`, and only then commits the site to `gh-pages`. If any step fails, nothing is published and the build log is saved to the `publish-logs` branch. To republish without a source change, open the repository's **Actions** tab, choose **Publish book**, and select **Run workflow**.
+
+### Manual
 
 1. Edit the QMD sources and run `quarto render --to html`.
 2. Run `python scripts/prepare-github-pages.py output/github-pages-NEW-RELEASE`, choosing a new folder inside `output/`. The packager copies only public reading resources.

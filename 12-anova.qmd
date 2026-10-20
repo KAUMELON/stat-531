@@ -122,7 +122,7 @@ The expression `treatment * variety` expands to both main effects and their inte
 
 If interaction is important scientifically, report comparisons within relevant levels with an appropriate simultaneous procedure. Do not interpret a nonsignificant interaction as proof that responses are identical across varieties. Likewise, do not remove an interaction solely to make a main effect significant. Consider the question, precision, and experimental design.
 
-The factorial example assumes both factors were randomized at the plot level within blocks. If irrigation is applied to whole field sections and variety to smaller subplots, the error structure changes. A split-plot experiment needs a split-plot analysis; entering the same factor names into an ordinary one-error ANOVA is not sufficient.
+The factorial example assumes both factors were randomized at the plot level within blocks. If irrigation is applied to whole field sections and variety to smaller subplots, the error structure changes. A split-plot experiment needs a split-plot analysis; entering the same factor names into an ordinary one-error ANOVA is not sufficient. @sec-designs analyses CRD, RCBD, Latin square, factorial, and split-plot experiments in full, including SEm, CD, and CV.
 
 ## Reporting an ANOVA analysis
 

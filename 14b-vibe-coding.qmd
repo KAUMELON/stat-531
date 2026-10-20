@@ -1,0 +1,253 @@
+# Vibe coding: writing R with an AI assistant {#sec-vibe-coding}
+
+## Learning outcomes
+
+Describe what vibe coding is and where it fails for statistical work; write prompts that specify the question, data, design, and output; review AI-generated R code line by line; detect invented functions, wrong models, and silent data errors; verify results with known answers and independent checks; share a minimal reproducible example when debugging; and keep an honest record of AI assistance.
+
+## From an idea to a first draft {#vibe-coding}
+
+**Vibe coding** is an informal term for developing software by describing what you want in ordinary language, asking an AI system to generate code, running it, and requesting changes. The term is often associated with accepting implementation details without examining them closely. For a statistical analysis, we need to go further: understand the code, verify the calculations, and justify the model. In this book, we use the conversational approach as an entry into **reviewed AI-assisted programming**. See the [overview of the term](https://cloud.google.com/discover/what-is-vibe-coding).
+
+For example, a student might begin with "Make a colourful graph of crop yields." An AI assistant can draft a plot quickly, but that request omits the data structure, units, experimental unit, and purpose. A graph of treatment means, a distribution of individual plot yields, and a fitted response curve answer different questions. Clear agricultural reasoning makes a better prompt and a better analysis.
+
+AI assistants are good at syntax, at remembering function names you have forgotten, and at explaining unfamiliar code. They are not responsible for your experiment. They do not know how your treatments were randomized, which plots were flooded, or why one value was recorded as `-999`, unless you tell them. Everything this book has taught about experimental units, missing values, and design-based analysis is exactly what you need to supervise an assistant.
+
+## Using AI with R
+
+One approach is to ask an AI chat assistant for a small R code draft, inspect it, and run it in RStudio. Another is to use an assistant integrated into an R development environment. Current examples include Posit Assistant in RStudio and Positron; their capabilities, access requirements, and settings are described in the [RStudio guide](https://docs.posit.co/ide/user/ide/guide/tools/posit-ai.html) and [Positron documentation](https://positron.posit.co/assistant). Some editors can also show code completions from an assistant as you type. This lesson does not require a paid assistant or a particular model; tools change quickly, and the habits below apply to all of them.
+
+Begin with a small task: explain a function, summarize a table, improve axis labels, or diagnose a reproducible error. Ask for the reason behind each change. Read unfamiliar functions in R's help system and confirm that suggested packages and arguments exist. A plausible function name is not evidence that a function is available.
+
+## The review loop
+
+Productive AI-assisted programming follows a loop rather than a single request. Each pass is short enough that you can check it.
+
+| Step | What you do | What to look for |
+|---|---|---|
+| 1. Describe | State the question, data, design, and output | Have you named the experimental unit and units of measurement? |
+| 2. Generate | Ask for one step of code with explanations | Is the step small enough to read in a minute? |
+| 3. Read | Read every line before running it | Do you know what each function does? Does it exist? |
+| 4. Run | Run in a fresh session on your data | Errors, warnings, row counts, and group sizes |
+| 5. Verify | Check one result independently | Hand calculation, known answer, or second method |
+| 6. Record | Save accepted code and notes in the project | Prompt, changes you made, and why |
+
+: The review loop for AI-assisted analysis {#tbl-review-loop}
+
+If you cannot explain a line, ask the assistant to explain it, then confirm the explanation with `?function_name`. If you still cannot explain it, do not submit it.
+
+## Write a prompt that specifies the analysis
+
+::: {.callout-note title="A model prompt for an agricultural practical"}
+I am learning R. I have independent plot observations from a teaching experiment. The columns are `treatment` and `yield_t_ha`; yield is measured in tonnes per hectare. Use base R. Produce a table with total records, nonmissing yields, missing yields, mean, and standard deviation for each treatment. Keep missing values in the data and exclude them only from calculations that require observed yields. Do not replace missing values with zero, delete outliers, or run significance tests. Include a small simulated example, explain the code, and show how I can check the results manually.
+:::
+
+Specify the **question**, **experimental unit**, **column names and units**, **design**, **missing-value rule**, and **requested output**. State restrictions such as "use base R" or "do not install packages." Ask for one step at a time so you can inspect its result before proceeding. Share a small simulated example or a permitted, de-identified excerpt when explaining a problem; check your institution's rules before sending research data to an external service.
+
+A reusable template helps. Fill in the brackets and delete what does not apply.
+
+::: {.callout-note title="Prompt template for an analysis step"}
+**Context.** I am an undergraduate learning R for agricultural data analysis. I use RStudio with R [version].
+
+**Data.** The data frame `[name]` has [n] rows; each row is one [experimental unit, e.g. plot]. Columns: `[col]` ([meaning, unit]), … The output of `str([name])` is: [paste].
+
+**Design.** [e.g. RCBD with 6 varieties in 4 blocks; treatments randomized within blocks.]
+
+**Task.** [one step, e.g. fit the ANOVA model that matches this design and report SEm, CD at 5%, and CV.]
+
+**Constraints.** Use [base R / named packages only]. Do not [delete rows, impute, change the design]. Explain each line in a comment.
+
+**Checks.** Show me how to verify the result independently.
+:::
+
+`str()` and `dput(head(data))` are the most useful things to paste: they tell the assistant the exact column names and types without sending the whole dataset.
+
+## Worked example: review a generated summary
+
+The following is a teaching reference solution to the model prompt, not a transcript of a particular AI response. The simulated data contain a missing yield in the Control group. We deliberately count both rows and observed yields so the denominator is visible.
+
+```{r}
+ai_trial <- data.frame(
+  treatment = c("Control", "Control", "Control", "Compost", "Compost", "Compost"),
+  yield_t_ha = c(3.0, 4.0, NA, 4.0, 4.5, 5.0)
+)
+
+summarize_yield <- function(x) {
+  observed <- x[!is.na(x)]
+  c(total = length(x), observed = length(observed),
+    missing = sum(is.na(x)),
+    mean = if (length(observed)) mean(observed) else NA_real_,
+    SD = if (length(observed) > 1) sd(observed) else NA_real_)
+}
+
+ai_summary <- do.call(rbind, lapply(
+  split(ai_trial$yield_t_ha, ai_trial$treatment), summarize_yield
+))
+ai_summary
+
+# Independent checks against calculations we can do by hand
+stopifnot(ai_summary["Control", "total"] == 3,
+          ai_summary["Control", "observed"] == 2,
+          ai_summary["Control", "missing"] == 1,
+          isTRUE(all.equal(unname(ai_summary["Control", "mean"]), 3.5)),
+          isTRUE(all.equal(unname(ai_summary["Compost", "mean"]), 4.5)))
+```
+
+The Control mean is $(3+4)/2=3.5$ t/ha. Dividing by three, or replacing the missing observation with zero, would answer a different question. Its sample SD is approximately 0.707 t/ha; the Compost SD is 0.5 t/ha. With no observed yields, the mean is undefined; with only one observed yield, the sample SD is undefined. The function returns `NA` for those cases. Summary values alone do not demonstrate a treatment effect.
+
+## Worked example: code that runs but answers the wrong question
+
+The most dangerous AI errors are not the ones that stop with an error message. They are the ones that run. Suppose a student asks: "Write R code to do ANOVA on my variety trial in `rcbd_varieties.csv`." A typical first draft looks like this:
+
+```{r}
+rb <- read.csv("data/rcbd_varieties.csv")
+draft <- aov(yield_t_ha ~ block + variety, data = rb)
+summary(draft)
+```
+
+It runs and gives a significant result. But read the ANOVA table: `block` has **1** degree of freedom. There are four blocks, so the block line should have 3. Because `block` was read as a number, R fitted it as a straight-line trend in block number, as in regression, rather than as four separate groups. The prompt never said that block was a grouping factor, and the assistant did not check.
+
+```{r}
+str(rb)
+rb$block <- factor(rb$block)
+rb$variety <- factor(rb$variety)
+fixed <- aov(yield_t_ha ~ block + variety, data = rb)
+summary(fixed)
+```
+
+Now block has 3 degrees of freedom and the error mean square is correct. A second common draft drops the block term altogether, `aov(yield_t_ha ~ variety)`, which runs, but treats an RCBD as a CRD and inflates the error, as the experimental designs chapter showed. Neither mistake is a coding error; both are design errors. Checking the degrees of freedom against the design (blocks − 1, treatments − 1, and (blocks − 1)(treatments − 1) for error) catches both in seconds.
+
+```{r}
+# A design check you can always run
+anova(fixed)[, "Df"]
+c(block = 4 - 1, variety = 6 - 1, error = (4 - 1) * (6 - 1))
+```
+
+## Worked example: a function that does not exist
+
+AI assistants sometimes suggest functions or arguments that sound right but do not exist, or that exist in a package you have not loaded. Before trusting a suggestion, ask R.
+
+```{r}
+exists("aov")            # a real base R function
+exists("anova_rcbd")     # a plausible but invented name
+args(power.t.test)       # the arguments a function actually accepts
+"delta" %in% names(formals(power.t.test))
+"effect_size" %in% names(formals(power.t.test))  # an invented argument
+```
+
+Use `?function_name` to read the documentation, `find("function_name")` to see which attached package provides it, and `packageVersion("package")` to check the installed version. If an assistant says a function is in a package, install and load that package, then confirm with the help page. Do not keep asking the assistant to fix an error caused by a function that never existed; ask for an approach using functions you can verify.
+
+## Verify with a known answer
+
+The surest check is to run the code on data where you already know the answer. The previous chapters used a small example with groups `A = (3, 4, 5)`, `B = (4, 5, 6)`, and `C = (5, 6, 7)`, for which the treatment sum of squares is 6, the error mean square is 1, and F is 3. Any ANOVA code, generated or written by hand, must reproduce those values.
+
+```{r}
+toy <- data.frame(group = factor(rep(c("A", "B", "C"), each = 3)),
+                  y = c(3, 4, 5, 4, 5, 6, 5, 6, 7))
+toy_table <- anova(aov(y ~ group, data = toy))
+toy_table
+stopifnot(isTRUE(all.equal(toy_table["group", "Sum Sq"], 6)),
+          isTRUE(all.equal(toy_table["Residuals", "Mean Sq"], 1)),
+          isTRUE(all.equal(toy_table["group", "F value"], 3)))
+```
+
+`stopifnot()` stops with an error if any statement is false, so a check like this can stay in your script and protect later edits. Other independent checks include comparing a mean with a hand calculation, comparing `nrow()` before and after a join, and comparing two methods that should agree, such as `aov()` with an `Error()` term and `agricolae::sp.plot()` for a split-plot.
+
+## Debug with a minimal reproducible example
+
+When code fails, the assistant needs the same information a human helper would: the exact error, the code that produced it, and a small example of the data. A **minimal reproducible example** (reprex) is the smallest piece of code that someone else can run to see the same problem.
+
+```{r}
+small <- head(rb, 4)
+dput(small)
+```
+
+`dput()` prints R code that recreates the data frame exactly, including column types. Paste that output, the failing line, and the full error message into your prompt. Ask the assistant to explain the cause **before** changing the code, and to change only the lines involved.
+
+Useful follow-up prompts include:
+
+- "Explain why the number of observed yields differs from the number of records."
+- "My error is `object 'yield' not found`. Here is `names(ai_trial)` and the failing line. Explain the mismatch and change only that line."
+- "Review this model for a randomized block experiment. Explain how the block factor enters the formula before changing the code."
+- "Check whether the degrees of freedom in this ANOVA table match a design with 6 treatments and 4 blocks."
+- "Add units and a caption to this plot without changing the observations or fitted model."
+
+When a draft fails, provide the exact error and the smallest example that reproduces it. Avoid repeatedly asking an assistant to repair a long script without checking what it changes. A coding error and a statistical error are different: `aov(yield ~ treatment)` can execute successfully while omitting a block factor required by the design. A paired test, an independent-samples test, and a repeated-measures model are not interchangeable repairs.
+
+::: {.callout-warning title="Successful execution is only the first check"}
+Inspect row counts, units, missingness, group sizes, model formulas, degrees of freedom, and assumptions. Verify at least one result independently. Check that plots and written conclusions match the computed output. Do not ask AI to keep changing an analysis until a p-value becomes significant. You remain responsible for the method and interpretation.
+:::
+
+## Prompts for each stage of a project
+
+The chapters of this book map onto the stages of an analysis. Each stage has its own risks to state in the prompt.
+
+| Stage | Example request | Add this to protect the analysis |
+|---|---|---|
+| Import | "Read `trial.xlsx`, sheet 2, into R." | "Show `str()` afterwards; treat `-999` and blank cells as missing." |
+| Cleaning | "Find duplicate plots and impossible values." | "Flag them in a new column; do not delete or replace anything." |
+| Wrangling | "Join soil and yield tables." | "Join by `plot_id`; report rows before and after; stop if keys repeat." |
+| Graphics | "Plot yield by treatment." | "Show individual plots, not only means; label axes with units." |
+| Design analysis | "Analyse this split-plot trial." | "Main plots: irrigation; subplots: nitrogen; blocks: 3. Use two error terms." |
+| Reporting | "Write a results paragraph." | "Use only numbers from this output; do not add claims or citations." |
+
+: Adding design information to prompts at each stage {#tbl-stage-prompts}
+
+## Responsible use
+
+**Data privacy.** Research data may belong to your institution, a farmer, or a funding agency. Do not paste confidential or identifiable data into an external AI service without permission. A simulated example with the same structure usually serves the purpose.
+
+**Academic integrity.** Follow your course's rules on AI assistance. Where it is permitted, acknowledge it. A short statement is enough, for example: "An AI assistant was used to draft the R code for data import and plotting. All code was reviewed, tested against hand calculations, and corrected by the author, who is responsible for the analysis."
+
+**Honest reporting.** AI may help draft a methods paragraph, but the paragraph must describe the analysis actually performed. Never invent citations, observations, or results to complete a report. Assistants sometimes produce references that look real but do not exist; check every reference in the original source.
+
+## Save a reproducible record
+
+Keep the accepted R code in the project and render the report in a fresh session. Record package versions, relevant prompts, substantive AI contributions, and the corrections you made. A simple log in your project folder is enough:
+
+```{r}
+#| eval: false
+# ai-log.md (kept in the project folder)
+# 2026-10-20  Prompt: RCBD ANOVA for rcbd_varieties.csv (template above)
+#             Accepted: aov() model after converting block to factor
+#             Corrected: draft fitted block as numeric (1 df); fixed with factor()
+#             Verified: df = 3, 5, 15; CD checked by hand
+```
+
+## Practical 17 and exercises
+
+1. Give an assistant the model prompt above, or write your own proposed solution if no assistant is available. Compare its code with the reference calculation. Test an all-missing group and a group with one observed yield.
+2. Ask an assistant for an ANOVA of `factorial_rcbd.csv` **without** describing the design. Then ask again using the prompt template. Compare the two answers and list the differences.
+3. Find two functions suggested by an assistant that you have not used before. Confirm with `exists()`, `?`, and `find()` that they exist, and explain their arguments.
+4. Write a known-answer test with `stopifnot()` for a function that calculates CD at 5%.
+5. Create a minimal reproducible example with `dput()` for an error you met in an earlier practical, and write the prompt you would send.
+6. Write an acknowledgement statement for your integrated project.
+
+Submit the prompts, reviewed code, verification results, and a short account of what you accepted or corrected. Explain every line you submit.
+
+**Chapter review.** An AI assistant can draft R code quickly, but it cannot see your experiment. Specify the design in the prompt, read every line, check degrees of freedom and row counts, verify with known answers, and record what you changed. Code that runs is only the first check; responsibility for the analysis stays with you.
+
+## Live R laboratory
+
+::: {.live-r}
+**Spot the mistake in a generated analysis**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** also lets you use this example in RStudio.
+
+```r
+# A "generated" analysis of an RCBD: 4 varieties in 3 blocks
+trial <- data.frame(
+  block = rep(1:3, each = 4),
+  variety = rep(c("V1", "V2", "V3", "V4"), times = 3),
+  yield = c(4.8, 5.4, 4.0, 5.5, 4.6, 4.9, 4.1, 5.3, 4.1, 5.0, 3.5, 5.1))
+fit <- aov(yield ~ block + variety, data = trial)
+summary(fit)
+# Expected degrees of freedom for this design
+c(block = 3 - 1, variety = 4 - 1, error = (3 - 1) * (4 - 1))
+```
+
+**Investigate.** Compare the degrees of freedom in the ANOVA table with the expected values. Which term is wrong, and why? Fix the code with `factor()` and rerun. How does the error mean square change?
+:::
+
+::: {.callout-tip title="From the browser to your practical notebook"}
+Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
+:::

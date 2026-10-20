@@ -2,7 +2,7 @@
 
 ## Learning outcomes
 
-Identify missingness, duplicated records, inconsistent categories, and unusual observations; distinguish a correction from an analytical choice; and document cleaning decisions.
+Identify missingness, duplicated records, inconsistent categories, and unusual observations; repair column types, labels, dates, and units; apply validation rules; distinguish a correction from an analytical choice; and document cleaning decisions in a reproducible script.
 
 ## Why a cleaning log matters
 
@@ -121,6 +121,129 @@ data.frame(analysis = c("All observations", "Highest observation omitted"),
 
 This calculation does not justify removing the highest plot. It makes the effect of an exclusion visible. For treatment inference, repeat the appropriate design-based model rather than comparing overall means alone. If the conclusion changes substantially, discuss that instability and the reason for the disputed observation.
 
+## Cleaning a messy field book step by step
+
+Real field books are typed by people working quickly, often from handwritten sheets. The simulated file `field_book_messy.csv` contains twelve plots from a variety trial with a net harvested area of 5 m² per plot. It has the problems you will meet most often: inconsistent labels, a comma used as a decimal mark, several codes for "not recorded", dates in day/month/year order, a value entered in the wrong unit, and a probable decimal slip.
+
+### Step 1: import with the missing-value codes you know about
+
+Start by reading the file as it is and inspecting the structure. Tell `read.csv()` which entries mean "missing" in this field book.
+
+```{r}
+fb <- read.csv("data/field_book_messy.csv",
+               na.strings = c("", "NA", "n/a", "-"))
+str(fb)
+```
+
+`str()` shows the first problem. `plant_height_cm` was read as **character**, not numeric, because one entry contains a comma. Any column that should be numeric but appears as `chr` needs investigation before analysis. `tillers` and `grain_wt_g_plot` were read as numbers because `-` and `n/a` were declared as missing.
+
+### Step 2: repair types without losing information
+
+Look at the offending entries before converting them. Converting directly with `as.numeric()` would silently turn `"79,8"` into `NA`.
+
+```{r}
+fb$plant_height_cm[is.na(suppressWarnings(as.numeric(fb$plant_height_cm)))]
+fb$plant_height_cm <- as.numeric(gsub(",", ".", fb$plant_height_cm))
+summary(fb$plant_height_cm)
+```
+
+`gsub(",", ".", x)` replaces every comma with a decimal point. The only remaining missing height is the lodged plot recorded as `n/a`, which is a genuine missing value with a reason in the `remarks` column. The summary also exposes a maximum height of 850 cm, which we return to in step 5.
+
+### Step 3: standardize category labels
+
+```{r}
+table(fb$variety, useNA = "ifany")
+fb$variety <- toupper(trimws(fb$variety))
+table(fb$variety)
+stopifnot(all(fb$variety %in% c("V1", "V2", "V3")))
+```
+
+`trimws()` removes leading and trailing spaces and `toupper()` converts to capitals. Before the fix, R counted six different variety labels; afterwards, three varieties with four plots each. The `stopifnot()` line will stop the script if a new unexpected label ever appears.
+
+### Step 4: convert dates explicitly
+
+Dates typed as `05/06/2025` are ambiguous: 5 June or 6 May? The field protocol states day/month/year, so we give that format to `as.Date()`.
+
+```{r}
+fb$sowing_date <- as.Date(fb$sowing_date, format = "%d/%m/%Y")
+range(fb$sowing_date)
+stopifnot(!anyNA(fb$sowing_date))
+harvest <- as.Date("2025-10-01")
+fb$days_to_harvest <- as.numeric(harvest - fb$sowing_date)
+head(fb[, c("plot", "sowing_date", "days_to_harvest")], 3)
+```
+
+In the format string, `%d` is day, `%m` is month number, and `%Y` is the four-digit year. If any date fails to match the format, `as.Date()` returns `NA`, which the `stopifnot()` check catches. Once a column has the `Date` class, subtraction gives the number of days between dates.
+
+### Step 5: check values against plausible ranges
+
+A validation rule states the range of plausible values for each variable. The limits come from agronomic knowledge, not from the data themselves. A value outside the range is **flagged for checking**, not changed.
+
+```{r}
+rules <- data.frame(variable = c("plant_height_cm", "tillers", "grain_wt_g_plot"),
+                    min = c(30, 1, 500),
+                    max = c(150, 40, 5000))
+flags <- do.call(rbind, lapply(seq_len(nrow(rules)), function(i) {
+  v <- rules$variable[i]
+  x <- fb[[v]]
+  bad <- which(!is.na(x) & (x < rules$min[i] | x > rules$max[i]))
+  if (length(bad)) data.frame(plot = fb$plot[bad], variable = v, value = x[bad])
+}))
+flags
+```
+
+Two plots are flagged. P07 has a grain weight of 2.43, which is impossible for a 5 m² plot in grams but plausible in kilograms; the remarks column says it was weighed in kilograms. P10 has a height of 850 cm, ten times the heights of the other plots of V1, which suggests a missing decimal point.
+
+### Step 6: apply only documented corrections
+
+For this exercise, assume the original field sheets were checked: P07 was confirmed as 2.43 kg, and P10 as 85.0 cm. Record the corrections in a table and apply them from that table, so the log and the data cannot drift apart.
+
+```{r}
+fixes <- data.frame(
+  plot = c("P07", "P10"),
+  variable = c("grain_wt_g_plot", "plant_height_cm"),
+  old_value = c(2.43, 850),
+  new_value = c(2430, 85.0),
+  reason = c("Weighed in kg; converted to g (field sheet checked)",
+             "Decimal point omitted (field sheet checked)"))
+for (i in seq_len(nrow(fixes))) {
+  row <- fb$plot == fixes$plot[i]
+  stopifnot(sum(row) == 1, fb[row, fixes$variable[i]] == fixes$old_value[i])
+  fb[row, fixes$variable[i]] <- fixes$new_value[i]
+}
+fixes
+```
+
+The `stopifnot()` inside the loop confirms that each plot exists exactly once and still holds the old value before it is changed. If someone has already corrected the file, the script stops instead of applying a correction twice.
+
+### Step 7: convert units and save
+
+Grain weight in grams per 5 m² plot converts to tonnes per hectare by dividing by the plot area (g/m²), multiplying by 10,000 m²/ha, and dividing by 1,000,000 g/t.
+
+```{r}
+net_plot_m2 <- 5
+fb$yield_t_ha <- fb$grain_wt_g_plot / net_plot_m2 * 10000 / 1e6
+round(tapply(fb$yield_t_ha, fb$variety, mean), 2)
+dir.create("outputs", showWarnings = FALSE)
+write.csv(fb, "outputs/field_book_clean.csv", row.names = FALSE)
+write.csv(fixes, "outputs/field_book_corrections.csv", row.names = FALSE)
+```
+
+The raw file in `data/` is never overwritten. Anyone can rerun the script from the raw file and obtain the same clean file and the same correction log.
+
+::: {.callout-tip title="A cleaning checklist"}
+1. Keep the raw file unchanged; clean with a script.
+2. Declare missing-value codes at import and check `str()`.
+3. Inspect entries that fail numeric conversion before converting.
+4. Standardize labels and check them against the list of valid levels.
+5. Convert dates with an explicit format and confirm none became `NA`.
+6. Check every numeric variable against agronomically plausible ranges.
+7. Correct only with evidence, from a corrections table, and keep the log.
+8. Confirm units and convert them explicitly.
+9. Check the design: every expected plot present, no duplicates.
+10. Save the clean data and the log separately from the raw data.
+:::
+
 ## Practical 4 and exercises
 
 1. Reproduce the cleaning workflow and report the row counts before and after duplicate removal.
@@ -128,6 +251,9 @@ This calculation does not justify removing the highest plot. It makes the effect
 3. Count missing yields by treatment. Explain how unequal missingness could affect comparisons.
 4. A repeated plot identifier has two different yields. Describe what you would check before changing either record.
 5. Give one example of a biological extreme that should remain in an agricultural dataset.
+6. Clean `field_book_messy.csv` with the seven steps. Report how many values were converted, corrected, and left missing, and why.
+7. Add a validation rule for `days_to_harvest` and explain how you chose its limits.
+8. Suppose P10's field sheet could not be found. Describe what you would do with its height and how you would report it.
 
 **Chapter review.** Cleaning should preserve evidence. Every correction needs a reason; exclusions need justification; missingness needs a denominator.
 

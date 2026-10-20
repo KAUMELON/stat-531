@@ -2,11 +2,11 @@
 
 **R Programming for Agricultural Data Analysis (0+2)** introduces programming, data management, graphics, exploratory analysis, growth and time series models, statistical inference, and reproducible communication through practical work.
 
-By completing the course, students should be able to import and validate a dataset; write and modify R scripts; summarize crop, soil, and weather measurements; construct informative figures; fit and diagnose introductory models; and prepare a report that connects evidence to an agricultural question.
+By completing the course, students should be able to import and validate a dataset; write and modify R scripts; summarize crop, soil, and weather measurements; construct informative figures; randomize and analyse standard field experiments; fit and diagnose introductory models; use AI coding assistants responsibly; and prepare a report that connects evidence to an agricultural question.
 
 ## Suggested practical schedule
 
-The following 16 meetings are a teaching proposal, not an institutional credit-hour rule. Each can be organized as a short demonstration, guided practice, independent work, and discussion. Extend or combine meetings according to the academic calendar.
+The following 18 meetings are a teaching proposal, not an institutional credit-hour rule. Each can be organized as a short demonstration, guided practice, independent work, and discussion. Extend or combine meetings according to the academic calendar.
 
 | Meeting | Reading | Practical product |
 |---|---|---|
@@ -23,9 +23,11 @@ The following 16 meetings are a teaching proposal, not an institutional credit-h
 | 11 | Chapter 11 | t-tests with confidence intervals |
 | 12 | Chapter 11 | Pest contingency-table analysis |
 | 13 | Chapter 12 | One-way ANOVA and blocked experiment |
-| 14 | Chapter 13 | Correlation and regression diagnostics |
-| 15 | Chapter 14 | Rendered Quarto and R Markdown reports |
-| 16 | Integrated project | Reproducible analysis and oral explanation |
+| 14 | Chapter 13 | Randomized layouts; CRD, RCBD, and Latin square with SEm, CD, and CV |
+| 15 | Chapter 13 | Factorial and split-plot analysis; transformations and mean comparisons |
+| 16 | Chapter 14 | Correlation and regression diagnostics |
+| 17 | Chapters 15–16 | Rendered Quarto report; reviewed AI-assisted analysis with verification log |
+| 18 | Integrated project | Reproducible analysis and oral explanation |
 
 ## Assessment and integrated project
 
