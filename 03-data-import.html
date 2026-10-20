@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e5488f36f73934da31e81cbe0465adae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -291,8 +291,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
   </div>
 </li>
       </ul>
@@ -300,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text">Module 7 · Reproducible research</span></a>
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -309,7 +315,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
   </div>
 </li>
       </ul>
@@ -558,22 +570,14 @@ Figure&nbsp;3.5: Import Dataset dialogue box
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(my_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  Sepal_Length    Sepal_Width     Petal_length    Petal_Width   
- Min.   :4.600   Min.   :2.300   Min.   :1.300   Min.   :0.200  
- 1st Qu.:5.050   1st Qu.:2.925   1st Qu.:1.450   1st Qu.:0.200  
- Median :6.300   Median :3.050   Median :4.600   Median :1.500  
- Mean   :5.907   Mean   :3.021   Mean   :3.873   Mean   :1.247  
- 3rd Qu.:6.500   3rd Qu.:3.200   3rd Qu.:5.350   3rd Qu.:1.850  
- Max.   :7.100   Max.   :3.500   Max.   :6.000   Max.   :2.500  
-                 NA's   :1                                      
-   Species         
- Length:15         
- Class :character  
- Mode  :character  
-                   
-                   
-                   
-                   </code></pre>
+<pre><code>  Sepal_Length    Sepal_Width     Petal_length    Petal_Width         Species  
+ Min.   :4.600   Min.   :2.300   Min.   :1.300   Min.   :0.200   Length   :15  
+ 1st Qu.:5.050   1st Qu.:2.925   1st Qu.:1.450   1st Qu.:0.200   N.unique : 3  
+ Median :6.300   Median :3.050   Median :4.600   Median :1.500   N.blank  : 0  
+ Mean   :5.907   Mean   :3.021   Mean   :3.873   Mean   :1.247   Min.nchar: 6  
+ 3rd Qu.:6.500   3rd Qu.:3.200   3rd Qu.:5.350   3rd Qu.:1.850   Max.nchar:10  
+ Max.   :7.100   Max.   :3.500   Max.   :6.000   Max.   :2.500                 
+                 NAs    :1                                                     </code></pre>
 </div>
 </div>
 </section>
@@ -860,20 +864,20 @@ Colorado      7.9     204       78 38.7</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(crop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   plot_id              block    treatment           variety         
- Length:60          Min.   :1   Length:60          Length:60         
- Class :character   1st Qu.:2   Class :character   Class :character  
- Mode  :character   Median :3   Mode  :character   Mode  :character  
-                    Mean   :3                                        
-                    3rd Qu.:4                                        
-                    Max.   :5                                        
-   replicate   nitrogen_kg_ha    rainfall_mm      yield_t_ha   
- Min.   :1.0   Min.   : 10.20   Min.   :508.4   Min.   :2.400  
- 1st Qu.:1.0   1st Qu.: 27.75   1st Qu.:581.5   1st Qu.:3.272  
- Median :1.5   Median : 64.30   Median :625.2   Median :3.875  
- Mean   :1.5   Mean   : 62.52   Mean   :639.7   Mean   :3.772  
- 3rd Qu.:2.0   3rd Qu.: 96.92   3rd Qu.:698.0   3rd Qu.:4.220  
- Max.   :2.0   Max.   :105.00   Max.   :795.9   Max.   :5.160  </code></pre>
+<pre><code>      plot_id       block       treatment       variety     replicate  
+ Length   :60   Min.   :1   Length   :60   Length   :60   Min.   :1.0  
+ N.unique :60   1st Qu.:2   N.unique : 3   N.unique : 2   1st Qu.:1.0  
+ N.blank  : 0   Median :3   N.blank  : 0   N.blank  : 0   Median :1.5  
+ Min.nchar: 4   Mean   :3   Min.nchar: 7   Min.nchar: 1   Mean   :1.5  
+ Max.nchar: 4   3rd Qu.:4   Max.nchar: 7   Max.nchar: 1   3rd Qu.:2.0  
+                Max.   :5                                 Max.   :2.0  
+ nitrogen_kg_ha    rainfall_mm      yield_t_ha   
+ Min.   : 10.20   Min.   :508.4   Min.   :2.400  
+ 1st Qu.: 27.75   1st Qu.:581.5   1st Qu.:3.272  
+ Median : 64.30   Median :625.2   Median :3.875  
+ Mean   : 62.52   Mean   :639.7   Mean   :3.772  
+ 3rd Qu.: 96.92   3rd Qu.:698.0   3rd Qu.:4.220  
+ Max.   :105.00   Max.   :795.9   Max.   :5.160  </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">anyDuplicated</span>(crop<span class="sc">$</span>plot_id), <span class="fu">nrow</span>(crop) <span class="sc">==</span> <span class="dv">60</span>,</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">all</span>(crop<span class="sc">$</span>yield_t_ha <span class="sc">&gt;</span> <span class="dv">0</span>))</span>
@@ -889,7 +893,7 @@ Colorado      7.9     204       78 38.7</code></pre>
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>excel_crop <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"data/crop_trial.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"trial"</span>)</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(excel_crop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 x 8
+<pre><code># A tibble: 6 × 8
   plot_id block treatment variety replicate nitrogen_kg_ha rainfall_mm
   &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;          &lt;dbl&gt;       &lt;dbl&gt;
 1 P001        1 Control   A               1           10.2        602.
@@ -898,7 +902,7 @@ Colorado      7.9     204       78 38.7</code></pre>
 4 P004        1 Control   B               2           26          697.
 5 P005        1 Compost   A               1           63.1        582.
 6 P006        1 Compost   A               2           63.3        683.
-# i 1 more variable: yield_t_ha &lt;dbl&gt;</code></pre>
+# ℹ 1 more variable: yield_t_ha &lt;dbl&gt;</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">nrow</span>(excel_crop) <span class="sc">==</span> <span class="fu">nrow</span>(crop))</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"outputs"</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
@@ -1402,9 +1406,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </nav>
 </div> <!-- /content -->
 <script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 
 
 
 
-<script defer src="/stat-531/assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 </body></html>

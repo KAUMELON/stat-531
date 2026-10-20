@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e5488f36f73934da31e81cbe0465adae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -320,8 +320,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
   </div>
 </li>
       </ul>
@@ -329,7 +335,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text">Module 7 · Reproducible research</span></a>
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -338,7 +344,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
   </div>
 </li>
       </ul>
@@ -419,7 +431,12 @@ window.Quarto = {
   <li><a href="#frequencies-and-grouped-distributions" id="toc-frequencies-and-grouped-distributions" class="nav-link" data-scroll-target="#frequencies-and-grouped-distributions"><span class="header-section-number">7.11.3</span> Frequencies and grouped distributions</a></li>
   <li><a href="#standard-deviation-standard-error-and-cv" id="toc-standard-deviation-standard-error-and-cv" class="nav-link" data-scroll-target="#standard-deviation-standard-error-and-cv"><span class="header-section-number">7.11.4</span> Standard deviation, standard error, and CV</a></li>
   <li><a href="#grouped-summaries" id="toc-grouped-summaries" class="nav-link" data-scroll-target="#grouped-summaries"><span class="header-section-number">7.11.5</span> Grouped summaries</a></li>
-  <li><a href="#practical-8a-and-exercises" id="toc-practical-8a-and-exercises" class="nav-link" data-scroll-target="#practical-8a-and-exercises"><span class="header-section-number">7.11.6</span> Practical 8A and exercises</a></li>
+  <li><a href="#other-averages-geometric-and-harmonic-means" id="toc-other-averages-geometric-and-harmonic-means" class="nav-link" data-scroll-target="#other-averages-geometric-and-harmonic-means"><span class="header-section-number">7.11.6</span> Other averages: geometric and harmonic means</a></li>
+  <li><a href="#percentiles-and-quantiles" id="toc-percentiles-and-quantiles" class="nav-link" data-scroll-target="#percentiles-and-quantiles"><span class="header-section-number">7.11.7</span> Percentiles and quantiles</a></li>
+  <li><a href="#shape-skewness-and-kurtosis" id="toc-shape-skewness-and-kurtosis" class="nav-link" data-scroll-target="#shape-skewness-and-kurtosis"><span class="header-section-number">7.11.8</span> Shape: skewness and kurtosis</a></li>
+  <li><a href="#comparing-variability-across-characters" id="toc-comparing-variability-across-characters" class="nav-link" data-scroll-target="#comparing-variability-across-characters"><span class="header-section-number">7.11.9</span> Comparing variability across characters</a></li>
+  <li><a href="#a-descriptive-statistics-table-for-several-variables" id="toc-a-descriptive-statistics-table-for-several-variables" class="nav-link" data-scroll-target="#a-descriptive-statistics-table-for-several-variables"><span class="header-section-number">7.11.10</span> A descriptive statistics table for several variables</a></li>
+  <li><a href="#practical-8a-and-exercises" id="toc-practical-8a-and-exercises" class="nav-link" data-scroll-target="#practical-8a-and-exercises"><span class="header-section-number">7.11.11</span> Practical 8A and exercises</a></li>
   </ul></li>
   <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">7.12</span> Live R laboratory</a></li>
   </ul>
@@ -1014,7 +1031,7 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">mean =</span> <span class="fu">mean</span>(yield_t_ha), <span class="at">median =</span> <span class="fu">median</span>(yield_t_ha),</span>
 <span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(yield_t_ha), <span class="at">iqr =</span> <span class="fu">IQR</span>(yield_t_ha), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 x 7
+<pre><code># A tibble: 6 × 7
   treatment variety     n  mean median    sd   iqr
   &lt;chr&gt;     &lt;chr&gt;   &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 1 Compost   A          10  3.72   3.74 0.450 0.673
@@ -1027,14 +1044,156 @@ Attaching package: 'dplyr'</code></pre>
 </div>
 <p>Pooling groups can inflate spread because it combines between-group differences with within-group variation. Report the group definitions and sample sizes. Avoid presenting many decimal places beyond measurement precision.</p>
 </section>
-<section id="practical-8a-and-exercises" class="level3" data-number="7.11.6">
-<h3 data-number="7.11.6" class="anchored" data-anchor-id="practical-8a-and-exercises"><span class="header-section-number">7.11.6</span> Practical 8A and exercises</h3>
+<section id="other-averages-geometric-and-harmonic-means" class="level3" data-number="7.11.6">
+<h3 data-number="7.11.6" class="anchored" data-anchor-id="other-averages-geometric-and-harmonic-means"><span class="header-section-number">7.11.6</span> Other averages: geometric and harmonic means</h3>
+<p>The arithmetic mean is not always the right average. When quantities <strong>multiply</strong> over time, such as growth ratios, the <strong>geometric mean</strong> is appropriate. When averaging <strong>rates</strong> over equal amounts of work, the <strong>harmonic mean</strong> is appropriate.</p>
+<p>Suppose the area under a crop in a district grew by 10%, 20%, and 5% in three successive years. The growth factors are 1.10, 1.20, and 1.05. The average annual growth factor is their geometric mean, the cube root of their product, because applying it three times reproduces the total growth.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>growth_factor <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.10</span>, <span class="fl">1.20</span>, <span class="fl">1.05</span>)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>geometric_mean <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(growth_factor)))</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">arithmetic =</span> <span class="fu">mean</span>(growth_factor), <span class="at">geometric =</span> geometric_mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>arithmetic  geometric 
+  1.116667   1.114947 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check: three years at the geometric mean give the same total growth</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">actual_total =</span> <span class="fu">prod</span>(growth_factor), <span class="at">from_geometric =</span> geometric_mean<span class="sc">^</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  actual_total from_geometric 
+         1.386          1.386 </code></pre>
+</div>
+</div>
+<p>The arithmetic mean, about 1.117, overstates the average growth; the geometric mean, about 1.115, reproduces the actual total. Computing it as <code>exp(mean(log(x)))</code> avoids overflow with long series and works only for positive values.</p>
+<p>A tractor ploughs three plots of 1 ha each at 0.4, 0.5, and 0.8 ha per hour. Its average rate over the 3 ha is the total area divided by the total time, which is the harmonic mean of the rates.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>rate_ha_per_hour <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span>)</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>harmonic_mean <span class="ot">&lt;-</span> <span class="fu">length</span>(rate_ha_per_hour) <span class="sc">/</span> <span class="fu">sum</span>(<span class="dv">1</span> <span class="sc">/</span> rate_ha_per_hour)</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">arithmetic =</span> <span class="fu">mean</span>(rate_ha_per_hour), <span class="at">harmonic =</span> harmonic_mean,</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">total_area_over_total_time =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="fu">sum</span>(<span class="dv">1</span> <span class="sc">/</span> rate_ha_per_hour))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                arithmetic                   harmonic 
+                 0.5666667                  0.5217391 
+total_area_over_total_time 
+                 0.5217391 </code></pre>
+</div>
+</div>
+<p>The tractor spends longest on the slowest plot, so its true average rate, about 0.52 ha/h, is lower than the arithmetic mean of 0.57 ha/h. For any set of positive values that are not all equal, harmonic mean &lt; geometric mean &lt; arithmetic mean.</p>
+</section>
+<section id="percentiles-and-quantiles" class="level3" data-number="7.11.7">
+<h3 data-number="7.11.7" class="anchored" data-anchor-id="percentiles-and-quantiles"><span class="header-section-number">7.11.7</span> Percentiles and quantiles</h3>
+<p>The median is the 50th percentile; quartiles are the 25th and 75th. Any percentile can be calculated with <code>quantile()</code>. Percentiles answer questions such as “what yield did the best 10% of plots exceed?”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(y, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.10</span>, <span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>, <span class="fl">0.90</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   10%    25%    50%    75%    90% 
+2.8560 3.2725 3.8750 4.2200 4.4930 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>top_10_threshold <span class="ot">&lt;-</span> <span class="fu">quantile</span>(y, <span class="fl">0.90</span>)</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>crop[crop<span class="sc">$</span>yield_t_ha <span class="sc">&gt;=</span> top_10_threshold, <span class="fu">c</span>(<span class="st">"plot_id"</span>, <span class="st">"treatment"</span>, <span class="st">"variety"</span>, <span class="st">"yield_t_ha"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   plot_id treatment variety yield_t_ha
+23    P023   Mineral       B       4.55
+36    P036   Mineral       B       4.86
+41    P041   Compost       A       4.52
+45    P045   Mineral       A       5.16
+46    P046   Mineral       A       4.72
+47    P047   Mineral       B       4.84</code></pre>
+</div>
+</div>
+<p>R offers nine definitions of sample quantiles through the <code>type</code> argument; they differ slightly for small samples. The default (<code>type = 7</code>) is fine for description, but state it if exact values matter, because other software may use a different definition.</p>
+</section>
+<section id="shape-skewness-and-kurtosis" class="level3" data-number="7.11.8">
+<h3 data-number="7.11.8" class="anchored" data-anchor-id="shape-skewness-and-kurtosis"><span class="header-section-number">7.11.8</span> Shape: skewness and kurtosis</h3>
+<p>Two distributions can share a mean and SD but differ in shape. <strong>Skewness</strong> measures asymmetry: positive skewness means a long tail of large values, common in pest counts and weed biomass. <strong>Kurtosis</strong> describes how heavy the tails are relative to a normal distribution; <strong>excess kurtosis</strong> subtracts 3, so a normal distribution has excess kurtosis 0. Both can be calculated from moments about the mean.</p>
+<p><span class="math display">\[g_1=\frac{m_3}{m_2^{3/2}},\qquad g_2=\frac{m_4}{m_2^{2}}-3,\qquad m_k=\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^k\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>shape <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x[<span class="sc">!</span><span class="fu">is.na</span>(x)]</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> x <span class="sc">-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>  m2 <span class="ot">&lt;-</span> <span class="fu">mean</span>(d<span class="sc">^</span><span class="dv">2</span>); m3 <span class="ot">&lt;-</span> <span class="fu">mean</span>(d<span class="sc">^</span><span class="dv">3</span>); m4 <span class="ot">&lt;-</span> <span class="fu">mean</span>(d<span class="sc">^</span><span class="dv">4</span>)</span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">skewness =</span> m3 <span class="sc">/</span> m2<span class="sc">^</span><span class="fl">1.5</span>, <span class="at">excess_kurtosis =</span> m4 <span class="sc">/</span> m2<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">3</span>)</span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a>aphids <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/aphid_counts.csv"</span>)<span class="sc">$</span>aphids_per_plant</span>
+<span id="cb93-8"><a href="#cb93-8" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">rbind</span>(<span class="at">yield =</span> <span class="fu">shape</span>(y), <span class="at">aphid_count =</span> <span class="fu">shape</span>(aphids)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            skewness excess_kurtosis
+yield          -0.29           -0.57
+aphid_count     1.39            0.84</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>old <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(y, <span class="at">main =</span> <span class="st">"Plot yield"</span>, <span class="at">xlab =</span> <span class="st">"t/ha"</span>, <span class="at">col =</span> <span class="st">"#abc4e2"</span>)</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(aphids, <span class="at">main =</span> <span class="st">"Aphids per plant"</span>, <span class="at">xlab =</span> <span class="st">"count"</span>, <span class="at">col =</span> <span class="st">"#ebc276"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07-descriptive_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(old)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The yields are close to symmetric, whereas the aphid counts are clearly right-skewed: most plants carry few aphids and a few carry many. For skewed data, the median and IQR summarize the centre and spread better than the mean and SD, and analyses may need a transformation (see <a href="12b-experimental-designs.html" class="quarto-xref"><span>Chapter 13</span></a>). Different packages use slightly different small-sample corrections for these coefficients, so values can differ in the second decimal place. With small samples, skewness and kurtosis are very imprecise; always look at the histogram as well.</p>
+</section>
+<section id="comparing-variability-across-characters" class="level3" data-number="7.11.9">
+<h3 data-number="7.11.9" class="anchored" data-anchor-id="comparing-variability-across-characters"><span class="header-section-number">7.11.9</span> Comparing variability across characters</h3>
+<p>The coefficient of variation allows variability to be compared between characters measured in different units. Plant breeders, for instance, compare the variability of height, tiller number, and yield in a germplasm collection. Using the cleaned field book from <a href="04-cleaning.html" class="quarto-xref"><span>Chapter 4</span></a>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>fb <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/field_book_messy.csv"</span>, <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"NA"</span>, <span class="st">"n/a"</span>, <span class="st">"-"</span>))</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>fb<span class="sc">$</span>plant_height_cm <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">"."</span>, fb<span class="sc">$</span>plant_height_cm))</span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>fb<span class="sc">$</span>plant_height_cm[fb<span class="sc">$</span>plot <span class="sc">==</span> <span class="st">"P10"</span>] <span class="ot">&lt;-</span> <span class="fl">85.0</span>       <span class="co"># documented correction</span></span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>fb<span class="sc">$</span>grain_wt_g_plot[fb<span class="sc">$</span>plot <span class="sc">==</span> <span class="st">"P07"</span>] <span class="ot">&lt;-</span> <span class="dv">2430</span>       <span class="co"># documented correction</span></span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>traits <span class="ot">&lt;-</span> fb[, <span class="fu">c</span>(<span class="st">"plant_height_cm"</span>, <span class="st">"tillers"</span>, <span class="st">"grain_wt_g_plot"</span>)]</span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">t</span>(<span class="fu">sapply</span>(traits, <span class="cf">function</span>(x) <span class="fu">c</span>(</span>
+<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(x)), <span class="at">mean =</span> <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">sd =</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">cv_percent =</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">sd</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 n    mean     sd cv_percent
+plant_height_cm 11   85.05   4.82       5.66
+tillers         11   12.82   1.83      14.31
+grain_wt_g_plot 12 2421.25 187.87       7.76</code></pre>
+</div>
+</div>
+<p>The SDs cannot be compared directly, because they are in centimetres, counts, and grams. The CVs show that tiller number is relatively the most variable of the three characters and plant height the least. As noted above, CV is meaningful only for ratio-scale variables with a true zero.</p>
+</section>
+<section id="a-descriptive-statistics-table-for-several-variables" class="level3" data-number="7.11.10">
+<h3 data-number="7.11.10" class="anchored" data-anchor-id="a-descriptive-statistics-table-for-several-variables"><span class="header-section-number">7.11.10</span> A descriptive statistics table for several variables</h3>
+<p>A single function can produce the complete descriptive table that reports and theses usually present.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>describe <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x[<span class="sc">!</span><span class="fu">is.na</span>(x)]</span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">n =</span> n, <span class="at">mean =</span> <span class="fu">mean</span>(x), <span class="at">sd =</span> <span class="fu">sd</span>(x), <span class="at">se =</span> <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">cv_percent =</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">mean</span>(x), <span class="at">min =</span> <span class="fu">min</span>(x), <span class="at">median =</span> <span class="fu">median</span>(x),</span>
+<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="fu">max</span>(x), <span class="fu">shape</span>(x))</span>
+<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a>soil <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/soil.csv"</span>)</span>
+<span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">t</span>(<span class="fu">sapply</span>(soil[, <span class="fu">c</span>(<span class="st">"available_n_mg_kg"</span>, <span class="st">"available_p_mg_kg"</span>,</span>
+<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"available_k_mg_kg"</span>)], describe)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   n   mean    sd   se cv_percent  min median   max skewness
+available_n_mg_kg 60  37.56  7.65 0.99      20.37 21.2  37.05  51.4     0.12
+available_p_mg_kg 60  18.75  6.48 0.84      34.53  8.2  19.15  29.4    -0.03
+available_k_mg_kg 60 123.17 37.18 4.80      30.19 72.9 115.50 186.7     0.33
+                  excess_kurtosis
+available_n_mg_kg           -0.69
+available_p_mg_kg           -1.31
+available_k_mg_kg           -1.30</code></pre>
+</div>
+</div>
+<p><code>sapply()</code> applies <code>describe()</code> to each column and <code>t()</code> turns the result so that each variable is a row. Report units in the table caption, round to a sensible precision for display, and state the number of missing values if any were removed.</p>
+</section>
+<section id="practical-8a-and-exercises" class="level3" data-number="7.11.11">
+<h3 data-number="7.11.11" class="anchored" data-anchor-id="practical-8a-and-exercises"><span class="header-section-number">7.11.11</span> Practical 8A and exercises</h3>
 <ol type="1">
 <li>Calculate mean, median, variance, SD, and IQR for available soil nitrogen. State each unit.</li>
 <li>Add one very large value to a copy of the yield vector. Which summaries change most?</li>
 <li>Explain why doubling a sample size does not halve the SD of the underlying observations.</li>
 <li>Compute a frequency table for the supplied soil classes and explain what its denominator represents.</li>
 <li>Explain why ten leaves from one plant are not automatically ten independent experimental replicates.</li>
+<li>Prices of a commodity rose by 8%, 15%, and −4% in three years. Calculate the average annual change with the appropriate mean and check it.</li>
+<li>Find the 90th percentile of available soil nitrogen and list the plots above it.</li>
+<li>Calculate skewness for available P and for yield. Which summary of centre would you report for each, and why?</li>
+<li>Produce the descriptive table for the three soil nutrients and write two sentences interpreting it.</li>
 </ol>
 <p><strong>Chapter review.</strong> Describe centre and spread together. Report sample size, missingness, units, and grouping so the summary can be interpreted.</p>
 </section>
@@ -1044,12 +1203,12 @@ Attaching package: 'dplyr'</code></pre>
 <div class="live-r">
 <p><strong>Describe yield and its variability</strong></p>
 <p>Edit the code, then select <strong>Run R</strong>. The first run downloads R into your browser and may take a little time. <strong>Copy code</strong> also lets you use this example in RStudio.</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>yield <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.2</span>, <span class="fl">3.8</span>, <span class="fl">4.0</span>, <span class="fl">3.5</span>, <span class="fl">4.6</span>, <span class="fl">3.9</span>)</span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(yield), <span class="at">median =</span> <span class="fu">median</span>(yield),</span>
-<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">variance =</span> <span class="fu">var</span>(yield), <span class="at">SD =</span> <span class="fu">sd</span>(yield),</span>
-<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">CV_percent =</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">sd</span>(yield) <span class="sc">/</span> <span class="fu">mean</span>(yield))</span>
-<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(yield)</span>
-<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(yield, <span class="at">col =</span> <span class="st">"#8ecab1"</span>, <span class="at">ylab =</span> <span class="st">"Yield (t/ha)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>yield <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">3.2</span>, <span class="fl">3.8</span>, <span class="fl">4.0</span>, <span class="fl">3.5</span>, <span class="fl">4.6</span>, <span class="fl">3.9</span>)</span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(yield), <span class="at">median =</span> <span class="fu">median</span>(yield),</span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">variance =</span> <span class="fu">var</span>(yield), <span class="at">SD =</span> <span class="fu">sd</span>(yield),</span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">CV_percent =</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">sd</span>(yield) <span class="sc">/</span> <span class="fu">mean</span>(yield))</span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(yield)</span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(yield, <span class="at">col =</span> <span class="st">"#8ecab1"</span>, <span class="at">ylab =</span> <span class="st">"Yield (t/ha)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Investigate.</strong> Change 4.6 to 8.6 and compare the mean, median, and SD. Explain the units of variance and why the coefficient of variation is unitless.</p>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled" title="From the browser to your practical notebook">
@@ -1501,9 +1660,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </nav>
 </div> <!-- /content -->
 <script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 
 
 
 
-<script defer src="/stat-531/assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 </body></html>

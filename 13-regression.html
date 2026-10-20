@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>13&nbsp; Correlation and regression for agricultural prediction – R Programming for Agricultural Data Analysis</title>
+<title>14&nbsp; Correlation and regression for agricultural prediction – R Programming for Agricultural Data Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./14-reporting.html" rel="next">
-<link href="./12-anova.html" rel="prev">
+<link href="./12b-experimental-designs.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e5488f36f73934da31e81cbe0465adae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-inference.html">Module 6 · Statistical analysis</a></li><li class="breadcrumb-item"><a href="./13-regression.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-inference.html">Module 6 · Statistical analysis</a></li><li class="breadcrumb-item"><a href="./13-regression.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -320,8 +320,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./13-regression.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
   </div>
 </li>
       </ul>
@@ -329,7 +335,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text">Module 7 · Reproducible research</span></a>
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -338,7 +344,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
   </div>
 </li>
       </ul>
@@ -388,27 +400,27 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes"><span class="header-section-number">13.1</span> Learning outcomes</a></li>
-  <li><a href="#association-is-not-a-treatment-effect" id="toc-association-is-not-a-treatment-effect" class="nav-link" data-scroll-target="#association-is-not-a-treatment-effect"><span class="header-section-number">13.2</span> Association is not a treatment effect</a></li>
-  <li><a href="#simple-linear-regression" id="toc-simple-linear-regression" class="nav-link" data-scroll-target="#simple-linear-regression"><span class="header-section-number">13.3</span> Simple linear regression</a></li>
-  <li><a href="#worked-calculation-what-least-squares-estimates" id="toc-worked-calculation-what-least-squares-estimates" class="nav-link" data-scroll-target="#worked-calculation-what-least-squares-estimates"><span class="header-section-number">13.4</span> Worked calculation: what least squares estimates</a></li>
-  <li><a href="#multiple-regression-and-conditional-coefficients" id="toc-multiple-regression-and-conditional-coefficients" class="nav-link" data-scroll-target="#multiple-regression-and-conditional-coefficients"><span class="header-section-number">13.5</span> Multiple regression and conditional coefficients</a></li>
-  <li><a href="#residuals-leverage-and-influence" id="toc-residuals-leverage-and-influence" class="nav-link" data-scroll-target="#residuals-leverage-and-influence"><span class="header-section-number">13.6</span> Residuals, leverage, and influence</a></li>
-  <li><a href="#categorical-predictors-and-reference-levels" id="toc-categorical-predictors-and-reference-levels" class="nav-link" data-scroll-target="#categorical-predictors-and-reference-levels"><span class="header-section-number">13.7</span> Categorical predictors and reference levels</a></li>
-  <li><a href="#residual-standard-error-and-explained-variation" id="toc-residual-standard-error-and-explained-variation" class="nav-link" data-scroll-target="#residual-standard-error-and-explained-variation"><span class="header-section-number">13.8</span> Residual standard error and explained variation</a></li>
-  <li><a href="#nonlinearity-and-an-apparent-fertilizer-optimum" id="toc-nonlinearity-and-an-apparent-fertilizer-optimum" class="nav-link" data-scroll-target="#nonlinearity-and-an-apparent-fertilizer-optimum"><span class="header-section-number">13.9</span> Nonlinearity and an apparent fertilizer optimum</a></li>
-  <li><a href="#predict-and-evaluate-honestly" id="toc-predict-and-evaluate-honestly" class="nav-link" data-scroll-target="#predict-and-evaluate-honestly"><span class="header-section-number">13.10</span> Predict and evaluate honestly</a></li>
-  <li><a href="#practical-14-and-exercises" id="toc-practical-14-and-exercises" class="nav-link" data-scroll-target="#practical-14-and-exercises"><span class="header-section-number">13.11</span> Practical 14 and exercises</a></li>
-  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">13.12</span> Live R laboratory</a></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes"><span class="header-section-number">14.1</span> Learning outcomes</a></li>
+  <li><a href="#association-is-not-a-treatment-effect" id="toc-association-is-not-a-treatment-effect" class="nav-link" data-scroll-target="#association-is-not-a-treatment-effect"><span class="header-section-number">14.2</span> Association is not a treatment effect</a></li>
+  <li><a href="#simple-linear-regression" id="toc-simple-linear-regression" class="nav-link" data-scroll-target="#simple-linear-regression"><span class="header-section-number">14.3</span> Simple linear regression</a></li>
+  <li><a href="#worked-calculation-what-least-squares-estimates" id="toc-worked-calculation-what-least-squares-estimates" class="nav-link" data-scroll-target="#worked-calculation-what-least-squares-estimates"><span class="header-section-number">14.4</span> Worked calculation: what least squares estimates</a></li>
+  <li><a href="#multiple-regression-and-conditional-coefficients" id="toc-multiple-regression-and-conditional-coefficients" class="nav-link" data-scroll-target="#multiple-regression-and-conditional-coefficients"><span class="header-section-number">14.5</span> Multiple regression and conditional coefficients</a></li>
+  <li><a href="#residuals-leverage-and-influence" id="toc-residuals-leverage-and-influence" class="nav-link" data-scroll-target="#residuals-leverage-and-influence"><span class="header-section-number">14.6</span> Residuals, leverage, and influence</a></li>
+  <li><a href="#categorical-predictors-and-reference-levels" id="toc-categorical-predictors-and-reference-levels" class="nav-link" data-scroll-target="#categorical-predictors-and-reference-levels"><span class="header-section-number">14.7</span> Categorical predictors and reference levels</a></li>
+  <li><a href="#residual-standard-error-and-explained-variation" id="toc-residual-standard-error-and-explained-variation" class="nav-link" data-scroll-target="#residual-standard-error-and-explained-variation"><span class="header-section-number">14.8</span> Residual standard error and explained variation</a></li>
+  <li><a href="#nonlinearity-and-an-apparent-fertilizer-optimum" id="toc-nonlinearity-and-an-apparent-fertilizer-optimum" class="nav-link" data-scroll-target="#nonlinearity-and-an-apparent-fertilizer-optimum"><span class="header-section-number">14.9</span> Nonlinearity and an apparent fertilizer optimum</a></li>
+  <li><a href="#predict-and-evaluate-honestly" id="toc-predict-and-evaluate-honestly" class="nav-link" data-scroll-target="#predict-and-evaluate-honestly"><span class="header-section-number">14.10</span> Predict and evaluate honestly</a></li>
+  <li><a href="#practical-15-and-exercises" id="toc-practical-15-and-exercises" class="nav-link" data-scroll-target="#practical-15-and-exercises"><span class="header-section-number">14.11</span> Practical 15 and exercises</a></li>
+  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">14.12</span> Live R laboratory</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-inference.html">Module 6 · Statistical analysis</a></li><li class="breadcrumb-item"><a href="./13-regression.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-inference.html">Module 6 · Statistical analysis</a></li><li class="breadcrumb-item"><a href="./13-regression.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-regression" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></h1>
+<h1 class="title"><span id="sec-regression" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></h1>
 </div>
 
 
@@ -425,12 +437,12 @@ window.Quarto = {
 </header>
 
 
-<section id="learning-outcomes" class="level2" data-number="13.1">
-<h2 data-number="13.1" class="anchored" data-anchor-id="learning-outcomes"><span class="header-section-number">13.1</span> Learning outcomes</h2>
+<section id="learning-outcomes" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="learning-outcomes"><span class="header-section-number">14.1</span> Learning outcomes</h2>
 <p>Distinguish Pearson and Spearman correlation, interpret simple and multiple regression coefficients, check model assumptions and influential observations, and evaluate prediction on held-out observations.</p>
 </section>
-<section id="association-is-not-a-treatment-effect" class="level2" data-number="13.2">
-<h2 data-number="13.2" class="anchored" data-anchor-id="association-is-not-a-treatment-effect"><span class="header-section-number">13.2</span> Association is not a treatment effect</h2>
+<section id="association-is-not-a-treatment-effect" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="association-is-not-a-treatment-effect"><span class="header-section-number">14.2</span> Association is not a treatment effect</h2>
 <p>Pearson’s correlation measures the strength and direction of a linear relationship between quantitative variables. Spearman’s correlation applies Pearson’s idea to ranks and describes monotonic association. Neither establishes causation, and a value near zero need not imply the absence of a nonlinear relationship. Both can be distorted by pooling unlike groups or by dependence among observations.</p>
 <p>The simulated <code>farm_yield.csv</code> contains 100 independent teaching records with nitrogen application, seasonal rainfall, and yield. It is constructed for a regression lesson and is not evidence for a real fertilizer recommendation.</p>
 <div class="cell">
@@ -473,8 +485,8 @@ sample estimates:
 </div>
 <p>Inspect scatter plots before interpreting a correlation coefficient. Pearson’s usual test assumes independent pairs and a suitable bivariate sampling model; ranks do not fix clustering or confounding. Spearman’s test uses an approximation here because rounded measurements can create ties.</p>
 </section>
-<section id="simple-linear-regression" class="level2" data-number="13.3">
-<h2 data-number="13.3" class="anchored" data-anchor-id="simple-linear-regression"><span class="header-section-number">13.3</span> Simple linear regression</h2>
+<section id="simple-linear-regression" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="simple-linear-regression"><span class="header-section-number">14.3</span> Simple linear regression</h2>
 <p>The model <span class="math inline">\(Y_i=\beta_0+\beta_1X_i+\epsilon_i\)</span> describes a conditional mean response. The intercept is the predicted mean when <span class="math inline">\(X=0\)</span>; the slope is a change in mean response per unit increase in <span class="math inline">\(X\)</span>. Least squares minimizes squared residuals. The regression direction matters: a model predicting yield from nitrogen is not interchangeable with one predicting nitrogen from yield.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>simple <span class="ot">&lt;-</span> <span class="fu">lm</span>(yield_t_ha <span class="sc">~</span> nitrogen_kg_ha, <span class="at">data =</span> farm)</span>
@@ -508,8 +520,8 @@ nitrogen_kg_ha 0.01526255 0.02137163</code></pre>
 </div>
 <p>The slope has units t/ha of yield per kg/ha of applied nitrogen. Its estimate is an association in these data, conditional on the specified model. If zero nitrogen lies outside the observed range, the intercept is an extrapolation and need not have a useful agronomic interpretation.</p>
 </section>
-<section id="worked-calculation-what-least-squares-estimates" class="level2" data-number="13.4">
-<h2 data-number="13.4" class="anchored" data-anchor-id="worked-calculation-what-least-squares-estimates"><span class="header-section-number">13.4</span> Worked calculation: what least squares estimates</h2>
+<section id="worked-calculation-what-least-squares-estimates" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="worked-calculation-what-least-squares-estimates"><span class="header-section-number">14.4</span> Worked calculation: what least squares estimates</h2>
 <p>For a simple regression with an intercept, the estimated slope is</p>
 <p><span class="math display">\[b_1=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2},\qquad b_0=\bar{y}-b_1\bar{x}.\]</span></p>
 <p>The slope is undefined when every predictor value is identical: the denominator is zero. A range of predictor values is necessary to estimate a relationship. The calculation below verifies the coefficients from <code>lm()</code> rather than treating its output as a black box.</p>
@@ -527,8 +539,8 @@ lm      3.077606 0.01831709</code></pre>
 </div>
 <p>Residuals are observed minus fitted responses. With an intercept, least squares makes their sum approximately zero. This algebraic property does not show that their errors are independent or normally distributed. Those require design knowledge and diagnostics.</p>
 </section>
-<section id="multiple-regression-and-conditional-coefficients" class="level2" data-number="13.5">
-<h2 data-number="13.5" class="anchored" data-anchor-id="multiple-regression-and-conditional-coefficients"><span class="header-section-number">13.5</span> Multiple regression and conditional coefficients</h2>
+<section id="multiple-regression-and-conditional-coefficients" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="multiple-regression-and-conditional-coefficients"><span class="header-section-number">14.5</span> Multiple regression and conditional coefficients</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>multiple <span class="ot">&lt;-</span> <span class="fu">lm</span>(yield_t_ha <span class="sc">~</span> nitrogen_kg_ha <span class="sc">+</span> rainfall_mm, <span class="at">data =</span> farm)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(multiple)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -564,8 +576,8 @@ rainfall_mm    0.001109939 0.002355324</code></pre>
 <p>The nitrogen coefficient now describes a change while rainfall is held fixed in the model. It may differ from the simple-regression coefficient because the models ask different questions. Omitted confounders, measurement error, and nonlinearity can still bias interpretation. Adding predictors raises ordinary <span class="math inline">\(R^2\)</span> even if they contribute little; high <span class="math inline">\(R^2\)</span> does not establish causality or reliable future prediction.</p>
 <p>Strongly correlated predictors make separate coefficients unstable. In the crop trial, treatment and applied nitrogen are closely linked, so including both without thought can make individual effects hard to interpret. Select predictors using scientific reasoning, design, and an evaluation plan rather than repeated p-value searches.</p>
 </section>
-<section id="residuals-leverage-and-influence" class="level2" data-number="13.6">
-<h2 data-number="13.6" class="anchored" data-anchor-id="residuals-leverage-and-influence"><span class="header-section-number">13.6</span> Residuals, leverage, and influence</h2>
+<section id="residuals-leverage-and-influence" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="residuals-leverage-and-influence"><span class="header-section-number">14.6</span> Residuals, leverage, and influence</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>old <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(multiple)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -585,8 +597,8 @@ rainfall_mm    0.001109939 0.002355324</code></pre>
 </div>
 <p>The residual-versus-fitted plot checks mean structure, the Q–Q plot checks the error distribution, the scale-location plot checks spread, and leverage/influence diagnostics identify observations that can strongly affect estimates. Check influential records against source information; do not delete them merely to improve fit. Classical t-tests and intervals need assumptions about errors, including independence and constant variance. Normality concerns the errors for small-sample inference, not every predictor’s marginal distribution.</p>
 </section>
-<section id="categorical-predictors-and-reference-levels" class="level2" data-number="13.7">
-<h2 data-number="13.7" class="anchored" data-anchor-id="categorical-predictors-and-reference-levels"><span class="header-section-number">13.7</span> Categorical predictors and reference levels</h2>
+<section id="categorical-predictors-and-reference-levels" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="categorical-predictors-and-reference-levels"><span class="header-section-number">14.7</span> Categorical predictors and reference levels</h2>
 <p>Regression can include categorical variables through indicator coding. A two-variety example illustrates this without requiring the varieties to be interpreted as numeric doses. The reference level determines the intercept’s meaning, while the fitted mean for each observation remains unchanged under a consistent recoding.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>trial <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/crop_trial.csv"</span>)</span>
@@ -603,8 +615,8 @@ rainfall_mm    0.001109939 0.002355324</code></pre>
 </div>
 <p>The <code>varietyB</code> coefficient compares B with A conditional on the other terms in this additive model. It assumes a common variety difference across treatments. The preceding ANOVA chapter explains how a treatment-by-variety interaction relaxes that assumption. ANOVA and regression are connected expressions of linear modelling, rather than unrelated procedures selected solely by the appearance of a response column.</p>
 </section>
-<section id="residual-standard-error-and-explained-variation" class="level2" data-number="13.8">
-<h2 data-number="13.8" class="anchored" data-anchor-id="residual-standard-error-and-explained-variation"><span class="header-section-number">13.8</span> Residual standard error and explained variation</h2>
+<section id="residual-standard-error-and-explained-variation" class="level2" data-number="14.8">
+<h2 data-number="14.8" class="anchored" data-anchor-id="residual-standard-error-and-explained-variation"><span class="header-section-number">14.8</span> Residual standard error and explained variation</h2>
 <p>The residual sum of squares measures unexplained squared deviations after fitting. Dividing by residual degrees of freedom and taking a square root gives the residual standard error, in yield units. <span class="math inline">\(R^2\)</span> compares residual sum of squares with the total sum of squares around the observed mean:</p>
 <p><span class="math display">\[R^2=1-\frac{\sum(y_i-\widehat{y}_i)^2}{\sum(y_i-\bar{y})^2}.\]</span></p>
 <div class="cell">
@@ -620,8 +632,8 @@ rainfall_mm    0.001109939 0.002355324</code></pre>
 </div>
 <p>An in-sample <span class="math inline">\(R^2\)</span> describes fit to the observed response variation under that model. It is not the percentage probability that a prediction is correct. A narrow predictor range can produce a low <span class="math inline">\(R^2\)</span> even when a small slope is estimated usefully; a common time trend can produce a high <span class="math inline">\(R^2\)</span> for an unsuitable causal interpretation. Compare models in relation to their purpose and predictor domain.</p>
 </section>
-<section id="nonlinearity-and-an-apparent-fertilizer-optimum" class="level2" data-number="13.9">
-<h2 data-number="13.9" class="anchored" data-anchor-id="nonlinearity-and-an-apparent-fertilizer-optimum"><span class="header-section-number">13.9</span> Nonlinearity and an apparent fertilizer optimum</h2>
+<section id="nonlinearity-and-an-apparent-fertilizer-optimum" class="level2" data-number="14.9">
+<h2 data-number="14.9" class="anchored" data-anchor-id="nonlinearity-and-an-apparent-fertilizer-optimum"><span class="header-section-number">14.9</span> Nonlinearity and an apparent fertilizer optimum</h2>
 <p>Crop response to a nutrient may increase initially and then approach a plateau or decline. A straight line over a restricted range can approximate part of that response without defining a biological optimum. A quadratic model adds a squared predictor term. In R formulas, write <code>I(x^2)</code> so the power is interpreted arithmetically.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>quadratic <span class="ot">&lt;-</span> <span class="fu">lm</span>(yield_t_ha <span class="sc">~</span> nitrogen_kg_ha <span class="sc">+</span> <span class="fu">I</span>(nitrogen_kg_ha<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> rainfall_mm,</span>
@@ -654,8 +666,8 @@ F-statistic: 70.87 on 3 and 96 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>For a concave quadratic <span class="math inline">\(a+bN+cN^2\)</span> with <span class="math inline">\(c&lt;0\)</span>, its mathematical maximum occurs at <span class="math inline">\(-b/(2c)\)</span>. If <code>c</code> is positive, the stationary point is a minimum, not an optimum. Even a concave fitted curve may place its maximum outside the observed nitrogen range, where it is unsupported extrapolation. The supplied simulation is generated with a linear mean response, so a quadratic term should not be presented as discovering a true fertilizer optimum.</p>
 <p>An economic optimum additionally depends on crop price, input cost, and an appropriate response function. A fitted yield curve alone cannot supply those missing quantities. A defensible recommendation also needs replicated evidence across relevant environments and an assessment of uncertainty. In this introductory course, use nonlinear patterns to motivate questions and model checks before offering recommendations.</p>
 </section>
-<section id="predict-and-evaluate-honestly" class="level2" data-number="13.10">
-<h2 data-number="13.10" class="anchored" data-anchor-id="predict-and-evaluate-honestly"><span class="header-section-number">13.10</span> Predict and evaluate honestly</h2>
+<section id="predict-and-evaluate-honestly" class="level2" data-number="14.10">
+<h2 data-number="14.10" class="anchored" data-anchor-id="predict-and-evaluate-honestly"><span class="header-section-number">14.10</span> Predict and evaluate honestly</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>new_farm <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">nitrogen_kg_ha =</span> <span class="dv">80</span>, <span class="at">rainfall_mm =</span> <span class="dv">650</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(multiple, new_farm, <span class="at">interval =</span> <span class="st">"confidence"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -689,8 +701,8 @@ F-statistic: 70.87 on 3 and 96 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>A confidence interval concerns the mean response at the specified predictors; a prediction interval includes variation in a new observation and is wider. Both rely on the model. Avoid extrapolation outside the training range and consider combinations of predictors that may be unusual even when each is individually within range.</p>
 <p>A random holdout is suitable for these independent simulated records. For repeated farms, spatial clusters, or time series, split by group, location, or time as appropriate. Fit preprocessing steps using training data only. One split gives an unstable estimate, so cross-validation may be needed for serious model comparison. The test set should not become another training set through repeated tuning.</p>
 </section>
-<section id="practical-14-and-exercises" class="level2" data-number="13.11">
-<h2 data-number="13.11" class="anchored" data-anchor-id="practical-14-and-exercises"><span class="header-section-number">13.11</span> Practical 14 and exercises</h2>
+<section id="practical-15-and-exercises" class="level2" data-number="14.11">
+<h2 data-number="14.11" class="anchored" data-anchor-id="practical-15-and-exercises"><span class="header-section-number">14.11</span> Practical 15 and exercises</h2>
 <ol type="1">
 <li>Compare Pearson and Spearman coefficients and explain their target relationships.</li>
 <li>Interpret the rainfall coefficient and its units. Why is it not automatically a causal rainfall effect?</li>
@@ -700,8 +712,8 @@ F-statistic: 70.87 on 3 and 96 DF,  p-value: &lt; 2.2e-16</code></pre>
 </ol>
 <p><strong>Chapter review.</strong> Correlation describes association; regression specifies a conditional response; prediction requires separate evaluation. Design and domain knowledge remain necessary for causal interpretation.</p>
 </section>
-<section id="live-r-laboratory" class="level2" data-number="13.12">
-<h2 data-number="13.12" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">13.12</span> Live R laboratory</h2>
+<section id="live-r-laboratory" class="level2" data-number="14.12">
+<h2 data-number="14.12" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">14.12</span> Live R laboratory</h2>
 <div class="live-r">
 <p><strong>Fit and interpret a yield model</strong></p>
 <p>Edit the code, then select <strong>Run R</strong>. The first run downloads R into your browser and may take a little time. <strong>Copy code</strong> also lets you use this example in RStudio.</p>
@@ -1152,21 +1164,21 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./12-anova.html" class="pagination-link" aria-label="Comparing treatments with analysis of variance">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Comparing treatments with analysis of variance</span></span>
+      <a href="./12b-experimental-designs.html" class="pagination-link" aria-label="Designing and analysing field experiments">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./14-reporting.html" class="pagination-link" aria-label="Reproducible reports with R Markdown and Quarto">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 
 
 
 
-<script defer src="/stat-531/assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 </body></html>

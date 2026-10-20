@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e5488f36f73934da31e81cbe0465adae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -291,8 +291,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
   </div>
 </li>
       </ul>
@@ -300,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text">Module 7 · Reproducible research</span></a>
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -309,7 +315,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
   </div>
 </li>
       </ul>
@@ -366,8 +378,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#distinguishing-missing-zero-and-below-detection-observations" id="toc-distinguishing-missing-zero-and-below-detection-observations" class="nav-link" data-scroll-target="#distinguishing-missing-zero-and-below-detection-observations"><span class="header-section-number">4.5</span> Distinguishing missing, zero, and below-detection observations</a></li>
   <li><a href="#checking-the-design-while-cleaning" id="toc-checking-the-design-while-cleaning" class="nav-link" data-scroll-target="#checking-the-design-while-cleaning"><span class="header-section-number">4.6</span> Checking the design while cleaning</a></li>
   <li><a href="#a-sensitivity-analysis-for-a-doubtful-observation" id="toc-a-sensitivity-analysis-for-a-doubtful-observation" class="nav-link" data-scroll-target="#a-sensitivity-analysis-for-a-doubtful-observation"><span class="header-section-number">4.7</span> A sensitivity analysis for a doubtful observation</a></li>
-  <li><a href="#practical-4-and-exercises" id="toc-practical-4-and-exercises" class="nav-link" data-scroll-target="#practical-4-and-exercises"><span class="header-section-number">4.8</span> Practical 4 and exercises</a></li>
-  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">4.9</span> Live R laboratory</a></li>
+  <li><a href="#cleaning-a-messy-field-book-step-by-step" id="toc-cleaning-a-messy-field-book-step-by-step" class="nav-link" data-scroll-target="#cleaning-a-messy-field-book-step-by-step"><span class="header-section-number">4.8</span> Cleaning a messy field book step by step</a>
+  <ul class="collapse">
+  <li><a href="#step-1-import-with-the-missing-value-codes-you-know-about" id="toc-step-1-import-with-the-missing-value-codes-you-know-about" class="nav-link" data-scroll-target="#step-1-import-with-the-missing-value-codes-you-know-about"><span class="header-section-number">4.8.1</span> Step 1: import with the missing-value codes you know about</a></li>
+  <li><a href="#step-2-repair-types-without-losing-information" id="toc-step-2-repair-types-without-losing-information" class="nav-link" data-scroll-target="#step-2-repair-types-without-losing-information"><span class="header-section-number">4.8.2</span> Step 2: repair types without losing information</a></li>
+  <li><a href="#step-3-standardize-category-labels" id="toc-step-3-standardize-category-labels" class="nav-link" data-scroll-target="#step-3-standardize-category-labels"><span class="header-section-number">4.8.3</span> Step 3: standardize category labels</a></li>
+  <li><a href="#step-4-convert-dates-explicitly" id="toc-step-4-convert-dates-explicitly" class="nav-link" data-scroll-target="#step-4-convert-dates-explicitly"><span class="header-section-number">4.8.4</span> Step 4: convert dates explicitly</a></li>
+  <li><a href="#step-5-check-values-against-plausible-ranges" id="toc-step-5-check-values-against-plausible-ranges" class="nav-link" data-scroll-target="#step-5-check-values-against-plausible-ranges"><span class="header-section-number">4.8.5</span> Step 5: check values against plausible ranges</a></li>
+  <li><a href="#step-6-apply-only-documented-corrections" id="toc-step-6-apply-only-documented-corrections" class="nav-link" data-scroll-target="#step-6-apply-only-documented-corrections"><span class="header-section-number">4.8.6</span> Step 6: apply only documented corrections</a></li>
+  <li><a href="#step-7-convert-units-and-save" id="toc-step-7-convert-units-and-save" class="nav-link" data-scroll-target="#step-7-convert-units-and-save"><span class="header-section-number">4.8.7</span> Step 7: convert units and save</a></li>
+  </ul></li>
+  <li><a href="#practical-4-and-exercises" id="toc-practical-4-and-exercises" class="nav-link" data-scroll-target="#practical-4-and-exercises"><span class="header-section-number">4.9</span> Practical 4 and exercises</a></li>
+  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">4.10</span> Live R laboratory</a></li>
   </ul>
 </nav>
     </div>
@@ -395,7 +417,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="learning-outcomes" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="learning-outcomes"><span class="header-section-number">4.1</span> Learning outcomes</h2>
-<p>Identify missingness, duplicated records, inconsistent categories, and unusual observations; distinguish a correction from an analytical choice; and document cleaning decisions.</p>
+<p>Identify missingness, duplicated records, inconsistent categories, and unusual observations; repair column types, labels, dates, and units; apply validation rules; distinguish a correction from an analytical choice; and document cleaning decisions in a reproducible script.</p>
 </section>
 <section id="why-a-cleaning-log-matters" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="why-a-cleaning-log-matters"><span class="header-section-number">4.2</span> Why a cleaning log matters</h2>
@@ -553,29 +575,206 @@ block Compost Control Mineral
 </div>
 <p>This calculation does not justify removing the highest plot. It makes the effect of an exclusion visible. For treatment inference, repeat the appropriate design-based model rather than comparing overall means alone. If the conclusion changes substantially, discuss that instability and the reason for the disputed observation.</p>
 </section>
-<section id="practical-4-and-exercises" class="level2" data-number="4.8">
-<h2 data-number="4.8" class="anchored" data-anchor-id="practical-4-and-exercises"><span class="header-section-number">4.8</span> Practical 4 and exercises</h2>
+<section id="cleaning-a-messy-field-book-step-by-step" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="cleaning-a-messy-field-book-step-by-step"><span class="header-section-number">4.8</span> Cleaning a messy field book step by step</h2>
+<p>Real field books are typed by people working quickly, often from handwritten sheets. The simulated file <code>field_book_messy.csv</code> contains twelve plots from a variety trial with a net harvested area of 5 m² per plot. It has the problems you will meet most often: inconsistent labels, a comma used as a decimal mark, several codes for “not recorded”, dates in day/month/year order, a value entered in the wrong unit, and a probable decimal slip.</p>
+<section id="step-1-import-with-the-missing-value-codes-you-know-about" class="level3" data-number="4.8.1">
+<h3 data-number="4.8.1" class="anchored" data-anchor-id="step-1-import-with-the-missing-value-codes-you-know-about"><span class="header-section-number">4.8.1</span> Step 1: import with the missing-value codes you know about</h3>
+<p>Start by reading the file as it is and inspecting the structure. Tell <code>read.csv()</code> which entries mean “missing” in this field book.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>fb <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/field_book_messy.csv"</span>,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"NA"</span>, <span class="st">"n/a"</span>, <span class="st">"-"</span>))</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(fb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   12 obs. of  7 variables:
+ $ plot           : chr  "P01" "P02" "P03" "P04" ...
+ $ sowing_date    : chr  "05/06/2025" "05/06/2025" "06/06/2025" "06/06/2025" ...
+ $ variety        : chr  "V1" "v1 " "V2" "V2" ...
+ $ plant_height_cm: chr  "84.5" "86.1" "79,8" "81.0" ...
+ $ tillers        : int  12 14 11 NA 15 13 12 10 16 13 ...
+ $ grain_wt_g_plot: num  2410 2550 2190 2275 2620 ...
+ $ remarks        : chr  NA NA NA "tillers not counted" ...</code></pre>
+</div>
+</div>
+<p><code>str()</code> shows the first problem. <code>plant_height_cm</code> was read as <strong>character</strong>, not numeric, because one entry contains a comma. Any column that should be numeric but appears as <code>chr</code> needs investigation before analysis. <code>tillers</code> and <code>grain_wt_g_plot</code> were read as numbers because <code>-</code> and <code>n/a</code> were declared as missing.</p>
+</section>
+<section id="step-2-repair-types-without-losing-information" class="level3" data-number="4.8.2">
+<h3 data-number="4.8.2" class="anchored" data-anchor-id="step-2-repair-types-without-losing-information"><span class="header-section-number">4.8.2</span> Step 2: repair types without losing information</h3>
+<p>Look at the offending entries before converting them. Converting directly with <code>as.numeric()</code> would silently turn <code>"79,8"</code> into <code>NA</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fb<span class="sc">$</span>plant_height_cm[<span class="fu">is.na</span>(<span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(fb<span class="sc">$</span>plant_height_cm)))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "79,8" NA    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>fb<span class="sc">$</span>plant_height_cm <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">"."</span>, fb<span class="sc">$</span>plant_height_cm))</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fb<span class="sc">$</span>plant_height_cm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs 
+  78.90   80.70   85.20  154.59   91.15  850.00       1 </code></pre>
+</div>
+</div>
+<p><code>gsub(",", ".", x)</code> replaces every comma with a decimal point. The only remaining missing height is the lodged plot recorded as <code>n/a</code>, which is a genuine missing value with a reason in the <code>remarks</code> column. The summary also exposes a maximum height of 850 cm, which we return to in step 5.</p>
+</section>
+<section id="step-3-standardize-category-labels" class="level3" data-number="4.8.3">
+<h3 data-number="4.8.3" class="anchored" data-anchor-id="step-3-standardize-category-labels"><span class="header-section-number">4.8.3</span> Step 3: standardize category labels</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(fb<span class="sc">$</span>variety, <span class="at">useNA =</span> <span class="st">"ifany"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ V3  V1 v1   V2  v3  V3 
+  1   3   1   4   1   2 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fb<span class="sc">$</span>variety <span class="ot">&lt;-</span> <span class="fu">toupper</span>(<span class="fu">trimws</span>(fb<span class="sc">$</span>variety))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(fb<span class="sc">$</span>variety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+V1 V2 V3 
+ 4  4  4 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(fb<span class="sc">$</span>variety <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"V1"</span>, <span class="st">"V2"</span>, <span class="st">"V3"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>trimws()</code> removes leading and trailing spaces and <code>toupper()</code> converts to capitals. Before the fix, R counted six different variety labels; afterwards, three varieties with four plots each. The <code>stopifnot()</code> line will stop the script if a new unexpected label ever appears.</p>
+</section>
+<section id="step-4-convert-dates-explicitly" class="level3" data-number="4.8.4">
+<h3 data-number="4.8.4" class="anchored" data-anchor-id="step-4-convert-dates-explicitly"><span class="header-section-number">4.8.4</span> Step 4: convert dates explicitly</h3>
+<p>Dates typed as <code>05/06/2025</code> are ambiguous: 5 June or 6 May? The field protocol states day/month/year, so we give that format to <code>as.Date()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>fb<span class="sc">$</span>sowing_date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(fb<span class="sc">$</span>sowing_date, <span class="at">format =</span> <span class="st">"%d/%m/%Y"</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(fb<span class="sc">$</span>sowing_date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2025-06-05" "2025-06-10"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">anyNA</span>(fb<span class="sc">$</span>sowing_date))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>harvest <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">"2025-10-01"</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>fb<span class="sc">$</span>days_to_harvest <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(harvest <span class="sc">-</span> fb<span class="sc">$</span>sowing_date)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fb[, <span class="fu">c</span>(<span class="st">"plot"</span>, <span class="st">"sowing_date"</span>, <span class="st">"days_to_harvest"</span>)], <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  plot sowing_date days_to_harvest
+1  P01  2025-06-05             118
+2  P02  2025-06-05             118
+3  P03  2025-06-06             117</code></pre>
+</div>
+</div>
+<p>In the format string, <code>%d</code> is day, <code>%m</code> is month number, and <code>%Y</code> is the four-digit year. If any date fails to match the format, <code>as.Date()</code> returns <code>NA</code>, which the <code>stopifnot()</code> check catches. Once a column has the <code>Date</code> class, subtraction gives the number of days between dates.</p>
+</section>
+<section id="step-5-check-values-against-plausible-ranges" class="level3" data-number="4.8.5">
+<h3 data-number="4.8.5" class="anchored" data-anchor-id="step-5-check-values-against-plausible-ranges"><span class="header-section-number">4.8.5</span> Step 5: check values against plausible ranges</h3>
+<p>A validation rule states the range of plausible values for each variable. The limits come from agronomic knowledge, not from the data themselves. A value outside the range is <strong>flagged for checking</strong>, not changed.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>rules <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">variable =</span> <span class="fu">c</span>(<span class="st">"plant_height_cm"</span>, <span class="st">"tillers"</span>, <span class="st">"grain_wt_g_plot"</span>),</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">min =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">1</span>, <span class="dv">500</span>),</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">max =</span> <span class="fu">c</span>(<span class="dv">150</span>, <span class="dv">40</span>, <span class="dv">5000</span>))</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>flags <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">seq_len</span>(<span class="fu">nrow</span>(rules)), <span class="cf">function</span>(i) {</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  v <span class="ot">&lt;-</span> rules<span class="sc">$</span>variable[i]</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> fb[[v]]</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  bad <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(x) <span class="sc">&amp;</span> (x <span class="sc">&lt;</span> rules<span class="sc">$</span>min[i] <span class="sc">|</span> x <span class="sc">&gt;</span> rules<span class="sc">$</span>max[i]))</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(bad)) <span class="fu">data.frame</span>(<span class="at">plot =</span> fb<span class="sc">$</span>plot[bad], <span class="at">variable =</span> v, <span class="at">value =</span> x[bad])</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>flags</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  plot        variable  value
+1  P10 plant_height_cm 850.00
+2  P07 grain_wt_g_plot   2.43</code></pre>
+</div>
+</div>
+<p>Two plots are flagged. P07 has a grain weight of 2.43, which is impossible for a 5 m² plot in grams but plausible in kilograms; the remarks column says it was weighed in kilograms. P10 has a height of 850 cm, ten times the heights of the other plots of V1, which suggests a missing decimal point.</p>
+</section>
+<section id="step-6-apply-only-documented-corrections" class="level3" data-number="4.8.6">
+<h3 data-number="4.8.6" class="anchored" data-anchor-id="step-6-apply-only-documented-corrections"><span class="header-section-number">4.8.6</span> Step 6: apply only documented corrections</h3>
+<p>For this exercise, assume the original field sheets were checked: P07 was confirmed as 2.43 kg, and P10 as 85.0 cm. Record the corrections in a table and apply them from that table, so the log and the data cannot drift apart.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>fixes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="fu">c</span>(<span class="st">"P07"</span>, <span class="st">"P10"</span>),</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">c</span>(<span class="st">"grain_wt_g_plot"</span>, <span class="st">"plant_height_cm"</span>),</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">old_value =</span> <span class="fu">c</span>(<span class="fl">2.43</span>, <span class="dv">850</span>),</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">new_value =</span> <span class="fu">c</span>(<span class="dv">2430</span>, <span class="fl">85.0</span>),</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">reason =</span> <span class="fu">c</span>(<span class="st">"Weighed in kg; converted to g (field sheet checked)"</span>,</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Decimal point omitted (field sheet checked)"</span>))</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(fixes))) {</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  row <span class="ot">&lt;-</span> fb<span class="sc">$</span>plot <span class="sc">==</span> fixes<span class="sc">$</span>plot[i]</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">sum</span>(row) <span class="sc">==</span> <span class="dv">1</span>, fb[row, fixes<span class="sc">$</span>variable[i]] <span class="sc">==</span> fixes<span class="sc">$</span>old_value[i])</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  fb[row, fixes<span class="sc">$</span>variable[i]] <span class="ot">&lt;-</span> fixes<span class="sc">$</span>new_value[i]</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>fixes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  plot        variable old_value new_value
+1  P07 grain_wt_g_plot      2.43      2430
+2  P10 plant_height_cm    850.00        85
+                                               reason
+1 Weighed in kg; converted to g (field sheet checked)
+2         Decimal point omitted (field sheet checked)</code></pre>
+</div>
+</div>
+<p>The <code>stopifnot()</code> inside the loop confirms that each plot exists exactly once and still holds the old value before it is changed. If someone has already corrected the file, the script stops instead of applying a correction twice.</p>
+</section>
+<section id="step-7-convert-units-and-save" class="level3" data-number="4.8.7">
+<h3 data-number="4.8.7" class="anchored" data-anchor-id="step-7-convert-units-and-save"><span class="header-section-number">4.8.7</span> Step 7: convert units and save</h3>
+<p>Grain weight in grams per 5 m² plot converts to tonnes per hectare by dividing by the plot area (g/m²), multiplying by 10,000 m²/ha, and dividing by 1,000,000 g/t.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>net_plot_m2 <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>fb<span class="sc">$</span>yield_t_ha <span class="ot">&lt;-</span> fb<span class="sc">$</span>grain_wt_g_plot <span class="sc">/</span> net_plot_m2 <span class="sc">*</span> <span class="dv">10000</span> <span class="sc">/</span> <span class="fl">1e6</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">tapply</span>(fb<span class="sc">$</span>yield_t_ha, fb<span class="sc">$</span>variety, mean), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  V1   V2   V3 
+4.89 4.41 5.23 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"outputs"</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(fb, <span class="st">"outputs/field_book_clean.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(fixes, <span class="st">"outputs/field_book_corrections.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The raw file in <code>data/</code> is never overwritten. Anyone can rerun the script from the raw file and obtain the same clean file and the same correction log.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="A cleaning checklist">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A cleaning checklist
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Keep the raw file unchanged; clean with a script.</li>
+<li>Declare missing-value codes at import and check <code>str()</code>.</li>
+<li>Inspect entries that fail numeric conversion before converting.</li>
+<li>Standardize labels and check them against the list of valid levels.</li>
+<li>Convert dates with an explicit format and confirm none became <code>NA</code>.</li>
+<li>Check every numeric variable against agronomically plausible ranges.</li>
+<li>Correct only with evidence, from a corrections table, and keep the log.</li>
+<li>Confirm units and convert them explicitly.</li>
+<li>Check the design: every expected plot present, no duplicates.</li>
+<li>Save the clean data and the log separately from the raw data.</li>
+</ol>
+</div>
+</div>
+</section>
+</section>
+<section id="practical-4-and-exercises" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="practical-4-and-exercises"><span class="header-section-number">4.9</span> Practical 4 and exercises</h2>
 <ol type="1">
 <li>Reproduce the cleaning workflow and report the row counts before and after duplicate removal.</li>
 <li>Calculate the mean before and after the verified correction. Explain why the difference is not evidence for a treatment effect.</li>
 <li>Count missing yields by treatment. Explain how unequal missingness could affect comparisons.</li>
 <li>A repeated plot identifier has two different yields. Describe what you would check before changing either record.</li>
 <li>Give one example of a biological extreme that should remain in an agricultural dataset.</li>
+<li>Clean <code>field_book_messy.csv</code> with the seven steps. Report how many values were converted, corrected, and left missing, and why.</li>
+<li>Add a validation rule for <code>days_to_harvest</code> and explain how you chose its limits.</li>
+<li>Suppose P10’s field sheet could not be found. Describe what you would do with its height and how you would report it.</li>
 </ol>
 <p><strong>Chapter review.</strong> Cleaning should preserve evidence. Every correction needs a reason; exclusions need justification; missingness needs a denominator.</p>
 </section>
-<section id="live-r-laboratory" class="level2" data-number="4.9">
-<h2 data-number="4.9" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">4.9</span> Live R laboratory</h2>
+<section id="live-r-laboratory" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">4.10</span> Live R laboratory</h2>
 <div class="live-r">
 <p><strong>Keep an explicit cleaning record</strong></p>
 <p>Edit the code, then select <strong>Run R</strong>. The first run downloads R into your browser and may take a little time. <strong>Copy code</strong> also lets you use this example in RStudio.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>soil <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">plot =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>),</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pH =</span> <span class="fu">c</span>(<span class="fl">5.8</span>, <span class="fl">6.2</span>, <span class="fl">6.2</span>, <span class="cn">NA</span>, <span class="dv">65</span>))</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>soil<span class="sc">$</span>duplicate <span class="ot">&lt;-</span> <span class="fu">duplicated</span>(soil[<span class="fu">c</span>(<span class="st">"plot"</span>, <span class="st">"pH"</span>)])</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>soil<span class="sc">$</span>needs_check <span class="ot">&lt;-</span> <span class="fu">is.na</span>(soil<span class="sc">$</span>pH) <span class="sc">|</span> soil<span class="sc">$</span>pH <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> soil<span class="sc">$</span>pH <span class="sc">&gt;</span> <span class="dv">14</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>soil</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>clean <span class="ot">&lt;-</span> <span class="fu">subset</span>(soil, <span class="sc">!</span>duplicate <span class="sc">&amp;</span> <span class="sc">!</span>needs_check)</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(clean<span class="sc">$</span>pH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>soil <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">plot =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>),</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pH =</span> <span class="fu">c</span>(<span class="fl">5.8</span>, <span class="fl">6.2</span>, <span class="fl">6.2</span>, <span class="cn">NA</span>, <span class="dv">65</span>))</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>soil<span class="sc">$</span>duplicate <span class="ot">&lt;-</span> <span class="fu">duplicated</span>(soil[<span class="fu">c</span>(<span class="st">"plot"</span>, <span class="st">"pH"</span>)])</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>soil<span class="sc">$</span>needs_check <span class="ot">&lt;-</span> <span class="fu">is.na</span>(soil<span class="sc">$</span>pH) <span class="sc">|</span> soil<span class="sc">$</span>pH <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> soil<span class="sc">$</span>pH <span class="sc">&gt;</span> <span class="dv">14</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>soil</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>clean <span class="ot">&lt;-</span> <span class="fu">subset</span>(soil, <span class="sc">!</span>duplicate <span class="sc">&amp;</span> <span class="sc">!</span>needs_check)</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(clean<span class="sc">$</span>pH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Investigate.</strong> The value 65 needs verification against the field record. Flagging it does not establish its correct replacement. Explain which rows were excluded from this temporary summary.</p>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled" title="From the browser to your practical notebook">
@@ -1027,9 +1226,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </nav>
 </div> <!-- /content -->
 <script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 
 
 
 
-<script defer src="/stat-531/assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 </body></html>

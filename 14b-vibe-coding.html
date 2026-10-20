@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>16&nbsp; Vibe coding: writing R with an AI assistant – R Programming for Agricultural Data Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./references.html" rel="next">
+<link href="./14-reporting.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./14-reporting.html">Module 7 · Reproducible research and AI-assisted coding</a></li><li class="breadcrumb-item"><a href="./14b-vibe-coding.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R Programming for Agricultural Data Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./course-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course guide</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 1 · Foundations and data exchange</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting started with R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-r-language.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Objects, data structures, and functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-data-import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Importing, validating, and exporting data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 2 · Data wrangling and cleaning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Cleaning agricultural observations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-wrangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Transforming and summarizing data with dplyr</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 3 · Data visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Visualizing agricultural data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 4 · Descriptive and exploratory analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-descriptive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Describing agricultural variation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">An exploratory study of crop yield</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 5 · Growth and time series</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-growth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modelling crop growth</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-time-series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Agricultural time series and forecasting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 6 · Statistical analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Hypothesis tests and confidence intervals</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Comparing treatments with analysis of variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References and further reading</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Datasets and measurement units</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Selected exercise solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Glossary and R reference</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes"><span class="header-section-number">16.1</span> Learning outcomes</a></li>
+  <li><a href="#vibe-coding" id="toc-vibe-coding" class="nav-link" data-scroll-target="#vibe-coding"><span class="header-section-number">16.2</span> From an idea to a first draft</a></li>
+  <li><a href="#using-ai-with-r" id="toc-using-ai-with-r" class="nav-link" data-scroll-target="#using-ai-with-r"><span class="header-section-number">16.3</span> Using AI with R</a></li>
+  <li><a href="#the-review-loop" id="toc-the-review-loop" class="nav-link" data-scroll-target="#the-review-loop"><span class="header-section-number">16.4</span> The review loop</a></li>
+  <li><a href="#write-a-prompt-that-specifies-the-analysis" id="toc-write-a-prompt-that-specifies-the-analysis" class="nav-link" data-scroll-target="#write-a-prompt-that-specifies-the-analysis"><span class="header-section-number">16.5</span> Write a prompt that specifies the analysis</a></li>
+  <li><a href="#worked-example-review-a-generated-summary" id="toc-worked-example-review-a-generated-summary" class="nav-link" data-scroll-target="#worked-example-review-a-generated-summary"><span class="header-section-number">16.6</span> Worked example: review a generated summary</a></li>
+  <li><a href="#worked-example-code-that-runs-but-answers-the-wrong-question" id="toc-worked-example-code-that-runs-but-answers-the-wrong-question" class="nav-link" data-scroll-target="#worked-example-code-that-runs-but-answers-the-wrong-question"><span class="header-section-number">16.7</span> Worked example: code that runs but answers the wrong question</a></li>
+  <li><a href="#worked-example-a-function-that-does-not-exist" id="toc-worked-example-a-function-that-does-not-exist" class="nav-link" data-scroll-target="#worked-example-a-function-that-does-not-exist"><span class="header-section-number">16.8</span> Worked example: a function that does not exist</a></li>
+  <li><a href="#verify-with-a-known-answer" id="toc-verify-with-a-known-answer" class="nav-link" data-scroll-target="#verify-with-a-known-answer"><span class="header-section-number">16.9</span> Verify with a known answer</a></li>
+  <li><a href="#debug-with-a-minimal-reproducible-example" id="toc-debug-with-a-minimal-reproducible-example" class="nav-link" data-scroll-target="#debug-with-a-minimal-reproducible-example"><span class="header-section-number">16.10</span> Debug with a minimal reproducible example</a></li>
+  <li><a href="#prompts-for-each-stage-of-a-project" id="toc-prompts-for-each-stage-of-a-project" class="nav-link" data-scroll-target="#prompts-for-each-stage-of-a-project"><span class="header-section-number">16.11</span> Prompts for each stage of a project</a></li>
+  <li><a href="#responsible-use" id="toc-responsible-use" class="nav-link" data-scroll-target="#responsible-use"><span class="header-section-number">16.12</span> Responsible use</a></li>
+  <li><a href="#save-a-reproducible-record" id="toc-save-a-reproducible-record" class="nav-link" data-scroll-target="#save-a-reproducible-record"><span class="header-section-number">16.13</span> Save a reproducible record</a></li>
+  <li><a href="#practical-17-and-exercises" id="toc-practical-17-and-exercises" class="nav-link" data-scroll-target="#practical-17-and-exercises"><span class="header-section-number">16.14</span> Practical 17 and exercises</a></li>
+  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">16.15</span> Live R laboratory</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./14-reporting.html">Module 7 · Reproducible research and AI-assisted coding</a></li><li class="breadcrumb-item"><a href="./14b-vibe-coding.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-vibe-coding" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="learning-outcomes" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="learning-outcomes"><span class="header-section-number">16.1</span> Learning outcomes</h2>
+<p>Describe what vibe coding is and where it fails for statistical work; write prompts that specify the question, data, design, and output; review AI-generated R code line by line; detect invented functions, wrong models, and silent data errors; verify results with known answers and independent checks; share a minimal reproducible example when debugging; and keep an honest record of AI assistance.</p>
+</section>
+<section id="vibe-coding" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="vibe-coding"><span class="header-section-number">16.2</span> From an idea to a first draft</h2>
+<p><strong>Vibe coding</strong> is an informal term for developing software by describing what you want in ordinary language, asking an AI system to generate code, running it, and requesting changes. The term is often associated with accepting implementation details without examining them closely. For a statistical analysis, we need to go further: understand the code, verify the calculations, and justify the model. In this book, we use the conversational approach as an entry into <strong>reviewed AI-assisted programming</strong>. See the <a href="https://cloud.google.com/discover/what-is-vibe-coding">overview of the term</a>.</p>
+<p>For example, a student might begin with “Make a colourful graph of crop yields.” An AI assistant can draft a plot quickly, but that request omits the data structure, units, experimental unit, and purpose. A graph of treatment means, a distribution of individual plot yields, and a fitted response curve answer different questions. Clear agricultural reasoning makes a better prompt and a better analysis.</p>
+<p>AI assistants are good at syntax, at remembering function names you have forgotten, and at explaining unfamiliar code. They are not responsible for your experiment. They do not know how your treatments were randomized, which plots were flooded, or why one value was recorded as <code>-999</code>, unless you tell them. Everything this book has taught about experimental units, missing values, and design-based analysis is exactly what you need to supervise an assistant.</p>
+</section>
+<section id="using-ai-with-r" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="using-ai-with-r"><span class="header-section-number">16.3</span> Using AI with R</h2>
+<p>One approach is to ask an AI chat assistant for a small R code draft, inspect it, and run it in RStudio. Another is to use an assistant integrated into an R development environment. Current examples include Posit Assistant in RStudio and Positron; their capabilities, access requirements, and settings are described in the <a href="https://docs.posit.co/ide/user/ide/guide/tools/posit-ai.html">RStudio guide</a> and <a href="https://positron.posit.co/assistant">Positron documentation</a>. Some editors can also show code completions from an assistant as you type. This lesson does not require a paid assistant or a particular model; tools change quickly, and the habits below apply to all of them.</p>
+<p>Begin with a small task: explain a function, summarize a table, improve axis labels, or diagnose a reproducible error. Ask for the reason behind each change. Read unfamiliar functions in R’s help system and confirm that suggested packages and arguments exist. A plausible function name is not evidence that a function is available.</p>
+</section>
+<section id="the-review-loop" class="level2" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="the-review-loop"><span class="header-section-number">16.4</span> The review loop</h2>
+<p>Productive AI-assisted programming follows a loop rather than a single request. Each pass is short enough that you can check it.</p>
+<div id="tbl-review-loop" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-review-loop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;16.1: The review loop for AI-assisted analysis
+</figcaption>
+<div aria-describedby="tbl-review-loop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>What you do</th>
+<th>What to look for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Describe</td>
+<td>State the question, data, design, and output</td>
+<td>Have you named the experimental unit and units of measurement?</td>
+</tr>
+<tr class="even">
+<td>2. Generate</td>
+<td>Ask for one step of code with explanations</td>
+<td>Is the step small enough to read in a minute?</td>
+</tr>
+<tr class="odd">
+<td>3. Read</td>
+<td>Read every line before running it</td>
+<td>Do you know what each function does? Does it exist?</td>
+</tr>
+<tr class="even">
+<td>4. Run</td>
+<td>Run in a fresh session on your data</td>
+<td>Errors, warnings, row counts, and group sizes</td>
+</tr>
+<tr class="odd">
+<td>5. Verify</td>
+<td>Check one result independently</td>
+<td>Hand calculation, known answer, or second method</td>
+</tr>
+<tr class="even">
+<td>6. Record</td>
+<td>Save accepted code and notes in the project</td>
+<td>Prompt, changes you made, and why</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>If you cannot explain a line, ask the assistant to explain it, then confirm the explanation with <code>?function_name</code>. If you still cannot explain it, do not submit it.</p>
+</section>
+<section id="write-a-prompt-that-specifies-the-analysis" class="level2" data-number="16.5">
+<h2 data-number="16.5" class="anchored" data-anchor-id="write-a-prompt-that-specifies-the-analysis"><span class="header-section-number">16.5</span> Write a prompt that specifies the analysis</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="A model prompt for an agricultural practical">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A model prompt for an agricultural practical
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I am learning R. I have independent plot observations from a teaching experiment. The columns are <code>treatment</code> and <code>yield_t_ha</code>; yield is measured in tonnes per hectare. Use base R. Produce a table with total records, nonmissing yields, missing yields, mean, and standard deviation for each treatment. Keep missing values in the data and exclude them only from calculations that require observed yields. Do not replace missing values with zero, delete outliers, or run significance tests. Include a small simulated example, explain the code, and show how I can check the results manually.</p>
+</div>
+</div>
+<p>Specify the <strong>question</strong>, <strong>experimental unit</strong>, <strong>column names and units</strong>, <strong>design</strong>, <strong>missing-value rule</strong>, and <strong>requested output</strong>. State restrictions such as “use base R” or “do not install packages.” Ask for one step at a time so you can inspect its result before proceeding. Share a small simulated example or a permitted, de-identified excerpt when explaining a problem; check your institution’s rules before sending research data to an external service.</p>
+<p>A reusable template helps. Fill in the brackets and delete what does not apply.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Prompt template for an analysis step">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Prompt template for an analysis step
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Context.</strong> I am an undergraduate learning R for agricultural data analysis. I use RStudio with R [version].</p>
+<p><strong>Data.</strong> The data frame <code>[name]</code> has [n] rows; each row is one [experimental unit, e.g.&nbsp;plot]. Columns: <code>[col]</code> ([meaning, unit]), … The output of <code>str([name])</code> is: [paste].</p>
+<p><strong>Design.</strong> [e.g.&nbsp;RCBD with 6 varieties in 4 blocks; treatments randomized within blocks.]</p>
+<p><strong>Task.</strong> [one step, e.g.&nbsp;fit the ANOVA model that matches this design and report SEm, CD at 5%, and CV.]</p>
+<p><strong>Constraints.</strong> Use [base R / named packages only]. Do not [delete rows, impute, change the design]. Explain each line in a comment.</p>
+<p><strong>Checks.</strong> Show me how to verify the result independently.</p>
+</div>
+</div>
+<p><code>str()</code> and <code>dput(head(data))</code> are the most useful things to paste: they tell the assistant the exact column names and types without sending the whole dataset.</p>
+</section>
+<section id="worked-example-review-a-generated-summary" class="level2" data-number="16.6">
+<h2 data-number="16.6" class="anchored" data-anchor-id="worked-example-review-a-generated-summary"><span class="header-section-number">16.6</span> Worked example: review a generated summary</h2>
+<p>The following is a teaching reference solution to the model prompt, not a transcript of a particular AI response. The simulated data contain a missing yield in the Control group. We deliberately count both rows and observed yields so the denominator is visible.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ai_trial <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">treatment =</span> <span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"Control"</span>, <span class="st">"Control"</span>, <span class="st">"Compost"</span>, <span class="st">"Compost"</span>, <span class="st">"Compost"</span>),</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">yield_t_ha =</span> <span class="fu">c</span>(<span class="fl">3.0</span>, <span class="fl">4.0</span>, <span class="cn">NA</span>, <span class="fl">4.0</span>, <span class="fl">4.5</span>, <span class="fl">5.0</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>summarize_yield <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  observed <span class="ot">&lt;-</span> x[<span class="sc">!</span><span class="fu">is.na</span>(x)]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">total =</span> <span class="fu">length</span>(x), <span class="at">observed =</span> <span class="fu">length</span>(observed),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(x)),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="cf">if</span> (<span class="fu">length</span>(observed)) <span class="fu">mean</span>(observed) <span class="cf">else</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">SD =</span> <span class="cf">if</span> (<span class="fu">length</span>(observed) <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="fu">sd</span>(observed) <span class="cf">else</span> <span class="cn">NA_real_</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>ai_summary <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">split</span>(ai_trial<span class="sc">$</span>yield_t_ha, ai_trial<span class="sc">$</span>treatment), summarize_yield</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>ai_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        total observed missing mean        SD
+Compost     3        3       0  4.5 0.5000000
+Control     3        2       1  3.5 0.7071068</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Independent checks against calculations we can do by hand</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(ai_summary[<span class="st">"Control"</span>, <span class="st">"total"</span>] <span class="sc">==</span> <span class="dv">3</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>          ai_summary[<span class="st">"Control"</span>, <span class="st">"observed"</span>] <span class="sc">==</span> <span class="dv">2</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>          ai_summary[<span class="st">"Control"</span>, <span class="st">"missing"</span>] <span class="sc">==</span> <span class="dv">1</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>          <span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(<span class="fu">unname</span>(ai_summary[<span class="st">"Control"</span>, <span class="st">"mean"</span>]), <span class="fl">3.5</span>)),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>          <span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(<span class="fu">unname</span>(ai_summary[<span class="st">"Compost"</span>, <span class="st">"mean"</span>]), <span class="fl">4.5</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The Control mean is <span class="math inline">\((3+4)/2=3.5\)</span> t/ha. Dividing by three, or replacing the missing observation with zero, would answer a different question. Its sample SD is approximately 0.707 t/ha; the Compost SD is 0.5 t/ha. With no observed yields, the mean is undefined; with only one observed yield, the sample SD is undefined. The function returns <code>NA</code> for those cases. Summary values alone do not demonstrate a treatment effect.</p>
+</section>
+<section id="worked-example-code-that-runs-but-answers-the-wrong-question" class="level2" data-number="16.7">
+<h2 data-number="16.7" class="anchored" data-anchor-id="worked-example-code-that-runs-but-answers-the-wrong-question"><span class="header-section-number">16.7</span> Worked example: code that runs but answers the wrong question</h2>
+<p>The most dangerous AI errors are not the ones that stop with an error message. They are the ones that run. Suppose a student asks: “Write R code to do ANOVA on my variety trial in <code>rcbd_varieties.csv</code>.” A typical first draft looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rb <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/rcbd_varieties.csv"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>draft <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield_t_ha <span class="sc">~</span> block <span class="sc">+</span> variety, <span class="at">data =</span> rb)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(draft)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+block        1 1.3954  1.3954   34.21 1.93e-05 ***
+variety      5 3.0359  0.6072   14.88 1.07e-05 ***
+Residuals   17 0.6934  0.0408                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>It runs and gives a significant result. But read the ANOVA table: <code>block</code> has <strong>1</strong> degree of freedom. There are four blocks, so the block line should have 3. Because <code>block</code> was read as a number, R fitted it as a straight-line trend in block number, as in regression, rather than as four separate groups. The prompt never said that block was a grouping factor, and the assistant did not check.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(rb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   24 obs. of  4 variables:
+ $ plot_id   : chr  "R01" "R02" "R03" "R04" ...
+ $ block     : int  1 1 1 1 1 1 2 2 2 2 ...
+ $ variety   : chr  "V4" "V1" "V6" "V2" ...
+ $ yield_t_ha: num  5.43 6.08 5.29 5.42 4.67 5.34 5.99 4.46 4.97 5.24 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rb<span class="sc">$</span>block <span class="ot">&lt;-</span> <span class="fu">factor</span>(rb<span class="sc">$</span>block)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>rb<span class="sc">$</span>variety <span class="ot">&lt;-</span> <span class="fu">factor</span>(rb<span class="sc">$</span>variety)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fixed <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield_t_ha <span class="sc">~</span> block <span class="sc">+</span> variety, <span class="at">data =</span> rb)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fixed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+block        3 1.5082  0.5027   12.99 0.00019 ***
+variety      5 3.0359  0.6072   15.69 1.7e-05 ***
+Residuals   15 0.5806  0.0387                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Now block has 3 degrees of freedom and the error mean square is correct. A second common draft drops the block term altogether, <code>aov(yield_t_ha ~ variety)</code>, which runs, but treats an RCBD as a CRD and inflates the error, as the experimental designs chapter showed. Neither mistake is a coding error; both are design errors. Checking the degrees of freedom against the design (blocks − 1, treatments − 1, and (blocks − 1)(treatments − 1) for error) catches both in seconds.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A design check you can always run</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fixed)[, <span class="st">"Df"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  3  5 15</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">block =</span> <span class="dv">4</span> <span class="sc">-</span> <span class="dv">1</span>, <span class="at">variety =</span> <span class="dv">6</span> <span class="sc">-</span> <span class="dv">1</span>, <span class="at">error =</span> (<span class="dv">4</span> <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="dv">6</span> <span class="sc">-</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  block variety   error 
+      3       5      15 </code></pre>
+</div>
+</div>
+</section>
+<section id="worked-example-a-function-that-does-not-exist" class="level2" data-number="16.8">
+<h2 data-number="16.8" class="anchored" data-anchor-id="worked-example-a-function-that-does-not-exist"><span class="header-section-number">16.8</span> Worked example: a function that does not exist</h2>
+<p>AI assistants sometimes suggest functions or arguments that sound right but do not exist, or that exist in a package you have not loaded. Before trusting a suggestion, ask R.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exists</span>(<span class="st">"aov"</span>)            <span class="co"># a real base R function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exists</span>(<span class="st">"anova_rcbd"</span>)     <span class="co"># a plausible but invented name</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(power.t.test)       <span class="co"># the arguments a function actually accepts</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>function (n = NULL, delta = NULL, sd = 1, sig.level = 0.05, power = NULL, 
+    type = c("two.sample", "one.sample", "paired"), alternative = c("two.sided", 
+        "one.sided"), strict = FALSE, tol = .Machine$double.eps^0.25) 
+NULL</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="st">"delta"</span> <span class="sc">%in%</span> <span class="fu">names</span>(<span class="fu">formals</span>(power.t.test))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="st">"effect_size"</span> <span class="sc">%in%</span> <span class="fu">names</span>(<span class="fu">formals</span>(power.t.test))  <span class="co"># an invented argument</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+<p>Use <code>?function_name</code> to read the documentation, <code>find("function_name")</code> to see which attached package provides it, and <code>packageVersion("package")</code> to check the installed version. If an assistant says a function is in a package, install and load that package, then confirm with the help page. Do not keep asking the assistant to fix an error caused by a function that never existed; ask for an approach using functions you can verify.</p>
+</section>
+<section id="verify-with-a-known-answer" class="level2" data-number="16.9">
+<h2 data-number="16.9" class="anchored" data-anchor-id="verify-with-a-known-answer"><span class="header-section-number">16.9</span> Verify with a known answer</h2>
+<p>The surest check is to run the code on data where you already know the answer. The previous chapters used a small example with groups <code>A = (3, 4, 5)</code>, <code>B = (4, 5, 6)</code>, and <code>C = (5, 6, 7)</code>, for which the treatment sum of squares is 6, the error mean square is 1, and F is 3. Any ANOVA code, generated or written by hand, must reproduce those values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>toy <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>), <span class="at">each =</span> <span class="dv">3</span>)),</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>))</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>toy_table <span class="ot">&lt;-</span> <span class="fu">anova</span>(<span class="fu">aov</span>(y <span class="sc">~</span> group, <span class="at">data =</span> toy))</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>toy_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value Pr(&gt;F)
+group      2      6       3       3  0.125
+Residuals  6      6       1               </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(toy_table[<span class="st">"group"</span>, <span class="st">"Sum Sq"</span>], <span class="dv">6</span>)),</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(toy_table[<span class="st">"Residuals"</span>, <span class="st">"Mean Sq"</span>], <span class="dv">1</span>)),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>          <span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(toy_table[<span class="st">"group"</span>, <span class="st">"F value"</span>], <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>stopifnot()</code> stops with an error if any statement is false, so a check like this can stay in your script and protect later edits. Other independent checks include comparing a mean with a hand calculation, comparing <code>nrow()</code> before and after a join, and comparing two methods that should agree, such as <code>aov()</code> with an <code>Error()</code> term and <code>agricolae::sp.plot()</code> for a split-plot.</p>
+</section>
+<section id="debug-with-a-minimal-reproducible-example" class="level2" data-number="16.10">
+<h2 data-number="16.10" class="anchored" data-anchor-id="debug-with-a-minimal-reproducible-example"><span class="header-section-number">16.10</span> Debug with a minimal reproducible example</h2>
+<p>When code fails, the assistant needs the same information a human helper would: the exact error, the code that produced it, and a small example of the data. A <strong>minimal reproducible example</strong> (reprex) is the smallest piece of code that someone else can run to see the same problem.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>small <span class="ot">&lt;-</span> <span class="fu">head</span>(rb, <span class="dv">4</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dput</span>(small)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>structure(list(plot_id = c("R01", "R02", "R03", "R04"), block = structure(c(1L, 
+1L, 1L, 1L), levels = c("1", "2", "3", "4"), class = "factor"), 
+    variety = structure(c(4L, 1L, 6L, 2L), levels = c("V1", "V2", 
+    "V3", "V4", "V5", "V6"), class = "factor"), yield_t_ha = c(5.43, 
+    6.08, 5.29, 5.42)), row.names = c(NA, 4L), class = "data.frame")</code></pre>
+</div>
+</div>
+<p><code>dput()</code> prints R code that recreates the data frame exactly, including column types. Paste that output, the failing line, and the full error message into your prompt. Ask the assistant to explain the cause <strong>before</strong> changing the code, and to change only the lines involved.</p>
+<p>Useful follow-up prompts include:</p>
+<ul>
+<li>“Explain why the number of observed yields differs from the number of records.”</li>
+<li>“My error is <code>object 'yield' not found</code>. Here is <code>names(ai_trial)</code> and the failing line. Explain the mismatch and change only that line.”</li>
+<li>“Review this model for a randomized block experiment. Explain how the block factor enters the formula before changing the code.”</li>
+<li>“Check whether the degrees of freedom in this ANOVA table match a design with 6 treatments and 4 blocks.”</li>
+<li>“Add units and a caption to this plot without changing the observations or fitted model.”</li>
+</ul>
+<p>When a draft fails, provide the exact error and the smallest example that reproduces it. Avoid repeatedly asking an assistant to repair a long script without checking what it changes. A coding error and a statistical error are different: <code>aov(yield ~ treatment)</code> can execute successfully while omitting a block factor required by the design. A paired test, an independent-samples test, and a repeated-measures model are not interchangeable repairs.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Successful execution is only the first check">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Successful execution is only the first check
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Inspect row counts, units, missingness, group sizes, model formulas, degrees of freedom, and assumptions. Verify at least one result independently. Check that plots and written conclusions match the computed output. Do not ask AI to keep changing an analysis until a p-value becomes significant. You remain responsible for the method and interpretation.</p>
+</div>
+</div>
+</section>
+<section id="prompts-for-each-stage-of-a-project" class="level2" data-number="16.11">
+<h2 data-number="16.11" class="anchored" data-anchor-id="prompts-for-each-stage-of-a-project"><span class="header-section-number">16.11</span> Prompts for each stage of a project</h2>
+<p>The chapters of this book map onto the stages of an analysis. Each stage has its own risks to state in the prompt.</p>
+<div id="tbl-stage-prompts" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-stage-prompts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;16.2: Adding design information to prompts at each stage
+</figcaption>
+<div aria-describedby="tbl-stage-prompts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>Example request</th>
+<th>Add this to protect the analysis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Import</td>
+<td>“Read <code>trial.xlsx</code>, sheet 2, into R.”</td>
+<td>“Show <code>str()</code> afterwards; treat <code>-999</code> and blank cells as missing.”</td>
+</tr>
+<tr class="even">
+<td>Cleaning</td>
+<td>“Find duplicate plots and impossible values.”</td>
+<td>“Flag them in a new column; do not delete or replace anything.”</td>
+</tr>
+<tr class="odd">
+<td>Wrangling</td>
+<td>“Join soil and yield tables.”</td>
+<td>“Join by <code>plot_id</code>; report rows before and after; stop if keys repeat.”</td>
+</tr>
+<tr class="even">
+<td>Graphics</td>
+<td>“Plot yield by treatment.”</td>
+<td>“Show individual plots, not only means; label axes with units.”</td>
+</tr>
+<tr class="odd">
+<td>Design analysis</td>
+<td>“Analyse this split-plot trial.”</td>
+<td>“Main plots: irrigation; subplots: nitrogen; blocks: 3. Use two error terms.”</td>
+</tr>
+<tr class="even">
+<td>Reporting</td>
+<td>“Write a results paragraph.”</td>
+<td>“Use only numbers from this output; do not add claims or citations.”</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="responsible-use" class="level2" data-number="16.12">
+<h2 data-number="16.12" class="anchored" data-anchor-id="responsible-use"><span class="header-section-number">16.12</span> Responsible use</h2>
+<p><strong>Data privacy.</strong> Research data may belong to your institution, a farmer, or a funding agency. Do not paste confidential or identifiable data into an external AI service without permission. A simulated example with the same structure usually serves the purpose.</p>
+<p><strong>Academic integrity.</strong> Follow your course’s rules on AI assistance. Where it is permitted, acknowledge it. A short statement is enough, for example: “An AI assistant was used to draft the R code for data import and plotting. All code was reviewed, tested against hand calculations, and corrected by the author, who is responsible for the analysis.”</p>
+<p><strong>Honest reporting.</strong> AI may help draft a methods paragraph, but the paragraph must describe the analysis actually performed. Never invent citations, observations, or results to complete a report. Assistants sometimes produce references that look real but do not exist; check every reference in the original source.</p>
+</section>
+<section id="save-a-reproducible-record" class="level2" data-number="16.13">
+<h2 data-number="16.13" class="anchored" data-anchor-id="save-a-reproducible-record"><span class="header-section-number">16.13</span> Save a reproducible record</h2>
+<p>Keep the accepted R code in the project and render the report in a fresh session. Record package versions, relevant prompts, substantive AI contributions, and the corrections you made. A simple log in your project folder is enough:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ai-log.md (kept in the project folder)</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2026-10-20  Prompt: RCBD ANOVA for rcbd_varieties.csv (template above)</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#             Accepted: aov() model after converting block to factor</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#             Corrected: draft fitted block as numeric (1 df); fixed with factor()</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#             Verified: df = 3, 5, 15; CD checked by hand</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="practical-17-and-exercises" class="level2" data-number="16.14">
+<h2 data-number="16.14" class="anchored" data-anchor-id="practical-17-and-exercises"><span class="header-section-number">16.14</span> Practical 17 and exercises</h2>
+<ol type="1">
+<li>Give an assistant the model prompt above, or write your own proposed solution if no assistant is available. Compare its code with the reference calculation. Test an all-missing group and a group with one observed yield.</li>
+<li>Ask an assistant for an ANOVA of <code>factorial_rcbd.csv</code> <strong>without</strong> describing the design. Then ask again using the prompt template. Compare the two answers and list the differences.</li>
+<li>Find two functions suggested by an assistant that you have not used before. Confirm with <code>exists()</code>, <code>?</code>, and <code>find()</code> that they exist, and explain their arguments.</li>
+<li>Write a known-answer test with <code>stopifnot()</code> for a function that calculates CD at 5%.</li>
+<li>Create a minimal reproducible example with <code>dput()</code> for an error you met in an earlier practical, and write the prompt you would send.</li>
+<li>Write an acknowledgement statement for your integrated project.</li>
+</ol>
+<p>Submit the prompts, reviewed code, verification results, and a short account of what you accepted or corrected. Explain every line you submit.</p>
+<p><strong>Chapter review.</strong> An AI assistant can draft R code quickly, but it cannot see your experiment. Specify the design in the prompt, read every line, check degrees of freedom and row counts, verify with known answers, and record what you changed. Code that runs is only the first check; responsibility for the analysis stays with you.</p>
+</section>
+<section id="live-r-laboratory" class="level2" data-number="16.15">
+<h2 data-number="16.15" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">16.15</span> Live R laboratory</h2>
+<div class="live-r">
+<p><strong>Spot the mistake in a generated analysis</strong></p>
+<p>Edit the code, then select <strong>Run R</strong>. The first run downloads R into your browser and may take a little time. <strong>Copy code</strong> also lets you use this example in RStudio.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A "generated" analysis of an RCBD: 4 varieties in 3 blocks</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>trial <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">block =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">each =</span> <span class="dv">4</span>),</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">variety =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"V1"</span>, <span class="st">"V2"</span>, <span class="st">"V3"</span>, <span class="st">"V4"</span>), <span class="at">times =</span> <span class="dv">3</span>),</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">yield =</span> <span class="fu">c</span>(<span class="fl">4.8</span>, <span class="fl">5.4</span>, <span class="fl">4.0</span>, <span class="fl">5.5</span>, <span class="fl">4.6</span>, <span class="fl">4.9</span>, <span class="fl">4.1</span>, <span class="fl">5.3</span>, <span class="fl">4.1</span>, <span class="fl">5.0</span>, <span class="fl">3.5</span>, <span class="fl">5.1</span>))</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield <span class="sc">~</span> block <span class="sc">+</span> variety, <span class="at">data =</span> trial)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Expected degrees of freedom for this design</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">block =</span> <span class="dv">3</span> <span class="sc">-</span> <span class="dv">1</span>, <span class="at">variety =</span> <span class="dv">4</span> <span class="sc">-</span> <span class="dv">1</span>, <span class="at">error =</span> (<span class="dv">3</span> <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (<span class="dv">4</span> <span class="sc">-</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Investigate.</strong> Compare the degrees of freedom in the ANOVA table with the expected values. Which term is wrong, and why? Fix the code with <code>factor()</code> and rerun. How does the error mean square change?</p>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="From the browser to your practical notebook">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+From the browser to your practical notebook
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.</p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./14-reporting.html" class="pagination-link" aria-label="Reproducible reports with R Markdown and Quarto">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./references.html" class="pagination-link" aria-label="References and further reading">
+        <span class="nav-page-text">References and further reading</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
+
+
+
+
+</body></html>

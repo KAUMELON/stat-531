@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e5488f36f73934da31e81cbe0465adae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -291,8 +291,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
   </div>
 </li>
       </ul>
@@ -300,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text">Module 7 · Reproducible research</span></a>
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -309,7 +315,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
   </div>
 </li>
       </ul>
@@ -367,8 +379,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#understanding-what-happens-inside-a-grouped-operation" id="toc-understanding-what-happens-inside-a-grouped-operation" class="nav-link" data-scroll-target="#understanding-what-happens-inside-a-grouped-operation"><span class="header-section-number">5.6</span> Understanding what happens inside a grouped operation</a></li>
   <li><a href="#weighted-means-and-unequal-harvested-areas" id="toc-weighted-means-and-unequal-harvested-areas" class="nav-link" data-scroll-target="#weighted-means-and-unequal-harvested-areas"><span class="header-section-number">5.7</span> Weighted means and unequal harvested areas</a></li>
   <li><a href="#joining-is-not-matching-by-row-position" id="toc-joining-is-not-matching-by-row-position" class="nav-link" data-scroll-target="#joining-is-not-matching-by-row-position"><span class="header-section-number">5.8</span> Joining is not matching by row position</a></li>
-  <li><a href="#practical-5-and-exercises" id="toc-practical-5-and-exercises" class="nav-link" data-scroll-target="#practical-5-and-exercises"><span class="header-section-number">5.9</span> Practical 5 and exercises</a></li>
-  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">5.10</span> Live R laboratory</a></li>
+  <li><a href="#more-verbs-for-everyday-tasks" id="toc-more-verbs-for-everyday-tasks" class="nav-link" data-scroll-target="#more-verbs-for-everyday-tasks"><span class="header-section-number">5.9</span> More verbs for everyday tasks</a></li>
+  <li><a href="#recoding-values-with-case_when" id="toc-recoding-values-with-case_when" class="nav-link" data-scroll-target="#recoding-values-with-case_when"><span class="header-section-number">5.10</span> Recoding values with case_when()</a></li>
+  <li><a href="#applying-one-operation-to-many-columns-with-across" id="toc-applying-one-operation-to-many-columns-with-across" class="nav-link" data-scroll-target="#applying-one-operation-to-many-columns-with-across"><span class="header-section-number">5.11</span> Applying one operation to many columns with across()</a></li>
+  <li><a href="#reshaping-a-field-book-with-pivot_wider" id="toc-reshaping-a-field-book-with-pivot_wider" class="nav-link" data-scroll-target="#reshaping-a-field-book-with-pivot_wider"><span class="header-section-number">5.12</span> Reshaping a field book with pivot_wider()</a></li>
+  <li><a href="#splitting-and-joining-codes" id="toc-splitting-and-joining-codes" class="nav-link" data-scroll-target="#splitting-and-joining-codes"><span class="header-section-number">5.13</span> Splitting and joining codes</a></li>
+  <li><a href="#stacking-seasons-with-bind_rows" id="toc-stacking-seasons-with-bind_rows" class="nav-link" data-scroll-target="#stacking-seasons-with-bind_rows"><span class="header-section-number">5.14</span> Stacking seasons with bind_rows()</a></li>
+  <li><a href="#changes-over-time-with-lag" id="toc-changes-over-time-with-lag" class="nav-link" data-scroll-target="#changes-over-time-with-lag"><span class="header-section-number">5.15</span> Changes over time with lag()</a></li>
+  <li><a href="#a-summary-table-for-an-experiment-report" id="toc-a-summary-table-for-an-experiment-report" class="nav-link" data-scroll-target="#a-summary-table-for-an-experiment-report"><span class="header-section-number">5.16</span> A summary table for an experiment report</a></li>
+  <li><a href="#practical-5-and-exercises" id="toc-practical-5-and-exercises" class="nav-link" data-scroll-target="#practical-5-and-exercises"><span class="header-section-number">5.17</span> Practical 5 and exercises</a></li>
+  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">5.18</span> Live R laboratory</a></li>
   </ul>
 </nav>
     </div>
@@ -396,7 +416,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="learning-outcomes" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="learning-outcomes"><span class="header-section-number">5.1</span> Learning outcomes</h2>
-<p>Use selection, filtering, transformation, sorting, grouping, joins, and reshaping to answer agricultural questions while preserving observational units.</p>
+<p>Use selection, filtering, transformation, recoding, sorting, grouping, joins, stacking, and reshaping to answer agricultural questions while preserving observational units; build field-book tables, growth-rate tables, and descriptive summary tables for reports.</p>
 </section>
 <section id="a-grammar-of-data-manipulation" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="a-grammar-of-data-manipulation"><span class="header-section-number">5.2</span> A grammar of data manipulation</h2>
@@ -445,7 +465,7 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_yield =</span> <span class="fu">sd</span>(yield_t_ha, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>treatment_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 x 5
+<pre><code># A tibble: 3 × 5
   treatment n_plots n_yield mean_yield sd_yield
   &lt;chr&gt;       &lt;int&gt;   &lt;int&gt;      &lt;dbl&gt;    &lt;dbl&gt;
 1 Compost        20      20       3.84    0.406
@@ -464,7 +484,7 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">mean_ph =</span> <span class="fu">mean</span>(ph),</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">median_n =</span> <span class="fu">median</span>(available_n_mg_kg), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 x 4
+<pre><code># A tibble: 3 × 4
   soil_class     n mean_ph median_n
   &lt;chr&gt;      &lt;int&gt;   &lt;dbl&gt;    &lt;dbl&gt;
 1 Clay loam     20    6.37     38.0
@@ -479,7 +499,7 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean_temp_c =</span> <span class="fu">mean</span>(temp_c), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 x 4
+<pre><code># A tibble: 6 × 4
   year  n_months annual_rain_mm mean_temp_c
   &lt;chr&gt;    &lt;int&gt;          &lt;dbl&gt;       &lt;dbl&gt;
 1 2015        12          2055.        26.2
@@ -527,7 +547,7 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span>plot_id, <span class="at">names_to =</span> <span class="st">"nutrient"</span>, <span class="at">values_to =</span> <span class="st">"mg_kg"</span>)</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(soil_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 x 3
+<pre><code># A tibble: 6 × 3
   plot_id nutrient          mg_kg
   &lt;chr&gt;   &lt;chr&gt;             &lt;dbl&gt;
 1 P001    available_n_mg_kg  30.2
@@ -552,7 +572,7 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(within_treatment[, <span class="fu">c</span>(<span class="st">"plot_id"</span>, <span class="st">"treatment"</span>, <span class="st">"yield_t_ha"</span>,</span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"treatment_mean"</span>, <span class="st">"deviation_from_treatment"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 x 5
+<pre><code># A tibble: 6 × 5
   plot_id treatment yield_t_ha treatment_mean deviation_from_treatment
   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;          &lt;dbl&gt;                    &lt;dbl&gt;
 1 P001    Control         2.42           3.12                   -0.704
@@ -606,28 +626,298 @@ Attaching package: 'dplyr'</code></pre>
 </div>
 <p>The pH values remain correctly aligned because the join uses <code>plot_id</code>. A correct key is therefore more valuable than a visually tidy row order. For data collected at several depths or dates, <code>plot_id</code> alone may not be unique; the key might need <code>plot_id</code>, <code>depth_cm</code>, and <code>sampling_date</code>. A one-to-many relationship can be legitimate, but the resulting observational unit must be stated.</p>
 </section>
-<section id="practical-5-and-exercises" class="level2" data-number="5.9">
-<h2 data-number="5.9" class="anchored" data-anchor-id="practical-5-and-exercises"><span class="header-section-number">5.9</span> Practical 5 and exercises</h2>
+<section id="more-verbs-for-everyday-tasks" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="more-verbs-for-everyday-tasks"><span class="header-section-number">5.9</span> More verbs for everyday tasks</h2>
+<p>A few more verbs cover most remaining day-to-day work. <code>count()</code> tabulates combinations, <code>distinct()</code> lists unique combinations, <code>rename()</code> and <code>relocate()</code> tidy column names and order, and <code>slice_max()</code> picks the rows with the largest values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>crop <span class="sc">|&gt;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(treatment, variety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  treatment variety  n
+1   Compost       A 10
+2   Compost       B 10
+3   Control       A 10
+4   Control       B 10
+5   Mineral       A 10
+6   Mineral       B 10</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>crop <span class="sc">|&gt;</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(treatment, variety) <span class="sc">|&gt;</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>crop <span class="sc">|&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">n_kg_ha =</span> nitrogen_kg_ha) <span class="sc">|&gt;</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(yield_t_ha, <span class="at">.after =</span> plot_id) <span class="sc">|&gt;</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  plot_id yield_t_ha block treatment variety replicate n_kg_ha rainfall_mm
+1    P001       2.42     1   Control       A         1    10.2       601.5
+2    P002       2.82     1   Control       A         2    23.0       782.1
+3    P003       2.40     1   Control       B         1    21.2       609.0
+  yield_kg_ha nitrogen_band
+1        2420         Lower
+2        2820         Lower
+3        2400         Lower</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>crop <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment) <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(yield_t_ha, <span class="at">n =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(plot_id, treatment, variety, yield_t_ha)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  plot_id treatment variety yield_t_ha
+  &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;        &lt;dbl&gt;
+1 P041    Compost   A             4.52
+2 P055    Compost   B             4.42
+3 P028    Control   B             4.16
+4 P052    Control   B             3.98
+5 P045    Mineral   A             5.16
+6 P036    Mineral   B             4.86</code></pre>
+</div>
+</div>
+<p><code>count(treatment, variety)</code> is a quick check of a factorial layout: every combination should appear the same number of times. <code>slice_max()</code> within groups returns the two highest-yielding plots of each treatment. If two plots tie, <code>slice_max()</code> keeps both, so the result can have more rows than requested.</p>
+</section>
+<section id="recoding-values-with-case_when" class="level2" data-number="5.10">
+<h2 data-number="5.10" class="anchored" data-anchor-id="recoding-values-with-case_when"><span class="header-section-number">5.10</span> Recoding values with case_when()</h2>
+<p><code>if_else()</code> handles two outcomes. For several, use <code>case_when()</code>, which checks conditions in order and uses the first one that is <code>TRUE</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>crop <span class="ot">&lt;-</span> crop <span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_class =</span> <span class="fu">case_when</span>(</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    nitrogen_kg_ha <span class="sc">&lt;</span> <span class="dv">40</span> <span class="sc">~</span> <span class="st">"Low"</span>,</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    nitrogen_kg_ha <span class="sc">&lt;</span> <span class="dv">80</span> <span class="sc">~</span> <span class="st">"Medium"</span>,</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    nitrogen_kg_ha <span class="sc">&gt;=</span> <span class="dv">80</span> <span class="sc">~</span> <span class="st">"High"</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>crop <span class="sc">|&gt;</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(n_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  n_class  n
+1    High 20
+2     Low 20
+3  Medium 20</code></pre>
+</div>
+</div>
+<p>Because the conditions are checked in order, a plot with 30 kg N/ha matches <code>&lt; 40</code> and is labelled “Low” even though it also satisfies <code>&lt; 80</code>. Write conditions from the most restrictive to the least. A value that matches no condition, including a missing nitrogen value, becomes <code>NA</code>, which is usually what you want: an unknown dose should not be given a class.</p>
+</section>
+<section id="applying-one-operation-to-many-columns-with-across" class="level2" data-number="5.11">
+<h2 data-number="5.11" class="anchored" data-anchor-id="applying-one-operation-to-many-columns-with-across"><span class="header-section-number">5.11</span> Applying one operation to many columns with across()</h2>
+<p>Soil data often have many nutrient columns that need the same summary. <code>across()</code> applies one or more functions to a set of columns without repeating code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>soil <span class="sc">|&gt;</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(soil_class) <span class="sc">|&gt;</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">across</span>(<span class="fu">c</span>(ph, available_n_mg_kg, available_p_mg_kg),</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">sd =</span> sd)),</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric), \(x) <span class="fu">round</span>(x, <span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 8
+  soil_class     n ph_mean ph_sd available_n_mg_kg_mean available_n_mg_kg_sd
+  &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;                  &lt;dbl&gt;                &lt;dbl&gt;
+1 Clay loam     20    6.37  0.65                   39.6                 6.46
+2 Loam          20    6.21  0.56                   37.5                 7.27
+3 Sandy loam    20    6.19  0.65                   35.6                 8.86
+# ℹ 2 more variables: available_p_mg_kg_mean &lt;dbl&gt;, available_p_mg_kg_sd &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>The new columns are named by joining the column and function names, such as <code>ph_mean</code> and <code>ph_sd</code>. <code>where(is.numeric)</code> selects every numeric column, and <code>\(x) round(x, 2)</code> is a short way of writing <code>function(x) round(x, 2)</code>. Rounding is done last, for display only; never round values before calculating with them.</p>
+</section>
+<section id="reshaping-a-field-book-with-pivot_wider" class="level2" data-number="5.12">
+<h2 data-number="5.12" class="anchored" data-anchor-id="reshaping-a-field-book-with-pivot_wider"><span class="header-section-number">5.12</span> Reshaping a field book with pivot_wider()</h2>
+<p>Plot-level data are stored long, one row per plot. For checking a design or for hand calculation, the traditional layout is wide: one row per block and one column per treatment. <code>pivot_wider()</code> makes that table, and <code>pivot_longer()</code> reverses it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>rcbd <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/rcbd.csv"</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>field_table <span class="ot">&lt;-</span> rcbd <span class="sc">|&gt;</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(block, treatment, yield_t_ha) <span class="sc">|&gt;</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">names_from =</span> treatment, <span class="at">values_from =</span> yield_t_ha)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>field_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  block Control Compost Mineral
+  &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1     1    2.39    2.9     3.16
+2     2    2.57    3.56    3.43
+3     3    3.01    3.25    3.85
+4     4    3.19    3.49    3.91
+5     5    3.32    4.14    3.81
+6     6    3.65    4.08    4.02</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Treatment totals and block totals, as in a hand-calculated ANOVA</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(field_table[, <span class="sc">-</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Control Compost Mineral 
+  18.13   21.42   22.18 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">block =</span> field_table<span class="sc">$</span>block, <span class="at">total =</span> <span class="fu">rowSums</span>(field_table[, <span class="sc">-</span><span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  block total
+1     1  8.45
+2     2  9.56
+3     3 10.11
+4     4 10.59
+5     5 11.27
+6     6 11.75</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>back_to_long <span class="ot">&lt;-</span> field_table <span class="sc">|&gt;</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span>block, <span class="at">names_to =</span> <span class="st">"treatment"</span>, <span class="at">values_to =</span> <span class="st">"yield_t_ha"</span>)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(back_to_long) <span class="sc">==</span> <span class="fu">nrow</span>(rcbd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>If a block lacked a treatment, the wide table would show <code>NA</code> in that cell, which makes a missing plot easy to see. If a block had <strong>two</strong> plots of the same treatment, <code>pivot_wider()</code> would warn that values are not uniquely identified. That warning is a design check: it means the key (block and treatment) does not identify one plot.</p>
+</section>
+<section id="splitting-and-joining-codes" class="level2" data-number="5.13">
+<h2 data-number="5.13" class="anchored" data-anchor-id="splitting-and-joining-codes"><span class="header-section-number">5.13</span> Splitting and joining codes</h2>
+<p>Field books often combine information in one code, such as <code>T2-R3</code> for treatment 2 in replicate 3. <code>separate_wider_delim()</code> splits such a column, and <code>unite()</code> joins columns back into a code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>coded <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">plot_code =</span> <span class="fu">c</span>(<span class="st">"T1-R1"</span>, <span class="st">"T1-R2"</span>, <span class="st">"T2-R1"</span>, <span class="st">"T2-R2"</span>),</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">yield_t_ha =</span> <span class="fu">c</span>(<span class="fl">3.2</span>, <span class="fl">3.5</span>, <span class="fl">4.1</span>, <span class="fl">3.9</span>))</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>split_codes <span class="ot">&lt;-</span> coded <span class="sc">|&gt;</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate_wider_delim</span>(plot_code, <span class="at">delim =</span> <span class="st">"-"</span>,</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"treatment"</span>, <span class="st">"replicate"</span>))</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>split_codes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  treatment replicate yield_t_ha
+  &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;
+1 T1        R1               3.2
+2 T1        R2               3.5
+3 T2        R1               4.1
+4 T2        R2               3.9</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>split_codes <span class="sc">|&gt;</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">unite</span>(<span class="st">"plot_code"</span>, treatment, replicate, <span class="at">sep =</span> <span class="st">"-"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  plot_code yield_t_ha
+  &lt;chr&gt;          &lt;dbl&gt;
+1 T1-R1            3.2
+2 T1-R2            3.5
+3 T2-R1            4.1
+4 T2-R2            3.9</code></pre>
+</div>
+</div>
+<p>Splitting a code is safe only if every code follows the same pattern. <code>separate_wider_delim()</code> stops with an error if a code has too few or too many pieces, which is a useful check on data entry.</p>
+</section>
+<section id="stacking-seasons-with-bind_rows" class="level2" data-number="5.14">
+<h2 data-number="5.14" class="anchored" data-anchor-id="stacking-seasons-with-bind_rows"><span class="header-section-number">5.14</span> Stacking seasons with bind_rows()</h2>
+<p>Data from different seasons, sites, or years usually arrive in separate files with the same columns. <code>bind_rows()</code> stacks them, and <code>.id</code> records where each row came from.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>kharif <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">plot_id =</span> <span class="fu">c</span>(<span class="st">"P01"</span>, <span class="st">"P02"</span>, <span class="st">"P03"</span>),</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">yield_t_ha =</span> <span class="fu">c</span>(<span class="fl">4.1</span>, <span class="fl">4.4</span>, <span class="fl">3.9</span>))</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>rabi <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">plot_id =</span> <span class="fu">c</span>(<span class="st">"P01"</span>, <span class="st">"P02"</span>, <span class="st">"P03"</span>),</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">yield_t_ha =</span> <span class="fu">c</span>(<span class="fl">3.2</span>, <span class="fl">3.6</span>, <span class="fl">3.1</span>))</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>seasons <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(<span class="at">kharif =</span> kharif, <span class="at">rabi =</span> rabi, <span class="at">.id =</span> <span class="st">"season"</span>)</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>seasons</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  season plot_id yield_t_ha
+1 kharif     P01        4.1
+2 kharif     P02        4.4
+3 kharif     P03        3.9
+4   rabi     P01        3.2
+5   rabi     P02        3.6
+6   rabi     P03        3.1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>seasons <span class="sc">|&gt;</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(season) <span class="sc">|&gt;</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_yield =</span> <span class="fu">mean</span>(yield_t_ha), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  season mean_yield
+  &lt;chr&gt;       &lt;dbl&gt;
+1 kharif       4.13
+2 rabi         3.3 </code></pre>
+</div>
+</div>
+<p>Without the <code>season</code> column, the stacked table would contain two rows for each plot with nothing to tell them apart. Always keep the identifier of the source when combining tables. Check also that columns have the same names and units in every file before stacking; <code>bind_rows()</code> matches columns by name and fills missing ones with <code>NA</code>.</p>
+</section>
+<section id="changes-over-time-with-lag" class="level2" data-number="5.15">
+<h2 data-number="5.15" class="anchored" data-anchor-id="changes-over-time-with-lag"><span class="header-section-number">5.15</span> Changes over time with lag()</h2>
+<p>Growth analysis compares each observation with the previous one. <code>lag()</code> shifts a column down by one row, so the difference between a value and its lag is the change since the last sampling date.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>growth <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/growth.csv"</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>growth <span class="sc">|&gt;</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(day) <span class="sc">|&gt;</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">mean_biomass =</span> <span class="fu">mean</span>(biomass_g_m2), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(day) <span class="sc">|&gt;</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gain_g_m2 =</span> mean_biomass <span class="sc">-</span> <span class="fu">lag</span>(mean_biomass),</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">interval_days =</span> day <span class="sc">-</span> <span class="fu">lag</span>(day),</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">crop_growth_rate =</span> gain_g_m2 <span class="sc">/</span> interval_days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 6
+     day     n mean_biomass gain_g_m2 interval_days crop_growth_rate
+   &lt;int&gt; &lt;int&gt;        &lt;dbl&gt;     &lt;dbl&gt;         &lt;int&gt;            &lt;dbl&gt;
+ 1    10     3         58.3      NA              NA            NA   
+ 2    20     3        105.       46.3            10             4.63
+ 3    30     3        179.       74.1            10             7.41
+ 4    40     3        300.      122.             10            12.2 
+ 5    50     3        505.      204.             10            20.4 
+ 6    60     3        682.      177.             10            17.7 
+ 7    70     3        808.      126.             10            12.6 
+ 8    80     3        901.       92.7            10             9.27
+ 9    90     3        943.       42.2            10             4.22
+10   100     3        964.       21.6            10             2.16
+11   110     3        984.       19.3            10             1.93
+12   120     3        997.       13.7            10             1.37</code></pre>
+</div>
+</div>
+<p>The crop growth rate, in g/m²/day, is the gain in biomass divided by the number of days between samplings. The first row has no previous value, so its gain is <code>NA</code>. <code>arrange(day)</code> matters: <code>lag()</code> uses row order, not dates, so unsorted data would give meaningless differences. Each sampling date here is a mean of independently harvested quadrats; a different set of plants is measured each time.</p>
+</section>
+<section id="a-summary-table-for-an-experiment-report" class="level2" data-number="5.16">
+<h2 data-number="5.16" class="anchored" data-anchor-id="a-summary-table-for-an-experiment-report"><span class="header-section-number">5.16</span> A summary table for an experiment report</h2>
+<p>The verbs combine into a standard descriptive table: number of observations, mean, standard deviation, standard error, and coefficient of variation for each treatment combination.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>crop <span class="sc">|&gt;</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment, variety) <span class="sc">|&gt;</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(yield_t_ha)),</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> <span class="fu">mean</span>(yield_t_ha, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(yield_t_ha, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">se =</span> sd <span class="sc">/</span> <span class="fu">sqrt</span>(n),</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">cv_percent =</span> <span class="dv">100</span> <span class="sc">*</span> sd <span class="sc">/</span> mean) <span class="sc">|&gt;</span></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(mean, sd, se, cv_percent), \(x) <span class="fu">round</span>(x, <span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+  treatment variety     n  mean    sd    se cv_percent
+  &lt;chr&gt;     &lt;chr&gt;   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
+1 Compost   A          10  3.72  0.45  0.14      12.1 
+2 Compost   B          10  3.95  0.34  0.11       8.59
+3 Control   A          10  2.92  0.38  0.12      13.0 
+4 Control   B          10  3.32  0.52  0.16      15.6 
+5 Mineral   A          10  4.32  0.39  0.12       8.94
+6 Mineral   B          10  4.39  0.3   0.1        6.88</code></pre>
+</div>
+</div>
+<p>This table describes the spread of plots <strong>within</strong> each group. It is not the CV of an experiment, which comes from the error mean square of the analysis that matches the design (see <a href="12b-experimental-designs.html" class="quarto-xref"><span>Chapter 13</span></a>). Use this table to look at the data; use the design-based analysis to compare treatments.</p>
+</section>
+<section id="practical-5-and-exercises" class="level2" data-number="5.17">
+<h2 data-number="5.17" class="anchored" data-anchor-id="practical-5-and-exercises"><span class="header-section-number">5.17</span> Practical 5 and exercises</h2>
 <ol type="1">
 <li>Produce treatment-by-variety summaries with sample size, mean, and standard deviation.</li>
 <li>Find the five highest-yielding plots. Why is choosing their treatment after looking at the data an exploratory decision?</li>
 <li>Join crop and soil data, then summarize available nitrogen by treatment.</li>
 <li>Calculate annual rainfall only for years with 12 recorded months. Explain why <code>sum(..., na.rm = TRUE)</code> could understate rainfall in an incomplete year.</li>
 <li>Introduce a repeated key into a copy of the soil table and investigate its effect on the joined row count.</li>
+<li>Use <code>pivot_wider()</code> to arrange <code>crop_trial.csv</code> as one row per plot pair and one column per variety. What warning do you get, and what does it tell you about the design?</li>
+<li>Summarize mean, SD, and SE of available N, P, and K by soil class using a single <code>across()</code> call.</li>
+<li>Calculate crop growth rate between successive sampling dates from <code>growth.csv</code>. When is it highest?</li>
 </ol>
 <p><strong>Chapter review.</strong> Grouping changes the level of a question. Check keys, denominators, units, and completeness whenever observations are combined.</p>
 </section>
-<section id="live-r-laboratory" class="level2" data-number="5.10">
-<h2 data-number="5.10" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">5.10</span> Live R laboratory</h2>
+<section id="live-r-laboratory" class="level2" data-number="5.18">
+<h2 data-number="5.18" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">5.18</span> Live R laboratory</h2>
 <div class="live-r">
 <p><strong>Summarize treatment groups</strong></p>
 <p>Edit the code, then select <strong>Run R</strong>. The first run downloads R into your browser and may take a little time. <strong>Copy code</strong> also lets you use this example in RStudio.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>trial <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">treatment =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"Compost"</span>), <span class="at">each =</span> <span class="dv">4</span>),</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">yield_t_ha =</span> <span class="fu">c</span>(<span class="fl">3.1</span>, <span class="fl">3.4</span>, <span class="fl">3.2</span>, <span class="fl">3.5</span>, <span class="fl">3.9</span>, <span class="fl">4.1</span>, <span class="fl">3.8</span>, <span class="fl">4.2</span>)</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(yield_t_ha <span class="sc">~</span> treatment, trial,</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>          <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">n =</span> <span class="fu">length</span>(x), <span class="at">mean =</span> <span class="fu">mean</span>(x), <span class="at">sd =</span> <span class="fu">sd</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>trial <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">treatment =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"Compost"</span>), <span class="at">each =</span> <span class="dv">4</span>),</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">yield_t_ha =</span> <span class="fu">c</span>(<span class="fl">3.1</span>, <span class="fl">3.4</span>, <span class="fl">3.2</span>, <span class="fl">3.5</span>, <span class="fl">3.9</span>, <span class="fl">4.1</span>, <span class="fl">3.8</span>, <span class="fl">4.2</span>)</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(yield_t_ha <span class="sc">~</span> treatment, trial,</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>          <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">n =</span> <span class="fu">length</span>(x), <span class="at">mean =</span> <span class="fu">mean</span>(x), <span class="at">sd =</span> <span class="fu">sd</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Investigate.</strong> This base R example mirrors the grouped summaries explained with dplyr in the chapter. The simulated difference is descriptive; an experimental design is needed for causal interpretation.</p>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled" title="From the browser to your practical notebook">
@@ -1079,9 +1369,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </nav>
 </div> <!-- /content -->
 <script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 
 
 
 
-<script defer src="/stat-531/assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 </body></html>

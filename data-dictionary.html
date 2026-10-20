@@ -40,7 +40,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e5488f36f73934da31e81cbe0465adae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -257,8 +257,14 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
   </div>
 </li>
       </ul>
@@ -266,7 +272,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text">Module 7 · Reproducible research</span></a>
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -275,7 +281,13 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
   </div>
 </li>
       </ul>
@@ -356,7 +368,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="supplied-teaching-files" class="level2" data-number="A.1">
 <h2 data-number="A.1" class="anchored" data-anchor-id="supplied-teaching-files"><span class="header-section-number">A.1</span> Supplied teaching files</h2>
-<p>All CSV files use UTF-8 text, one header row, decimal points, and <code>NA</code> for missing values where applicable. <code>scripts/generate-data.R</code> deterministically regenerates the simulations using seed 531. They are educational constructions without a real geographical location or trial date.</p>
+<p>All CSV files use UTF-8 text, one header row, decimal points, and <code>NA</code> for missing values where applicable. <code>scripts/generate-data.R</code> deterministically regenerates the original simulations using seed 531; <code>scripts/generate-design-data.py</code> regenerates the experimental-design, transformation, and germination files (also seed 531). <code>field_book_messy.csv</code> was written by hand. They are educational constructions without a real geographical location or trial date.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -433,13 +445,61 @@ ul.task-list li input[type="checkbox"] {
 <td><code>farm_id</code>, <code>nitrogen_kg_ha</code>, <code>rainfall_mm</code>, <code>yield_t_ha</code></td>
 <td>Simulated linear relationship for regression practice; no real recommendation follows.</td>
 </tr>
+<tr class="odd">
+<td><code>field_book_messy.csv</code></td>
+<td>One plot entry; 12 rows</td>
+<td><code>plot</code>, <code>sowing_date</code> (dd/mm/yyyy text), <code>variety</code>, <code>plant_height_cm</code>, <code>tillers</code>, <code>grain_wt_g_plot</code> (net plot 5 m²), <code>remarks</code></td>
+<td>Constructed cleaning exercise: inconsistent labels, comma decimal, missing-value codes <code>n/a</code> and <code>-</code>, a weight entered in kg (P07), and a decimal slip (P10).</td>
+</tr>
+<tr class="even">
+<td><code>crd.csv</code></td>
+<td>One pot; 20 pots</td>
+<td><code>pot_id</code>, <code>nitrogen</code> (N0–N160), <code>dry_matter_g_pot</code></td>
+<td>Simulated completely randomized pot experiment, 4 pots per level.</td>
+</tr>
+<tr class="odd">
+<td><code>rcbd_varieties.csv</code></td>
+<td>One plot; 24 plots</td>
+<td><code>plot_id</code>, <code>block</code> (1–4), <code>variety</code> (V1–V6), <code>yield_t_ha</code></td>
+<td>Simulated RCBD variety trial. Variety labels are generic, not real cultivars.</td>
+</tr>
+<tr class="even">
+<td><code>latin_square.csv</code></td>
+<td>One plot; 25 plots</td>
+<td><code>plot_id</code>, <code>row</code>, <code>column</code> (1–5), <code>treatment</code> (5 weed-management methods), <code>yield_t_ha</code></td>
+<td>Simulated 5 × 5 Latin square with gradients in both directions.</td>
+</tr>
+<tr class="odd">
+<td><code>factorial_rcbd.csv</code></td>
+<td>One plot; 24 plots</td>
+<td><code>plot_id</code>, <code>block</code> (1–4), <code>nitrogen</code> (N0, N60, N120), <code>variety</code> (Tall, Dwarf), <code>yield_t_ha</code></td>
+<td>Simulated 3 × 2 factorial in an RCBD with a built-in nitrogen-by-variety interaction.</td>
+</tr>
+<tr class="even">
+<td><code>split_plot.csv</code></td>
+<td>One subplot; 36 subplots</td>
+<td><code>plot_id</code>, <code>block</code> (1–3), <code>irrigation</code> (I1–I3, main plots), <code>nitrogen</code> (N0–N150, subplots), <code>yield_t_ha</code></td>
+<td>Simulated split-plot with a separate main-plot error.</td>
+</tr>
+<tr class="odd">
+<td><code>aphid_counts.csv</code></td>
+<td>One plant; 25 plants</td>
+<td><code>plant_id</code>, <code>treatment</code> (5), <code>aphids_per_plant</code></td>
+<td>Simulated counts whose variance rises with the mean, for the square-root transformation.</td>
+</tr>
+<tr class="even">
+<td><code>germination.csv</code></td>
+<td>One tray of 50 seeds; 16 trays</td>
+<td><code>tray_id</code>, <code>seed_treatment</code> (4), <code>replicate</code>, <code>seeds_sown</code>, <code>seeds_germinated</code>, <code>germination_pct</code></td>
+<td>Simulated percentages for the angular transformation.</td>
+</tr>
 </tbody>
 </table>
 <p><code>block</code> and <code>replicate</code> are labels, not continuous response measurements. The simulated soil nutrient names indicate quantity and units but omit extraction protocols; a real data dictionary must state the method, depth, date, laboratory, and quality controls.</p>
 </section>
 <section id="download-the-teaching-data" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="download-the-teaching-data">Download the teaching data</h2>
-<p>Save these files inside your project’s <code>data/</code> folder before running chapter code: <a href="data/crop_trial.csv">crop trial CSV</a>, <a href="data/crop_trial.xlsx">crop trial Excel</a>, <a href="data/crop_dirty.csv">dirty crop entries</a>, <a href="data/corrections.csv">correction ledger</a>, <a href="data/soil.csv">soil measurements</a>, <a href="data/weather.csv">monthly weather</a>, <a href="data/growth.csv">growth measurements</a>, <a href="data/paired_soil.csv">paired soil measurements</a>, <a href="data/pest.csv">pest observations</a>, <a href="data/rcbd.csv">blocked experiment</a>, and <a href="data/farm_yield.csv">regression records</a>.</p>
+<p>Save these files inside your project’s <code>data/</code> folder before running chapter code: <a href="data/crop_trial.csv">crop trial CSV</a>, <a href="data/crop_trial.xlsx">crop trial Excel</a>, <a href="data/crop_dirty.csv">dirty crop entries</a>, <a href="data/corrections.csv">correction ledger</a>, <a href="data/soil.csv">soil measurements</a>, <a href="data/weather.csv">monthly weather</a>, <a href="data/growth.csv">growth measurements</a>, <a href="data/paired_soil.csv">paired soil measurements</a>, <a href="data/pest.csv">pest observations</a>, <a href="data/rcbd.csv">blocked experiment</a>, <a href="data/farm_yield.csv">regression records</a>, <a href="data/field_book_messy.csv">messy field book</a>, <a href="data/crd.csv">CRD pot experiment</a>, <a href="data/rcbd_varieties.csv">RCBD variety trial</a>, <a href="data/latin_square.csv">Latin square</a>, <a href="data/factorial_rcbd.csv">factorial RCBD</a>, <a href="data/split_plot.csv">split plot</a>, <a href="data/aphid_counts.csv">aphid counts</a>, and <a href="data/germination.csv">germination trays</a>.</p>
 </section>
 <section id="real-datasets-bundled-with-r" class="level2" data-number="A.2">
 <h2 data-number="A.2" class="anchored" data-anchor-id="real-datasets-bundled-with-r"><span class="header-section-number">A.2</span> Real datasets bundled with R</h2>
@@ -917,9 +977,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </nav>
 </div> <!-- /content -->
 <script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 
 
 
 
-<script defer src="/stat-531/assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 </body></html>

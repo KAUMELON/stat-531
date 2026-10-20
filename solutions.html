@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e5488f36f73934da31e81cbe0465adae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -103,6 +103,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -291,8 +320,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
   </div>
 </li>
       </ul>
@@ -300,7 +335,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text">Module 7 · Reproducible research</span></a>
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -309,7 +344,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
   </div>
 </li>
       </ul>
@@ -364,7 +405,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#graphics-description-and-eda" id="toc-graphics-description-and-eda" class="nav-link" data-scroll-target="#graphics-description-and-eda"><span class="header-section-number">B.3</span> Graphics, description, and EDA</a></li>
   <li><a href="#growth-and-time-series" id="toc-growth-and-time-series" class="nav-link" data-scroll-target="#growth-and-time-series"><span class="header-section-number">B.4</span> Growth and time series</a></li>
   <li><a href="#inference-anova-and-regression" id="toc-inference-anova-and-regression" class="nav-link" data-scroll-target="#inference-anova-and-regression"><span class="header-section-number">B.5</span> Inference, ANOVA, and regression</a></li>
-  <li><a href="#reporting-and-project-evaluation" id="toc-reporting-and-project-evaluation" class="nav-link" data-scroll-target="#reporting-and-project-evaluation"><span class="header-section-number">B.6</span> Reporting and project evaluation</a></li>
+  <li><a href="#field-experimental-designs" id="toc-field-experimental-designs" class="nav-link" data-scroll-target="#field-experimental-designs"><span class="header-section-number">B.6</span> Field experimental designs</a></li>
+  <li><a href="#tests-for-proportions-and-ratios" id="toc-tests-for-proportions-and-ratios" class="nav-link" data-scroll-target="#tests-for-proportions-and-ratios"><span class="header-section-number">B.7</span> Tests for proportions and ratios</a></li>
+  <li><a href="#ai-assisted-analysis" id="toc-ai-assisted-analysis" class="nav-link" data-scroll-target="#ai-assisted-analysis"><span class="header-section-number">B.8</span> AI-assisted analysis</a></li>
+  <li><a href="#reporting-and-project-evaluation" id="toc-reporting-and-project-evaluation" class="nav-link" data-scroll-target="#reporting-and-project-evaluation"><span class="header-section-number">B.9</span> Reporting and project evaluation</a></li>
   </ul>
 </nav>
     </div>
@@ -472,7 +516,7 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment, variety) <span class="sc">|&gt;</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">mean =</span> <span class="fu">mean</span>(yield_t_ha), <span class="at">sd =</span> <span class="fu">sd</span>(yield_t_ha), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 x 5
+<pre><code># A tibble: 6 × 5
   treatment variety     n  mean    sd
   &lt;chr&gt;     &lt;chr&gt;   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
 1 Compost   A          10  3.72 0.450
@@ -546,8 +590,34 @@ trt2-trt1  0.865  0.1737839 1.5562161 0.0120064</code></pre>
 <p>The paired soil test matches the same plots before and after. An unpaired analysis discards that pairing. The pest table has independent plot statuses as its units; expected counts must be inspected before trusting a chi-square approximation.</p>
 <p>In regression, a rainfall coefficient is a conditional change in predicted mean yield per millimetre, holding nitrogen fixed. A prediction interval is wider than a confidence interval because it also represents individual-outcome variation. A random row split is inappropriate when observations from the same farm, future period, or nearby spatial cluster would leak information across training and test sets.</p>
 </section>
-<section id="reporting-and-project-evaluation" class="level2" data-number="B.6">
-<h2 data-number="B.6" class="anchored" data-anchor-id="reporting-and-project-evaluation"><span class="header-section-number">B.6</span> Reporting and project evaluation</h2>
+<section id="field-experimental-designs" class="level2" data-number="B.6">
+<h2 data-number="B.6" class="anchored" data-anchor-id="field-experimental-designs"><span class="header-section-number">B.6</span> Field experimental designs</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>rb <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/rcbd_varieties.csv"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>rb<span class="sc">$</span>block <span class="ot">&lt;-</span> <span class="fu">factor</span>(rb<span class="sc">$</span>block); rb<span class="sc">$</span>variety <span class="ot">&lt;-</span> <span class="fu">factor</span>(rb<span class="sc">$</span>variety)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>with_block <span class="ot">&lt;-</span> <span class="fu">anova</span>(<span class="fu">aov</span>(yield_t_ha <span class="sc">~</span> block <span class="sc">+</span> variety, <span class="at">data =</span> rb))</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>without_block <span class="ot">&lt;-</span> <span class="fu">anova</span>(<span class="fu">aov</span>(yield_t_ha <span class="sc">~</span> variety, <span class="at">data =</span> rb))</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">error_ms_rcbd =</span> with_block[<span class="st">"Residuals"</span>, <span class="st">"Mean Sq"</span>],</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">error_ms_ignoring_blocks =</span> without_block[<span class="st">"Residuals"</span>, <span class="st">"Mean Sq"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           error_ms_rcbd error_ms_ignoring_blocks 
+              0.03870556               0.11604444 </code></pre>
+</div>
+</div>
+<p>Ignoring blocks moves block variation into the error, so the error mean square rises from about 0.039 to 0.116 and the CD widens. The relative efficiency of about 2.6 says a CRD would need about 2.6 times as many replicates for the same precision. Blocks stay in the model in any case, because they were part of the randomization.</p>
+<p>In the Latin square, error degrees of freedom are <span class="math inline">\((t-1)(t-2) = 4   imes 3 = 12\)</span>: from 24 total degrees of freedom, rows, columns, and treatments each use 4.</p>
+<p>In the split-plot, the wrong one-error analysis tests irrigation against a pooled error that is too small for main plots and too large for subplots. Its irrigation F-value is inflated, and the irrigation-by-nitrogen interaction, significant with error (b), becomes non-significant. The correct conclusions are those from the analysis with <code>Error(block / irrigation)</code>.</p>
+</section>
+<section id="tests-for-proportions-and-ratios" class="level2" data-number="B.7">
+<h2 data-number="B.7" class="anchored" data-anchor-id="tests-for-proportions-and-ratios"><span class="header-section-number">B.7</span> Tests for proportions and ratios</h2>
+<p>For 212 of 250 seeds, <code>prop.test(212, 250, p = 0.85)</code> estimates 84.8% germination; the interval includes 85%, so the sample is consistent with the standard. For 152 purple and 48 white, <code>chisq.test(c(152, 48), p = c(3, 1) / 4)</code> gives expected counts 150 and 50 and a small chi-square statistic (about 0.11 on 1 df), consistent with a 3:1 ratio.</p>
+</section>
+<section id="ai-assisted-analysis" class="level2" data-number="B.8">
+<h2 data-number="B.8" class="anchored" data-anchor-id="ai-assisted-analysis"><span class="header-section-number">B.8</span> AI-assisted analysis</h2>
+<p>A prompt without the design usually produces <code>aov(yield_t_ha ~ nitrogen * variety)</code> with no block term, or with <code>block</code> left numeric (1 df instead of 3). Both run. The design check is the degrees of freedom: for 4 blocks, 3 nitrogen levels, and 2 varieties, expect 3, 2, 1, 2, and 15 for block, nitrogen, variety, interaction, and error. A known-answer test for a CD function can use the toy data with error mean square 1, <span class="math inline">\(r = 3\)</span>, and 6 error df: CD = <code>qt(0.975, 6) * sqrt(2 / 3)</code>, about 2.00.</p>
+</section>
+<section id="reporting-and-project-evaluation" class="level2" data-number="B.9">
+<h2 data-number="B.9" class="anchored" data-anchor-id="reporting-and-project-evaluation"><span class="header-section-number">B.9</span> Reporting and project evaluation</h2>
 <p><code>echo: false</code> executes code but hides the code listing; <code>eval: false</code> does not execute it. A complete project includes data provenance, raw inputs, cleaning code, analysis source, environment information, and rendered output. Interpretive exercises should be marked for the connection between question, design, method, uncertainty, and limitations rather than agreement with a preferred p-value.</p>
 
 
@@ -985,9 +1055,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </nav>
 </div> <!-- /content -->
 <script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 
 
 
 
-<script defer src="/stat-531/assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 </body></html>

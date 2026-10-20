@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>14&nbsp; Reproducible reports with R Markdown and Quarto – R Programming for Agricultural Data Analysis</title>
+<title>15&nbsp; Reproducible reports with R Markdown and Quarto – R Programming for Agricultural Data Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
+<link href="./14b-vibe-coding.html" rel="next">
 <link href="./13-regression.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e5488f36f73934da31e81cbe0465adae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -103,35 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -145,7 +116,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./14-reporting.html">Module 7 · Reproducible research</a></li><li class="breadcrumb-item"><a href="./14-reporting.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./14-reporting.html">Module 7 · Reproducible research and AI-assisted coding</a></li><li class="breadcrumb-item"><a href="./14-reporting.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -320,8 +291,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
   </div>
 </li>
       </ul>
@@ -329,7 +306,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
- <span class="menu-text">Module 7 · Reproducible research</span></a>
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -338,7 +315,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-reporting.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
   </div>
 </li>
       </ul>
@@ -388,36 +371,28 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes"><span class="header-section-number">14.1</span> Learning outcomes</a></li>
-  <li><a href="#a-report-is-an-argument-supported-by-evidence" id="toc-a-report-is-an-argument-supported-by-evidence" class="nav-link" data-scroll-target="#a-report-is-an-argument-supported-by-evidence"><span class="header-section-number">14.2</span> A report is an argument supported by evidence</a></li>
-  <li><a href="#anatomy-of-a-quarto-document" id="toc-anatomy-of-a-quarto-document" class="nav-link" data-scroll-target="#anatomy-of-a-quarto-document"><span class="header-section-number">14.3</span> Anatomy of a Quarto document</a></li>
-  <li><a href="#dynamic-values-figures-and-interactive-output" id="toc-dynamic-values-figures-and-interactive-output" class="nav-link" data-scroll-target="#dynamic-values-figures-and-interactive-output"><span class="header-section-number">14.4</span> Dynamic values, figures, and interactive output</a></li>
-  <li><a href="#r-markdown-remains-part-of-the-syllabus" id="toc-r-markdown-remains-part-of-the-syllabus" class="nav-link" data-scroll-target="#r-markdown-remains-part-of-the-syllabus"><span class="header-section-number">14.5</span> R Markdown remains part of the syllabus</a></li>
-  <li><a href="#render-and-share" id="toc-render-and-share" class="nav-link" data-scroll-target="#render-and-share"><span class="header-section-number">14.6</span> Render and share</a></li>
-  <li><a href="#building-the-report-in-stages" id="toc-building-the-report-in-stages" class="nav-link" data-scroll-target="#building-the-report-in-stages"><span class="header-section-number">14.7</span> Building the report in stages</a></li>
-  <li><a href="#managing-code-chunks-and-dependencies" id="toc-managing-code-chunks-and-dependencies" class="nav-link" data-scroll-target="#managing-code-chunks-and-dependencies"><span class="header-section-number">14.8</span> Managing code chunks and dependencies</a></li>
-  <li><a href="#tables-figures-and-numerical-precision" id="toc-tables-figures-and-numerical-precision" class="nav-link" data-scroll-target="#tables-figures-and-numerical-precision"><span class="header-section-number">14.9</span> Tables, figures, and numerical precision</a></li>
-  <li><a href="#reproducibility-is-also-a-classroom-assessment" id="toc-reproducibility-is-also-a-classroom-assessment" class="nav-link" data-scroll-target="#reproducibility-is-also-a-classroom-assessment"><span class="header-section-number">14.10</span> Reproducibility is also a classroom assessment</a></li>
-  <li><a href="#practical-15-and-exercises" id="toc-practical-15-and-exercises" class="nav-link" data-scroll-target="#practical-15-and-exercises"><span class="header-section-number">14.11</span> Practical 15 and exercises</a></li>
-  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">14.12</span> Live R laboratory</a></li>
-  <li><a href="#vibe-coding" id="toc-vibe-coding" class="nav-link" data-scroll-target="#vibe-coding"><span class="header-section-number">14.13</span> Vibe coding and AI-assisted R programming</a>
-  <ul class="collapse">
-  <li><a href="#from-an-idea-to-a-first-draft" id="toc-from-an-idea-to-a-first-draft" class="nav-link" data-scroll-target="#from-an-idea-to-a-first-draft"><span class="header-section-number">14.13.1</span> From an idea to a first draft</a></li>
-  <li><a href="#using-ai-with-r" id="toc-using-ai-with-r" class="nav-link" data-scroll-target="#using-ai-with-r"><span class="header-section-number">14.13.2</span> Using AI with R</a></li>
-  <li><a href="#write-a-prompt-that-specifies-the-analysis" id="toc-write-a-prompt-that-specifies-the-analysis" class="nav-link" data-scroll-target="#write-a-prompt-that-specifies-the-analysis"><span class="header-section-number">14.13.3</span> Write a prompt that specifies the analysis</a></li>
-  <li><a href="#worked-example-review-a-generated-summary" id="toc-worked-example-review-a-generated-summary" class="nav-link" data-scroll-target="#worked-example-review-a-generated-summary"><span class="header-section-number">14.13.4</span> Worked example: review a generated summary</a></li>
-  <li><a href="#refine-debug-and-verify" id="toc-refine-debug-and-verify" class="nav-link" data-scroll-target="#refine-debug-and-verify"><span class="header-section-number">14.13.5</span> Refine, debug, and verify</a></li>
-  <li><a href="#save-a-reproducible-record" id="toc-save-a-reproducible-record" class="nav-link" data-scroll-target="#save-a-reproducible-record"><span class="header-section-number">14.13.6</span> Save a reproducible record</a></li>
-  </ul></li>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes"><span class="header-section-number">15.1</span> Learning outcomes</a></li>
+  <li><a href="#a-report-is-an-argument-supported-by-evidence" id="toc-a-report-is-an-argument-supported-by-evidence" class="nav-link" data-scroll-target="#a-report-is-an-argument-supported-by-evidence"><span class="header-section-number">15.2</span> A report is an argument supported by evidence</a></li>
+  <li><a href="#anatomy-of-a-quarto-document" id="toc-anatomy-of-a-quarto-document" class="nav-link" data-scroll-target="#anatomy-of-a-quarto-document"><span class="header-section-number">15.3</span> Anatomy of a Quarto document</a></li>
+  <li><a href="#dynamic-values-figures-and-interactive-output" id="toc-dynamic-values-figures-and-interactive-output" class="nav-link" data-scroll-target="#dynamic-values-figures-and-interactive-output"><span class="header-section-number">15.4</span> Dynamic values, figures, and interactive output</a></li>
+  <li><a href="#r-markdown-remains-part-of-the-syllabus" id="toc-r-markdown-remains-part-of-the-syllabus" class="nav-link" data-scroll-target="#r-markdown-remains-part-of-the-syllabus"><span class="header-section-number">15.5</span> R Markdown remains part of the syllabus</a></li>
+  <li><a href="#render-and-share" id="toc-render-and-share" class="nav-link" data-scroll-target="#render-and-share"><span class="header-section-number">15.6</span> Render and share</a></li>
+  <li><a href="#building-the-report-in-stages" id="toc-building-the-report-in-stages" class="nav-link" data-scroll-target="#building-the-report-in-stages"><span class="header-section-number">15.7</span> Building the report in stages</a></li>
+  <li><a href="#managing-code-chunks-and-dependencies" id="toc-managing-code-chunks-and-dependencies" class="nav-link" data-scroll-target="#managing-code-chunks-and-dependencies"><span class="header-section-number">15.8</span> Managing code chunks and dependencies</a></li>
+  <li><a href="#tables-figures-and-numerical-precision" id="toc-tables-figures-and-numerical-precision" class="nav-link" data-scroll-target="#tables-figures-and-numerical-precision"><span class="header-section-number">15.9</span> Tables, figures, and numerical precision</a></li>
+  <li><a href="#reproducibility-is-also-a-classroom-assessment" id="toc-reproducibility-is-also-a-classroom-assessment" class="nav-link" data-scroll-target="#reproducibility-is-also-a-classroom-assessment"><span class="header-section-number">15.10</span> Reproducibility is also a classroom assessment</a></li>
+  <li><a href="#getting-help-from-an-ai-assistant" id="toc-getting-help-from-an-ai-assistant" class="nav-link" data-scroll-target="#getting-help-from-an-ai-assistant"><span class="header-section-number">15.11</span> Getting help from an AI assistant</a></li>
+  <li><a href="#practical-16-and-exercises" id="toc-practical-16-and-exercises" class="nav-link" data-scroll-target="#practical-16-and-exercises"><span class="header-section-number">15.12</span> Practical 16 and exercises</a></li>
+  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">15.13</span> Live R laboratory</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./14-reporting.html">Module 7 · Reproducible research</a></li><li class="breadcrumb-item"><a href="./14-reporting.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./14-reporting.html">Module 7 · Reproducible research and AI-assisted coding</a></li><li class="breadcrumb-item"><a href="./14-reporting.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-reporting" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></h1>
+<h1 class="title"><span id="sec-reporting" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></h1>
 </div>
 
 
@@ -434,17 +409,17 @@ window.Quarto = {
 </header>
 
 
-<section id="learning-outcomes" class="level2" data-number="14.1">
-<h2 data-number="14.1" class="anchored" data-anchor-id="learning-outcomes"><span class="header-section-number">14.1</span> Learning outcomes</h2>
+<section id="learning-outcomes" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="learning-outcomes"><span class="header-section-number">15.1</span> Learning outcomes</h2>
 <p>Combine explanation with executable analysis, distinguish <code>.Rmd</code> from <code>.qmd</code>, add tables and figures, render HTML/PDF/Word reports, and share a project that runs in a fresh session.</p>
 </section>
-<section id="a-report-is-an-argument-supported-by-evidence" class="level2" data-number="14.2">
-<h2 data-number="14.2" class="anchored" data-anchor-id="a-report-is-an-argument-supported-by-evidence"><span class="header-section-number">14.2</span> A report is an argument supported by evidence</h2>
+<section id="a-report-is-an-argument-supported-by-evidence" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="a-report-is-an-argument-supported-by-evidence"><span class="header-section-number">15.2</span> A report is an argument supported by evidence</h2>
 <p>A useful report states a question, describes data and design, explains decisions, presents results, and discusses limitations. Embedding R code keeps numerical evidence connected to its computation. If a dataset changes, re-rendering updates the results. This reduces transcription errors but cannot correct an unsuitable analysis.</p>
 <p>R Markdown usually uses <code>.Rmd</code> source files and <code>rmarkdown::render()</code>. Quarto uses <code>.qmd</code> source files and the <code>quarto render</code> command. Both can execute R through knitr. Their configuration differs: R Markdown uses <code>output:</code> whereas Quarto uses <code>format:</code>. Simply renaming an old bookdown file is not a complete migration; chapter configuration, references, chunk options, and dependencies need checking.</p>
 </section>
-<section id="anatomy-of-a-quarto-document" class="level2" data-number="14.3">
-<h2 data-number="14.3" class="anchored" data-anchor-id="anatomy-of-a-quarto-document"><span class="header-section-number">14.3</span> Anatomy of a Quarto document</h2>
+<section id="anatomy-of-a-quarto-document" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="anatomy-of-a-quarto-document"><span class="header-section-number">15.3</span> Anatomy of a Quarto document</h2>
 <p>The following is a complete small document. The YAML header defines metadata and formats, ordinary Markdown supplies prose, and the R chunk computes a table. Save it as <code>report.qmd</code> in the project folder. The separate <code>practicals/report.qmd</code> provides a fuller working example.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Plant growth: a reproducible analysis"</span></span>
@@ -483,13 +458,13 @@ window.Quarto = {
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>Interpret the estimates in @tbl-weight using the dataset documentation.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Use descriptive chunk labels; figure labels begin with <code>fig-</code> and table labels with <code>tbl-</code> for cross-references. A figure chunk can use <code>#| fig-cap: "..."</code>. A hidden setup chunk may set <code>#| include: false</code>, but keep the source available to readers. <code>echo: false</code> hides code, not results. <code>eval: false</code> displays an example without executing it. Avoid hiding warnings until they have been investigated.</p>
 </section>
-<section id="dynamic-values-figures-and-interactive-output" class="level2" data-number="14.4">
-<h2 data-number="14.4" class="anchored" data-anchor-id="dynamic-values-figures-and-interactive-output"><span class="header-section-number">14.4</span> Dynamic values, figures, and interactive output</h2>
+<section id="dynamic-values-figures-and-interactive-output" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="dynamic-values-figures-and-interactive-output"><span class="header-section-number">15.4</span> Dynamic values, figures, and interactive output</h2>
 <p>Inline R inserts a computed value into a sentence. For example, write the literal source <code>30</code> to report the number of observations. This keeps prose synchronized with the data. Do not hard-code a p-value in the discussion while the model updates elsewhere.</p>
 <p>Use <code>knitr::kable()</code> for simple portable tables and ordinary R plots for graphics. HTML widgets such as Plotly need an HTML output context. In multi-format documents, test <code>knitr::is_html_output()</code> and use a static plot for PDF and Word, as demonstrated in the visualization chapter.</p>
 </section>
-<section id="r-markdown-remains-part-of-the-syllabus" class="level2" data-number="14.5">
-<h2 data-number="14.5" class="anchored" data-anchor-id="r-markdown-remains-part-of-the-syllabus"><span class="header-section-number">14.5</span> R Markdown remains part of the syllabus</h2>
+<section id="r-markdown-remains-part-of-the-syllabus" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="r-markdown-remains-part-of-the-syllabus"><span class="header-section-number">15.5</span> R Markdown remains part of the syllabus</h2>
 <p>The supplied <code>practicals/report.Rmd</code> demonstrates the same analysis in R Markdown. Its header lists <code>html_document</code>, <code>pdf_document</code>, and <code>word_document</code>. Run these commands in the R Console from the project root:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rmarkdown<span class="sc">::</span><span class="fu">render</span>(<span class="st">"practicals/report.Rmd"</span>, <span class="at">output_format =</span> <span class="st">"html_document"</span>,</span>
@@ -500,8 +475,8 @@ window.Quarto = {
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">knit_root_dir =</span> <span class="fu">getwd</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="render-and-share" class="level2" data-number="14.6">
-<h2 data-number="14.6" class="anchored" data-anchor-id="render-and-share"><span class="header-section-number">14.6</span> Render and share</h2>
+<section id="render-and-share" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="render-and-share"><span class="header-section-number">15.6</span> Render and share</h2>
 <p>Run shell commands in the Terminal, not in the R Console:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> preview</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render <span class="at">--to</span> html</span>
@@ -511,14 +486,14 @@ window.Quarto = {
 <p>PDF output requires a working LaTeX distribution, for example TinyTeX installed through <code>quarto install tinytex</code>. Install it only if PDF is needed. HTML is the default classroom format in the README instructions. Rendering the entire book to Word or PDF combines chapters into a single document. Opening an HTML file locally is not the same as publishing it to a public server.</p>
 <p>Before sharing, restart R and render from source. Include source files, permitted data, metadata, package requirements, and instructions. <code>sessionInfo()</code> records R and loaded package versions. For a stable course release, consider a reviewed <code>renv</code> lockfile; do not claim that a package list alone pins an environment.</p>
 </section>
-<section id="building-the-report-in-stages" class="level2" data-number="14.7">
-<h2 data-number="14.7" class="anchored" data-anchor-id="building-the-report-in-stages"><span class="header-section-number">14.7</span> Building the report in stages</h2>
+<section id="building-the-report-in-stages" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="building-the-report-in-stages"><span class="header-section-number">15.7</span> Building the report in stages</h2>
 <p>Let us develop a report in the same order as an analysis. First create the document with its question, data source, and design, even before the final model is chosen. Then add a data-check section, followed by descriptive tables and figures. Only after examining those results should the methods and model sections be completed. This sequence makes the scientific argument visible rather than hiding it behind a final table of p-values.</p>
 <p>An effective data section identifies the observational unit, sample size, variable units, collection period, and treatment or sampling scheme. State how the raw file was obtained and whether permission is needed to share it. In the cleaning section, explain missingness, corrections, and exclusions with their consequences for the analysis. Avoid including personal or confidential identifiers merely because they happen to be in the original spreadsheet.</p>
 <p>The methods section should name the response, predictors or factors, model, and assumptions in terms that match the actual code. If the text describes a paired test but the code fits an unpaired test, a successful render has reproduced an inconsistency. Read both parts together. The results section should lead with the size and direction of important effects, followed by uncertainty and evidence. Keep mechanistic explanations and generalization limits in the discussion.</p>
 </section>
-<section id="managing-code-chunks-and-dependencies" class="level2" data-number="14.8">
-<h2 data-number="14.8" class="anchored" data-anchor-id="managing-code-chunks-and-dependencies"><span class="header-section-number">14.8</span> Managing code chunks and dependencies</h2>
+<section id="managing-code-chunks-and-dependencies" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="managing-code-chunks-and-dependencies"><span class="header-section-number">15.8</span> Managing code chunks and dependencies</h2>
 <p>Each document is easiest to understand when it can be executed from top to bottom in a new session. The first chunk loads packages and reads inputs. Later chunks depend on those named objects. Avoid loading data by hand into the Environment pane and then assuming they will be available during rendering.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -546,19 +521,23 @@ window.Quarto = {
 <p>The setup chunk is hidden in the displayed report but remains in the source. It does not install packages. The table chunk visibly records the summary operation. A future reader can distinguish a count of plot records from an estimate of mean yield and can rerun both.</p>
 <p>Caching and freezing can save time in large projects, but they can also leave stale output when dependencies are misunderstood. During textbook revision, this project uses <code>freeze: false</code> so examples are executed again. Do not use old cached results to claim that revised code has been checked. For serious projects, record the environment and consider a lockfile, while recognizing that external data sources can change independently of package versions.</p>
 </section>
-<section id="tables-figures-and-numerical-precision" class="level2" data-number="14.9">
-<h2 data-number="14.9" class="anchored" data-anchor-id="tables-figures-and-numerical-precision"><span class="header-section-number">14.9</span> Tables, figures, and numerical precision</h2>
+<section id="tables-figures-and-numerical-precision" class="level2" data-number="15.9">
+<h2 data-number="15.9" class="anchored" data-anchor-id="tables-figures-and-numerical-precision"><span class="header-section-number">15.9</span> Tables, figures, and numerical precision</h2>
 <p>A table title should say what was measured, how observations were grouped, and what the numbers represent. Put units in column headings where possible. Report enough digits for interpretation without suggesting unrealistic measurement precision. A yield measured to 0.01 t/ha should not normally be presented to eight decimal places merely because R printed them.</p>
 <p>A figure caption should allow the graph to be understood away from the surrounding paragraph. Distinguish observed points from fitted lines, and describe error bars or shaded intervals precisely. “Error bars” is insufficient: are they SD, SE, confidence intervals, or prediction intervals? If an interactive figure permits hovering, retain axis labels and a caption so the static version remains meaningful.</p>
 <p>Cross-references are preferable to manually typed numbers. After inserting a new table, <code>@tbl-treatment-means</code> updates its reference automatically. Manually writing “Table 3” can become wrong after reorganization. The same applies to chapter references and figure references. The final review should include checking that a referenced object actually supports the claim made in the sentence.</p>
 </section>
-<section id="reproducibility-is-also-a-classroom-assessment" class="level2" data-number="14.10">
-<h2 data-number="14.10" class="anchored" data-anchor-id="reproducibility-is-also-a-classroom-assessment"><span class="header-section-number">14.10</span> Reproducibility is also a classroom assessment</h2>
+<section id="reproducibility-is-also-a-classroom-assessment" class="level2" data-number="15.10">
+<h2 data-number="15.10" class="anchored" data-anchor-id="reproducibility-is-also-a-classroom-assessment"><span class="header-section-number">15.10</span> Reproducibility is also a classroom assessment</h2>
 <p>Ask a classmate to open a copy of the complete project, restart R, and render the report. If it fails, identify whether the missing component is a file, package, path, or undocumented manual step. Record the correction in the project instead of asking the classmate to imitate your Console history.</p>
 <p>Finally, read the rendered document as a reader. Are headings in a logical order? Do tables fit? Are captions readable? Do the conclusions match the estimates? A report can be computationally reproducible and scientifically weak, or scientifically thoughtful but computationally incomplete. Undergraduate training should develop both skills together.</p>
 </section>
-<section id="practical-15-and-exercises" class="level2" data-number="14.11">
-<h2 data-number="14.11" class="anchored" data-anchor-id="practical-15-and-exercises"><span class="header-section-number">14.11</span> Practical 15 and exercises</h2>
+<section id="getting-help-from-an-ai-assistant" class="level2" data-number="15.11">
+<h2 data-number="15.11" class="anchored" data-anchor-id="getting-help-from-an-ai-assistant"><span class="header-section-number">15.11</span> Getting help from an AI assistant</h2>
+<p>AI assistants can draft report templates, chunk options, and figure captions. The final chapter, <a href="14b-vibe-coding.html" class="quarto-xref"><span>Chapter 16</span></a>, shows how to brief an assistant, review and verify its code, and record its contribution honestly.</p>
+</section>
+<section id="practical-16-and-exercises" class="level2" data-number="15.12">
+<h2 data-number="15.12" class="anchored" data-anchor-id="practical-16-and-exercises"><span class="header-section-number">15.12</span> Practical 16 and exercises</h2>
 <ol type="1">
 <li>Replace the example report’s question with a question you can answer from a documented dataset. Include source, units, design, one table, one figure, and an interpretation.</li>
 <li>Render HTML and Word. If LaTeX is available, render PDF and inspect all pages.</li>
@@ -568,8 +547,8 @@ window.Quarto = {
 </ol>
 <p><strong>Chapter review.</strong> Reproducibility means that data, code, and computational environment support the report’s claims. A successful render is a necessary check, not a substitute for scientific review.</p>
 </section>
-<section id="live-r-laboratory" class="level2" data-number="14.12">
-<h2 data-number="14.12" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">14.12</span> Live R laboratory</h2>
+<section id="live-r-laboratory" class="level2" data-number="15.13">
+<h2 data-number="15.13" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">15.13</span> Live R laboratory</h2>
 <div class="live-r">
 <p><strong>Generate a reproducible result sentence</strong></p>
 <p>Edit the code, then select <strong>Run R</strong>. The first run downloads R into your browser and may take a little time. <strong>Copy code</strong> also lets you use this example in RStudio.</p>
@@ -593,102 +572,8 @@ From the browser to your practical notebook
 <p>Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.</p>
 </div>
 </div>
-</section>
-<section id="vibe-coding" class="level2" data-number="14.13">
-<h2 data-number="14.13" class="anchored" data-anchor-id="vibe-coding"><span class="header-section-number">14.13</span> Vibe coding and AI-assisted R programming</h2>
-<section id="from-an-idea-to-a-first-draft" class="level3" data-number="14.13.1">
-<h3 data-number="14.13.1" class="anchored" data-anchor-id="from-an-idea-to-a-first-draft"><span class="header-section-number">14.13.1</span> From an idea to a first draft</h3>
-<p><strong>Vibe coding</strong> is an informal term for developing software by describing what you want in ordinary language, asking an AI system to generate code, running it, and requesting changes. The term is often associated with accepting implementation details without examining them closely. For a statistical analysis, we need to go further: understand the code, verify the calculations, and justify the model. In this book, we use the conversational approach as an entry into <strong>reviewed AI-assisted programming</strong>. See the <a href="https://cloud.google.com/discover/what-is-vibe-coding">overview of the term</a>.</p>
-<p>For example, a student might begin with “Make a colourful graph of crop yields.” An AI assistant can draft a plot quickly, but that request omits the data structure, units, experimental unit, and purpose. A graph of treatment means, a distribution of individual plot yields, and a fitted response curve answer different questions. Clear agricultural reasoning makes a better prompt and a better analysis.</p>
-</section>
-<section id="using-ai-with-r" class="level3" data-number="14.13.2">
-<h3 data-number="14.13.2" class="anchored" data-anchor-id="using-ai-with-r"><span class="header-section-number">14.13.2</span> Using AI with R</h3>
-<p>One approach is to ask an AI chat assistant for a small R code draft, inspect it, and run it in RStudio. Another is to use an assistant integrated into an R development environment. Current examples include Posit Assistant in RStudio and Positron; their capabilities, access requirements, and settings are described in the <a href="https://docs.posit.co/ide/user/ide/guide/tools/posit-ai.html">RStudio guide</a> and <a href="https://positron.posit.co/assistant">Positron documentation</a>. This lesson does not require a paid assistant or a particular model.</p>
-<p>Begin with a small task: explain a function, summarize a table, improve axis labels, or diagnose a reproducible error. Ask for the reason behind each change. Read unfamiliar functions in R’s help system and confirm that suggested packages and arguments exist. A plausible function name is not evidence that a function is available.</p>
-</section>
-<section id="write-a-prompt-that-specifies-the-analysis" class="level3" data-number="14.13.3">
-<h3 data-number="14.13.3" class="anchored" data-anchor-id="write-a-prompt-that-specifies-the-analysis"><span class="header-section-number">14.13.3</span> Write a prompt that specifies the analysis</h3>
-<div class="callout callout-style-default callout-note callout-titled" title="A model prompt for an agricultural practical">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-A model prompt for an agricultural practical
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>I am learning R. I have independent plot observations from a teaching experiment. The columns are <code>treatment</code> and <code>yield_t_ha</code>; yield is measured in tonnes per hectare. Use base R. Produce a table with total records, nonmissing yields, missing yields, mean, and standard deviation for each treatment. Keep missing values in the data and exclude them only from calculations that require observed yields. Do not replace missing values with zero, delete outliers, or run significance tests. Include a small simulated example, explain the code, and show how I can check the results manually.</p>
-</div>
-</div>
-<p>Specify the <strong>question</strong>, <strong>experimental unit</strong>, <strong>column names and units</strong>, <strong>design</strong>, <strong>missing-value rule</strong>, and <strong>requested output</strong>. State restrictions such as “use base R” or “do not install packages.” Ask for one step at a time so you can inspect its result before proceeding. Share a small simulated example or a permitted, de-identified excerpt when explaining a problem; check your institution’s rules before sending research data to an external service.</p>
-</section>
-<section id="worked-example-review-a-generated-summary" class="level3" data-number="14.13.4">
-<h3 data-number="14.13.4" class="anchored" data-anchor-id="worked-example-review-a-generated-summary"><span class="header-section-number">14.13.4</span> Worked example: review a generated summary</h3>
-<p>The following is a teaching reference solution to the prompt, not a transcript of a particular AI response. The simulated data contain a missing yield in the Control group. We deliberately count both rows and observed yields so the denominator is visible.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ai_trial <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">treatment =</span> <span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"Control"</span>, <span class="st">"Control"</span>, <span class="st">"Compost"</span>, <span class="st">"Compost"</span>, <span class="st">"Compost"</span>),</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">yield_t_ha =</span> <span class="fu">c</span>(<span class="fl">3.0</span>, <span class="fl">4.0</span>, <span class="cn">NA</span>, <span class="fl">4.0</span>, <span class="fl">4.5</span>, <span class="fl">5.0</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>summarize_yield <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  observed <span class="ot">&lt;-</span> x[<span class="sc">!</span><span class="fu">is.na</span>(x)]</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">total =</span> <span class="fu">length</span>(x), <span class="at">observed =</span> <span class="fu">length</span>(observed),</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(x)),</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="cf">if</span> (<span class="fu">length</span>(observed)) <span class="fu">mean</span>(observed) <span class="cf">else</span> <span class="cn">NA_real_</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">SD =</span> <span class="cf">if</span> (<span class="fu">length</span>(observed) <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="fu">sd</span>(observed) <span class="cf">else</span> <span class="cn">NA_real_</span>)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>ai_summary <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">split</span>(ai_trial<span class="sc">$</span>yield_t_ha, ai_trial<span class="sc">$</span>treatment), summarize_yield</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>ai_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        total observed missing mean        SD
-Compost     3        3       0  4.5 0.5000000
-Control     3        2       1  3.5 0.7071068</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Independent checks against calculations we can do by hand</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(ai_summary[<span class="st">"Control"</span>, <span class="st">"total"</span>] <span class="sc">==</span> <span class="dv">3</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>          ai_summary[<span class="st">"Control"</span>, <span class="st">"observed"</span>] <span class="sc">==</span> <span class="dv">2</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>          ai_summary[<span class="st">"Control"</span>, <span class="st">"missing"</span>] <span class="sc">==</span> <span class="dv">1</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>          <span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(<span class="fu">unname</span>(ai_summary[<span class="st">"Control"</span>, <span class="st">"mean"</span>]), <span class="fl">3.5</span>)),</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>          <span class="fu">isTRUE</span>(<span class="fu">all.equal</span>(<span class="fu">unname</span>(ai_summary[<span class="st">"Compost"</span>, <span class="st">"mean"</span>]), <span class="fl">4.5</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The Control mean is <span class="math inline">\((3+4)/2=3.5\)</span> t/ha. Dividing by three, or replacing the missing observation with zero, would answer a different question. Its sample SD is approximately 0.707 t/ha; the Compost SD is 0.5 t/ha. With no observed yields, the mean is undefined; with only one observed yield, the sample SD is undefined. The function returns <code>NA</code> for those cases. Summary values alone do not demonstrate a treatment effect.</p>
-</section>
-<section id="refine-debug-and-verify" class="level3" data-number="14.13.5">
-<h3 data-number="14.13.5" class="anchored" data-anchor-id="refine-debug-and-verify"><span class="header-section-number">14.13.5</span> Refine, debug, and verify</h3>
-<p>Useful follow-up prompts include:</p>
-<ul>
-<li>“Explain why the number of observed yields differs from the number of records.”</li>
-<li>“My error is <code>object 'yield' not found</code>. Here is <code>names(ai_trial)</code> and the failing line. Explain the mismatch and change only that line.”</li>
-<li>“Review this model for a randomized block experiment. Explain how the block factor enters the formula before changing the code.”</li>
-<li>“Add units and a caption to this plot without changing the observations or fitted model.”</li>
-</ul>
-<p>When a draft fails, provide the exact error and the smallest example that reproduces it. Avoid repeatedly asking an assistant to repair a long script without checking what it changes. A coding error and a statistical error are different: <code>aov(yield ~ treatment)</code> can execute successfully while omitting a block factor required by the design. A paired test, an independent-samples test, and a repeated-measures model are not interchangeable repairs.</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Successful execution is only the first check">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Successful execution is only the first check
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Inspect row counts, units, missingness, group sizes, model formulas, and assumptions. Verify at least one result independently. Check that plots and written conclusions match the computed output. Do not ask AI to keep changing an analysis until a p-value becomes significant. You remain responsible for the method and interpretation.</p>
-</div>
-</div>
-</section>
-<section id="save-a-reproducible-record" class="level3" data-number="14.13.6">
-<h3 data-number="14.13.6" class="anchored" data-anchor-id="save-a-reproducible-record"><span class="header-section-number">14.13.6</span> Save a reproducible record</h3>
-<p>Keep the accepted R code in the project and render the report in a fresh session. Record package versions, relevant prompts, substantive AI contributions, and the corrections you made. Follow course and publication rules for acknowledging assistance. AI may help draft a methods paragraph, but the paragraph must describe the analysis actually performed. Never invent citations, observations, or results to complete a report.</p>
-<p><strong>Closing practical.</strong> Give an assistant the model prompt above, or write your own proposed solution if no assistant is available. Compare its code with the reference calculation. Test an all-missing group and a group with one observed yield. Submit the prompt, reviewed code, verification results, and a short account of what you accepted or corrected. Explain every line you submit.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1112,20 +997,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./13-regression.html" class="pagination-link" aria-label="Correlation and regression for agricultural prediction">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link" aria-label="References and further reading">
-        <span class="nav-page-text">References and further reading</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./14b-vibe-coding.html" class="pagination-link" aria-label="Vibe coding: writing R with an AI assistant">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 
 
 
 
-<script defer src="/stat-531/assets/melon-tracker.js" data-book="r-agricultural-data"></script>
 </body></html>

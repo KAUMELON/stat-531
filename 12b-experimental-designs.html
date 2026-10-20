@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>13&nbsp; Designing and analysing field experiments – R Programming for Agricultural Data Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./13-regression.html" rel="next">
+<link href="./12-anova.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-inference.html">Module 6 · Statistical analysis</a></li><li class="breadcrumb-item"><a href="./12b-experimental-designs.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R Programming for Agricultural Data Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./course-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course guide</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 1 · Foundations and data exchange</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting started with R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-r-language.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Objects, data structures, and functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-data-import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Importing, validating, and exporting data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 2 · Data wrangling and cleaning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Cleaning agricultural observations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-wrangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Transforming and summarizing data with dplyr</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 3 · Data visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Visualizing agricultural data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 4 · Descriptive and exploratory analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-descriptive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Describing agricultural variation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">An exploratory study of crop yield</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 5 · Growth and time series</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-growth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modelling crop growth</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-time-series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Agricultural time series and forecasting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 6 · Statistical analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Hypothesis tests and confidence intervals</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Comparing treatments with analysis of variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References and further reading</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Datasets and measurement units</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Selected exercise solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Glossary and R reference</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes"><span class="header-section-number">13.1</span> Learning outcomes</a></li>
+  <li><a href="#three-principles-of-experimental-design" id="toc-three-principles-of-experimental-design" class="nav-link" data-scroll-target="#three-principles-of-experimental-design"><span class="header-section-number">13.2</span> Three principles of experimental design</a></li>
+  <li><a href="#randomizing-a-layout-in-r" id="toc-randomizing-a-layout-in-r" class="nav-link" data-scroll-target="#randomizing-a-layout-in-r"><span class="header-section-number">13.3</span> Randomizing a layout in R</a>
+  <ul class="collapse">
+  <li><a href="#completely-randomized-layout" id="toc-completely-randomized-layout" class="nav-link" data-scroll-target="#completely-randomized-layout"><span class="header-section-number">13.3.1</span> Completely randomized layout</a></li>
+  <li><a href="#randomized-complete-block-layout" id="toc-randomized-complete-block-layout" class="nav-link" data-scroll-target="#randomized-complete-block-layout"><span class="header-section-number">13.3.2</span> Randomized complete block layout</a></li>
+  <li><a href="#latin-square-layout" id="toc-latin-square-layout" class="nav-link" data-scroll-target="#latin-square-layout"><span class="header-section-number">13.3.3</span> Latin square layout</a></li>
+  <li><a href="#layouts-with-the-agricolae-package" id="toc-layouts-with-the-agricolae-package" class="nav-link" data-scroll-target="#layouts-with-the-agricolae-package"><span class="header-section-number">13.3.4</span> Layouts with the agricolae package</a></li>
+  </ul></li>
+  <li><a href="#quantities-reported-with-every-field-experiment" id="toc-quantities-reported-with-every-field-experiment" class="nav-link" data-scroll-target="#quantities-reported-with-every-field-experiment"><span class="header-section-number">13.4</span> Quantities reported with every field experiment</a></li>
+  <li><a href="#completely-randomized-design" id="toc-completely-randomized-design" class="nav-link" data-scroll-target="#completely-randomized-design"><span class="header-section-number">13.5</span> Completely randomized design</a></li>
+  <li><a href="#randomized-complete-block-design" id="toc-randomized-complete-block-design" class="nav-link" data-scroll-target="#randomized-complete-block-design"><span class="header-section-number">13.6</span> Randomized complete block design</a>
+  <ul class="collapse">
+  <li><a href="#did-blocking-help" id="toc-did-blocking-help" class="nav-link" data-scroll-target="#did-blocking-help"><span class="header-section-number">13.6.1</span> Did blocking help?</a></li>
+  </ul></li>
+  <li><a href="#latin-square-design" id="toc-latin-square-design" class="nav-link" data-scroll-target="#latin-square-design"><span class="header-section-number">13.7</span> Latin square design</a></li>
+  <li><a href="#factorial-experiments" id="toc-factorial-experiments" class="nav-link" data-scroll-target="#factorial-experiments"><span class="header-section-number">13.8</span> Factorial experiments</a>
+  <ul class="collapse">
+  <li><a href="#standard-errors-in-a-factorial-experiment" id="toc-standard-errors-in-a-factorial-experiment" class="nav-link" data-scroll-target="#standard-errors-in-a-factorial-experiment"><span class="header-section-number">13.8.1</span> Standard errors in a factorial experiment</a></li>
+  </ul></li>
+  <li><a href="#split-plot-design" id="toc-split-plot-design" class="nav-link" data-scroll-target="#split-plot-design"><span class="header-section-number">13.9</span> Split-plot design</a>
+  <ul class="collapse">
+  <li><a href="#what-goes-wrong-if-the-design-is-ignored" id="toc-what-goes-wrong-if-the-design-is-ignored" class="nav-link" data-scroll-target="#what-goes-wrong-if-the-design-is-ignored"><span class="header-section-number">13.9.1</span> What goes wrong if the design is ignored</a></li>
+  </ul></li>
+  <li><a href="#checking-assumptions-and-transforming-data" id="toc-checking-assumptions-and-transforming-data" class="nav-link" data-scroll-target="#checking-assumptions-and-transforming-data"><span class="header-section-number">13.10</span> Checking assumptions and transforming data</a>
+  <ul class="collapse">
+  <li><a href="#counts-square-root-transformation" id="toc-counts-square-root-transformation" class="nav-link" data-scroll-target="#counts-square-root-transformation"><span class="header-section-number">13.10.1</span> Counts: square-root transformation</a></li>
+  <li><a href="#percentages-angular-arcsine-transformation" id="toc-percentages-angular-arcsine-transformation" class="nav-link" data-scroll-target="#percentages-angular-arcsine-transformation"><span class="header-section-number">13.10.2</span> Percentages: angular (arcsine) transformation</a></li>
+  </ul></li>
+  <li><a href="#sec-designs-comparisons" id="toc-sec-designs-comparisons" class="nav-link" data-scroll-target="#sec-designs-comparisons"><span class="header-section-number">13.11</span> Comparing treatment means</a></li>
+  <li><a href="#missing-plots-and-other-designs" id="toc-missing-plots-and-other-designs" class="nav-link" data-scroll-target="#missing-plots-and-other-designs"><span class="header-section-number">13.12</span> Missing plots and other designs</a></li>
+  <li><a href="#reporting-a-field-experiment" id="toc-reporting-a-field-experiment" class="nav-link" data-scroll-target="#reporting-a-field-experiment"><span class="header-section-number">13.13</span> Reporting a field experiment</a></li>
+  <li><a href="#practical-14-and-exercises" id="toc-practical-14-and-exercises" class="nav-link" data-scroll-target="#practical-14-and-exercises"><span class="header-section-number">13.14</span> Practical 14 and exercises</a></li>
+  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">13.15</span> Live R laboratory</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-inference.html">Module 6 · Statistical analysis</a></li><li class="breadcrumb-item"><a href="./12b-experimental-designs.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-designs" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="learning-outcomes" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="learning-outcomes"><span class="header-section-number">13.1</span> Learning outcomes</h2>
+<p>Explain replication, randomization, and local control; randomize CRD, RCBD, and Latin square layouts in R; analyse completely randomized, randomized block, Latin square, two-factor factorial, and split-plot experiments; calculate and interpret SEm, SEd, critical difference (CD), and coefficient of variation (CV); transform counts and percentages when their variance depends on the mean; and choose a mean-comparison procedure that matches the question.</p>
+<p>The previous chapter introduced analysis of variance with one treatment factor. This chapter turns to the experiments that agricultural students actually lay out in pots, nurseries, and fields. The emphasis is on one rule that runs through every design: <strong>the analysis must follow the way treatments were randomized to experimental units.</strong></p>
+</section>
+<section id="three-principles-of-experimental-design" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="three-principles-of-experimental-design"><span class="header-section-number">13.2</span> Three principles of experimental design</h2>
+<p>R. A. Fisher’s work at Rothamsted gave agricultural research three principles that remain the foundation of every field trial.</p>
+<p><strong>Replication.</strong> Each treatment is applied to more than one experimental unit. Replication lets us estimate experimental error, the variation between units treated alike. Without it, a difference between two plots cannot be separated from ordinary plot-to-plot variation. More replicates also make treatment means more precise.</p>
+<p><strong>Randomization.</strong> Treatments are allocated to units by a chance mechanism, not by the researcher’s choice. Randomization protects comparisons from systematic bias, such as always placing the favoured treatment on the best soil, and it justifies the error estimate used in the F-test.</p>
+<p><strong>Local control.</strong> Units are grouped so that variation within groups is small. Blocks across a fertility gradient, rows and columns in a field with two gradients, and main plots for hard-to-change factors are all forms of local control. Grouping removes known variation from the error term and increases precision.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Identify the experimental unit first">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Identify the experimental unit first
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The experimental unit is the smallest unit to which a treatment is independently applied: a pot, a plot, a tree, a tray. Five plants sampled from one plot are subsamples, not five replicates. If irrigation is applied to whole strips, the strip is the unit for irrigation even when nitrogen is varied within it. Every design in this chapter is a statement about experimental units.</p>
+</div>
+</div>
+<p>A few terms recur. A <strong>treatment</strong> is a condition being compared (a variety, a fertilizer dose, a spray schedule). A <strong>factor</strong> is a set of related treatments, and its <strong>levels</strong> are the individual treatments. The <strong>response</strong> is the measurement on each unit, here usually grain yield or dry matter. <strong>Experimental error</strong> is the variation among units that received the same treatment.</p>
+</section>
+<section id="randomizing-a-layout-in-r" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="randomizing-a-layout-in-r"><span class="header-section-number">13.3</span> Randomizing a layout in R</h2>
+<p>Randomization should be done before the experiment and recorded. <code>sample()</code> returns a random permutation; <code>set.seed()</code> makes the permutation reproducible, so the layout can be regenerated and checked later. Use a new seed for each real experiment and keep it with the field book.</p>
+<section id="completely-randomized-layout" class="level3" data-number="13.3.1">
+<h3 data-number="13.3.1" class="anchored" data-anchor-id="completely-randomized-layout"><span class="header-section-number">13.3.1</span> Completely randomized layout</h3>
+<p>In a completely randomized design (CRD), every unit has the same chance of receiving any treatment. With five treatments and four replicates there are 20 units, and we randomly permute 20 treatment labels.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>treatments <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"N0"</span>, <span class="st">"N40"</span>, <span class="st">"N80"</span>, <span class="st">"N120"</span>, <span class="st">"N160"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>crd_plan <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">pot =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">treatment =</span> <span class="fu">sample</span>(<span class="fu">rep</span>(treatments, <span class="at">times =</span> <span class="dv">4</span>)))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(crd_plan, <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  pot treatment
+1   1        N0
+2   2        N0
+3   3       N80
+4   4      N160
+5   5        N0
+6   6       N40
+7   7      N120
+8   8      N160</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(crd_plan<span class="sc">$</span>treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  N0 N120 N160  N40  N80 
+   4    4    4    4    4 </code></pre>
+</div>
+</div>
+<p>The <code>table()</code> check confirms that every treatment appears exactly four times. Write the pot numbers on labels before allocating treatments, so that the random plan, not convenience, decides which pot receives which dose.</p>
+</section>
+<section id="randomized-complete-block-layout" class="level3" data-number="13.3.2">
+<h3 data-number="13.3.2" class="anchored" data-anchor-id="randomized-complete-block-layout"><span class="header-section-number">13.3.2</span> Randomized complete block layout</h3>
+<p>In a randomized complete block design (RCBD), every treatment appears once in each block, and randomization is carried out <strong>separately within each block</strong>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>varieties <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"V"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>blocks <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>rcbd_plan <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span>blocks, <span class="cf">function</span>(b)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">block =</span> b, <span class="at">plot_in_block =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">variety =</span> <span class="fu">sample</span>(varieties))))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rcbd_plan, <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  block plot_in_block variety
+1     1             1      V5
+2     1             2      V1
+3     1             3      V6
+4     1             4      V2
+5     1             5      V4
+6     1             6      V3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Field plan: one row per block, plots in field order</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(rcbd_plan<span class="sc">$</span>variety, <span class="at">nrow =</span> blocks, <span class="at">byrow =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="fu">paste</span>(<span class="st">"Block"</span>, <span class="dv">1</span><span class="sc">:</span>blocks), <span class="fu">paste</span>(<span class="st">"Plot"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Plot 1 Plot 2 Plot 3 Plot 4 Plot 5 Plot 6
+Block 1 "V5"   "V1"   "V6"   "V2"   "V4"   "V3"  
+Block 2 "V3"   "V4"   "V5"   "V1"   "V6"   "V2"  
+Block 3 "V2"   "V6"   "V4"   "V3"   "V1"   "V5"  
+Block 4 "V6"   "V1"   "V4"   "V2"   "V3"   "V5"  </code></pre>
+</div>
+</div>
+<p>Each row of the field plan is a block and contains all six varieties in a different random order. Blocks should be laid out <strong>across</strong> the known gradient, so that plots within a block are as similar as possible.</p>
+</section>
+<section id="latin-square-layout" class="level3" data-number="13.3.3">
+<h3 data-number="13.3.3" class="anchored" data-anchor-id="latin-square-layout"><span class="header-section-number">13.3.3</span> Latin square layout</h3>
+<p>A Latin square controls variation in two directions. With five treatments, the field is divided into five rows and five columns, and each treatment appears once in every row and once in every column. A simple way to obtain a random Latin square is to start from a cyclic square and then randomly permute its rows, columns, and treatment labels.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>cyclic <span class="ot">&lt;-</span> <span class="fu">outer</span>(<span class="dv">0</span><span class="sc">:</span>(k <span class="sc">-</span> <span class="dv">1</span>), <span class="dv">0</span><span class="sc">:</span>(k <span class="sc">-</span> <span class="dv">1</span>), <span class="cf">function</span>(i, j) (i <span class="sc">+</span> j) <span class="sc">%%</span> k) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>square <span class="ot">&lt;-</span> cyclic[<span class="fu">sample</span>(k), <span class="fu">sample</span>(k)]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ls_plan <span class="ot">&lt;-</span> <span class="fu">matrix</span>(labels[square], <span class="at">nrow =</span> k,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">dimnames =</span> <span class="fu">list</span>(<span class="fu">paste</span>(<span class="st">"Row"</span>, <span class="dv">1</span><span class="sc">:</span>k), <span class="fu">paste</span>(<span class="st">"Col"</span>, <span class="dv">1</span><span class="sc">:</span>k)))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>ls_plan</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Col 1 Col 2 Col 3 Col 4 Col 5
+Row 1 "E"   "C"   "D"   "A"   "B"  
+Row 2 "C"   "A"   "B"   "D"   "E"  
+Row 3 "B"   "E"   "A"   "C"   "D"  
+Row 4 "A"   "D"   "E"   "B"   "C"  
+Row 5 "D"   "B"   "C"   "E"   "A"  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Every treatment once per row and once per column</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">apply</span>(ls_plan, <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="fu">length</span>(<span class="fu">unique</span>(x)) <span class="sc">==</span> k),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">apply</span>(ls_plan, <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">length</span>(<span class="fu">unique</span>(x)) <span class="sc">==</span> k))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</section>
+<section id="layouts-with-the-agricolae-package" class="level3" data-number="13.3.4">
+<h3 data-number="13.3.4" class="anchored" data-anchor-id="layouts-with-the-agricolae-package"><span class="header-section-number">13.3.4</span> Layouts with the agricolae package</h3>
+<p>The <code>agricolae</code> package, widely used in agricultural statistics teaching, creates field books for many designs. Its <code>book</code> component lists plots, blocks, and treatments ready for printing.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agricolae)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>crd_book <span class="ot">&lt;-</span> <span class="fu">design.crd</span>(<span class="at">trt =</span> treatments, <span class="at">r =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">2026</span>, <span class="at">serie =</span> <span class="dv">0</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(crd_book<span class="sc">$</span>book)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  plots r treatments
+1     1 1        N80
+2     2 2        N80
+3     3 1         N0
+4     4 1        N40
+5     5 1       N120
+6     6 1       N160</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>rcbd_book <span class="ot">&lt;-</span> <span class="fu">design.rcbd</span>(<span class="at">trt =</span> varieties, <span class="at">r =</span> <span class="dv">4</span>, <span class="at">seed =</span> <span class="dv">2026</span>, <span class="at">serie =</span> <span class="dv">2</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rcbd_book<span class="sc">$</span>book)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  plots block varieties
+1   101     1        V1
+2   102     1        V2
+3   103     1        V4
+4   104     1        V6
+5   105     1        V3
+6   106     1        V5</code></pre>
+</div>
+</div>
+<p>Whichever tool you use, store the seed, the software version, and the printed plan. A layout that cannot be reproduced cannot be audited.</p>
+</section>
+</section>
+<section id="quantities-reported-with-every-field-experiment" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="quantities-reported-with-every-field-experiment"><span class="header-section-number">13.4</span> Quantities reported with every field experiment</h2>
+<p>Agricultural research reports in India conventionally present, below each table of treatment means, the standard error of a mean, the critical difference, and the coefficient of variation. They all come from the <strong>error mean square</strong> (MSE) of the analysis.</p>
+<div id="tbl-design-quantities" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-design-quantities-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;13.1: Standard summary quantities for a single-factor design
+</figcaption>
+<div aria-describedby="tbl-design-quantities-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Quantity</th>
+<th>Formula</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SEm±</td>
+<td><span class="math inline">\(\sqrt{MSE/r}\)</span></td>
+<td>Standard error of one treatment mean based on <span class="math inline">\(r\)</span> replicates</td>
+</tr>
+<tr class="even">
+<td>SEd</td>
+<td><span class="math inline">\(\sqrt{2\,MSE/r}\)</span></td>
+<td>Standard error of the difference between two treatment means</td>
+</tr>
+<tr class="odd">
+<td>CD (5%)</td>
+<td><span class="math inline">\(t_{0.025,\ \text{error df}} \times \text{SEd}\)</span></td>
+<td>Least difference between two means that is significant at 5%</td>
+</tr>
+<tr class="even">
+<td>CV (%)</td>
+<td><span class="math inline">\(100\sqrt{MSE}/\bar{y}\)</span></td>
+<td>Experimental error relative to the general mean</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The CV describes the precision of the experiment as a whole. Typical values depend on the crop, the character, and the conditions; yield trials commonly have smaller CVs than pest counts or weed biomass. A very high CV signals poor control of experimental error, and a very low CV in a field trial is worth double-checking for data-entry problems.</p>
+<p>The CD is the classical <strong>least significant difference</strong> (LSD). Two treatment means that differ by more than the CD differ significantly at the 5% level, <strong>provided</strong> the F-test for treatments was significant and the comparison was of interest before the data were seen. We return to this condition in <a href="#sec-designs-comparisons" class="quarto-xref"><span>Section 13.11</span></a>.</p>
+<p>We will compute these quantities often, so we write one small function. It works for any <code>aov()</code> fit without an <code>Error()</code> term, given the number of replicates behind each mean.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>design_stats <span class="ot">&lt;-</span> <span class="cf">function</span>(fit, r, <span class="at">alpha =</span> <span class="fl">0.05</span>) {</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  mse <span class="ot">&lt;-</span> <span class="fu">deviance</span>(fit) <span class="sc">/</span> <span class="fu">df.residual</span>(fit)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  sem <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(mse <span class="sc">/</span> r)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  sed <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> mse <span class="sc">/</span> r)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  cd <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> <span class="dv">2</span>, <span class="at">df =</span> <span class="fu">df.residual</span>(fit)) <span class="sc">*</span> sed</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  response <span class="ot">&lt;-</span> <span class="fu">fitted</span>(fit) <span class="sc">+</span> <span class="fu">residuals</span>(fit)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  cv <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">sqrt</span>(mse) <span class="sc">/</span> <span class="fu">mean</span>(response)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="fu">c</span>(<span class="at">MSE =</span> mse, <span class="at">SEm =</span> sem, <span class="at">SEd =</span> sed, <span class="at">CD =</span> cd, <span class="at">CV_percent =</span> cv), <span class="dv">3</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>deviance()</code> of an <code>aov</code> fit is the residual sum of squares, and <code>df.residual()</code> gives its degrees of freedom. Adding the fitted values and residuals recovers the observed response, so the CV uses the general mean of the data.</p>
+</section>
+<section id="completely-randomized-design" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="completely-randomized-design"><span class="header-section-number">13.5</span> Completely randomized design</h2>
+<p>A CRD is appropriate when the experimental units are homogeneous, for example pots filled from one thoroughly mixed soil, petri dishes in an incubator, or uniform nursery trays. It is rarely suitable for open field trials, where soil fertility varies from place to place.</p>
+<p>The model is the one-way model from the previous chapter, <span class="math inline">\(Y_{ij} = \mu + \tau_i + \epsilon_{ij}\)</span>. The simulated file <code>crd.csv</code> records dry matter (g per pot) in a pot experiment with five nitrogen levels and four pots per level.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>crd <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/crd.csv"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>crd<span class="sc">$</span>nitrogen <span class="ot">&lt;-</span> <span class="fu">factor</span>(crd<span class="sc">$</span>nitrogen,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"N0"</span>, <span class="st">"N40"</span>, <span class="st">"N80"</span>, <span class="st">"N120"</span>, <span class="st">"N160"</span>))</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(crd<span class="sc">$</span>nitrogen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  N0  N40  N80 N120 N160 
+   4    4    4    4    4 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>crd_fit <span class="ot">&lt;-</span> <span class="fu">aov</span>(dry_matter_g_pot <span class="sc">~</span> nitrogen, <span class="at">data =</span> crd)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(crd_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+nitrogen     4  323.4   80.86   16.04 2.71e-05 ***
+Residuals   15   75.6    5.04                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>crd_means <span class="ot">&lt;-</span> <span class="fu">tapply</span>(crd<span class="sc">$</span>dry_matter_g_pot, crd<span class="sc">$</span>nitrogen, mean)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(crd_means, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   N0   N40   N80  N120  N160 
+18.32 23.55 24.42 28.90 29.32 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design_stats</span>(crd_fit, <span class="at">r =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       MSE        SEm        SEd         CD CV_percent 
+     5.042      1.123      1.588      3.384      9.016 </code></pre>
+</div>
+</div>
+<p>Setting the factor levels puts the doses in their natural order; otherwise R sorts labels alphabetically and places N120 before N40. The F-test is highly significant, so there is strong evidence that mean dry matter differs among the nitrogen levels.</p>
+<p>The CV is about 9%, and the CD is about 3.4 g per pot. Mean dry matter rose from about 18.3 g at N0 to about 29.3 g at N160. N40 and N80 differ by less than the CD, as do N120 and N160, so the data do not separate those adjacent pairs. Every other comparison with N0 exceeds the CD.</p>
+<p>Because nitrogen levels are <strong>quantitative</strong>, a response curve answers the agronomic question better than a list of pairwise comparisons. A regression of dry matter on dose estimates how fast the response rises and where it levels off (see the regression chapter). Pairwise comparisons of doses are most useful when the levels are qualitative, such as varieties or products.</p>
+</section>
+<section id="randomized-complete-block-design" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="randomized-complete-block-design"><span class="header-section-number">13.6</span> Randomized complete block design</h2>
+<p>The RCBD is the most widely used design in field experiments. Blocks are formed across the main gradient of soil fertility, slope, or drainage, and each block contains every treatment once. The additive model is <span class="math inline">\(Y_{ij} = \mu + \tau_i + \beta_j + \epsilon_{ij}\)</span>, where <span class="math inline">\(\beta_j\)</span> is the effect of block <span class="math inline">\(j\)</span>.</p>
+<p>The simulated file <code>rcbd_varieties.csv</code> contains grain yields (t/ha) of six rice varieties (generic labels V1 to V6) in four blocks.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>rb <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/rcbd_varieties.csv"</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>rb<span class="sc">$</span>block <span class="ot">&lt;-</span> <span class="fu">factor</span>(rb<span class="sc">$</span>block)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>rb<span class="sc">$</span>variety <span class="ot">&lt;-</span> <span class="fu">factor</span>(rb<span class="sc">$</span>variety)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(rb, <span class="fu">table</span>(variety, block))  <span class="co"># each variety once in each block</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       block
+variety 1 2 3 4
+     V1 1 1 1 1
+     V2 1 1 1 1
+     V3 1 1 1 1
+     V4 1 1 1 1
+     V5 1 1 1 1
+     V6 1 1 1 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>rb_fit <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield_t_ha <span class="sc">~</span> block <span class="sc">+</span> variety, <span class="at">data =</span> rb)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rb_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+block        3 1.5082  0.5027   12.99 0.00019 ***
+variety      5 3.0359  0.6072   15.69 1.7e-05 ***
+Residuals   15 0.5806  0.0387                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">sort</span>(<span class="fu">tapply</span>(rb<span class="sc">$</span>yield_t_ha, rb<span class="sc">$</span>variety, mean), <span class="at">decreasing =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  V1   V3   V4   V2   V6   V5 
+5.66 5.18 5.15 4.99 4.88 4.48 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design_stats</span>(rb_fit, <span class="at">r =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       MSE        SEm        SEd         CD CV_percent 
+     0.039      0.098      0.139      0.297      3.890 </code></pre>
+</div>
+</div>
+<p>The block line of the ANOVA table shows that blocks differed substantially. Including them in the model removed that variation from the error term. The varietal differences are highly significant, the CV is about 3.9%, and the CD is about 0.30 t/ha. V1 gave the highest mean yield, about 5.66 t/ha; its margin over the next variety, V3, is about 0.49 t/ha, which exceeds the CD.</p>
+<section id="did-blocking-help" class="level3" data-number="13.6.1">
+<h3 data-number="13.6.1" class="anchored" data-anchor-id="did-blocking-help"><span class="header-section-number">13.6.1</span> Did blocking help?</h3>
+<p>We can compare the error mean square from the blocked analysis with the error that a CRD analysis of the same data would have produced. The <strong>relative efficiency</strong> (RE) of the RCBD compared with a CRD is</p>
+<p><span class="math display">\[RE = \frac{(r-1)E_b + r(t-1)E_e}{(rt-1)E_e},\]</span></p>
+<p>where <span class="math inline">\(E_b\)</span> is the block mean square, <span class="math inline">\(E_e\)</span> the error mean square, <span class="math inline">\(r\)</span> the number of blocks, and <span class="math inline">\(t\)</span> the number of treatments.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">anova</span>(rb_fit)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>Eb <span class="ot">&lt;-</span> tab[<span class="st">"block"</span>, <span class="st">"Mean Sq"</span>]</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>Ee <span class="ot">&lt;-</span> tab[<span class="st">"Residuals"</span>, <span class="st">"Mean Sq"</span>]</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">nlevels</span>(rb<span class="sc">$</span>block); t <span class="ot">&lt;-</span> <span class="fu">nlevels</span>(rb<span class="sc">$</span>variety)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>RE <span class="ot">&lt;-</span> ((r <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> Eb <span class="sc">+</span> r <span class="sc">*</span> (t <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> Ee) <span class="sc">/</span> ((r <span class="sc">*</span> t <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> Ee)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(RE, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.56</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Error mean square if blocks are ignored</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">aov</span>(yield_t_ha <span class="sc">~</span> variety, <span class="at">data =</span> rb))[<span class="st">"Residuals"</span>, <span class="st">"Mean Sq"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1160444</code></pre>
+</div>
+</div>
+<p>An RE of about 2.6 means that a CRD would have needed roughly 2.6 times as many replicates to estimate the variety means with the same precision. Ignoring the blocks triples the error mean square, from about 0.039 to 0.116. Blocking was clearly worthwhile in this field. Remember, though, that blocks must be part of the analysis because they were part of the randomization, not because they happened to be useful.</p>
+</section>
+</section>
+<section id="latin-square-design" class="level2" data-number="13.7">
+<h2 data-number="13.7" class="anchored" data-anchor-id="latin-square-design"><span class="header-section-number">13.7</span> Latin square design</h2>
+<p>When a field has two gradients at right angles, for example a slope in one direction and an irrigation channel along another, a Latin square removes both. Each treatment occurs once in every row and every column, so the number of replicates equals the number of treatments. This restricts the Latin square to about four to eight treatments.</p>
+<p>The model is <span class="math inline">\(Y_{ijk} = \mu + \rho_i + \gamma_j + \tau_k + \epsilon_{ijk}\)</span>, with row (<span class="math inline">\(\rho\)</span>), column (<span class="math inline">\(\gamma\)</span>), and treatment (<span class="math inline">\(\tau\)</span>) effects. The simulated file <code>latin_square.csv</code> compares five weed-management treatments in a 5 × 5 square.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>ls <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/latin_square.csv"</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (v <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"row"</span>, <span class="st">"column"</span>, <span class="st">"treatment"</span>)) ls[[v]] <span class="ot">&lt;-</span> <span class="fu">factor</span>(ls[[v]])</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Field plan as recorded</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">xtabs</span>(<span class="sc">~</span> row <span class="sc">+</span> column, <span class="at">data =</span> ls)  <span class="co"># one plot per cell</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   column
+row 1 2 3 4 5
+  1 1 1 1 1 1
+  2 1 1 1 1 1
+  3 1 1 1 1 1
+  4 1 1 1 1 1
+  5 1 1 1 1 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="fu">as.character</span>(ls<span class="sc">$</span>treatment), <span class="at">nrow =</span> <span class="dv">5</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]             [,2]             [,3]             [,4]            
+[1,] "Unweeded"       "Mulch"          "Pre-emergence"  "Hand weeding"  
+[2,] "Mulch"          "Post-emergence" "Hand weeding"   "Unweeded"      
+[3,] "Hand weeding"   "Unweeded"       "Post-emergence" "Pre-emergence" 
+[4,] "Pre-emergence"  "Hand weeding"   "Mulch"          "Post-emergence"
+[5,] "Post-emergence" "Pre-emergence"  "Unweeded"       "Mulch"         
+     [,5]            
+[1,] "Post-emergence"
+[2,] "Pre-emergence" 
+[3,] "Mulch"         
+[4,] "Unweeded"      
+[5,] "Hand weeding"  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>ls_fit <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield_t_ha <span class="sc">~</span> row <span class="sc">+</span> column <span class="sc">+</span> treatment, <span class="at">data =</span> ls)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ls_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+row          4  1.443  0.3607   24.46 1.08e-05 ***
+column       4  1.396  0.3489   23.65 1.29e-05 ***
+treatment    4  6.708  1.6770  113.70 1.98e-09 ***
+Residuals   12  0.177  0.0147                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">sort</span>(<span class="fu">tapply</span>(ls<span class="sc">$</span>yield_t_ha, ls<span class="sc">$</span>treatment, mean), <span class="at">decreasing =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Hand weeding Post-emergence  Pre-emergence          Mulch       Unweeded 
+          4.47           4.11           4.03           3.78           2.93 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design_stats</span>(ls_fit, <span class="at">r =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       MSE        SEm        SEd         CD CV_percent 
+     0.015      0.054      0.077      0.167      3.144 </code></pre>
+</div>
+</div>
+<p>Both rows and columns account for significant variation, which confirms that the field had two gradients. Hand weeding gave the highest mean yield and the unweeded check the lowest. The error has <span class="math inline">\((t-1)(t-2) = 12\)</span> degrees of freedom. With small squares, such as 4 × 4, the error degrees of freedom become few; the experiment may then be repeated as several squares.</p>
+</section>
+<section id="factorial-experiments" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="factorial-experiments"><span class="header-section-number">13.8</span> Factorial experiments</h2>
+<p>Often we want to study two or more factors together: nitrogen dose with variety, or irrigation with mulching. In a <strong>factorial</strong> experiment, every combination of the factor levels is a treatment. A 3 × 2 factorial of three nitrogen levels and two varieties has six treatment combinations, and these are laid out like ordinary treatments, here in an RCBD.</p>
+<p>A factorial experiment answers three questions at once:</p>
+<ul>
+<li><strong>Main effect of nitrogen:</strong> how does yield change with dose, averaged over varieties?</li>
+<li><strong>Main effect of variety:</strong> how do varieties differ, averaged over doses?</li>
+<li><strong>Interaction:</strong> does the response to nitrogen depend on the variety?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>fa <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/factorial_rcbd.csv"</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>fa<span class="sc">$</span>block <span class="ot">&lt;-</span> <span class="fu">factor</span>(fa<span class="sc">$</span>block)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>fa<span class="sc">$</span>nitrogen <span class="ot">&lt;-</span> <span class="fu">factor</span>(fa<span class="sc">$</span>nitrogen, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"N0"</span>, <span class="st">"N60"</span>, <span class="st">"N120"</span>))</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>fa<span class="sc">$</span>variety <span class="ot">&lt;-</span> <span class="fu">factor</span>(fa<span class="sc">$</span>variety)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>fa_fit <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield_t_ha <span class="sc">~</span> block <span class="sc">+</span> nitrogen <span class="sc">*</span> variety, <span class="at">data =</span> fa)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fa_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+block             3  0.543   0.181   3.499  0.04197 *  
+nitrogen          2 10.012   5.006  96.712 2.68e-09 ***
+variety           1  2.561   2.561  49.478 4.04e-06 ***
+nitrogen:variety  2  0.776   0.388   7.496  0.00553 ** 
+Residuals        15  0.776   0.052                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-way table of means</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">with</span>(fa, <span class="fu">tapply</span>(yield_t_ha, <span class="fu">list</span>(nitrogen, variety), mean)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Dwarf Tall
+N0    3.24 3.02
+N60   4.49 3.86
+N120  5.24 4.13</code></pre>
+</div>
+</div>
+<p><code>nitrogen * variety</code> expands to <code>nitrogen + variety + nitrogen:variety</code>. The interaction is significant, so the main effects should not be interpreted on their own.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(fa, <span class="fu">interaction.plot</span>(nitrogen, variety, yield_t_ha, <span class="at">type =</span> <span class="st">"b"</span>,</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">17</span>), <span class="at">xlab =</span> <span class="st">"Nitrogen level"</span>,</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ylab =</span> <span class="st">"Mean yield (t/ha)"</span>, <span class="at">trace.label =</span> <span class="st">"Variety"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="12b-experimental-designs_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The table and plot show the pattern. At N0 the two varieties yield almost the same, but the dwarf variety responds much more strongly to nitrogen: at N120 it out-yields the tall variety by about 1.1 t/ha. The tall variety gains little beyond N60. An agronomic recommendation therefore depends on variety, and an “average response to nitrogen” would describe neither variety well.</p>
+<section id="standard-errors-in-a-factorial-experiment" class="level3" data-number="13.8.1">
+<h3 data-number="13.8.1" class="anchored" data-anchor-id="standard-errors-in-a-factorial-experiment"><span class="header-section-number">13.8.1</span> Standard errors in a factorial experiment</h3>
+<p>Means of different kinds rest on different numbers of plots, so each has its own SEd. With <span class="math inline">\(r\)</span> blocks, <span class="math inline">\(a\)</span> levels of nitrogen, and <span class="math inline">\(b\)</span> levels of variety:</p>
+<div id="tbl-factorial-sed" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-factorial-sed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;13.2: SEd for the different means of a two-factor experiment
+</figcaption>
+<div aria-describedby="tbl-factorial-sed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Comparison</th>
+<th>SEd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Two nitrogen means (averaged over varieties)</td>
+<td><span class="math inline">\(\sqrt{2\,MSE/(rb)}\)</span></td>
+</tr>
+<tr class="even">
+<td>Two variety means (averaged over nitrogen)</td>
+<td><span class="math inline">\(\sqrt{2\,MSE/(ra)}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Two treatment-combination means</td>
+<td><span class="math inline">\(\sqrt{2\,MSE/r}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>mse <span class="ot">&lt;-</span> <span class="fu">deviance</span>(fa_fit) <span class="sc">/</span> <span class="fu">df.residual</span>(fa_fit)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">4</span>; a <span class="ot">&lt;-</span> <span class="dv">3</span>; b <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>sed <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">nitrogen =</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> mse <span class="sc">/</span> (r <span class="sc">*</span> b)),</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">variety =</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> mse <span class="sc">/</span> (r <span class="sc">*</span> a)),</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">combination =</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> mse <span class="sc">/</span> r))</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>cd <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="fu">df.residual</span>(fa_fit)) <span class="sc">*</span> sed</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">rbind</span>(<span class="at">SEd =</span> sed, <span class="at">CD =</span> cd), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    nitrogen variety combination
+SEd    0.114   0.093       0.161
+CD     0.242   0.198       0.343</code></pre>
+</div>
+</div>
+<p>When the interaction is significant, compare nitrogen levels <strong>within</strong> each variety, using the combination CD. For example, the dwarf variety’s gain from N60 to N120 is about 0.75 t/ha, well above the combination CD of about 0.34 t/ha, whereas the tall variety’s gain is only about 0.28 t/ha, below it.</p>
+</section>
+</section>
+<section id="split-plot-design" class="level2" data-number="13.9">
+<h2 data-number="13.9" class="anchored" data-anchor-id="split-plot-design"><span class="header-section-number">13.9</span> Split-plot design</h2>
+<p>Some factors are impractical to apply to small plots. Irrigation, tillage, and sowing date need large areas, whereas varieties or nitrogen doses can be applied to small plots. In a <strong>split-plot</strong> design, each block is divided into <strong>main plots</strong> that receive the levels of the hard-to-change factor, and each main plot is divided into <strong>subplots</strong> that receive the levels of the second factor. There are two randomizations: main-plot treatments to main plots within each block, then subplot treatments to subplots within each main plot.</p>
+<p>Because of the two randomizations there are <strong>two error terms</strong>:</p>
+<ul>
+<li><strong>Error (a)</strong>, variation among main plots treated alike, is used to test the main-plot factor. It usually has few degrees of freedom and is larger.</li>
+<li><strong>Error (b)</strong>, variation among subplots within main plots, is used to test the subplot factor and the interaction. It is usually smaller, so subplot comparisons are more precise.</li>
+</ul>
+<p>The simulated file <code>split_plot.csv</code> contains three irrigation schedules (main plots) and four nitrogen levels (subplots) in three blocks.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/split_plot.csv"</span>)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>sp<span class="sc">$</span>block <span class="ot">&lt;-</span> <span class="fu">factor</span>(sp<span class="sc">$</span>block)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>sp<span class="sc">$</span>irrigation <span class="ot">&lt;-</span> <span class="fu">factor</span>(sp<span class="sc">$</span>irrigation)</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>sp<span class="sc">$</span>nitrogen <span class="ot">&lt;-</span> <span class="fu">factor</span>(sp<span class="sc">$</span>nitrogen, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"N0"</span>, <span class="st">"N50"</span>, <span class="st">"N100"</span>, <span class="st">"N150"</span>))</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>sp_fit <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield_t_ha <span class="sc">~</span> irrigation <span class="sc">*</span> nitrogen <span class="sc">+</span> <span class="fu">Error</span>(block <span class="sc">/</span> irrigation),</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> sp)</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sp_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Error: block
+          Df Sum Sq Mean Sq F value Pr(&gt;F)
+Residuals  2  4.204   2.102               
+
+Error: block:irrigation
+           Df Sum Sq Mean Sq F value Pr(&gt;F)  
+irrigation  2 10.686   5.343   17.98   0.01 *
+Residuals   4  1.188   0.297                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Error: Within
+                    Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+nitrogen             3 13.695   4.565 226.471 1.77e-14 ***
+irrigation:nitrogen  6  0.587   0.098   4.851  0.00412 ** 
+Residuals           18  0.363   0.020                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">with</span>(sp, <span class="fu">tapply</span>(yield_t_ha, <span class="fu">list</span>(irrigation, nitrogen), mean)), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     N0  N50 N100 N150
+I1 3.07 4.06 4.42 4.37
+I2 4.07 4.90 5.27 5.55
+I3 4.07 5.18 5.66 6.13</code></pre>
+</div>
+</div>
+<p><code>Error(block / irrigation)</code> tells R that main plots are identified by block and irrigation together. R then splits the analysis into strata. In the <code>block:irrigation</code> stratum, irrigation is tested against error (a), which has only 4 degrees of freedom. In the <code>Within</code> stratum, nitrogen and the interaction are tested against error (b).</p>
+<section id="what-goes-wrong-if-the-design-is-ignored" class="level3" data-number="13.9.1">
+<h3 data-number="13.9.1" class="anchored" data-anchor-id="what-goes-wrong-if-the-design-is-ignored"><span class="header-section-number">13.9.1</span> What goes wrong if the design is ignored</h3>
+<p>It is tempting to analyse the same data as an ordinary RCBD with nine treatment combinations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>wrong_fit <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield_t_ha <span class="sc">~</span> block <span class="sc">+</span> irrigation <span class="sc">*</span> nitrogen, <span class="at">data =</span> sp)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wrong_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+block                2  4.204   2.102  29.811 5.45e-07 ***
+irrigation           2 10.686   5.343  75.779 1.36e-10 ***
+nitrogen             3 13.695   4.565  64.745 4.45e-11 ***
+irrigation:nitrogen  6  0.587   0.098   1.387    0.264    
+Residuals           22  1.551   0.071                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The two analyses disagree sharply. The wrong analysis tests irrigation against a pooled error that mixes main-plot and subplot variation, which inflates its F-value from about 18 to about 76. At the same time, it pools the larger main-plot variation into the error for nitrogen and the interaction. The interaction, highly significant in the correct analysis, is not significant in the wrong one. Same data, same R function, different conclusions: only the analysis that follows the randomization is valid.</p>
+<p>The correct analysis shows that the response to nitrogen depends on irrigation. Under the least irrigation (I1), yield levels off after N100, whereas under I3 it is still rising at N150. This is exactly the kind of finding a split-plot experiment is designed to reveal.</p>
+<p>The <code>agricolae</code> function <code>sp.plot()</code> produces the same split-plot ANOVA in the traditional layout with error (a) and error (b), which is a useful cross-check.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(sp, <span class="fu">sp.plot</span>(block, irrigation, nitrogen, yield_t_ha))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ANALYSIS SPLIT PLOT:  yield_t_ha 
+Class level information
+
+irrigation  :  I3 I2 I1 
+nitrogen    :  N100 N0 N50 N150 
+block   :  1 2 3 
+
+Number of observations:  36 
+
+Analysis of Variance Table
+
+Response: yield_t_ha
+                    Df  Sum Sq Mean Sq  F value    Pr(&gt;F)    
+block                2  4.2038  2.1019 104.2749 1.262e-10 ***
+irrigation           2 10.6860  5.3430  17.9848  0.010015 *  
+Ea                   4  1.1883  0.2971                       
+nitrogen             3 13.6952  4.5651 226.4713 1.776e-14 ***
+irrigation:nitrogen  6  0.5867  0.0978   4.8509  0.004124 ** 
+Eb                  18  0.3628  0.0202                       
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+cv(a) = 11.5 %, cv(b) = 3 %, Mean = 4.731111 </code></pre>
+</div>
+</div>
+<p>Comparisons in a split-plot need care, because different comparisons use different errors. Two main-plot means use error (a); two subplot means at the same main-plot level use error (b); two subplot means at <strong>different</strong> main-plot levels combine both errors. Standard textbooks such as Gomez and Gomez (1984) give these formulas. In practice, state which comparison you are making and which error it uses.</p>
+</section>
+</section>
+<section id="checking-assumptions-and-transforming-data" class="level2" data-number="13.10">
+<h2 data-number="13.10" class="anchored" data-anchor-id="checking-assumptions-and-transforming-data"><span class="header-section-number">13.10</span> Checking assumptions and transforming data</h2>
+<p>The F-test assumes that errors are independent, have constant variance, and are approximately normal. Independence comes from randomization. Constant variance and normality are checked with the residuals of the fitted model, as in the previous chapter.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>old <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rb_fit, <span class="at">which =</span> <span class="dv">1</span>)</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rb_fit, <span class="at">which =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="12b-experimental-designs_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(old)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Agricultural data often break the constant-variance assumption in a predictable way. <strong>Counts</strong>, such as insects per plant or weeds per quadrat, have variance that increases with the mean. <strong>Percentages</strong> based on counts, such as germination or disease incidence, have small variance near 0% and 100% and large variance near 50%. For such data a transformation can stabilize the variance before analysis.</p>
+<section id="counts-square-root-transformation" class="level3" data-number="13.10.1">
+<h3 data-number="13.10.1" class="anchored" data-anchor-id="counts-square-root-transformation"><span class="header-section-number">13.10.1</span> Counts: square-root transformation</h3>
+<p>The simulated file <code>aphid_counts.csv</code> records aphids per plant under five treatments in a CRD with five plants each.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>ap <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/aphid_counts.csv"</span>)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>ap<span class="sc">$</span>treatment <span class="ot">&lt;-</span> <span class="fu">factor</span>(ap<span class="sc">$</span>treatment)</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean and variance by treatment: variance rises with the mean</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">t</span>(<span class="fu">sapply</span>(<span class="fu">split</span>(ap<span class="sc">$</span>aphids_per_plant, ap<span class="sc">$</span>treatment),</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>               <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(x), <span class="at">variance =</span> <span class="fu">var</span>(x)))), <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              mean variance
+Control       41.2    246.7
+Insecticide A  5.6     15.3
+Insecticide B  8.6     21.3
+Insecticide C  3.8      1.2
+Neem oil      20.0     53.5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(aphids_per_plant <span class="sc">~</span> treatment, <span class="at">data =</span> ap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  aphids_per_plant by treatment
+Bartlett's K-squared = 20.405, df = 4, p-value = 0.0004154</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>ap<span class="sc">$</span>sqrt_count <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(ap<span class="sc">$</span>aphids_per_plant <span class="sc">+</span> <span class="fl">0.5</span>)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(sqrt_count <span class="sc">~</span> treatment, <span class="at">data =</span> ap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Bartlett test of homogeneity of variances
+
+data:  sqrt_count by treatment
+Bartlett's K-squared = 7.5716, df = 4, p-value = 0.1086</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>ap_fit <span class="ot">&lt;-</span> <span class="fu">aov</span>(sqrt_count <span class="sc">~</span> treatment, <span class="at">data =</span> ap)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ap_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+treatment    4  64.00  16.001   20.46 7.7e-07 ***
+Residuals   20  15.64   0.782                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The control has a much larger variance than the effective insecticides. Bartlett’s test is clearly significant for the raw counts; after the transformation, much less heterogeneity remains. Adding 0.5 before taking the square root is recommended when counts include zeros or small values.</p>
+<p>Carry out comparisons on the transformed scale and report means on both scales. Transformed means can be converted back for presentation; the back-transformed value of a mean square root is not the arithmetic mean count, so label it clearly.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>sqrt_means <span class="ot">&lt;-</span> <span class="fu">tapply</span>(ap<span class="sc">$</span>sqrt_count, ap<span class="sc">$</span>treatment, mean)</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">mean_count =</span> <span class="fu">round</span>(<span class="fu">tapply</span>(ap<span class="sc">$</span>aphids_per_plant, ap<span class="sc">$</span>treatment, mean), <span class="dv">1</span>),</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">mean_sqrt =</span> <span class="fu">round</span>(sqrt_means, <span class="dv">2</span>),</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">back_transformed =</span> <span class="fu">round</span>(sqrt_means<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="fl">0.5</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              mean_count mean_sqrt back_transformed
+Control             41.2      6.35             39.8
+Insecticide A        5.6      2.31              4.8
+Insecticide B        8.6      2.94              8.1
+Insecticide C        3.8      2.06              3.7
+Neem oil            20.0      4.48             19.6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design_stats</span>(ap_fit, <span class="at">r =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       MSE        SEm        SEd         CD CV_percent 
+     0.782      0.395      0.559      1.167     24.381 </code></pre>
+</div>
+</div>
+<p>The CD applies to the <code>mean_sqrt</code> column, not to the counts.</p>
+</section>
+<section id="percentages-angular-arcsine-transformation" class="level3" data-number="13.10.2">
+<h3 data-number="13.10.2" class="anchored" data-anchor-id="percentages-angular-arcsine-transformation"><span class="header-section-number">13.10.2</span> Percentages: angular (arcsine) transformation</h3>
+<p>For percentages from counts, the angular transformation <span class="math inline">\(\sin^{-1}\sqrt{p}\)</span> stabilizes the variance, where <span class="math inline">\(p\)</span> is the proportion. It is most useful when many values lie below 30% or above 70%.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>ge <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/germination.csv"</span>)</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>ge<span class="sc">$</span>seed_treatment <span class="ot">&lt;-</span> <span class="fu">factor</span>(ge<span class="sc">$</span>seed_treatment)</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>ge<span class="sc">$</span>angle_deg <span class="ot">&lt;-</span> <span class="fu">asin</span>(<span class="fu">sqrt</span>(ge<span class="sc">$</span>germination_pct <span class="sc">/</span> <span class="dv">100</span>)) <span class="sc">*</span> <span class="dv">180</span> <span class="sc">/</span> pi</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>ge_fit <span class="ot">&lt;-</span> <span class="fu">aov</span>(angle_deg <span class="sc">~</span> seed_treatment, <span class="at">data =</span> ge)</span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ge_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+seed_treatment  3 1448.1   482.7   40.88 1.41e-06 ***
+Residuals      12  141.7    11.8                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>angle_means <span class="ot">&lt;-</span> <span class="fu">tapply</span>(ge<span class="sc">$</span>angle_deg, ge<span class="sc">$</span>seed_treatment, mean)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">mean_pct =</span> <span class="fu">tapply</span>(ge<span class="sc">$</span>germination_pct, ge<span class="sc">$</span>seed_treatment, mean),</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">mean_angle =</span> <span class="fu">round</span>(angle_means, <span class="dv">2</span>),</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">back_transformed_pct =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="fu">sin</span>(angle_means <span class="sc">*</span> pi <span class="sc">/</span> <span class="dv">180</span>)<span class="sc">^</span><span class="dv">2</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          mean_pct mean_angle back_transformed_pct
+GA3           92.5      74.40                 92.8
+Hot water     72.5      58.42                 72.6
+KNO3          84.0      66.53                 84.1
+Untreated     56.5      48.77                 56.6</code></pre>
+</div>
+</div>
+<p><code>asin()</code> returns radians; multiplying by <code>180 / pi</code> gives degrees, the scale used in most agricultural tables.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Transformations and modern alternatives">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Transformations and modern alternatives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Transformations are the classical remedy and remain common in Indian agricultural research reports. Generalized linear models, such as Poisson models for counts and binomial models for germination, analyse the data on their original scale. They are beyond this introductory course but worth knowing about when you meet them in journals. A transformation should be chosen because of the type of data, not because it makes a result significant.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-designs-comparisons" class="level2" data-number="13.11">
+<h2 data-number="13.11" class="anchored" data-anchor-id="sec-designs-comparisons"><span class="header-section-number">13.11</span> Comparing treatment means</h2>
+<p>A significant F-test says that at least one treatment mean differs. Researchers then want to know which ones. Several procedures are in common use, and they answer slightly different questions.</p>
+<div id="tbl-mean-comparisons" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mean-comparisons-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;13.3: Common procedures for comparing treatment means
+</figcaption>
+<div aria-describedby="tbl-mean-comparisons-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Procedure</th>
+<th>What it controls</th>
+<th>When it is suitable</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CD / LSD</td>
+<td>Error rate of each comparison</td>
+<td>Planned comparisons, or a few comparisons after a significant F-test (Fisher’s protected LSD)</td>
+</tr>
+<tr class="even">
+<td>Duncan’s multiple range test (DMRT)</td>
+<td>Error rate that depends on how far apart means are in the ranking</td>
+<td>Traditionally used to rank many varieties; widely seen in Indian journals</td>
+</tr>
+<tr class="odd">
+<td>Tukey’s HSD</td>
+<td>Error rate for the whole family of pairwise comparisons</td>
+<td>All pairwise comparisons, when false positives are costly</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The <code>agricolae</code> package provides all three and prints the familiar letter groupings, where means sharing a letter do not differ significantly.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>lsd <span class="ot">&lt;-</span> <span class="fu">LSD.test</span>(rb_fit, <span class="st">"variety"</span>, <span class="at">console =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Study: rb_fit ~ "variety"
+
+LSD t Test for yield_t_ha 
+
+Mean Square Error:  0.03870556 
+
+variety,  means and individual ( 95 %) CI
+
+   yield_t_ha       std r         se      LCL      UCL  Min  Max    Q25   Q50
+V1     5.6625 0.4510266 4 0.09836864 5.452832 5.872168 5.13 6.08 5.3700 5.720
+V2     4.9875 0.3695380 4 0.09836864 4.777832 5.197168 4.67 5.42 4.6850 4.930
+V3     5.1775 0.4093389 4 0.09836864 4.967832 5.387168 4.61 5.57 5.0450 5.265
+V4     5.1550 0.2324507 4 0.09836864 4.945332 5.364668 4.89 5.43 5.0175 5.150
+V5     4.4800 0.1334166 4 0.09836864 4.270332 4.689668 4.36 4.67 4.4125 4.445
+V6     4.8825 0.3418942 4 0.09836864 4.672832 5.092168 4.47 5.29 4.7175 4.885
+      Q75
+V1 6.0125
+V2 5.2325
+V3 5.3975
+V4 5.2875
+V5 4.5125
+V6 5.0500
+
+Alpha: 0.05 ; DF Error: 15
+Critical Value of t: 2.13145 
+
+least Significant Difference: 0.296515 
+
+Treatments with the same letter are not significantly different.
+
+   yield_t_ha groups
+V1     5.6625      a
+V3     5.1775      b
+V4     5.1550      b
+V2     4.9875      b
+V6     4.8825      b
+V5     4.4800      c</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>dmrt <span class="ot">&lt;-</span> <span class="fu">duncan.test</span>(rb_fit, <span class="st">"variety"</span>, <span class="at">console =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Study: rb_fit ~ "variety"
+
+Duncan's new multiple range test
+for yield_t_ha 
+
+Mean Square Error:  0.03870556 
+
+variety,  means
+
+   yield_t_ha       std r         se  Min  Max    Q25   Q50    Q75
+V1     5.6625 0.4510266 4 0.09836864 5.13 6.08 5.3700 5.720 6.0125
+V2     4.9875 0.3695380 4 0.09836864 4.67 5.42 4.6850 4.930 5.2325
+V3     5.1775 0.4093389 4 0.09836864 4.61 5.57 5.0450 5.265 5.3975
+V4     5.1550 0.2324507 4 0.09836864 4.89 5.43 5.0175 5.150 5.2875
+V5     4.4800 0.1334166 4 0.09836864 4.36 4.67 4.4125 4.445 4.5125
+V6     4.8825 0.3418942 4 0.09836864 4.47 5.29 4.7175 4.885 5.0500
+
+Alpha: 0.05 ; DF Error: 15 
+
+Critical Range
+        2         3         4         5         6 
+0.2965150 0.3108278 0.3197225 0.3257820 0.3301275 
+
+Means with the same letter are not significantly different.
+
+   yield_t_ha groups
+V1     5.6625      a
+V3     5.1775      b
+V4     5.1550      b
+V2     4.9875      b
+V6     4.8825      b
+V5     4.4800      c</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>hsd <span class="ot">&lt;-</span> <span class="fu">HSD.test</span>(rb_fit, <span class="st">"variety"</span>, <span class="at">console =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Study: rb_fit ~ "variety"
+
+HSD Test for yield_t_ha 
+
+Mean Square Error:  0.03870556 
+
+variety,  means
+
+   yield_t_ha       std r         se  Min  Max    Q25   Q50    Q75
+V1     5.6625 0.4510266 4 0.09836864 5.13 6.08 5.3700 5.720 6.0125
+V2     4.9875 0.3695380 4 0.09836864 4.67 5.42 4.6850 4.930 5.2325
+V3     5.1775 0.4093389 4 0.09836864 4.61 5.57 5.0450 5.265 5.3975
+V4     5.1550 0.2324507 4 0.09836864 4.89 5.43 5.0175 5.150 5.2875
+V5     4.4800 0.1334166 4 0.09836864 4.36 4.67 4.4125 4.445 4.5125
+V6     4.8825 0.3418942 4 0.09836864 4.47 5.29 4.7175 4.885 5.0500
+
+Alpha: 0.05 ; DF Error: 15 
+Critical Value of Studentized Range: 4.594735 
+
+Minimun Significant Difference: 0.4519778 
+
+Treatments with the same letter are not significantly different.
+
+   yield_t_ha groups
+V1     5.6625      a
+V3     5.1775      b
+V4     5.1550      b
+V2     4.9875      b
+V6     4.8825     bc
+V5     4.4800      c</code></pre>
+</div>
+</div>
+<p>The same <code>rb_fit</code> model supplies the error mean square and its degrees of freedom to each procedure, so the block adjustment is respected. Tukey’s method is the most cautious and LSD the least, so their groupings may differ. Choose the procedure <strong>before</strong> looking at the results, and report which one you used.</p>
+<p>Letters are a compact summary, not an analysis. Report the means, the SEm or SEd, the CD, and the design alongside them. For quantitative factors such as nitrogen doses, a response curve is usually more informative than letters.</p>
+</section>
+<section id="missing-plots-and-other-designs" class="level2" data-number="13.12">
+<h2 data-number="13.12" class="anchored" data-anchor-id="missing-plots-and-other-designs"><span class="header-section-number">13.12</span> Missing plots and other designs</h2>
+<p>Plots are sometimes lost to flooding, animals, or theft. In a balanced design, a missing plot makes the data unbalanced. Classical textbooks give formulas to estimate a single missing value in an RCBD or Latin square. Software that fits the model by least squares, including <code>lm()</code>, can analyse unbalanced data directly, but with unbalanced data the order of terms in <code>aov()</code> matters, and the interpretation needs more care. Record why each plot is missing; if losses depend on the treatment, they are themselves a result.</p>
+<p>Other designs are used in agricultural research for special situations: <strong>augmented designs</strong> for screening many germplasm lines with limited seed, <strong>lattice and alpha designs</strong> for large variety trials where complete blocks would be too big, and <strong>strip-plot</strong> designs where two factors are both applied to strips. They follow the same principles but need a dedicated text, such as Gomez and Gomez’s <em>Statistical Procedures for Agricultural Research</em>.</p>
+</section>
+<section id="reporting-a-field-experiment" class="level2" data-number="13.13">
+<h2 data-number="13.13" class="anchored" data-anchor-id="reporting-a-field-experiment"><span class="header-section-number">13.13</span> Reporting a field experiment</h2>
+<p>A complete report of a designed experiment states:</p>
+<ol type="1">
+<li>The design, number of treatments, replications, and plot size, and how randomization was done.</li>
+<li>The experimental unit and any subsampling.</li>
+<li>A table of treatment means with units, followed by SEm±, CD (5%), and CV (%).</li>
+<li>The F-test results and the mean-comparison procedure used.</li>
+<li>Any transformation, missing plots, and diagnostic findings.</li>
+<li>An agronomic interpretation of the size of the differences, not only their significance.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>report <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Variety =</span> <span class="fu">names</span>(<span class="fu">sort</span>(<span class="fu">tapply</span>(rb<span class="sc">$</span>yield_t_ha, rb<span class="sc">$</span>variety, mean),</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">decreasing =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Yield_t_ha =</span> <span class="fu">round</span>(<span class="fu">sort</span>(<span class="fu">tapply</span>(rb<span class="sc">$</span>yield_t_ha, rb<span class="sc">$</span>variety, mean),</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">decreasing =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>stats <span class="ot">&lt;-</span> <span class="fu">design_stats</span>(rb_fit, <span class="at">r =</span> <span class="dv">4</span>)</span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>report</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Variety Yield_t_ha
+1      V1       5.66
+2      V3       5.18
+3      V4       5.15
+4      V2       4.99
+5      V6       4.88
+6      V5       4.48</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"SEm± = %.3f t/ha; CD (5%%) = %.2f t/ha; CV = %.1f%%</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>            stats[<span class="st">"SEm"</span>], stats[<span class="st">"CD"</span>], stats[<span class="st">"CV_percent"</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SEm± = 0.098 t/ha; CD (5%) = 0.30 t/ha; CV = 3.9%</code></pre>
+</div>
+</div>
+<p>A suitable sentence would read: “Varieties differed significantly in grain yield (RCBD, four replications; F = 15.7 on 5 and 15 df, p &lt; 0.001). V1 gave the highest yield (5.66 t/ha), exceeding the next best variety by 0.49 t/ha, more than the CD of 0.30 t/ha.” The numbers come from the analysis, and the chapter on reproducible reports shows how to insert them automatically.</p>
+</section>
+<section id="practical-14-and-exercises" class="level2" data-number="13.14">
+<h2 data-number="13.14" class="anchored" data-anchor-id="practical-14-and-exercises"><span class="header-section-number">13.14</span> Practical 14 and exercises</h2>
+<ol type="1">
+<li>Generate and print a randomized field plan for an RCBD with seven treatments and three blocks. Record the seed.</li>
+<li>Analyse <code>crd.csv</code>. Report the treatment means, SEm±, CD (5%), and CV. Which nitrogen levels do not differ significantly from N160?</li>
+<li>Analyse <code>rcbd_varieties.csv</code> with and without blocks. Compare the error mean squares and calculate the relative efficiency. Explain the result in one sentence.</li>
+<li>Draw the field plan stored in <code>latin_square.csv</code> and confirm that it is a Latin square. Why does the error have only 12 degrees of freedom?</li>
+<li>In <code>factorial_rcbd.csv</code>, compare N0 and N120 within each variety using the appropriate CD. Explain why the main effect of nitrogen is not a sufficient summary.</li>
+<li>Analyse <code>split_plot.csv</code> correctly and incorrectly. Identify every conclusion that changes and explain why.</li>
+<li>Analyse <code>aphid_counts.csv</code> on the original and square-root scales. Compare the residual plots.</li>
+</ol>
+<p><strong>Chapter review.</strong> Replication estimates error, randomization makes comparisons fair, and local control reduces error. Each design is a way of randomizing treatments to units, and its analysis must reproduce that structure. Report means with SEm±, CD, and CV, choose comparison procedures in advance, and interpret differences in agronomic units.</p>
+</section>
+<section id="live-r-laboratory" class="level2" data-number="13.15">
+<h2 data-number="13.15" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">13.15</span> Live R laboratory</h2>
+<div class="live-r">
+<p><strong>Analyse a randomized block experiment</strong></p>
+<p>Edit the code, then select <strong>Run R</strong>. The first run downloads R into your browser and may take a little time. <strong>Copy code</strong> also lets you use this example in RStudio.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>yield <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">4.8</span>, <span class="fl">5.4</span>, <span class="fl">4.0</span>, <span class="fl">5.5</span>,</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>           <span class="fl">4.6</span>, <span class="fl">4.9</span>, <span class="fl">4.1</span>, <span class="fl">5.3</span>,</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>           <span class="fl">4.1</span>, <span class="fl">5.0</span>, <span class="fl">3.5</span>, <span class="fl">5.1</span>)</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>trial <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">block =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">each =</span> <span class="dv">4</span>)),</span>
+<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">variety =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"V1"</span>, <span class="st">"V2"</span>, <span class="st">"V3"</span>, <span class="st">"V4"</span>), <span class="at">times =</span> <span class="dv">3</span>)),</span>
+<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">yield =</span> yield)</span>
+<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield <span class="sc">~</span> block <span class="sc">+</span> variety, <span class="at">data =</span> trial)</span>
+<span id="cb91-9"><a href="#cb91-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span>
+<span id="cb91-10"><a href="#cb91-10" aria-hidden="true" tabindex="-1"></a>mse <span class="ot">&lt;-</span> <span class="fu">deviance</span>(fit) <span class="sc">/</span> <span class="fu">df.residual</span>(fit)</span>
+<span id="cb91-11"><a href="#cb91-11" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb91-12"><a href="#cb91-12" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">SEm =</span> <span class="fu">sqrt</span>(mse <span class="sc">/</span> r),</span>
+<span id="cb91-13"><a href="#cb91-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">CD_5pc =</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="fu">df.residual</span>(fit)) <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">*</span> mse <span class="sc">/</span> r),</span>
+<span id="cb91-14"><a href="#cb91-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">CV_pc =</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">sqrt</span>(mse) <span class="sc">/</span> <span class="fu">mean</span>(yield))</span>
+<span id="cb91-15"><a href="#cb91-15" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(trial<span class="sc">$</span>yield, trial<span class="sc">$</span>variety, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Investigate.</strong> Remove <code>block +</code> from the model and rerun. How do the error mean square and CD change? Explain why the blocked model is the correct one for this design.</p>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="From the browser to your practical notebook">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+From the browser to your practical notebook
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.</p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./12-anova.html" class="pagination-link" aria-label="Comparing treatments with analysis of variance">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Comparing treatments with analysis of variance</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./13-regression.html" class="pagination-link" aria-label="Correlation and regression for agricultural prediction">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
+
+
+
+
+</body></html>
