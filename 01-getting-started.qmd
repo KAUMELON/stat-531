@@ -63,15 +63,14 @@ The following selection was reviewed on **16 October 2026**. It emphasizes tools
 |---|---|---|
 | **R** | Open-source language and environment for statistics and graphics | The computational foundation of this book; students save commands, inspect models, and reproduce results. |
 | **RStudio** | An integrated development environment with an open-source Desktop edition | Provides the script editor, Console, object browser, plots, and project tools used in the practicals. Install R as well. |
-| **Quarto** | An open-source scientific publishing system | Combines explanations, executable R code, tables, and figures into reports and books. |
 | **RAISINS** | A browser-based agricultural analysis platform | Offers guided modules for statistical analysis and experimental designs; useful for demonstrations and comparison with an R analysis. Access depends on the module and available plan. |
 | **jamovi** | A free, open statistical spreadsheet powered by R | Provides an approachable graphical route into statistical analysis and a useful bridge to R. |
 | **JASP** | Free, open-source statistical software with a graphical interface | Supports classical and Bayesian analyses, helping students compare statistical approaches and read structured output. |
 | **Genstat** | Commercial statistical software with agricultural applications | Provides another environment for experimental-design analysis and related research methods where an institutional licence is available. |
 
-Official sources: [R Project](https://www.r-project.org/), [RStudio documentation](https://docs.posit.co/ide/user/), [Quarto](https://quarto.org/), [RAISINS](https://www.raisins.live/), [jamovi](https://www.jamovi.org/about.html), [JASP](https://jasp-stats.org/), and [Genstat](https://vsni.co.uk/software/genstat/).
+Official sources: [R Project](https://www.r-project.org/), [RStudio documentation](https://docs.posit.co/ide/user/), [RAISINS](https://www.raisins.live/), [jamovi](https://www.jamovi.org/about.html), [JASP](https://jasp-stats.org/), and [Genstat](https://vsni.co.uk/software/genstat/).
 
-The earlier long list of general and specialist programs has been replaced with this teaching-focused selection. Software absent from the table is not necessarily discontinued or unsuitable for another discipline. For this course, students need R, RStudio, and Quarto; other interfaces provide complementary learning opportunities.
+The earlier long list of general and specialist programs has been replaced with this teaching-focused selection. Software absent from the table is not necessarily discontinued or unsuitable for another discipline. For the statistical practicals, students need R and RStudio; other interfaces provide complementary learning opportunities.
 
 ### RAISINS {#raisins}
 
@@ -81,7 +80,7 @@ To begin, choose a module, inspect its sample dataset or data template, select t
 
 ### Why this textbook uses R
 
-For agricultural researchers I recommend learning R through RStudio: students can develop scripts, inspect objects, produce graphics, and keep a record of their decisions. A package supplies additional functions; an interface helps us use them. Our agricultural package [grapesAgri1](https://joss.theoj.org/papers/10.21105/joss.03437) is an additional resource, while the core lessons show the underlying R calculations. RAISINS offers a complementary guided route, and Quarto brings code and explanation together in the final report.
+For agricultural researchers I recommend learning R through RStudio: students can develop scripts, inspect objects, produce graphics, and keep a record of their decisions. A package supplies additional functions; an interface helps us use them. Our agricultural package [grapesAgri1](https://joss.theoj.org/papers/10.21105/joss.03437) is an additional resource, while the core lessons show the underlying R calculations. RAISINS offers a complementary guided route to agricultural data analysis.
 
 ## R and RStudio: the illustrated guide
 
