@@ -1,0 +1,43 @@
+---
+title: "Plant growth: R Markdown practical"
+author: "Student name"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+# Question and source
+
+Compare dry-weight measurements among the documented `PlantGrowth` groups. Read `?PlantGrowth` and describe its provenance and design without inventing treatment meanings.
+
+```{r}
+data("PlantGrowth", package = "datasets")
+tab <- aggregate(weight ~ group, PlantGrowth, mean)
+knitr::kable(tab, digits = 2, caption = "Mean dry weight by group")
+```
+
+# Figure and analysis
+
+```{r, fig.cap="Dry-weight distributions by group"}
+boxplot(weight ~ group, PlantGrowth, xlab = "Group", ylab = "Dry weight")
+fit <- aov(weight ~ group, PlantGrowth)
+summary(fit)
+TukeyHSD(fit)
+```
+
+# Diagnostics and interpretation
+
+```{r}
+par(mfrow = c(1, 2))
+plot(fit, which = 1)
+plot(fit, which = 2)
+```
+
+There are `r nrow(PlantGrowth)` observations. Write your interpretation of group differences, uncertainty, residual diagnostics, and limits here before submission.
+
+# Session
+
+```{r}
+sessionInfo()
+```

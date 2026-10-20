@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Visualizing agricultural data – R Programming for Agricultural Data Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07-descriptive.html" rel="next">
+<link href="./05-wrangling.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e5488f36f73934da31e81cbe0465adae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="site_libs/plotly-binding-4.11.0/plotly.js"></script>
+
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+
+<link href="site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06-visualization.html">Module 3 · Data visualization</a></li><li class="breadcrumb-item"><a href="./06-visualization.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Visualizing agricultural data</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R Programming for Agricultural Data Analysis</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./course-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course guide</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 1 · Foundations and data exchange</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting started with R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-r-language.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Objects, data structures, and functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-data-import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Importing, validating, and exporting data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 2 · Data wrangling and cleaning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Cleaning agricultural observations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-wrangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Transforming and summarizing data with dplyr</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 3 · Data visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-visualization.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Visualizing agricultural data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 4 · Descriptive and exploratory analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-descriptive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Describing agricultural variation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">An exploratory study of crop yield</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 5 · Growth and time series</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-growth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modelling crop growth</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-time-series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Agricultural time series and forecasting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 6 · Statistical analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Hypothesis tests and confidence intervals</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Comparing treatments with analysis of variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 7 · Reproducible research</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References and further reading</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Datasets and measurement units</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Selected exercise solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Glossary and R reference</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes"><span class="header-section-number">6.1</span> Learning outcomes</a></li>
+  <li><a href="#bar-plot" id="toc-bar-plot" class="nav-link" data-scroll-target="#bar-plot"><span class="header-section-number">6.2</span> Bar Plot</a>
+  <ul class="collapse">
+  <li><a href="#hex-colour-codes" id="toc-hex-colour-codes" class="nav-link" data-scroll-target="#hex-colour-codes"><span class="header-section-number">6.2.1</span> Hex colour codes</a></li>
+  </ul></li>
+  <li><a href="#boxplot" id="toc-boxplot" class="nav-link" data-scroll-target="#boxplot"><span class="header-section-number">6.3</span> Boxplot</a>
+  <ul class="collapse">
+  <li><a href="#anatomy-of-boxplot" id="toc-anatomy-of-boxplot" class="nav-link" data-scroll-target="#anatomy-of-boxplot"><span class="header-section-number">6.3.1</span> Anatomy of boxplot</a></li>
+  </ul></li>
+  <li><a href="#completing-the-base-r-graphical-toolkit" id="toc-completing-the-base-r-graphical-toolkit" class="nav-link" data-scroll-target="#completing-the-base-r-graphical-toolkit"><span class="header-section-number">6.4</span> Completing the base-R graphical toolkit</a>
+  <ul class="collapse">
+  <li><a href="#histogram-the-distribution-of-a-quantitative-measurement" id="toc-histogram-the-distribution-of-a-quantitative-measurement" class="nav-link" data-scroll-target="#histogram-the-distribution-of-a-quantitative-measurement"><span class="header-section-number">6.4.1</span> Histogram: the distribution of a quantitative measurement</a></li>
+  <li><a href="#scatter-plot-relating-two-quantitative-variables" id="toc-scatter-plot-relating-two-quantitative-variables" class="nav-link" data-scroll-target="#scatter-plot-relating-two-quantitative-variables"><span class="header-section-number">6.4.2</span> Scatter plot: relating two quantitative variables</a></li>
+  <li><a href="#pie-diagram-parts-of-one-whole" id="toc-pie-diagram-parts-of-one-whole" class="nav-link" data-scroll-target="#pie-diagram-parts-of-one-whole"><span class="header-section-number">6.4.3</span> Pie diagram: parts of one whole</a></li>
+  <li><a href="#boxplot-comparing-distributions" id="toc-boxplot-comparing-distributions" class="nav-link" data-scroll-target="#boxplot-comparing-distributions"><span class="header-section-number">6.4.4</span> Boxplot: comparing distributions</a></li>
+  </ul></li>
+  <li><a href="#agricultural-applications-interpretation-and-further-practice" id="toc-agricultural-applications-interpretation-and-further-practice" class="nav-link" data-scroll-target="#agricultural-applications-interpretation-and-further-practice"><span class="header-section-number">6.5</span> Agricultural applications, interpretation, and further practice</a>
+  <ul class="collapse">
+  <li><a href="#match-the-graph-to-the-question" id="toc-match-the-graph-to-the-question" class="nav-link" data-scroll-target="#match-the-graph-to-the-question"><span class="header-section-number">6.5.1</span> Match the graph to the question</a></li>
+  <li><a href="#build-plots-in-layers" id="toc-build-plots-in-layers" class="nav-link" data-scroll-target="#build-plots-in-layers"><span class="header-section-number">6.5.2</span> Build plots in layers</a></li>
+  <li><a href="#distribution-plots-and-truthful-summaries" id="toc-distribution-plots-and-truthful-summaries" class="nav-link" data-scroll-target="#distribution-plots-and-truthful-summaries"><span class="header-section-number">6.5.3</span> Distribution plots and truthful summaries</a></li>
+  <li><a href="#heatmaps-panels-and-interaction" id="toc-heatmaps-panels-and-interaction" class="nav-link" data-scroll-target="#heatmaps-panels-and-interaction"><span class="header-section-number">6.5.4</span> Heatmaps, panels, and interaction</a></li>
+  <li><a href="#practicals-67-and-exercises" id="toc-practicals-67-and-exercises" class="nav-link" data-scroll-target="#practicals-67-and-exercises"><span class="header-section-number">6.5.5</span> Practicals 6–7 and exercises</a></li>
+  </ul></li>
+  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">6.6</span> Live R laboratory</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06-visualization.html">Module 3 · Data visualization</a></li><li class="breadcrumb-item"><a href="./06-visualization.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Visualizing agricultural data</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-visualization" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Visualizing agricultural data</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="learning-outcomes" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="learning-outcomes"><span class="header-section-number">6.1</span> Learning outcomes</h2>
+<p>Choose graphs that match variable types; create and customize common plots; assemble panels and heatmaps; and provide static alternatives to interactive graphics.</p>
+<p>In this section we will see how to draw basic and commonly used graphs and charts in R. Advanced plotting and graphs will be discussed later. Following graphs and charts are discussed here.</p>
+<ul>
+<li>Bar Plot or Bar Chart</li>
+<li>Pie Diagram or Pie Chart</li>
+<li>Histogram</li>
+<li>Scatter Plot</li>
+<li>Box Plot</li>
+</ul>
+</section>
+<section id="bar-plot" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="bar-plot"><span class="header-section-number">6.2</span> Bar Plot</h2>
+<p>let us suppose, we have a vector of maximum temperatures (in degree Celsius) for seven days as follows.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>max.temp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">22</span>, <span class="dv">27</span>, <span class="dv">26</span>, <span class="dv">24</span>, <span class="dv">23</span>, <span class="dv">26</span>, <span class="dv">28</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Drawing barplot for the data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(max.temp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-original-09-bar1" class="quarto-float quarto-figure quarto-figure-center anchored" width="1008">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-original-09-bar1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-visualization_files/figure-html/fig-original-09-bar1-1.png" id="fig-original-09-bar1" class="img-fluid figure-img" width="1008">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-original-09-bar1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>To modify the way our data is plotted, <code>barplot()</code> function may require a great deal of input. About them may be found in the help area.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To know more about barplot</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>?barplot  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Some of the often used ones include <code>main</code>, which assigns a title, <code>xlab</code> and <code>ylab</code>, which offer axis labels, <code>names.arg</code>, which names each bar, <code>col</code>, which specifies colour, and others.</p>
+<p>By adding the option <code>horiz = TRUE</code>, we can also plot bars in a horizontal direction.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># barchart with added parameters</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(max.temp,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Maximum Temperatures in a Week"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"Day"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">ylab =</span> <span class="st">"Maximum temperature (degrees Celsius)"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">names.arg =</span> <span class="fu">c</span>(<span class="st">"Sun"</span>, <span class="st">"Mon"</span>, <span class="st">"Tue"</span>, <span class="st">"Wed"</span>, <span class="st">"Thu"</span>, <span class="st">"Fri"</span>, <span class="st">"Sat"</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="at">col =</span> <span class="st">"#F9E79F"</span>, <span class="co"># hex colour code</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="at">horiz =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-visualization_files/figure-html/original-09-4-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="hex-colour-codes" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="hex-colour-codes"><span class="header-section-number">6.2.1</span> Hex colour codes</h3>
+<p>Hexadecimal colors are the visual language to tell a colour. When you want your graph to have a certain color, you tell it in the hex code.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-original-09-hex" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-original-09-hex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/graphs/hex.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-original-09-hex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.2: Hex codes for colour
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A 6-symbol code made up of up to three 2-symbol parts is known as a hex colour code. Each of the elements’ two symbols represents a colour value between 0 and 255. Hex colour code begins with a hash symbol(#).</p>
+<p>Element 1: Red value<br>
+Element 2: Green value<br>
+Element 3: Blue value</p>
+<p>The code converts each value into a distinct 2-digit alphanumeric code. For instance, the hexadecimal representation of the RGB value (224, 105, 16) is E06910.</p>
+<p>More than 16 million distinct colours may be shown using hexadecimal coding, which is estimated to be more than the human eye can distinguish.</p>
+<p><strong>Popular hex codes</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>Color</strong></th>
+<th style="text-align: center;"><strong>RGB</strong></th>
+<th style="text-align: center;"><strong>Hex Color Code</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Black</td>
+<td style="text-align: center;">(0, 0, 0)</td>
+<td style="text-align: center;">#000000</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Blue</td>
+<td style="text-align: center;">(0, 0, 255)</td>
+<td style="text-align: center;">#0000FF</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Gray</td>
+<td style="text-align: center;">(128, 128, 128)</td>
+<td style="text-align: center;">#808080</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Green</td>
+<td style="text-align: center;">(0, 128, 0)</td>
+<td style="text-align: center;">#008000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Purple</td>
+<td style="text-align: center;">(128, 0, 128)</td>
+<td style="text-align: center;">#800080</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Red</td>
+<td style="text-align: center;">(255, 0, 0)</td>
+<td style="text-align: center;">#FF0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">White</td>
+<td style="text-align: center;">(255, 255, 255)</td>
+<td style="text-align: center;">#FFFFFF</td>
+</tr>
+</tbody>
+</table>
+<section id="how-to-get-hex-codes" class="level4" data-number="6.2.1.1">
+<h4 data-number="6.2.1.1" class="anchored" data-anchor-id="how-to-get-hex-codes"><span class="header-section-number">6.2.1.1</span> How to get hex codes</h4>
+<p>You can easily find the hex code for the colour you want using a <a href="https://g.co/kgs/91J9Do">colour picker</a>. Just copy the hex code and use it in the R code.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-original-09-hex1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-original-09-hex1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/graphs/cp.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-original-09-hex1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.3: Colour picker
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="boxplot" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="boxplot"><span class="header-section-number">6.3</span> Boxplot</h2>
+<p>A box and whisker plot, often known as a box plot, shows a data set’s five-number summary. The minimum, first quartile, median, third quartile, and maximum make up the five-number summary.</p>
+<p>A box is drawn from the first quartile to the third quartile in a box plot. At the median, a vertical line passes through the box. In the usual R convention, whiskers extend to the most extreme observations within 1.5 IQR of the hinges. Observations outside them are drawn separately; whiskers need not reach the sample minimum and maximum.</p>
+<section id="anatomy-of-boxplot" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="anatomy-of-boxplot"><span class="header-section-number">6.3.1</span> Anatomy of boxplot</h3>
+<p>Figure <a href="#fig-original-09-box" class="quarto-xref">Figure&nbsp;<span>6.4</span></a> below shows the parts of a box plot</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-original-09-box" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-original-09-box-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/lecture9/boxplot.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-original-09-box-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.4: Anatomy of boxplot
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="minimum-value" class="level4" data-number="6.3.1.1">
+<h4 data-number="6.3.1.1" class="anchored" data-anchor-id="minimum-value"><span class="header-section-number">6.3.1.1</span> Minimum Value</h4>
+<p>The lower outlier fence is <span class="math inline">\(Q_1 - 1.5\times IQR\)</span>. It is a threshold, not the sample minimum. The lower whisker reaches the smallest observed value within that fence. The upper fence is <span class="math inline">\(Q_3 + 1.5\times IQR\)</span>. The retained illustration should be read with this distinction in mind.</p>
+</section>
+</section>
+</section>
+<section id="completing-the-base-r-graphical-toolkit" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="completing-the-base-r-graphical-toolkit"><span class="header-section-number">6.4</span> Completing the base-R graphical toolkit</h2>
+<p>The original notes list bar charts, pie charts, histograms, scatter plots, and boxplots. The detailed bar-chart and colour lessons above are retained. Let us now complete the remaining base-R examples before moving to the layered graphics system. The purpose is to understand which information each graph displays, not to memorize several commands without a question.</p>
+<section id="histogram-the-distribution-of-a-quantitative-measurement" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="histogram-the-distribution-of-a-quantitative-measurement"><span class="header-section-number">6.4.1</span> Histogram: the distribution of a quantitative measurement</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plot_yield <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/crop_trial.csv"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(plot_yield<span class="sc">$</span>yield_t_ha, <span class="at">breaks =</span> <span class="st">"Sturges"</span>, <span class="at">col =</span> <span class="st">"#A9D0B5"</span>, <span class="at">border =</span> <span class="st">"white"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Distribution of grain yield"</span>, <span class="at">xlab =</span> <span class="st">"Grain yield (t/ha)"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Number of plots"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-base-histogram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-base-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-visualization_files/figure-html/fig-base-histogram-1.png" class="img-fluid figure-img" width="1008">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-base-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.5: Frequency distribution of simulated plot yields, drawn with base R.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Adjacent histogram rectangles represent intervals on a quantitative scale. A bar chart, by contrast, represents distinct categories. Moving a category bar does not change its meaning; reordering the numeric intervals of a histogram would destroy its meaning. With unequal-width histogram intervals, density rather than raw height is needed for area to represent frequency correctly. Start with equal-width intervals while learning the distinction.</p>
+</section>
+<section id="scatter-plot-relating-two-quantitative-variables" class="level3" data-number="6.4.2">
+<h3 data-number="6.4.2" class="anchored" data-anchor-id="scatter-plot-relating-two-quantitative-variables"><span class="header-section-number">6.4.2</span> Scatter plot: relating two quantitative variables</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(plot_yield, <span class="fu">plot</span>(nitrogen_kg_ha, yield_t_ha, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"#3C6E51"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">xlab =</span> <span class="st">"Applied nitrogen (kg/ha)"</span>, <span class="at">ylab =</span> <span class="st">"Grain yield (t/ha)"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">main =</span> <span class="st">"Yield and nitrogen application"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-base-scatter" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-base-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-visualization_files/figure-html/fig-base-scatter-1.png" class="img-fluid figure-img" width="1008">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-base-scatter-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.6: Simulated yield and nitrogen application; points are individual plots.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Look for direction, curvature, clusters, and unusual observations. A positive pattern means that larger values of one variable tend to occur with larger values of the other in these observations. It does not establish that increasing nitrogen alone would cause the same change. Later figures retain treatment information to help inspect that limitation.</p>
+</section>
+<section id="pie-diagram-parts-of-one-whole" class="level3" data-number="6.4.3">
+<h3 data-number="6.4.3" class="anchored" data-anchor-id="pie-diagram-parts-of-one-whole"><span class="header-section-number">6.4.3</span> Pie diagram: parts of one whole</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>crop_area_ha <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">Rice =</span> <span class="dv">40</span>, <span class="at">Maize =</span> <span class="dv">25</span>, <span class="at">Pulses =</span> <span class="dv">20</span>, <span class="at">Vegetables =</span> <span class="dv">15</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pie</span>(crop_area_ha, <span class="at">labels =</span> <span class="fu">paste0</span>(<span class="fu">names</span>(crop_area_ha), <span class="st">" "</span>, crop_area_ha, <span class="st">"%"</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#34704C"</span>, <span class="st">"#91B77D"</span>, <span class="st">"#E6C86C"</span>, <span class="st">"#B69BC5"</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">"Illustrative allocation of 100 ha"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-base-pie" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-base-pie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-visualization_files/figure-html/fig-base-pie-1.png" class="img-fluid figure-img" width="1008">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-base-pie-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.7: Illustrative harvested-area shares; the values form one total.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The example totals 100 ha, so the numerical areas happen also to equal percentages. That is not generally true. Calculate percentages as <code>100 * area/sum(area)</code>. A pie chart is meaningful only when categories are nonoverlapping parts of the same total. A bar chart usually makes close numerical comparisons easier. Avoid three-dimensional perspective, which distorts apparent area.</p>
+</section>
+<section id="boxplot-comparing-distributions" class="level3" data-number="6.4.4">
+<h3 data-number="6.4.4" class="anchored" data-anchor-id="boxplot-comparing-distributions"><span class="header-section-number">6.4.4</span> Boxplot: comparing distributions</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(yield_t_ha <span class="sc">~</span> treatment, <span class="at">data =</span> plot_yield, <span class="at">col =</span> <span class="st">"#DDEBDD"</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Treatment"</span>, <span class="at">ylab =</span> <span class="st">"Grain yield (t/ha)"</span>, <span class="at">outline =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">stripchart</span>(yield_t_ha <span class="sc">~</span> treatment, <span class="at">data =</span> plot_yield, <span class="at">vertical =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">method =</span> <span class="st">"jitter"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"#245A42"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-base-boxplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-base-boxplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-visualization_files/figure-html/fig-base-boxplot-1.png" class="img-fluid figure-img" width="1008">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-base-boxplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.8: Simulated treatment yields; points show the underlying plot observations.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The formula <code>yield_t_ha ~ treatment</code> tells R to compare yield distributions across treatment categories. The added points reveal sample size and clustering that a box alone can hide. <code>outline = FALSE</code> suppresses separate boxplot outlier symbols here because all observations are already added by the strip chart; it does not remove those observations from the data or the calculation.</p>
+</section>
+</section>
+<section id="agricultural-applications-interpretation-and-further-practice" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="agricultural-applications-interpretation-and-further-practice"><span class="header-section-number">6.5</span> Agricultural applications, interpretation, and further practice</h2>
+<section id="match-the-graph-to-the-question" class="level3" data-number="6.5.1">
+<h3 data-number="6.5.1" class="anchored" data-anchor-id="match-the-graph-to-the-question"><span class="header-section-number">6.5.1</span> Match the graph to the question</h3>
+<p>A histogram shows the distribution of one quantitative variable. A scatter plot shows the relationship between two quantitative variables. A bar chart compares counts or explicit summaries across categories. A boxplot compares distributions. A line plot connects observations in a meaningful order, usually time. Avoid connecting unrelated plots simply because their records are adjacent.</p>
+<p>The earlier lecture notes introduced base R graphics. Their temperature example remains a useful first demonstration. Here the temperature axis is correctly labelled on the vertical axis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>max_temp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">22</span>, <span class="dv">27</span>, <span class="dv">26</span>, <span class="dv">24</span>, <span class="dv">23</span>, <span class="dv">26</span>, <span class="dv">28</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(max_temp, <span class="at">names.arg =</span> <span class="fu">c</span>(<span class="st">"Sun"</span>, <span class="st">"Mon"</span>, <span class="st">"Tue"</span>, <span class="st">"Wed"</span>, <span class="st">"Thu"</span>, <span class="st">"Fri"</span>, <span class="st">"Sat"</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Day"</span>, <span class="at">ylab =</span> <span class="st">"Maximum temperature (degrees C)"</span>, <span class="at">col =</span> <span class="st">"#66A182"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-temperature" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Bar chart showing maximum daily temperatures from 22 to 28 degrees Celsius.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-temperature-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-visualization_files/figure-html/fig-temperature-1.png" class="img-fluid figure-img" alt="Bar chart showing maximum daily temperatures from 22 to 28 degrees Celsius." width="1008">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-temperature-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.9: Maximum temperatures during an illustrative seven-day period.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="build-plots-in-layers" class="level3" data-number="6.5.2">
+<h3 data-number="6.5.2" class="anchored" data-anchor-id="build-plots-in-layers"><span class="header-section-number">6.5.2</span> Build plots in layers</h3>
+<p>In <code>ggplot2</code>, <code>data</code> supplies observations, <code>aes()</code> maps variables to visual properties, and a geometry draws marks. Set a fixed colour outside <code>aes()</code>; map a grouping variable to colour inside it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>crop <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/crop_trial.csv"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>scatter <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(crop, <span class="fu">aes</span>(nitrogen_kg_ha, yield_t_ha, <span class="at">colour =</span> treatment)) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>, <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Applied nitrogen (kg/ha)"</span>, <span class="at">y =</span> <span class="st">"Grain yield (t/ha)"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">"Treatment"</span>, <span class="at">caption =</span> <span class="st">"Simulated teaching observations"</span>) <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_d</span>(<span class="at">end =</span> .<span class="dv">85</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>scatter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-yield-nitrogen" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Scatter plot of simulated yield against nitrogen, with three treatment clusters.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-yield-nitrogen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-visualization_files/figure-html/fig-yield-nitrogen-1.png" class="img-fluid figure-img" alt="Scatter plot of simulated yield against nitrogen, with three treatment clusters." width="1008">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-yield-nitrogen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.10: Simulated plot yields and applied nitrogen, with management treatment identified by colour.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Ask whether the apparent relationship persists within treatments. Treatment and nitrogen differ together in this simulation, so a pooled trend cannot establish a causal nitrogen effect. Visual encodings should clarify this structure.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>histogram <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(crop, <span class="fu">aes</span>(yield_t_ha)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> .<span class="dv">3</span>, <span class="at">boundary =</span> <span class="dv">0</span>, <span class="at">fill =</span> <span class="st">"#4C956C"</span>, <span class="at">colour =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Grain yield (t/ha)"</span>, <span class="at">y =</span> <span class="st">"Number of plots"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>histogram</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-yield-histogram" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Histogram of the simulated trial's sixty grain yields.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-yield-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-visualization_files/figure-html/fig-yield-histogram-1.png" class="img-fluid figure-img" alt="Histogram of the simulated trial's sixty grain yields." width="1008">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-yield-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.11: Distribution of simulated grain yields using a bin width of 0.3 t/ha.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Bin width changes the apparent shape of a histogram. Compare several widths before describing skewness or multiple peaks. Use a common scale when comparing groups.</p>
+</section>
+<section id="distribution-plots-and-truthful-summaries" class="level3" data-number="6.5.3">
+<h3 data-number="6.5.3" class="anchored" data-anchor-id="distribution-plots-and-truthful-summaries"><span class="header-section-number">6.5.3</span> Distribution plots and truthful summaries</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>boxes <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(crop, <span class="fu">aes</span>(treatment, yield_t_ha)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>, <span class="at">fill =</span> <span class="st">"#DDEBDD"</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">width =</span> .<span class="dv">12</span>, <span class="at">height =</span> <span class="dv">0</span>, <span class="at">seed =</span> <span class="dv">531</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> .<span class="dv">6</span>, <span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Management treatment"</span>, <span class="at">y =</span> <span class="st">"Grain yield (t/ha)"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>boxes</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(crop, <span class="fu">aes</span>(yield_t_ha, <span class="at">fill =</span> treatment)) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> .<span class="dv">3</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> treatment) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Grain yield (t/ha)"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-yield-boxes-1" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Three treatment boxplots overlaid with individual yield observations.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-yield-boxes-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-visualization_files/figure-html/fig-yield-boxes-1.png" class="img-fluid figure-img" alt="Three treatment boxplots overlaid with individual yield observations." width="1008">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-yield-boxes-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.12: Simulated treatment distributions with individual plot measurements.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div id="fig-yield-boxes-2" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Three treatment boxplots overlaid with individual yield observations.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-yield-boxes-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-visualization_files/figure-html/fig-yield-boxes-2.png" class="img-fluid figure-img" alt="Three treatment boxplots overlaid with individual yield observations." width="1008">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-yield-boxes-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.13: Simulated treatment distributions with individual plot measurements.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In R’s usual boxplot, the box spans Q1 to Q3, the internal line marks the median, and whiskers reach the most extreme observations within 1.5 IQR of the hinges. The whiskers are not necessarily the minimum and maximum, nor are their endpoints necessarily equal to the theoretical fences. Points beyond whiskers are flagged observations, not proven errors. Small-sample hinge conventions can differ slightly between plotting systems.</p>
+<p>A density curve is smoothed; its bandwidth affects the shape, and its vertical scale is density rather than counts. For small samples, show observations as well. When presenting means as bars, start the quantitative bar axis at zero and explain any uncertainty intervals. An interval describing standard deviation is different from a confidence interval for a mean.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>means <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(yield_t_ha <span class="sc">~</span> treatment, crop, mean)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(means, <span class="fu">aes</span>(treatment, yield_t_ha)) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#427A5B"</span>) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Treatment"</span>, <span class="at">y =</span> <span class="st">"Mean grain yield (t/ha)"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-visualization_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="heatmaps-panels-and-interaction" class="level3" data-number="6.5.4">
+<h3 data-number="6.5.4" class="anchored" data-anchor-id="heatmaps-panels-and-interaction"><span class="header-section-number">6.5.4</span> Heatmaps, panels, and interaction</h3>
+<p>A heatmap uses colour to encode a numeric value. Nutrients measured on different scales need careful handling. Here each nutrient is standardized across plots, so colour describes relative position within that nutrient, not an absolute concentration or a fertility recommendation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>soil <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/soil.csv"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">scale</span>(soil[, <span class="fu">c</span>(<span class="st">"available_n_mg_kg"</span>, <span class="st">"available_p_mg_kg"</span>, <span class="st">"available_k_mg_kg"</span>)])</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>heat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">plot_id =</span> soil<span class="sc">$</span>plot_id, z, <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>heat <span class="ot">&lt;-</span> tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(heat, <span class="sc">-</span>plot_id, <span class="at">names_to =</span> <span class="st">"nutrient"</span>, <span class="at">values_to =</span> <span class="st">"z"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(heat, <span class="fu">aes</span>(nutrient, plot_id, <span class="at">fill =</span> z)) <span class="sc">+</span> <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"#3465A4"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, <span class="at">high =</span> <span class="st">"#A52A2A"</span>, <span class="at">midpoint =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Soil variable"</span>, <span class="at">y =</span> <span class="st">"Plot"</span>, <span class="at">fill =</span> <span class="st">"Standardized</span><span class="sc">\n</span><span class="st">value"</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-visualization_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>patchwork<span class="sc">::</span><span class="fu">wrap_plots</span>(scatter, histogram, boxes, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="06-visualization_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Facets create comparable panels from groups within one plot. <code>patchwork</code> combines different plots. Use readable labels, sufficient contrast, and shapes or panels when colour alone is insufficient. A figure caption should identify the dataset, units, sample, and any transformation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_html_output</span>()) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  plotly<span class="sc">::</span><span class="fu">ggplotly</span>(scatter)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  scatter</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-42cfa44963934f272a11" style="width:100%;height:417px;"></div>
+<script type="application/json" data-for="htmlwidget-42cfa44963934f272a11">{"x":{"data":[{"x":[63.100000000000001,63.299999999999997,63.899999999999999,66.700000000000003,64.5,62,56.5,65.900000000000006,68.099999999999994,67.299999999999997,60.799999999999997,64.099999999999994,59.100000000000001,67.700000000000003,64.900000000000006,68.799999999999997,66,62.399999999999999,66.099999999999994,61.200000000000003],"y":[3.52,3.1400000000000001,3.8300000000000001,4.2800000000000002,3.6699999999999999,3.2799999999999998,3.4900000000000002,3.6400000000000001,4.1500000000000004,3.1899999999999999,3.6099999999999999,3.8100000000000001,4.5199999999999996,4.0599999999999996,3.8900000000000001,4.1600000000000001,3.8700000000000001,3.7999999999999998,4.4199999999999999,4.4000000000000004],"text":["nitrogen_kg_ha:  63.1<br />yield_t_ha: 3.52<br />treatment: Compost","nitrogen_kg_ha:  63.3<br />yield_t_ha: 3.14<br />treatment: Compost","nitrogen_kg_ha:  63.9<br />yield_t_ha: 3.83<br />treatment: Compost","nitrogen_kg_ha:  66.7<br />yield_t_ha: 4.28<br />treatment: Compost","nitrogen_kg_ha:  64.5<br />yield_t_ha: 3.67<br />treatment: Compost","nitrogen_kg_ha:  62.0<br />yield_t_ha: 3.28<br />treatment: Compost","nitrogen_kg_ha:  56.5<br />yield_t_ha: 3.49<br />treatment: Compost","nitrogen_kg_ha:  65.9<br />yield_t_ha: 3.64<br />treatment: Compost","nitrogen_kg_ha:  68.1<br />yield_t_ha: 4.15<br />treatment: Compost","nitrogen_kg_ha:  67.3<br />yield_t_ha: 3.19<br />treatment: Compost","nitrogen_kg_ha:  60.8<br />yield_t_ha: 3.61<br />treatment: Compost","nitrogen_kg_ha:  64.1<br />yield_t_ha: 3.81<br />treatment: Compost","nitrogen_kg_ha:  59.1<br />yield_t_ha: 4.52<br />treatment: Compost","nitrogen_kg_ha:  67.7<br />yield_t_ha: 4.06<br />treatment: Compost","nitrogen_kg_ha:  64.9<br />yield_t_ha: 3.89<br />treatment: Compost","nitrogen_kg_ha:  68.8<br />yield_t_ha: 4.16<br />treatment: Compost","nitrogen_kg_ha:  66.0<br />yield_t_ha: 3.87<br />treatment: Compost","nitrogen_kg_ha:  62.4<br />yield_t_ha: 3.80<br />treatment: Compost","nitrogen_kg_ha:  66.1<br />yield_t_ha: 4.42<br />treatment: Compost","nitrogen_kg_ha:  61.2<br />yield_t_ha: 4.40<br />treatment: Compost"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(68,1,84,1)","opacity":0.80000000000000004,"size":7.559055118110237,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(68,1,84,1)"}},"hoveron":"points","name":"Compost","legendgroup":"Compost","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[10.199999999999999,23,21.199999999999999,26,20.600000000000001,24.399999999999999,24.600000000000001,29.699999999999999,24.800000000000001,20.199999999999999,30,30.600000000000001,27.899999999999999,20.199999999999999,27.300000000000001,25.800000000000001,28.199999999999999,25,18.199999999999999,27.199999999999999],"y":[2.4199999999999999,2.8199999999999998,2.3999999999999999,2.8599999999999999,3.25,2.6899999999999999,3.46,3.3900000000000001,2.6699999999999999,3.2400000000000002,3.2999999999999998,4.1600000000000001,3.1200000000000001,3.0499999999999998,3.54,2.9700000000000002,3.5600000000000001,2.4199999999999999,3.1800000000000002,3.98],"text":["nitrogen_kg_ha:  10.2<br />yield_t_ha: 2.42<br />treatment: Control","nitrogen_kg_ha:  23.0<br />yield_t_ha: 2.82<br />treatment: Control","nitrogen_kg_ha:  21.2<br />yield_t_ha: 2.40<br />treatment: Control","nitrogen_kg_ha:  26.0<br />yield_t_ha: 2.86<br />treatment: Control","nitrogen_kg_ha:  20.6<br />yield_t_ha: 3.25<br />treatment: Control","nitrogen_kg_ha:  24.4<br />yield_t_ha: 2.69<br />treatment: Control","nitrogen_kg_ha:  24.6<br />yield_t_ha: 3.46<br />treatment: Control","nitrogen_kg_ha:  29.7<br />yield_t_ha: 3.39<br />treatment: Control","nitrogen_kg_ha:  24.8<br />yield_t_ha: 2.67<br />treatment: Control","nitrogen_kg_ha:  20.2<br />yield_t_ha: 3.24<br />treatment: Control","nitrogen_kg_ha:  30.0<br />yield_t_ha: 3.30<br />treatment: Control","nitrogen_kg_ha:  30.6<br />yield_t_ha: 4.16<br />treatment: Control","nitrogen_kg_ha:  27.9<br />yield_t_ha: 3.12<br />treatment: Control","nitrogen_kg_ha:  20.2<br />yield_t_ha: 3.05<br />treatment: Control","nitrogen_kg_ha:  27.3<br />yield_t_ha: 3.54<br />treatment: Control","nitrogen_kg_ha:  25.8<br />yield_t_ha: 2.97<br />treatment: Control","nitrogen_kg_ha:  28.2<br />yield_t_ha: 3.56<br />treatment: Control","nitrogen_kg_ha:  25.0<br />yield_t_ha: 2.42<br />treatment: Control","nitrogen_kg_ha:  18.2<br />yield_t_ha: 3.18<br />treatment: Control","nitrogen_kg_ha:  27.2<br />yield_t_ha: 3.98<br />treatment: Control"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(39,126,142,1)","opacity":0.80000000000000004,"size":7.559055118110237,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(39,126,142,1)"}},"hoveron":"points","name":"Control","legendgroup":"Control","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[102.7,104.2,101.40000000000001,93.299999999999997,101.59999999999999,103.09999999999999,96.900000000000006,99.5,98.900000000000006,99.700000000000003,105,98.200000000000003,95.400000000000006,98.200000000000003,104.8,97.900000000000006,87.700000000000003,101.2,97,96.700000000000003],"y":[4.1100000000000003,4.0499999999999998,4.2999999999999998,3.8799999999999999,4.4199999999999999,3.9100000000000001,4.5499999999999998,4.1900000000000004,4.4900000000000002,3.98,4.2199999999999998,4.8600000000000003,5.1600000000000001,4.7199999999999998,4.8399999999999999,4.4500000000000002,4.1500000000000004,4.2199999999999998,4.21,4.4000000000000004],"text":["nitrogen_kg_ha: 102.7<br />yield_t_ha: 4.11<br />treatment: Mineral","nitrogen_kg_ha: 104.2<br />yield_t_ha: 4.05<br />treatment: Mineral","nitrogen_kg_ha: 101.4<br />yield_t_ha: 4.30<br />treatment: Mineral","nitrogen_kg_ha:  93.3<br />yield_t_ha: 3.88<br />treatment: Mineral","nitrogen_kg_ha: 101.6<br />yield_t_ha: 4.42<br />treatment: Mineral","nitrogen_kg_ha: 103.1<br />yield_t_ha: 3.91<br />treatment: Mineral","nitrogen_kg_ha:  96.9<br />yield_t_ha: 4.55<br />treatment: Mineral","nitrogen_kg_ha:  99.5<br />yield_t_ha: 4.19<br />treatment: Mineral","nitrogen_kg_ha:  98.9<br />yield_t_ha: 4.49<br />treatment: Mineral","nitrogen_kg_ha:  99.7<br />yield_t_ha: 3.98<br />treatment: Mineral","nitrogen_kg_ha: 105.0<br />yield_t_ha: 4.22<br />treatment: Mineral","nitrogen_kg_ha:  98.2<br />yield_t_ha: 4.86<br />treatment: Mineral","nitrogen_kg_ha:  95.4<br />yield_t_ha: 5.16<br />treatment: Mineral","nitrogen_kg_ha:  98.2<br />yield_t_ha: 4.72<br />treatment: Mineral","nitrogen_kg_ha: 104.8<br />yield_t_ha: 4.84<br />treatment: Mineral","nitrogen_kg_ha:  97.9<br />yield_t_ha: 4.45<br />treatment: Mineral","nitrogen_kg_ha:  87.7<br />yield_t_ha: 4.15<br />treatment: Mineral","nitrogen_kg_ha: 101.2<br />yield_t_ha: 4.22<br />treatment: Mineral","nitrogen_kg_ha:  97.0<br />yield_t_ha: 4.21<br />treatment: Mineral","nitrogen_kg_ha:  96.7<br />yield_t_ha: 4.40<br />treatment: Mineral"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(154,217,60,1)","opacity":0.80000000000000004,"size":7.559055118110237,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(154,217,60,1)"}},"hoveron":"points","name":"Mineral","legendgroup":"Mineral","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":23.970112079701121,"r":7.9701120797011216,"b":40.647571606475722,"l":34.271481942714829},"paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402241},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[5.4599999999999991,109.73999999999999],"tickmode":"array","ticktext":["25","50","75","100"],"tickvals":[25,50,75,100],"categoryorder":"array","categoryarray":["25","50","75","100"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.9850560398505603,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"Applied nitrogen (kg/ha)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402241}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[2.262,5.298],"tickmode":"array","ticktext":["3","4","5"],"tickvals":[3,4,5],"categoryorder":"array","categoryarray":["3","4","5"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.9850560398505608,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":12.7521793275218},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"Grain yield (t/ha)","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402241}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":12.7521793275218},"title":{"text":"Treatment","font":{"color":"rgba(0,0,0,1)","family":"","size":15.940224159402241}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"40a83a52198b":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"40a83a52198b","visdat":{"40a83a52198b":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"outputs"</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"outputs/yield_scatter.png"</span>, scatter, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="fl">4.5</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Interactive tooltips support exploration in HTML. They cannot carry essential information that disappears in PDF or Word; provide a static counterpart and describe the finding in prose.</p>
+</section>
+<section id="practicals-67-and-exercises" class="level3" data-number="6.5.5">
+<h3 data-number="6.5.5" class="anchored" data-anchor-id="practicals-67-and-exercises"><span class="header-section-number">6.5.5</span> Practicals 6–7 and exercises</h3>
+<ol type="1">
+<li>Draw a scatter plot, a histogram, and a boxplot. Write one sentence stating what each reveals and one limitation.</li>
+<li>Compare histogram bin widths of 0.15, 0.3, and 0.6 t/ha. Which features persist?</li>
+<li>Create treatment panels coloured by variety. Explain any difference from the pooled plot.</li>
+<li>Create a two-panel figure and export it at 300 dpi with readable labels.</li>
+<li>Explain why a standardized soil heatmap cannot directly classify a field as nitrogen-deficient.</li>
+</ol>
+<p><strong>Chapter review.</strong> A good figure makes comparisons clear and preserves units, distributions, and relevant grouping. Attractive decoration cannot compensate for a misleading scale.</p>
+</section>
+</section>
+<section id="live-r-laboratory" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">6.6</span> Live R laboratory</h2>
+<div class="live-r">
+<p><strong>Make a colourful crop plot</strong></p>
+<p>Edit the code, then select <strong>Run R</strong>. The first run downloads R into your browser and may take a little time. <strong>Copy code</strong> also lets you use this example in RStudio.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fertilizer <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">90</span>, <span class="dv">120</span>, <span class="dv">150</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>yield_t_ha <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.1</span>, <span class="fl">2.9</span>, <span class="fl">3.6</span>, <span class="fl">4.0</span>, <span class="fl">4.2</span>, <span class="fl">4.1</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fertilizer, yield_t_ha, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">cex =</span> <span class="fl">1.5</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"#237f83"</span>, <span class="at">xlab =</span> <span class="st">"Nitrogen (kg/ha)"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Yield (t/ha)"</span>, <span class="at">main =</span> <span class="st">"Simulated nitrogen response"</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fertilizer, yield_t_ha, <span class="at">col =</span> <span class="st">"#bd7921"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Investigate.</strong> Replace pch = 19 with pch = 17 and choose a new colour. Describe the apparent plateau, while remembering that these illustrative points do not establish an optimum fertilizer dose.</p>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="From the browser to your practical notebook">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+From the browser to your practical notebook
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.</p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./05-wrangling.html" class="pagination-link" aria-label="Transforming and summarizing data with dplyr">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Transforming and summarizing data with dplyr</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07-descriptive.html" class="pagination-link" aria-label="Describing agricultural variation">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Describing agricultural variation</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<script type="module" src="assets/live-r.js"></script>
+
+
+
+
+</body></html>

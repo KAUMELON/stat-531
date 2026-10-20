@@ -1,0 +1,8 @@
+Historical datasets restored from the author's original examples.
+Retrieved: 2026-10-16
+kings: https://robjhyndman.com/tsdldata/misc/kings.dat
+births: https://robjhyndman.com/tsdldata/data/nybirths.dat
+souvenir: https://robjhyndman.com/tsdldata/data/fancy.dat
+rain: source-notes/rain.csv; original source https://robjhyndman.com/tsdldata/hurst/precip1.dat
+Births are in thousands; rain is annual inches; kings are ages at death in years; souvenir is shop sales in Australian dollars.
+These are historical teaching datasets, not agricultural field observations.
