@@ -16,6 +16,12 @@ The public book contains the detailed retained chapters, current installation sc
 
 ## Updating the public edition
 
+### Automatic (recommended)
+
+`.github/workflows/publish-book.yml` publishes the book whenever `codex/quarto-undergraduate-book` changes (edits to `ppt/` alone are ignored). It installs R, the book's packages and Quarto 1.6.39, renders the HTML book, packages it with `scripts/prepare-github-pages.py`, validates it with `scripts/check-book.py`, and only then commits the site to `gh-pages`. If any step fails, nothing is published and the build log is saved to the `publish-logs` branch. To republish without a source change, open the repository's **Actions** tab, choose **Publish book**, and select **Run workflow**.
+
+### Manual
+
 1. Edit the QMD sources and run `quarto render --to html`.
 2. Run `python scripts/prepare-github-pages.py output/github-pages-NEW-RELEASE`, choosing a new folder inside `output/`. The packager copies only public reading resources.
 3. Run `python scripts/check-book.py output/github-pages-NEW-RELEASE` and fix any reported errors before publishing.

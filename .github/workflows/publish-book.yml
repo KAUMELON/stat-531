@@ -1,0 +1,100 @@
+# Renders the Quarto book and publishes it to the gh-pages branch, which
+# GitHub Pages serves at https://kaumelon.github.io/stat-531/.
+# Runs when the source branch changes (slide-deck edits alone are ignored),
+# or manually from the Actions tab (Run workflow).
+name: Publish book
+
+on:
+  push:
+    branches: [codex/quarto-undergraduate-book]
+    paths-ignore: ["ppt/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-book
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      LOG: ${{ github.workspace }}/publish.log
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.6.39
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::knitr
+            any::rmarkdown
+            any::dplyr
+            any::tidyr
+            any::ggplot2
+            any::readxl
+            any::writexl
+            any::patchwork
+            any::plotly
+            any::forecast
+            any::pastecs
+            any::TTR
+            any::agricolae
+
+      - name: Check R environment
+        shell: bash
+        run: |
+          set -o pipefail
+          Rscript scripts/check-environment.R 2>&1 | tee -a "$LOG"
+
+      - name: Render HTML book
+        shell: bash
+        run: |
+          set -o pipefail
+          quarto render --to html 2>&1 | tee -a "$LOG"
+
+      - name: Package and check the reading site
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 scripts/prepare-github-pages.py output/pages 2>&1 | tee -a "$LOG"
+          python3 scripts/check-book.py output/pages 2>&1 | tee -a "$LOG"
+
+      - name: Publish to gh-pages
+        shell: bash
+        run: |
+          set -o pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch --depth=1 origin gh-pages
+          git worktree add ../site FETCH_HEAD
+          rsync -a --delete --exclude .git output/pages/ ../site/
+          cd ../site
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Site unchanged; nothing to publish." | tee -a "$LOG"
+            exit 0
+          fi
+          git commit -m "Publish book from ${GITHUB_SHA::7}" | tee -a "$LOG"
+          git push origin HEAD:gh-pages 2>&1 | tee -a "$LOG"
+
+      - name: Save the log for diagnosis if anything failed
+        if: failure()
+        shell: bash
+        run: |
+          cp "$LOG" /tmp/publish.log 2>/dev/null || echo "No log captured" > /tmp/publish.log
+          cd /tmp && rm -rf logrepo && mkdir logrepo && cd logrepo
+          git init -q && git checkout -q -b publish-logs
+          cp /tmp/publish.log . && echo "${GITHUB_SHA}" > commit.txt
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -q -m "Failed publish log for ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" publish-logs
