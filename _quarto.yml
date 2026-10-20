@@ -39,10 +39,12 @@ book:
       chapters:
         - 11-inference.qmd
         - 12-anova.qmd
+        - 12b-experimental-designs.qmd
         - 13-regression.qmd
-    - part: "Module 7 · Reproducible research"
+    - part: "Module 7 · Reproducible research and AI-assisted coding"
       chapters:
         - 14-reporting.qmd
+        - 14b-vibe-coding.qmd
     - references.qmd
   appendices:
     - data-dictionary.qmd

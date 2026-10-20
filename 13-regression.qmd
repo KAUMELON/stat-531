@@ -141,7 +141,7 @@ A confidence interval concerns the mean response at the specified predictors; a 
 
 A random holdout is suitable for these independent simulated records. For repeated farms, spatial clusters, or time series, split by group, location, or time as appropriate. Fit preprocessing steps using training data only. One split gives an unstable estimate, so cross-validation may be needed for serious model comparison. The test set should not become another training set through repeated tuning.
 
-## Practical 14 and exercises
+## Practical 15 and exercises
 
 1. Compare Pearson and Spearman coefficients and explain their target relationships.
 2. Interpret the rainfall coefficient and its units. Why is it not automatically a causal rainfall effect?

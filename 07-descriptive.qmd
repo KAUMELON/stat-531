@@ -377,6 +377,104 @@ crop |>
 
 Pooling groups can inflate spread because it combines between-group differences with within-group variation. Report the group definitions and sample sizes. Avoid presenting many decimal places beyond measurement precision.
 
+### Other averages: geometric and harmonic means
+
+The arithmetic mean is not always the right average. When quantities **multiply** over time, such as growth ratios, the **geometric mean** is appropriate. When averaging **rates** over equal amounts of work, the **harmonic mean** is appropriate.
+
+Suppose the area under a crop in a district grew by 10%, 20%, and 5% in three successive years. The growth factors are 1.10, 1.20, and 1.05. The average annual growth factor is their geometric mean, the cube root of their product, because applying it three times reproduces the total growth.
+
+```{r}
+growth_factor <- c(1.10, 1.20, 1.05)
+geometric_mean <- exp(mean(log(growth_factor)))
+c(arithmetic = mean(growth_factor), geometric = geometric_mean)
+# Check: three years at the geometric mean give the same total growth
+c(actual_total = prod(growth_factor), from_geometric = geometric_mean^3)
+```
+
+The arithmetic mean, about 1.117, overstates the average growth; the geometric mean, about 1.115, reproduces the actual total. Computing it as `exp(mean(log(x)))` avoids overflow with long series and works only for positive values.
+
+A tractor ploughs three plots of 1 ha each at 0.4, 0.5, and 0.8 ha per hour. Its average rate over the 3 ha is the total area divided by the total time, which is the harmonic mean of the rates.
+
+```{r}
+rate_ha_per_hour <- c(0.4, 0.5, 0.8)
+harmonic_mean <- length(rate_ha_per_hour) / sum(1 / rate_ha_per_hour)
+c(arithmetic = mean(rate_ha_per_hour), harmonic = harmonic_mean,
+  total_area_over_total_time = 3 / sum(1 / rate_ha_per_hour))
+```
+
+The tractor spends longest on the slowest plot, so its true average rate, about 0.52 ha/h, is lower than the arithmetic mean of 0.57 ha/h. For any set of positive values that are not all equal, harmonic mean < geometric mean < arithmetic mean.
+
+### Percentiles and quantiles
+
+The median is the 50th percentile; quartiles are the 25th and 75th. Any percentile can be calculated with `quantile()`. Percentiles answer questions such as "what yield did the best 10% of plots exceed?"
+
+```{r}
+quantile(y, probs = c(0.10, 0.25, 0.50, 0.75, 0.90))
+top_10_threshold <- quantile(y, 0.90)
+crop[crop$yield_t_ha >= top_10_threshold, c("plot_id", "treatment", "variety", "yield_t_ha")]
+```
+
+R offers nine definitions of sample quantiles through the `type` argument; they differ slightly for small samples. The default (`type = 7`) is fine for description, but state it if exact values matter, because other software may use a different definition.
+
+### Shape: skewness and kurtosis
+
+Two distributions can share a mean and SD but differ in shape. **Skewness** measures asymmetry: positive skewness means a long tail of large values, common in pest counts and weed biomass. **Kurtosis** describes how heavy the tails are relative to a normal distribution; **excess kurtosis** subtracts 3, so a normal distribution has excess kurtosis 0. Both can be calculated from moments about the mean.
+
+$$g_1=\frac{m_3}{m_2^{3/2}},\qquad g_2=\frac{m_4}{m_2^{2}}-3,\qquad m_k=\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^k$$
+
+```{r}
+shape <- function(x) {
+  x <- x[!is.na(x)]
+  d <- x - mean(x)
+  m2 <- mean(d^2); m3 <- mean(d^3); m4 <- mean(d^4)
+  c(skewness = m3 / m2^1.5, excess_kurtosis = m4 / m2^2 - 3)
+}
+aphids <- read.csv("data/aphid_counts.csv")$aphids_per_plant
+round(rbind(yield = shape(y), aphid_count = shape(aphids)), 2)
+old <- par(mfrow = c(1, 2))
+hist(y, main = "Plot yield", xlab = "t/ha", col = "#abc4e2")
+hist(aphids, main = "Aphids per plant", xlab = "count", col = "#ebc276")
+par(old)
+```
+
+The yields are close to symmetric, whereas the aphid counts are clearly right-skewed: most plants carry few aphids and a few carry many. For skewed data, the median and IQR summarize the centre and spread better than the mean and SD, and analyses may need a transformation (see @sec-designs). Different packages use slightly different small-sample corrections for these coefficients, so values can differ in the second decimal place. With small samples, skewness and kurtosis are very imprecise; always look at the histogram as well.
+
+### Comparing variability across characters
+
+The coefficient of variation allows variability to be compared between characters measured in different units. Plant breeders, for instance, compare the variability of height, tiller number, and yield in a germplasm collection. Using the cleaned field book from @sec-cleaning:
+
+```{r}
+fb <- read.csv("data/field_book_messy.csv", na.strings = c("", "NA", "n/a", "-"))
+fb$plant_height_cm <- as.numeric(gsub(",", ".", fb$plant_height_cm))
+fb$plant_height_cm[fb$plot == "P10"] <- 85.0       # documented correction
+fb$grain_wt_g_plot[fb$plot == "P07"] <- 2430       # documented correction
+traits <- fb[, c("plant_height_cm", "tillers", "grain_wt_g_plot")]
+round(t(sapply(traits, function(x) c(
+  n = sum(!is.na(x)), mean = mean(x, na.rm = TRUE), sd = sd(x, na.rm = TRUE),
+  cv_percent = 100 * sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE)))), 2)
+```
+
+The SDs cannot be compared directly, because they are in centimetres, counts, and grams. The CVs show that tiller number is relatively the most variable of the three characters and plant height the least. As noted above, CV is meaningful only for ratio-scale variables with a true zero.
+
+### A descriptive statistics table for several variables
+
+A single function can produce the complete descriptive table that reports and theses usually present.
+
+```{r}
+describe <- function(x) {
+  x <- x[!is.na(x)]
+  n <- length(x)
+  c(n = n, mean = mean(x), sd = sd(x), se = sd(x) / sqrt(n),
+    cv_percent = 100 * sd(x) / mean(x), min = min(x), median = median(x),
+    max = max(x), shape(x))
+}
+soil <- read.csv("data/soil.csv")
+round(t(sapply(soil[, c("available_n_mg_kg", "available_p_mg_kg",
+                        "available_k_mg_kg")], describe)), 2)
+```
+
+`sapply()` applies `describe()` to each column and `t()` turns the result so that each variable is a row. Report units in the table caption, round to a sensible precision for display, and state the number of missing values if any were removed.
+
 ### Practical 8A and exercises
 
 1. Calculate mean, median, variance, SD, and IQR for available soil nitrogen. State each unit.
@@ -384,6 +482,10 @@ Pooling groups can inflate spread because it combines between-group differences 
 3. Explain why doubling a sample size does not halve the SD of the underlying observations.
 4. Compute a frequency table for the supplied soil classes and explain what its denominator represents.
 5. Explain why ten leaves from one plant are not automatically ten independent experimental replicates.
+6. Prices of a commodity rose by 8%, 15%, and −4% in three years. Calculate the average annual change with the appropriate mean and check it.
+7. Find the 90th percentile of available soil nitrogen and list the plots above it.
+8. Calculate skewness for available P and for yield. Which summary of centre would you report for each, and why?
+9. Produce the descriptive table for the three soil nutrients and write two sentences interpreting it.
 
 **Chapter review.** Describe centre and spread together. Report sample size, missingness, units, and grouping so the summary can be interpreted.
 

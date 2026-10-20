@@ -1,6 +1,6 @@
 # Teaching and editorial guide
 
-Use the book as an undergraduate practical text: explanation, prediction, demonstration, independent modification, then interpretation. The 16-meeting plan is adjustable. Ask students to state units and experimental units in every submission.
+Use the book as an undergraduate practical text: explanation, prediction, demonstration, independent modification, then interpretation. The 18-meeting plan is adjustable. Ask students to state units and experimental units in every submission.
 
 ## Module guidance
 
@@ -11,8 +11,8 @@ Use the book as an undergraduate practical text: explanation, prediction, demons
 | 3 | A mean bar is a distribution; colour makes a graph informative | Student shows observations, readable units, and an appropriate comparison |
 | 4 | SD and SE are interchangeable | Student distinguishes biological variation from estimation precision |
 | 5 | Curve convergence guarantees a good model; random splitting is valid for time series | Student checks phase coverage, residuals, chronology, and baseline accuracy |
-| 6 | p is the probability H0 is true; subsamples are independent replicates | Student justifies the unit, contrast, assumptions, and interval interpretation |
-| 7 | Hiding code makes a report reproducible | A classmate can render the source in a fresh session |
+| 6 | p is the probability H0 is true; subsamples are independent replicates; any significant ANOVA is valid whatever the design | Student justifies the unit, contrast, assumptions, and interval interpretation, and matches the error term to the randomization |
+| 7 | Hiding code makes a report reproducible; code that runs is correct | A classmate can render the source in a fresh session |
 
 ## Assessment and solutions
 
@@ -24,4 +24,6 @@ Use real local research data only with permission and a data dictionary. Verify 
 
 Confirm author affiliation and preferred imprint, institutional course code and credit rules, legal permissions for reusing source assets, bibliography style, learning-level suitability, and exercise balance. The original source contains licence statements that should be resolved by the author before public release. A complete source edition and successful HTML build do not constitute external textbook peer review.
 
-Scope intentionally excludes advanced mixed models, formal missing-data modelling, multivariate analysis, and experimental-design theory beyond the introductory examples. Mention these boundaries when students bring designs that need them.
+The experimental designs chapter covers the CRD, RCBD, Latin square, two-factor factorial, and split-plot designs with SEm, CD, CV, transformations, and mean comparisons. Scope intentionally excludes advanced mixed models, generalized linear models, formal missing-data modelling, multivariate analysis, and lattice, augmented, and strip-plot designs beyond a brief mention. Mention these boundaries when students bring designs that need them.
+
+The vibe-coding chapter assumes students may use AI assistants. Set and state the course rule on AI use before Practical 17, and assess the verification record (prompts, checks, corrections) rather than the code alone.

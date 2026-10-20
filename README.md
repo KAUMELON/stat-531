@@ -20,10 +20,10 @@ Other outputs: `quarto render --to docx`; `quarto render --to pdf` (requires LaT
 
 ## Structure
 
-Fourteen numbered teaching chapters follow seven syllabus modules. The author's detailed original lectures are retained within the chapters, including the illustrated RStudio guide, software discussion, extensive R basics, import and dataset lessons, descriptive statistics, graphics explanations, and full historical time-series examples. New material extends and completes the syllabus. `RETENTION-AUDIT.md` records the directional prose comparison (about 95.5% across nine substantive original lectures); `SOURCE-MAP.md` explains corrections. The original self-assessment tasks are restored in Chapter 2.
+Sixteen numbered teaching chapters follow seven syllabus modules. The author's detailed original lectures are retained within the chapters, including the illustrated RStudio guide, software discussion, extensive R basics, import and dataset lessons, descriptive statistics, graphics explanations, and full historical time-series examples. New material extends and completes the syllabus. `RETENTION-AUDIT.md` records the directional prose comparison (about 95.5% across nine substantive original lectures); `SOURCE-MAP.md` explains corrections. The original self-assessment tasks are restored in Chapter 2.
 
 Front matter gives a suggested 16-practical sequence and project rubric. Appendices provide a data dictionary, selected solutions, and glossary. Real R datasets and historical series are distinguished from supplied simulations. Unedited original notes remain archived in `source-notes/` with original licence files; no new licence is asserted. Historical time-series CSVs are bundled, so the book does not download them during rendering.
 
 This edition needs the instructor's final subject and institutional review before adoption as a published textbook. It is editable source, not a claim of external peer review. `VALIDATION.md` records which output formats have actually been checked on this machine.
 
-The interactive edition adds current installation screenshots, a serif/blue/gold reading style, and 14 editable browser R laboratories. See INTERACTIVE-EDITION.md. The browser labs use assets/live-r.js; the source ZIP must include assets/ alongside the QMD chapters.
+The interactive edition adds current installation screenshots, a serif/blue/gold reading style, and 16 editable browser R laboratories. See INTERACTIVE-EDITION.md. The browser labs use assets/live-r.js; the source ZIP must include assets/ alongside the QMD chapters.

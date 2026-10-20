@@ -2,7 +2,7 @@
 
 ## Learning outcomes
 
-Use selection, filtering, transformation, sorting, grouping, joins, and reshaping to answer agricultural questions while preserving observational units.
+Use selection, filtering, transformation, recoding, sorting, grouping, joins, stacking, and reshaping to answer agricultural questions while preserving observational units; build field-book tables, growth-rate tables, and descriptive summary tables for reports.
 
 ## A grammar of data manipulation
 
@@ -129,6 +129,152 @@ all.equal(joined_by_id$ph, linked$ph)
 
 The pH values remain correctly aligned because the join uses `plot_id`. A correct key is therefore more valuable than a visually tidy row order. For data collected at several depths or dates, `plot_id` alone may not be unique; the key might need `plot_id`, `depth_cm`, and `sampling_date`. A one-to-many relationship can be legitimate, but the resulting observational unit must be stated.
 
+## More verbs for everyday tasks
+
+A few more verbs cover most remaining day-to-day work. `count()` tabulates combinations, `distinct()` lists unique combinations, `rename()` and `relocate()` tidy column names and order, and `slice_max()` picks the rows with the largest values.
+
+```{r}
+crop |>
+  count(treatment, variety)
+crop |>
+  distinct(treatment, variety) |>
+  nrow()
+crop |>
+  rename(n_kg_ha = nitrogen_kg_ha) |>
+  relocate(yield_t_ha, .after = plot_id) |>
+  head(3)
+crop |>
+  group_by(treatment) |>
+  slice_max(yield_t_ha, n = 2) |>
+  ungroup() |>
+  select(plot_id, treatment, variety, yield_t_ha)
+```
+
+`count(treatment, variety)` is a quick check of a factorial layout: every combination should appear the same number of times. `slice_max()` within groups returns the two highest-yielding plots of each treatment. If two plots tie, `slice_max()` keeps both, so the result can have more rows than requested.
+
+## Recoding values with case_when()
+
+`if_else()` handles two outcomes. For several, use `case_when()`, which checks conditions in order and uses the first one that is `TRUE`.
+
+```{r}
+crop <- crop |>
+  mutate(n_class = case_when(
+    nitrogen_kg_ha < 40 ~ "Low",
+    nitrogen_kg_ha < 80 ~ "Medium",
+    nitrogen_kg_ha >= 80 ~ "High"
+  ))
+crop |>
+  count(n_class)
+```
+
+Because the conditions are checked in order, a plot with 30 kg N/ha matches `< 40` and is labelled "Low" even though it also satisfies `< 80`. Write conditions from the most restrictive to the least. A value that matches no condition, including a missing nitrogen value, becomes `NA`, which is usually what you want: an unknown dose should not be given a class.
+
+## Applying one operation to many columns with across()
+
+Soil data often have many nutrient columns that need the same summary. `across()` applies one or more functions to a set of columns without repeating code.
+
+```{r}
+soil |>
+  group_by(soil_class) |>
+  summarise(n = n(),
+            across(c(ph, available_n_mg_kg, available_p_mg_kg),
+                   list(mean = mean, sd = sd)),
+            .groups = "drop") |>
+  mutate(across(where(is.numeric), \(x) round(x, 2)))
+```
+
+The new columns are named by joining the column and function names, such as `ph_mean` and `ph_sd`. `where(is.numeric)` selects every numeric column, and `\(x) round(x, 2)` is a short way of writing `function(x) round(x, 2)`. Rounding is done last, for display only; never round values before calculating with them.
+
+## Reshaping a field book with pivot_wider()
+
+Plot-level data are stored long, one row per plot. For checking a design or for hand calculation, the traditional layout is wide: one row per block and one column per treatment. `pivot_wider()` makes that table, and `pivot_longer()` reverses it.
+
+```{r}
+rcbd <- read.csv("data/rcbd.csv")
+field_table <- rcbd |>
+  select(block, treatment, yield_t_ha) |>
+  tidyr::pivot_wider(names_from = treatment, values_from = yield_t_ha)
+field_table
+# Treatment totals and block totals, as in a hand-calculated ANOVA
+colSums(field_table[, -1])
+data.frame(block = field_table$block, total = rowSums(field_table[, -1]))
+back_to_long <- field_table |>
+  tidyr::pivot_longer(-block, names_to = "treatment", values_to = "yield_t_ha")
+nrow(back_to_long) == nrow(rcbd)
+```
+
+If a block lacked a treatment, the wide table would show `NA` in that cell, which makes a missing plot easy to see. If a block had **two** plots of the same treatment, `pivot_wider()` would warn that values are not uniquely identified. That warning is a design check: it means the key (block and treatment) does not identify one plot.
+
+## Splitting and joining codes
+
+Field books often combine information in one code, such as `T2-R3` for treatment 2 in replicate 3. `separate_wider_delim()` splits such a column, and `unite()` joins columns back into a code.
+
+```{r}
+coded <- data.frame(plot_code = c("T1-R1", "T1-R2", "T2-R1", "T2-R2"),
+                    yield_t_ha = c(3.2, 3.5, 4.1, 3.9))
+split_codes <- coded |>
+  tidyr::separate_wider_delim(plot_code, delim = "-",
+                              names = c("treatment", "replicate"))
+split_codes
+split_codes |>
+  tidyr::unite("plot_code", treatment, replicate, sep = "-")
+```
+
+Splitting a code is safe only if every code follows the same pattern. `separate_wider_delim()` stops with an error if a code has too few or too many pieces, which is a useful check on data entry.
+
+## Stacking seasons with bind_rows()
+
+Data from different seasons, sites, or years usually arrive in separate files with the same columns. `bind_rows()` stacks them, and `.id` records where each row came from.
+
+```{r}
+kharif <- data.frame(plot_id = c("P01", "P02", "P03"),
+                     yield_t_ha = c(4.1, 4.4, 3.9))
+rabi <- data.frame(plot_id = c("P01", "P02", "P03"),
+                   yield_t_ha = c(3.2, 3.6, 3.1))
+seasons <- bind_rows(kharif = kharif, rabi = rabi, .id = "season")
+seasons
+seasons |>
+  group_by(season) |>
+  summarise(mean_yield = mean(yield_t_ha), .groups = "drop")
+```
+
+Without the `season` column, the stacked table would contain two rows for each plot with nothing to tell them apart. Always keep the identifier of the source when combining tables. Check also that columns have the same names and units in every file before stacking; `bind_rows()` matches columns by name and fills missing ones with `NA`.
+
+## Changes over time with lag()
+
+Growth analysis compares each observation with the previous one. `lag()` shifts a column down by one row, so the difference between a value and its lag is the change since the last sampling date.
+
+```{r}
+growth <- read.csv("data/growth.csv")
+growth |>
+  group_by(day) |>
+  summarise(n = n(), mean_biomass = mean(biomass_g_m2), .groups = "drop") |>
+  arrange(day) |>
+  mutate(gain_g_m2 = mean_biomass - lag(mean_biomass),
+         interval_days = day - lag(day),
+         crop_growth_rate = gain_g_m2 / interval_days)
+```
+
+The crop growth rate, in g/m²/day, is the gain in biomass divided by the number of days between samplings. The first row has no previous value, so its gain is `NA`. `arrange(day)` matters: `lag()` uses row order, not dates, so unsorted data would give meaningless differences. Each sampling date here is a mean of independently harvested quadrats; a different set of plants is measured each time.
+
+## A summary table for an experiment report
+
+The verbs combine into a standard descriptive table: number of observations, mean, standard deviation, standard error, and coefficient of variation for each treatment combination.
+
+```{r}
+crop |>
+  group_by(treatment, variety) |>
+  summarise(n = sum(!is.na(yield_t_ha)),
+            mean = mean(yield_t_ha, na.rm = TRUE),
+            sd = sd(yield_t_ha, na.rm = TRUE),
+            .groups = "drop") |>
+  mutate(se = sd / sqrt(n),
+         cv_percent = 100 * sd / mean) |>
+  mutate(across(c(mean, sd, se, cv_percent), \(x) round(x, 2)))
+```
+
+This table describes the spread of plots **within** each group. It is not the CV of an experiment, which comes from the error mean square of the analysis that matches the design (see @sec-designs). Use this table to look at the data; use the design-based analysis to compare treatments.
+
 ## Practical 5 and exercises
 
 1. Produce treatment-by-variety summaries with sample size, mean, and standard deviation.
@@ -136,6 +282,9 @@ The pH values remain correctly aligned because the join uses `plot_id`. A correc
 3. Join crop and soil data, then summarize available nitrogen by treatment.
 4. Calculate annual rainfall only for years with 12 recorded months. Explain why `sum(..., na.rm = TRUE)` could understate rainfall in an incomplete year.
 5. Introduce a repeated key into a copy of the soil table and investigate its effect on the joined row count.
+6. Use `pivot_wider()` to arrange `crop_trial.csv` as one row per plot pair and one column per variety. What warning do you get, and what does it tell you about the design?
+7. Summarize mean, SD, and SE of available N, P, and K by soil class using a single `across()` call.
+8. Calculate crop growth rate between successive sampling dates from `growth.csv`. When is it highest?
 
 **Chapter review.** Grouping changes the level of a question. Check keys, denominators, units, and completeness whenever observations are combined.
 

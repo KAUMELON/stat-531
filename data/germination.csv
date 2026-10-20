@@ -1,0 +1,17 @@
+"tray_id","seed_treatment","replicate","seeds_sown","seeds_germinated","germination_pct"
+"G01","Untreated",1,50,25,50.0
+"G02","Untreated",2,50,29,58.0
+"G03","Untreated",3,50,26,52.0
+"G04","Untreated",4,50,33,66.0
+"G05","Hot water",1,50,35,70.0
+"G06","Hot water",2,50,34,68.0
+"G07","Hot water",3,50,38,76.0
+"G08","Hot water",4,50,38,76.0
+"G09","GA3",1,50,46,92.0
+"G10","GA3",2,50,48,96.0
+"G11","GA3",3,50,44,88.0
+"G12","GA3",4,50,47,94.0
+"G13","KNO3",1,50,43,86.0
+"G14","KNO3",2,50,39,78.0
+"G15","KNO3",3,50,43,86.0
+"G16","KNO3",4,50,43,86.0

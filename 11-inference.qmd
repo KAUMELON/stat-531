@@ -2,7 +2,7 @@
 
 ## Learning outcomes
 
-Translate an agricultural question into a null and alternative hypothesis, select an independent or paired t-test, analyze a contingency table, and interpret effect sizes, intervals, and p-values.
+Translate an agricultural question into a null and alternative hypothesis, select an independent or paired t-test, check its assumptions, test proportions and Mendelian ratios, analyze a contingency table, use rank-based alternatives when appropriate, and interpret effect sizes, intervals, and p-values.
 
 ## From description to inference
 
@@ -132,6 +132,102 @@ Squaring prevents positive and negative discrepancies from cancelling. Dividing 
 
 A test of association does not by itself give the direction or size of an efficacy effect. Inspect row proportions and define a contrast such as risk difference or risk ratio. If treatments were randomized to independent plots, the contrast can support a treatment interpretation within the experiment's scope. If farmers chose their treatments, management and pest risk may already differ before treatment.
 
+## Checking assumptions for t-tests
+
+The t-tests above assume approximately normal observations (or differences, for paired data), and the pooled-variance test also assumes equal variances. Plots come first: a histogram, box plot, or normal quantile plot shows the shape of the data. Formal tests can supplement them.
+
+```{r}
+qqnorm(paired$change, main = "Paired differences")
+qqline(paired$change)
+shapiro.test(paired$change)
+var.test(treated, control)
+```
+
+`shapiro.test()` tests the null hypothesis that the data come from a normal distribution. `var.test()` is the F-test for equality of two variances; its statistic is the ratio of the first sample variance to the second. Interpret both with care. With small samples, these tests have little power, so a non-significant result does not prove normality or equal variances. With large samples, they detect departures too small to matter. The t-test is fairly robust to moderate non-normality when the groups are of similar size. Use the tests as one piece of evidence, together with the plots and knowledge of how the data arise; counts and percentages, for example, are rarely normal.
+
+## Tests for proportions
+
+Many agricultural outcomes are proportions: germination, infestation, survival, or adoption of a practice. For a sample of $n$ independent units of which $x$ show the outcome, `prop.test()` tests a hypothesized proportion and gives a confidence interval, and `binom.test()` gives the exact binomial version.
+
+Suppose 400 seeds are drawn from a seed lot and 332 germinate. Is the germination rate consistent with a stated standard of 80%?
+
+```{r}
+prop.test(x = 332, n = 400, p = 0.80)
+binom.test(x = 332, n = 400, p = 0.80)
+```
+
+The sample germination is 83%, and the 95% confidence interval for the lot's germination rate lies roughly between 79% and 86%. It includes 80%, so the data do not show that the lot differs from the standard. If the decision rule requires evidence that the lot **exceeds** the standard, that one-sided question must be stated before testing, with `alternative = "greater"`.
+
+`prop.test()` also compares proportions between groups. For two groups it is equivalent to the chi-square test of the 2 × 2 table, and it reports the two proportions and a confidence interval for their difference.
+
+```{r}
+infested <- tab[, "Yes"]
+plots <- rowSums(tab)
+prop.test(infested, plots, correct = FALSE)
+```
+
+These methods assume that the units are independent. Seeds in the same tray or plants in the same plot are not independent of each other: tray or plot effects make the outcomes cluster. When the experimental unit is the tray, analyse tray-level percentages, as in the transformation example of @sec-designs.
+
+## Goodness of fit: testing Mendelian ratios
+
+A chi-square **goodness-of-fit** test compares observed counts in categories with the counts expected under a hypothesized ratio. Genetics provides the classic agricultural example. In his experiments with peas, Gregor Mendel crossed plants differing in seed shape and colour and recorded 315 round yellow, 108 round green, 101 wrinkled yellow, and 32 wrinkled green seeds in the second generation. Independent assortment of two genes predicts a 9:3:3:1 ratio.
+
+```{r}
+seeds <- c(round_yellow = 315, round_green = 108,
+           wrinkled_yellow = 101, wrinkled_green = 32)
+fit_ratio <- chisq.test(seeds, p = c(9, 3, 3, 1) / 16)
+fit_ratio
+round(fit_ratio$expected, 1)
+```
+
+Expected counts are the total, 556, multiplied by 9/16, 3/16, 3/16, and 1/16. The chi-square statistic is small, about 0.47 on 3 degrees of freedom, and the p-value is large. The data are consistent with a 9:3:3:1 ratio. As always, this does not prove the ratio; it shows that the observed deviations are of the size expected from chance.
+
+For a single gene with complete dominance, an F2 generation should segregate 3:1. Mendel's stem-length cross gave 787 tall and 277 dwarf plants.
+
+```{r}
+chisq.test(c(tall = 787, dwarf = 277), p = c(3, 1) / 4)
+```
+
+The degrees of freedom are the number of categories minus one. If any parameters of the expected distribution are estimated from the data, one further degree of freedom is lost for each. The approximation is reliable when every expected count is at least about 5.
+
+## When assumptions fail: rank-based tests
+
+When data are clearly non-normal and a transformation is not appropriate, or when the measurements are ranks or scores, **rank-based** (non-parametric) tests are an alternative. They replace observations by their ranks and so are less affected by skewness and outliers.
+
+| Design | Parametric test | Rank-based alternative |
+|---|---|---|
+| Two independent groups | `t.test()` | `wilcox.test()` (Wilcoxon rank-sum / Mann–Whitney) |
+| Paired observations | `t.test(paired = TRUE)` | `wilcox.test(paired = TRUE)` (Wilcoxon signed-rank) |
+| Three or more independent groups | one-way ANOVA | `kruskal.test()` (Kruskal–Wallis) |
+
+: Rank-based alternatives to common tests {#tbl-rank-tests}
+
+```{r}
+wilcox.test(treated, control, exact = FALSE)
+wilcox.test(paired$after_mg_kg, paired$before_mg_kg, paired = TRUE, exact = FALSE)
+aphid <- read.csv("data/aphid_counts.csv")
+kruskal.test(aphids_per_plant ~ treatment, data = aphid)
+```
+
+`exact = FALSE` asks for the normal approximation, which is needed when the data contain tied values. The Kruskal–Wallis test on the aphid counts asks whether the treatments differ in the distribution of counts; it is a useful check on the transformed ANOVA in @sec-designs. Rank tests do not estimate a difference in means, and they still assume independent units. They are not a remedy for poor design.
+
+## Choosing a test
+
+The choice of test follows from the question, the type of response, and the design, not from which test gives the smallest p-value.
+
+| Question | Response | Design | Suggested method |
+|---|---|---|---|
+| Does a mean differ from a standard? | Measurement | One sample | One-sample t-test |
+| Do two treatments differ? | Measurement | Two independent groups | Welch t-test; rank-sum if strongly non-normal |
+| Did a variable change? | Measurement | Same units measured twice | Paired t-test; signed-rank test |
+| Do several treatments differ? | Measurement | CRD, RCBD, and other designs | ANOVA matching the design (@sec-anova, @sec-designs) |
+| Does a proportion differ from a standard? | Yes/No | One sample | `prop.test()` or `binom.test()` |
+| Do proportions differ between groups? | Yes/No | Independent groups | Chi-square test or `prop.test()` |
+| Do counts follow a ratio? | Category counts | One sample | Chi-square goodness of fit |
+| Are two variables related? | Two measurements | Same units | Correlation and regression (@sec-regression) |
+
+: A guide to choosing a test {#tbl-choose-test}
+
 ## Type I error, Type II error, and power
 
 A Type I error rejects a true null hypothesis. The chosen significance level controls its probability under the stated test model. A Type II error fails to reject a false null. Power is the probability of rejecting the null for a specified alternative effect and design. Power is therefore not one fixed characteristic of a test: it depends on the effect size, variability, sample size, and significance level.
@@ -160,6 +256,10 @@ If many outcomes or comparisons are tested, false positives become more likely. 
 3. Calculate the infestation proportion in each treatment. State the observational unit and examine expected counts.
 4. A test returns p = 0.08. Explain why “there is no effect” is too strong.
 5. Distinguish random sampling, random treatment assignment, and repeated subsampling.
+6. A sample of 250 seeds gives 212 germinated. Estimate the germination rate with a 95% confidence interval and compare it with a standard of 85%.
+7. An F2 population segregates 152 purple and 48 white flowers. Test the fit to a 3:1 ratio and interpret the result.
+8. Compare the aphid counts of the five treatments with `kruskal.test()`, and explain how this differs from an ANOVA on square-root counts.
+9. For three questions from your own field of interest, use the test-selection table to choose a method and justify it.
 
 **Chapter review.** Valid inference begins with design. State the contrast, quantify its size and uncertainty, and interpret the p-value conditionally on the model.
 

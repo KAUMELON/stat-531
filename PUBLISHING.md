@@ -12,7 +12,7 @@
 
 GitHub previously served the older bookdown edition from `main/docs`. Pushing the revised sources to a different branch did not update that publication. Pages now uses the rendered Quarto edition on `gh-pages`. The original `main/docs` files remain in repository history and have not been overwritten by this publication.
 
-The public book contains the detailed retained chapters, current installation screenshots, the RAISINS software section, the final AI/vibe-coding section, copyable examples, and 14 browser R laboratories. It includes only textbook reading resources, not the teaching platform, authentication files, student records or local Site checkouts. STAT MAASH remains separately hosted at https://kau-agstat-teaching.web.app/ with its approved-student access controls.
+The public book contains the detailed retained chapters, current installation screenshots, the RAISINS software section, the experimental designs chapter, the vibe-coding chapter, copyable examples, and 16 browser R laboratories. It includes only textbook reading resources, not the teaching platform, authentication files, student records or local Site checkouts. STAT MAASH remains separately hosted at https://kau-agstat-teaching.web.app/ with its approved-student access controls.
 
 ## Updating the public edition
 

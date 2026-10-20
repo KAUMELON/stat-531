@@ -1,0 +1,26 @@
+"plant_id","treatment","aphids_per_plant"
+"A01","Control",53
+"A02","Control",44
+"A03","Control",18
+"A04","Control",34
+"A05","Control",57
+"A06","Neem oil",17
+"A07","Neem oil",33
+"A08","Neem oil",16
+"A09","Neem oil",18
+"A10","Neem oil",16
+"A11","Insecticide A",6
+"A12","Insecticide A",0
+"A13","Insecticide A",5
+"A14","Insecticide A",6
+"A15","Insecticide A",11
+"A16","Insecticide B",7
+"A17","Insecticide B",5
+"A18","Insecticide B",14
+"A19","Insecticide B",4
+"A20","Insecticide B",13
+"A21","Insecticide C",5
+"A22","Insecticide C",3
+"A23","Insecticide C",3
+"A24","Insecticide C",3
+"A25","Insecticide C",5
