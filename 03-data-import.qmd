@@ -414,3 +414,66 @@ mean(harvest$yield_t_ha)
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+The first electronic spreadsheet, VisiCalc, was created by Dan Bricklin and Bob Frankston and released in 1979 for the Apple II. Comma-separated text files are even older and remain the most portable way to move data between programs.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. CSV stands for comma-__________ values.
+2. In a well-prepared data file each __________ represents one observation.
+3. Column names should not contain spaces; use an __________ instead.
+4. Missing values should be entered as __________ in the spreadsheet.
+5. The function __________ displays the structure of an R object.
+6. Excel files can be read with the function `read_excel()` from the __________ package.
+7. When writing a CSV, set __________ to avoid an extra column of row numbers.
+8. The function `data()` lists the __________ data sets available in R.
+
+### Short-answer questions {.unnumbered}
+
+1. List four rules for preparing a spreadsheet for R.
+2. Why is CSV recommended for exchanging data?
+3. What checks should you make immediately after importing a file?
+4. Why is `attach()` discouraged in new scripts?
+5. Describe the `PlantGrowth` data set.
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A CSV file has 61 lines including one header line. How many observations does it contain?
+2. A yield column imported as character contains the entries 4.2, 5.1, "na", 3.8. What is the mean after a correct conversion?
+3. A field book records 5 varieties in 4 blocks with 2 plants measured per plot. How many rows should a long-format file have?
+
+### Important formulae {.unnumbered}
+
+Number of observations in a file with a header row:
+
+$$
+n = \text{number of lines} - 1
+$$ {#eq-ch3-rows}
+
+### Quick revision {.unnumbered}
+
+- Rectangular data → one row per observation, one column per variable, one header row.
+- CSV → plain text readable by every program; Excel → keep for storage with formatting.
+- After import → `str()`, `summary()`, `head()` and checks of ranges and missing values.
+- Export → `write.csv(x, file, row.names = FALSE)`; reopen and check.
+- Built-in data → `data()`, `head()`, and the help page `?name`.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` separated `2.` row `3.` underscore `4.` `NA` `5.` `str()` `6.` `readxl` `7.` `row.names = FALSE` `8.` built-in
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch3-rows, $61 - 1 = 60$ observations.
+2. Convert "na" to `NA`; mean $= (4.2+5.1+3.8)/3 = 4.37$.
+3. $5 \times 4 \times 2 = 40$ rows, one per plant.

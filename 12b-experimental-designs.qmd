@@ -472,3 +472,92 @@ tapply(trial$yield, trial$variety, mean)
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+R. A. Fisher set out the principles of replication, randomisation and local control in *The Design of Experiments* (1935). Latin squares were studied by the mathematician Leonhard Euler in the eighteenth century, long before their use in field trials.
+:::
+
+::: {.callout-tip title="Quotes to Inspire"}
+*"To consult the statistician after an experiment is finished is often merely to ask him to conduct a post mortem examination. He can perhaps say what the experiment died of."*
+
+R. A. Fisher, Presidential Address to the First Indian Statistical Congress (1938)
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. The three basic principles of experimental design are replication, randomisation and local __________.
+2. In a CRD, treatments are allocated to all units completely at __________.
+3. An RCBD with $t$ treatments and $r$ blocks has __________ error degrees of freedom.
+4. A Latin square controls variation in __________ directions.
+5. In a split-plot design the main-plot factor is tested against error __________.
+6. The __________ is the smallest difference between two means that is significant.
+7. Counts are usually transformed by the __________ transformation.
+8. Percentages are usually transformed by the __________ transformation.
+
+### Short-answer questions {.unnumbered}
+
+1. Explain the three principles of experimental design.
+2. When is an RCBD preferred to a CRD?
+3. Why does a split-plot design have two error terms?
+4. Define SEm, SEd, CD and CV.
+5. How is the efficiency of blocking measured?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. An RCBD has 6 treatments in 4 blocks. Find the error df.
+2. A 5 × 5 Latin square is used. Find the error df.
+3. An RCBD has MSE = 2.5 with $r = 4$ and 15 error df ($t_{0.025,15} = 2.131$). Find SEd and CD.
+4. A split-plot has 4 replications, 3 main plots and 5 sub-plots. Find the df of errors (a) and (b).
+
+### Important formulae {.unnumbered}
+
+Coefficient of variation of an experiment:
+
+$$
+\text{CV} = \frac{\sqrt{\text{MSE}}}{\bar y} \times 100
+$$ {#eq-ch12b-cv}
+
+Standard error of a mean and of a difference:
+
+$$
+\text{SE}(m) = \sqrt{\frac{\text{MSE}}{r}}, \qquad \text{SE}(d) = \sqrt{\frac{2\,\text{MSE}}{r}}
+$$ {#eq-ch12b-sed}
+
+Critical difference:
+
+$$
+\text{CD} = t_{\alpha/2,\,\text{edf}} \times \text{SE}(d)
+$$ {#eq-ch12b-cd}
+
+Relative efficiency of RCBD over CRD:
+
+$$
+\text{RE} = \frac{(r-1)E_b + r(t-1)E_e}{(rt-1)E_e}
+$$ {#eq-ch12b-re}
+
+### Quick revision {.unnumbered}
+
+- The analysis must follow the randomisation.
+- Homogeneous units → CRD; one gradient → RCBD; two gradients → Latin square.
+- Large plots for one factor → split-plot with two error terms.
+- Report means with SEm, SEd, CD and CV.
+- Counts → square root; percentages → angular transformation.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` control `2.` random `3.` $(t-1)(r-1)$ `4.` two `5.` (a) `6.` critical difference `7.` square-root `8.` angular (arcsine)
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. $(6-1)(4-1) = 15$.
+2. $(5-1)(5-2) = 12$.
+3. By @eq-ch12b-sed, SEd $= \sqrt{2\times2.5/4} = 1.118$; by @eq-ch12b-cd, CD $= 2.131\times1.118 = 2.38$.
+4. Error (a) $= (4-1)(3-1) = 6$; error (b) $= 3(4-1)(5-1) = 36$.

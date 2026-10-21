@@ -1,0 +1,381 @@
+# Tests based on t, F and chi-square {#sec-small-sample}
+
+```{r setup-18}
+#| include: false
+options(digits = 4, width = 80, scipen = 6)
+set.seed(531)
+```
+
+## Learning outcomes {.unnumbered}
+
+Carry out one-sample, two-sample (pooled and Welch) and paired *t* tests, the *F* test for variances, Bartlett's test, the chi-square test for a variance, goodness of fit to genetic ratios and tests of independence in contingency tables.
+
+
+When samples are small, the normal approximation of @sec-large-sample is no longer adequate if the population variance has to be estimated. Exact tests are then based on the ***t***, ***F*** and **$\chi^2$** distributions, assuming that the observations come from normal populations. This chapter covers:
+
+- *t* tests for one mean, two independent means and paired observations
+- *F* test for two variances, and tests for several variances
+- $\chi^2$ test for a single variance
+- $\chi^2$ tests of goodness of fit and of independence in contingency tables
+- non-parametric alternatives
+
+## The t test for a single mean
+
+To test $H_0: \mu = \mu_0$ from a sample of size $n$ from a normal population,
+
+$$t = \frac{\bar x - \mu_0}{s / \sqrt{n}}$$
+
+follows Student's *t* distribution with $n - 1$ degrees of freedom under $H_0$.
+
+::: {.worked-example}
+**Example 20.1** The `PlantGrowth` data (@sec-datasets) give the dried weight (g) of plants grown under a control and two treatments, 10 plants each. Is the mean weight of control plants equal to 5.5 g?
+
+**Solution**
+
+```{r t-one}
+ctrl <- PlantGrowth$weight[PlantGrowth$group == "ctrl"]
+ctrl
+t.test(ctrl, mu = 5.5)
+```
+
+$t = -2.54$ with 9 df and $p = 0.032 < 0.05$, so we reject $H_0$: the mean weight of control plants (5.03 g) is significantly less than 5.5 g. The output also gives the 95% confidence interval for the mean, 4.61 to 5.45 g, which does not contain 5.5.
+
+Use `alternative = "less"` or `"greater"` for a one-sided test, and `conf.level = 0.99` for a 99% interval.
+
+:::
+
+## The t test for two independent means
+
+To compare the means of two independent samples, $H_0: \mu_1 = \mu_2$.
+
+**Equal variances (Student's t test).** If the two populations have the same variance,
+
+$$t = \frac{\bar x_1 - \bar x_2}{s_p \sqrt{\dfrac{1}{n_1} + \dfrac{1}{n_2}}}, \qquad s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}$$
+
+with $n_1 + n_2 - 2$ df, where $s_p^2$ is the pooled variance.
+
+**Unequal variances (Welch's t test).** Otherwise,
+
+$$t = \frac{\bar x_1 - \bar x_2}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}}$$
+
+with degrees of freedom given by Satterthwaite's approximation.
+
+Since the choice depends on whether the variances are equal, first test that with the *F* test.
+
+### The F test for two variances
+
+To test $H_0: \sigma_1^2 = \sigma_2^2$,
+
+$$F = \frac{s_1^2}{s_2^2}$$
+
+follows the *F* distribution with $(n_1 - 1, n_2 - 1)$ df under $H_0$. (When doing the test by hand, put the larger variance in the numerator and compare with the upper critical value.)
+
+::: {.worked-example}
+**Example 20.2** Compare the control with treatment 2 in the `PlantGrowth` data.
+
+**Solution**
+
+```{r t-ftest}
+pg <- droplevels(subset(PlantGrowth, group %in% c("ctrl", "trt2")))
+tapply(pg$weight, pg$group, var)
+var.test(weight ~ group, data = pg)
+```
+
+$F = 1.74$ with (9, 9) df, $p = 0.42$, so the variances do not differ significantly and the pooled *t* test is appropriate:
+
+```{r t-two}
+t.test(weight ~ group, data = pg, var.equal = TRUE)
+```
+
+$t = -2.13$ with 18 df and $p = 0.047 < 0.05$: plants under treatment 2 (mean 5.53 g) are significantly heavier than control plants (5.03 g).
+
+Without `var.equal = TRUE`, R performs Welch's test, which is the default and is safe to use whether or not the variances are equal:
+
+```{r t-welch}
+t.test(weight ~ group, data = pg)
+```
+
+Here both tests lead to the same conclusion.
+
+::: {.callout-note}
+In the formula `weight ~ group`, the response is on the left of `~` and the grouping factor on the right. You can also give the two samples as separate vectors: `t.test(x, y)`.
+:::
+
+:::
+
+## The paired t test
+
+When observations come in pairs (the same plot before and after treatment, two treatments applied to the two halves of a leaf, two plants in the same pot), the two samples are not independent. The analysis is then carried out on the differences $d_i = x_i - y_i$:
+
+$$t = \frac{\bar d}{s_d / \sqrt{n}}$$
+
+with $n - 1$ df, where $\bar d$ and $s_d$ are the mean and SD of the differences.
+
+::: {.worked-example}
+**Example 20.3** Charles Darwin compared the heights of cross-fertilised and self-fertilised maize (*Zea mays*) plants. Fifteen pairs of plants, one of each type, were grown in the same pots, so each pair shares the same conditions. The data, used by Fisher in *The Design of Experiments* [@fisher1935], are in the `HistData` package (heights in inches):
+
+**Solution**
+
+```{r t-paired-data}
+library(HistData)
+ZeaMays[, c("pair", "pot", "cross", "self", "diff")]
+```
+
+```{r t-paired}
+t.test(ZeaMays$cross, ZeaMays$self, paired = TRUE)
+```
+
+The mean difference is 2.62 inches, $t = 2.15$ with 14 df, $p = 0.0497$: cross-fertilised plants are significantly taller than self-fertilised plants at the 5% level (but not at 1%).
+
+::: {.callout-warning}
+Analysing paired data with an independent two-sample test ignores the pairing and usually loses power, because the variation between pairs is then included in the error. Always use the test that matches how the data were collected.
+:::
+
+:::
+
+## Testing several variances
+
+Bartlett's test compares the variances of $k \ge 2$ groups, assuming normality. Levene's test (in the `car` package) is less sensitive to non-normality. Both are used to check the homogeneity-of-variance assumption of ANOVA (@sec-anova-crd).
+
+```{r t-bartlett}
+bartlett.test(weight ~ group, data = PlantGrowth)
+
+library(car)
+leveneTest(weight ~ group, data = PlantGrowth)
+```
+
+Neither test is significant ($p > 0.05$), so the three groups have similar variances.
+
+## Chi-square test for a single variance
+
+To test $H_0: \sigma^2 = \sigma_0^2$ for a normal population,
+
+$$\chi^2 = \frac{(n-1)s^2}{\sigma_0^2}$$
+
+with $n - 1$ df. R has no built-in function, but the calculation is short.
+
+::: {.worked-example}
+**Example 20.4** Is the variance of control plant weights equal to 0.25 g^2^?
+
+**Solution**
+
+```{r chisq-var}
+n <- length(ctrl)
+s2 <- var(ctrl)
+sigma0_sq <- 0.25
+chi <- (n - 1) * s2 / sigma0_sq
+p_value <- 2 * min(pchisq(chi, n - 1), pchisq(chi, n - 1, lower.tail = FALSE))
+c(variance = s2, chi_square = chi, df = n - 1, p_value = p_value)
+```
+
+$p = 0.40$, so the data are consistent with $\sigma^2 = 0.25$.
+
+:::
+
+## Chi-square test of goodness of fit
+
+The test of goodness of fit (@sec-distributions) also tests whether observed frequencies agree with a ratio expected from theory, as in Mendelian genetics:
+
+$$\chi^2 = \sum \frac{(O_i - E_i)^2}{E_i}, \qquad \text{df} = k - 1$$
+
+::: {.worked-example}
+**Example 20.5** In his dihybrid cross of peas, Mendel observed 315 round yellow, 108 round green, 101 wrinkled yellow and 32 wrinkled green seeds. Do these agree with the expected 9:3:3:1 ratio?
+
+**Solution**
+
+```{r chisq-mendel}
+observed <- c(round_yellow = 315, round_green = 108,
+              wrinkled_yellow = 101, wrinkled_green = 32)
+res <- chisq.test(observed, p = c(9, 3, 3, 1) / 16)
+res
+res$expected
+```
+
+$\chi^2 = 0.47$ with 3 df, $p = 0.93$: the data agree very well with the 9:3:3:1 ratio.
+
+:::
+
+## Chi-square test of independence
+
+A **contingency table** classifies individuals by two attributes. To test whether the attributes are independent, the expected frequency of each cell is
+
+$$E_{ij} = \frac{(\text{row } i \text{ total}) \times (\text{column } j \text{ total})}{\text{grand total}}$$
+
+and $\chi^2 = \sum (O_{ij} - E_{ij})^2 / E_{ij}$ has $(r-1)(c-1)$ df for an $r \times c$ table.
+
+::: {.worked-example}
+**Example 20.6** In an F~2~ population from a cross of white sweet maize with yellow starchy maize, the kernels on one ear were classified by colour and texture [Pearl, 1911; `pearl.kernels` in `agridat`]. If the two genes segregate independently, colour and texture should be independent.
+
+**Solution**
+
+```{r chisq-indep}
+library(agridat)
+d <- subset(pearl.kernels, ear == "Ear08" & obs == "Obs01")
+tab <- matrix(c(d$ys, d$yt, d$ws, d$wt), nrow = 2, byrow = TRUE,
+              dimnames = list(Colour = c("Yellow", "White"),
+                              Texture = c("Starchy", "Sweet")))
+tab
+chisq.test(tab)
+chisq.test(tab)$expected
+```
+
+For a 2 × 2 table, `chisq.test()` applies **Yates' correction for continuity** by default. Here $\chi^2 = 3.73$ with 1 df and $p = 0.054$, which is just above 0.05. Without the correction:
+
+```{r chisq-indep2}
+chisq.test(tab, correct = FALSE)
+```
+
+the p-value is 0.038. When the conclusion depends on the correction, or when expected frequencies are small (below 5), use **Fisher's exact test**:
+
+```{r chisq-fisher}
+fisher.test(tab)
+```
+
+Fisher's exact test gives $p = 0.045$, weak evidence of an association between colour and texture in this ear. The proportion of sweet kernels is higher among white kernels (`r round(26/78*100)`%) than among yellow kernels (`r round(102/454*100)`%).
+
+::: {.callout-note}
+For an $r \times c$ table, give `chisq.test()` the table of counts. If you have raw data with one row per individual, make the table first with `table(data$A, data$B)` or `xtabs(~ A + B, data)`.
+:::
+
+:::
+
+## Non-parametric alternatives
+
+When the data are clearly non-normal and the sample is small, rank-based tests make no assumption about the distribution:
+
+| Parametric test | Non-parametric alternative | R function |
+|:--|:--|:--|
+| One-sample or paired *t* | Wilcoxon signed-rank | `wilcox.test(x, mu = )`, `wilcox.test(x, y, paired = TRUE)` |
+| Two-sample *t* | Wilcoxon rank-sum (Mann–Whitney) | `wilcox.test(y ~ group)` |
+| One-way ANOVA | Kruskal–Wallis | `kruskal.test(y ~ group)` |
+| RCB ANOVA | Friedman | `friedman.test(y ~ trt | block)` |
+
+```{r wilcox}
+wilcox.test(ZeaMays$cross, ZeaMays$self, paired = TRUE, exact = FALSE)
+```
+
+The signed-rank test also finds a significant difference ($p = 0.044$) for Darwin's maize data.
+
+## Summary: which test? {.unnumbered}
+
+| Question | Test | R function |
+|:--|:--|:--|
+| Is a mean equal to a given value? | one-sample *t* | `t.test(x, mu = )` |
+| Do two independent means differ? | two-sample *t* (pooled or Welch) | `t.test(y ~ g, var.equal = )` |
+| Do paired observations differ? | paired *t* | `t.test(x, y, paired = TRUE)` |
+| Are two variances equal? | *F* test | `var.test()` |
+| Are several variances equal? | Bartlett, Levene | `bartlett.test()`, `car::leveneTest()` |
+| Do frequencies follow a ratio? | $\chi^2$ goodness of fit | `chisq.test(x, p = )` |
+| Are two attributes associated? | $\chi^2$ independence, Fisher exact | `chisq.test(tab)`, `fisher.test(tab)` |
+
+## Live R laboratory {#live-r-laboratory}
+
+::: {.live-r}
+**Darwin's maize: paired versus unpaired**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** lets you use the example in RStudio.
+
+```r
+cross <- c(23.5, 12, 21, 22, 19.125, 21.5, 22.125, 20.375, 18.25, 21.625,
+           23.25, 21, 22.125, 23, 12)
+self  <- c(17.375, 20.375, 20, 20, 18.375, 18.625, 18.625, 15.25, 16.5,
+           18, 16.25, 18, 12.75, 15.5, 18)
+t.test(cross, self, paired = TRUE)        # correct: plants paired in pots
+t.test(cross, self, var.equal = TRUE)     # ignores the pairing
+
+# Mendel's dihybrid ratio 9:3:3:1
+chisq.test(c(315, 108, 101, 32), p = c(9, 3, 3, 1) / 16)
+```
+
+**Investigate.** Compare the two *t* tests. Why does the paired test use 14 degrees of freedom, and why do the two p-values differ?
+:::
+
+## Practical 22 and exercises
+
+1. Using the `sleep` data, test whether the two drugs differ in the extra hours of sleep they produce. (The same 10 patients received both drugs.)
+2. In the `ToothGrowth` data, compare tooth length between the two supplements (`supp`) at a dose of 0.5 mg/day. First test the equality of variances.
+3. In an F~2~ population, 290 tall and 110 dwarf plants were observed. Test the fit to a 3:1 ratio.
+4. Using the `pearl.kernels` data, test the 9:3:3:1 ratio for the total counts of `Ear08` over all observers. What might explain the result?
+
+::: {.callout-caution title="Historical Insights"}
+Charles Darwin grew his crossed and self-fertilised maize plants in pairs and published the heights in 1876; R. A. Fisher reanalysed them in *The Design of Experiments* (1935). George W. Snedecor named the F distribution in Fisher's honour in 1934.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. For a one-sample t test the degrees of freedom are __________.
+2. The pooled t test assumes equal population __________.
+3. The F test for two variances uses the ratio __________.
+4. In a 2 × 2 table `chisq.test()` applies __________ correction by default.
+5. When expected frequencies are small, use __________ exact test.
+6. The df for an $r \times c$ contingency table are __________.
+7. Bartlett's and Levene's tests compare several __________.
+8. The non-parametric alternative to the paired t test is the Wilcoxon __________ test.
+
+### Short-answer questions {.unnumbered}
+
+1. When is a paired t test appropriate? Give an agricultural example.
+2. Explain the difference between Student's and Welch's t tests.
+3. How are expected frequencies computed in a contingency table?
+4. Why is Fisher's exact test sometimes preferred?
+5. State the assumptions of the F test for variances.
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. Two samples of 10 plants have variances 0.340 and 0.196. Test the equality of variances.
+2. Find the pooled variance for the same samples.
+3. A sample of 10 plants has variance 0.34. Test $H_0: \sigma^2 = 0.25$.
+4. A 3 × 4 contingency table is tested for independence. Find the df.
+
+### Important formulae {.unnumbered}
+
+Pooled variance and two-sample t:
+
+$$
+s_p^2 = \frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}, \qquad t = \frac{\bar x_1 - \bar x_2}{s_p\sqrt{1/n_1 + 1/n_2}}
+$$ {#eq-ch20-pooled}
+
+F test for two variances:
+
+$$
+F = \frac{s_1^2}{s_2^2}
+$$ {#eq-ch20-f}
+
+Chi-square test for a variance:
+
+$$
+\chi^2 = \frac{(n-1)s^2}{\sigma_0^2}
+$$ {#eq-ch20-chivar}
+
+Expected frequency in a contingency table:
+
+$$
+E_{ij} = \frac{R_i \times C_j}{N}
+$$ {#eq-ch20-exp}
+
+### Quick revision {.unnumbered}
+
+- One mean → one-sample t; two independent means → pooled or Welch t; pairs → paired t.
+- Two variances → F; several variances → Bartlett or Levene.
+- Ratios → chi-square goodness of fit; association → chi-square or Fisher's test.
+- Small, non-normal samples → rank tests.
+- Match the test to how the data were collected.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` $n-1$ `2.` variances `3.` $s_1^2/s_2^2$ `4.` Yates' `5.` Fisher's `6.` $(r-1)(c-1)$ `7.` variances `8.` signed-rank
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch20-f, $F = 0.340/0.196 = 1.73$ on (9, 9) df; not significant.
+2. By @eq-ch20-pooled, $s_p^2 = (9\times0.340 + 9\times0.196)/18 = 0.268$.
+3. By @eq-ch20-chivar, $\chi^2 = 9\times0.34/0.25 = 12.24$ with 9 df; not significant.
+4. $(3-1)(4-1) = 6$.

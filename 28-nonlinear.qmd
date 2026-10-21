@@ -1,0 +1,323 @@
+# Fitting non-linear models {#sec-nonlinear}
+
+```{r setup-28}
+#| include: false
+options(digits = 4, width = 80, scipen = 6)
+set.seed(531)
+```
+
+## Learning outcomes {.unnumbered}
+
+Distinguish linear and non-linear models, fit Mitscherlich, quadratic-plateau, logistic and Gompertz models with `nls()`, interpret their parameters, compare models and find optimum fertiliser doses.
+
+
+Many biological relationships are not straight lines. Crop yield rises with fertiliser and then levels off; plant biomass grows slowly, then rapidly, then approaches a ceiling; pest populations, enzyme reactions and drying curves all follow characteristic curves. This chapter shows how to fit such curves.
+
+## Linear and non-linear models
+
+A model is **linear** if it is linear in its **parameters**, even if it is curved in $x$. The quadratic
+
+$$y = \beta_0 + \beta_1 x + \beta_2 x^2 + e$$
+
+is a linear model and is fitted with `lm()` (@sec-multiple-regression). Some models become linear after a transformation, e.g. $y = a x^b$ becomes $\log y = \log a + b \log x$.
+
+A model is **non-linear** if it cannot be written in linear form, for example the asymptotic (Mitscherlich) model
+
+$$y = \alpha - (\alpha - \beta)\,e^{-\gamma x} + e$$
+
+Non-linear models are fitted by **non-linear least squares**, which minimises the residual sum of squares iteratively, starting from initial guesses of the parameters. In R this is done with `nls()`.
+
+Non-linear models have important advantages: their parameters usually have a direct biological meaning (maximum yield, growth rate, time of maximum growth), and they behave sensibly outside the range of the data (an asymptote rather than a parabola turning down).
+
+## Common non-linear models in agriculture
+
+| Model | Equation | Parameters | Typical use |
+|:--|:--|:--|:--|
+| Exponential growth | $y = a\,e^{bx}$ | $a$ initial value, $b$ relative growth rate | early growth, population growth |
+| Mitscherlich (monomolecular, asymptotic) | $y = \alpha - (\alpha - \beta)e^{-\gamma x}$ | $\alpha$ asymptote, $\beta$ value at $x = 0$, $\gamma$ rate | fertiliser response |
+| Logistic | $y = \dfrac{\alpha}{1 + e^{(x_{mid} - x)/s}}$ | $\alpha$ asymptote, $x_{mid}$ inflection point, $s$ scale | growth curves, disease progress |
+| Gompertz | $y = \alpha\,e^{-\beta e^{-\gamma x}}$ | $\alpha$ asymptote | growth curves, asymmetric S-shape |
+| Michaelis–Menten | $y = \dfrac{V_m x}{K + x}$ | $V_m$ maximum, $K$ half-saturation constant | enzyme kinetics, nutrient uptake |
+| Quadratic-plateau | quadratic up to $x_0$, constant after | $x_0$ critical level | fertiliser response |
+
+## Self-starting models
+
+The most difficult part of fitting a non-linear model is choosing starting values. R provides **self-starting** models that compute good starting values automatically:
+
+| Function | Model |
+|:--|:--|
+| `SSasymp(x, Asym, R0, lrc)` | asymptotic: $\text{Asym} + (\text{R0} - \text{Asym})\,e^{-e^{\text{lrc}}x}$ |
+| `SSlogis(x, Asym, xmid, scal)` | logistic |
+| `SSgompertz(x, Asym, b2, b3)` | Gompertz: $\text{Asym}\,e^{-b_2 b_3^x}$ |
+| `SSmicmen(x, Vm, K)` | Michaelis–Menten |
+| `SSfpl(x, A, B, xmid, scal)` | four-parameter logistic |
+
+## Example 30.1: response of maize to nitrogen
+
+A trial at five sites in Minnesota, USA, in 2006 measured the grain yield (Mg/ha) of maize at seven nitrogen rates (0 to 201.6 kg N/ha) with four replications (`hernandez.nitrogen` in `agridat`). We analyse site S1.
+
+```{r nl-data}
+library(agridat)
+s1 <- subset(hernandez.nitrogen, site == "S1")
+aggregate(yield ~ nitro, data = s1, FUN = mean)
+plot(yield ~ nitro, data = s1, pch = 19, col = "grey50",
+     xlab = "Nitrogen (kg/ha)", ylab = "Grain yield (Mg/ha)")
+```
+
+Yield rises steeply up to about 100 kg N/ha and then levels off.
+
+### Quadratic model (linear in the parameters)
+
+```{r nl-quad}
+quad <- lm(yield ~ nitro + I(nitro^2), data = s1)
+summary(quad)$coefficients
+b <- coef(quad)
+N_max_quad <- -b[2] / (2 * b[3])      # dy/dN = 0
+N_max_quad
+```
+
+The fitted parabola reaches its maximum at `r round(N_max_quad)` kg N/ha.
+
+### Mitscherlich (asymptotic) model
+
+```{r nl-mitsch}
+mitsch <- nls(yield ~ SSasymp(nitro, Asym, R0, lrc), data = s1)
+summary(mitsch)
+```
+
+The estimated maximum attainable yield is `r round(coef(mitsch)["Asym"], 2)` Mg/ha, the yield without nitrogen `r round(coef(mitsch)["R0"], 2)` Mg/ha, and the rate constant is $\gamma = e^{\text{lrc}}$ = `r signif(exp(coef(mitsch)["lrc"]), 3)` per kg N.
+
+```{r nl-mitsch-ci}
+confint.default(mitsch)       # Wald confidence intervals
+```
+
+### Quadratic-plateau model
+
+The quadratic-plateau model assumes a quadratic response up to a critical nitrogen rate $x_0 = -b/(2c)$ (the vertex of the parabola) and a constant yield beyond it. It is fitted with `nls()`, giving starting values taken from the quadratic fit:
+
+```{r nl-qp}
+qp <- nls(yield ~ ifelse(nitro < -b / (2 * c),
+                         a + b * nitro + c * nitro^2,
+                         a - b^2 / (4 * c)),
+          data = s1, start = list(a = 4, b = 0.1, c = -0.0004))
+summary(qp)$coefficients
+cf <- coef(qp)
+c(critical_N = unname(-cf["b"] / (2 * cf["c"])),
+  plateau_yield = unname(cf["a"] - cf["b"]^2 / (4 * cf["c"])))
+```
+
+The yield plateau of about `r round(cf["a"] - cf["b"]^2/(4*cf["c"]), 1)` Mg/ha is reached at about `r round(-cf["b"]/(2*cf["c"]))` kg N/ha.
+
+### Comparing the models
+
+Models with different forms are compared with the **Akaike information criterion** (AIC; smaller is better) and the residual standard error:
+
+```{r nl-compare}
+data.frame(model = c("Quadratic", "Mitscherlich", "Quadratic-plateau"),
+           AIC   = c(AIC(quad), AIC(mitsch), AIC(qp)),
+           RSE   = c(sigma(quad), sigma(mitsch), sigma(qp)))
+```
+
+```{r nl-plot}
+nn <- data.frame(nitro = seq(0, 210, length.out = 200))
+plot(yield ~ nitro, data = s1, pch = 19, col = "grey60",
+     xlab = "Nitrogen (kg/ha)", ylab = "Grain yield (Mg/ha)")
+lines(nn$nitro, predict(quad, nn),   col = "blue",      lwd = 2)
+lines(nn$nitro, predict(mitsch, nn), col = "red",       lwd = 2)
+lines(nn$nitro, predict(qp, nn),     col = "darkgreen", lwd = 2, lty = 2)
+legend("bottomright", c("Quadratic", "Mitscherlich", "Quadratic-plateau"),
+       col = c("blue", "red", "darkgreen"), lty = c(1, 1, 2), lwd = 2, bty = "n")
+```
+
+The quadratic-plateau model has the lowest AIC for these data. The three models agree closely within the range of the data but imply different optimum rates, which is why the choice of model matters for fertiliser recommendations.
+
+### Economic optimum dose
+
+The **economic optimum** is the rate at which the extra yield from one more kilogram of nitrogen just pays for it, i.e. where the slope of the response curve equals the price ratio
+
+$$\frac{dy}{dN} = \frac{\text{price of 1 kg N}}{\text{price of 1 unit of grain}}$$
+
+For the quadratic model $dy/dN = b_1 + 2b_2N$, so $N_{\text{econ}} = (r - b_1)/(2b_2)$. Suppose 1 kg of N costs as much as 6 kg of grain, so $r$ = 0.006 Mg grain per kg N:
+
+```{r nl-econ}
+r <- 0.006
+N_econ_quad <- (r - b[2]) / (2 * b[3])
+N_econ_quad
+
+# For the Mitscherlich model, dy/dN = gamma * (Asym - R0) * exp(-gamma * N)
+p <- coef(mitsch); gam <- exp(p["lrc"])
+N_econ_mitsch <- log(gam * (p["Asym"] - p["R0"]) / r) / gam
+unname(N_econ_mitsch)
+```
+
+The economic optimum is about `r round(N_econ_quad)` kg N/ha with the quadratic model and `r round(N_econ_mitsch)` kg N/ha with the Mitscherlich model, both below the `r round(N_max_quad)` kg N/ha that maximises the quadratic yield. The Mitscherlich curve never reaches a maximum, so only an economic optimum can be defined for it.
+
+## Example 30.2: a logistic growth curve
+
+The growth of soybean plants was followed by sampling plants every week and recording the average leaf weight per plant (g) (`davidian.soybean` in `agridat`). We fit a logistic curve to the 1988 data for the variety Forrest (`F`):
+
+```{r nl-soy-data}
+soy <- subset(davidian.soybean, year == 1988 & variety == "F")
+plot(weight ~ day, data = soy, pch = 19, col = "grey50",
+     xlab = "Days after planting", ylab = "Leaf weight per plant (g)")
+```
+
+```{r nl-logis}
+logis <- nls(weight ~ SSlogis(day, Asym, xmid, scal), data = soy)
+summary(logis)
+```
+
+Interpretation of the parameters:
+
+- **Asym** = `r round(coef(logis)["Asym"], 1)` g: the final (asymptotic) leaf weight per plant;
+- **xmid** = `r round(coef(logis)["xmid"], 1)` days: the inflection point, when growth is fastest and the plant has reached half of its final weight;
+- **scal** = `r round(coef(logis)["scal"], 2)` days: the time scale; the maximum absolute growth rate is $\text{Asym}/(4 \times \text{scal})$ = `r round(coef(logis)["Asym"]/(4*coef(logis)["scal"]), 2)` g per day.
+
+A Gompertz curve, which is asymmetric about its inflection point, can be compared:
+
+```{r nl-gompertz}
+gomp <- nls(weight ~ SSgompertz(day, Asym, b2, b3), data = soy)
+AIC(logis, gomp)
+```
+
+The logistic curve has the clearly lower AIC and fits these data better.
+
+```{r nl-soy-plot}
+dd <- data.frame(day = seq(14, 84, length.out = 200))
+plot(weight ~ day, data = soy, pch = 19, col = "grey60",
+     xlab = "Days after planting", ylab = "Leaf weight per plant (g)")
+lines(dd$day, predict(logis, dd), col = "red", lwd = 2)
+lines(dd$day, predict(gomp, dd), col = "blue", lwd = 2, lty = 2)
+legend("topleft", c("Logistic", "Gompertz"), col = c("red", "blue"),
+       lty = c(1, 2), lwd = 2, bty = "n")
+```
+
+### Checking the fit
+
+As in linear regression, inspect the residuals:
+
+```{r nl-resid}
+plot(fitted(logis), residuals(logis), pch = 19,
+     xlab = "Fitted values", ylab = "Residuals")
+abline(h = 0, lty = 2)
+```
+
+The spread of the residuals increases with the fitted value. In such cases a model on the log scale or weighted least squares (argument `weights` in `nls()`) may be more appropriate. Because measurements on the same plot over time are correlated, a full analysis of these data would use a **non-linear mixed model** (`nlme::nlme()`), with random effects for plots.
+
+::: {.callout-tip}
+**When nls() fails to converge**: plot the data and check that the starting values are sensible; use a self-starting model if one exists; rescale variables with very large or very small values; or try `algorithm = "port"` with lower and upper bounds on the parameters.
+:::
+
+## Live R laboratory {#live-r-laboratory}
+
+::: {.live-r}
+**Nitrogen response of maize**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** lets you use the example in RStudio.
+
+```r
+nitro <- rep(c(0, 33.6, 67.2, 100.8, 134.4, 168, 201.6), each = 4)
+yield <- c(3.70, 3.88, 4.39, 4.64, 6.90, 8.76, 7.47, 8.96, 9.37, 10.44, 9.80, 11.77,
+           11.52, 12.94, 12.20, 11.29, 11.50, 12.18, 10.68, 11.16, 11.83, 10.35,
+           11.61, 9.66, 11.07, 11.69, 11.15, 9.93)
+quad   <- lm(yield ~ nitro + I(nitro^2))
+mitsch <- nls(yield ~ SSasymp(nitro, Asym, R0, lrc))
+coef(mitsch)
+c(N_max_quadratic = unname(-coef(quad)[2] / (2 * coef(quad)[3])))
+AIC(quad, mitsch)
+nn <- seq(0, 210, length.out = 100)
+plot(nitro, yield, pch = 19, col = "grey50", xlab = "N (kg/ha)", ylab = "Yield (Mg/ha)")
+lines(nn, predict(quad, data.frame(nitro = nn)), col = "blue", lwd = 2)
+lines(nn, predict(mitsch, data.frame(nitro = nn)), col = "red", lwd = 2)
+```
+
+**Investigate.** Compute the economic optimum of the quadratic model when 1 kg N costs as much as 6 kg of grain: $N = (0.006 - b_1)/(2b_2)$.
+:::
+
+## Practical 32 and exercises
+
+1. Fit the Mitscherlich and quadratic-plateau models to site S5 of `hernandez.nitrogen`. Compare the optimum nitrogen rates with those for site S1.
+2. Fit a logistic curve to the 1988 data for the variety `P` in `davidian.soybean`. Do the two varieties differ in final leaf weight?
+3. The built-in `Puromycin` data give the reaction velocity of an enzyme at different substrate concentrations. Fit a Michaelis–Menten model with `SSmicmen()` to the treated cells.
+4. The built-in `Loblolly` data give the heights of loblolly pine trees by age. Fit an asymptotic model to tree `301`.
+
+::: {.callout-caution title="Historical Insights"}
+Eilhard Alfred Mitscherlich formulated his law of diminishing returns to fertiliser in 1909, describing the yield response as an exponential approach to a maximum.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A model is linear if it is linear in its __________.
+2. Non-linear models are fitted by non-linear least squares with __________.
+3. Self-starting models compute the __________ values automatically.
+4. The Mitscherlich model approaches an __________ as the dose increases.
+5. In the logistic model, `xmid` is the time of the __________ point.
+6. Models of different forms are compared using the __________.
+7. The economic optimum dose is where the slope of the response curve equals the __________ ratio.
+8. The quadratic-plateau model has a constant yield beyond the __________ dose.
+
+### Short-answer questions {.unnumbered}
+
+1. Distinguish between linear and non-linear models with examples.
+2. Interpret the parameters of the Mitscherlich model.
+3. Why do the quadratic and Mitscherlich models give different optimum doses?
+4. What is the economic optimum dose?
+5. What can be done when `nls()` does not converge?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A logistic curve has Asym = 20.47 g and scal = 8.29 days. Find the maximum growth rate.
+2. A quadratic response has $b_1 = 0.1087$ and $b_2 = -0.000396$. Find the dose for maximum yield.
+3. If 1 kg N costs as much as 6 kg grain ($r = 0.006$ Mg/kg), find the economic optimum.
+
+### Important formulae {.unnumbered}
+
+Mitscherlich (asymptotic) model:
+
+$$
+y = \alpha - (\alpha - \beta)e^{-\gamma x}
+$$ {#eq-ch30-mitsch}
+
+Logistic model and its maximum growth rate:
+
+$$
+y = \frac{\text{Asym}}{1 + e^{(x_{mid}-x)/s}}, \qquad \left(\frac{dy}{dx}\right)_{\max} = \frac{\text{Asym}}{4s}
+$$ {#eq-ch30-logis}
+
+Optimum dose of a quadratic response:
+
+$$
+x_{\max} = -\frac{b_1}{2b_2}
+$$ {#eq-ch30-quad}
+
+Economic optimum dose of a quadratic response:
+
+$$
+x_{\text{econ}} = \frac{r - b_1}{2b_2}
+$$ {#eq-ch30-econ}
+
+### Quick revision {.unnumbered}
+
+- Linear in parameters → `lm()`; otherwise → `nls()`.
+- Fertiliser response → Mitscherlich or quadratic-plateau; growth → logistic or Gompertz.
+- Self-starting models avoid convergence problems.
+- Compare models by AIC and residuals; choice of model changes the optimum.
+- Economic optimum < agronomic maximum.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` parameters `2.` `nls()` `3.` starting `4.` asymptote `5.` inflection `6.` AIC `7.` price `8.` critical
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch30-logis, $20.47/(4\times8.29) = 0.62$ g/day.
+2. By @eq-ch30-quad, $-0.1087/(2\times-0.000396) = 137$ kg N/ha.
+3. By @eq-ch30-econ, $(0.006 - 0.1087)/(2\times-0.000396) = 130$ kg N/ha.

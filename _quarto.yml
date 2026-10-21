@@ -10,8 +10,13 @@ project:
     - practicals/*.Rmd
 book:
   title: "R Programming for Agricultural Data Analysis"
-  subtitle: "An undergraduate textbook and practical companion · 0+2"
+  subtitle: "A textbook and practical companion for undergraduate and postgraduate courses (0+2 and STAT 531)"
   author: "Dr. Pratheesh P. Gopinath"
+  date: today
+  date-format: "D MMMM YYYY"
+  cover-image: images/cover.png
+  repo-url: https://github.com/KAUMELON/stat-531
+  search: true
   chapters:
     - index.qmd
     - course-guide.qmd
@@ -45,11 +50,36 @@ book:
       chapters:
         - 14-reporting.qmd
         - 14b-vibe-coding.qmd
+    - part: "Module 8 · Exploratory analysis and probability distributions (STAT 531)"
+      chapters:
+        - 15-met-eda.qmd
+        - 16-distributions.qmd
+    - part: "Module 9 · Tests of significance (STAT 531)"
+      chapters:
+        - 17-large-sample.qmd
+        - 18-small-sample.qmd
+    - part: "Module 10 · Analysis of variance and covariance (STAT 531)"
+      chapters:
+        - 19-anova-mcp.qmd
+        - 20-research-designs.qmd
+        - 21-contrasts.qmd
+        - 22-ancova.qmd
+    - part: "Module 11 · Mixed models and multiple regression (STAT 531)"
+      chapters:
+        - 23-mixed-models.qmd
+        - 24-multiple-regression.qmd
+    - part: "Module 12 · Multivariate methods and non-linear models (STAT 531)"
+      chapters:
+        - 25-pca.qmd
+        - 26-factor-analysis.qmd
+        - 27-discriminant.qmd
+        - 28-nonlinear.qmd
     - references.qmd
   appendices:
     - data-dictionary.qmd
     - solutions.qmd
     - glossary.qmd
+bibliography: [book.bib, packages.bib]
 format:
   html:
     theme: cosmo

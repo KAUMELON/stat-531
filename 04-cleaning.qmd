@@ -280,3 +280,70 @@ mean(clean$pH)
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. An exact duplicate record should be removed only after it is __________ to be an entry error.
+2. Values outside plausible ranges should be __________, not deleted automatically.
+3. A __________ records every change made to the raw data and the reason for it.
+4. Missing, zero and below-detection values have __________ meanings.
+5. Inconsistent spellings of a treatment are fixed by standardising category __________.
+6. Dates should be converted __________ with a stated format.
+7. A __________ analysis shows whether a doubtful observation changes the conclusion.
+8. The raw data file should never be __________.
+
+### Short-answer questions {.unnumbered}
+
+1. Why should outliers not be deleted automatically?
+2. Distinguish between a correction and an analytical choice.
+3. What is the purpose of a cleaning log?
+4. How would you detect a decimal-point error in yield data?
+5. Why must the experimental design be checked while cleaning?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A file has 61 records, of which one is an exact duplicate. How many records remain after de-duplication?
+2. Two of 60 yields are missing. What percentage of yields is missing?
+3. A yield recorded as 45.0 t/ha in a trial where all other yields are 3 to 6 t/ha is suspected to be 4.50. By what factor is it wrong?
+4. For a variable with $Q_1 = 3.5$ and $Q_3 = 5.0$, which values are flagged by the 1.5 IQR rule?
+
+### Important formulae {.unnumbered}
+
+Percentage of missing values:
+
+$$
+\%\,\text{missing} = \frac{\text{number missing}}{\text{total}} \times 100
+$$ {#eq-ch4-missing}
+
+Outlier fences:
+
+$$
+Q_1 - 1.5\,\text{IQR}, \qquad Q_3 + 1.5\,\text{IQR}
+$$ {#eq-ch4-fence}
+
+### Quick revision {.unnumbered}
+
+- Raw file → read only; all changes in a script.
+- Duplicate, misspelling, wrong type, impossible value → detect, document, then correct.
+- Outlier → flag and investigate; delete only with a documented reason.
+- Missing ≠ zero ≠ below detection.
+- Doubtful value → run the analysis with and without it (sensitivity).
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` confirmed `2.` flagged `3.` cleaning log `4.` different `5.` labels `6.` explicitly `7.` sensitivity `8.` overwritten
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. $61 - 1 = 60$.
+2. By @eq-ch4-missing, $2/60 \times 100 = 3.33\%$.
+3. By a factor of 10; correct it only if the field book confirms 4.50.
+4. IQR $=1.5$; by @eq-ch4-fence the fences are 1.25 and 7.25; values outside are flagged.

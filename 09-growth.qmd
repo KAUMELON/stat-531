@@ -180,3 +180,78 @@ c(asymptote = K, inflection_day = midpoint)
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+Pierre-François Verhulst proposed the logistic equation in 1838 to describe population growth, and Benjamin Gompertz published his curve in 1825 to describe human mortality. Both are now standard models of crop and animal growth.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. Crop biomass over time usually follows an __________-shaped curve.
+2. The logistic curve is symmetric about its __________ point.
+3. The parameter $A$ in a growth model is the __________.
+4. At the inflection point of the logistic curve the biomass equals __________ of the asymptote.
+5. The Gompertz curve is __________ about its inflection point.
+6. Non-linear models are fitted in R with the function __________.
+7. The relative growth rate is the absolute growth rate divided by current __________.
+8. Extrapolating a fitted growth curve beyond the data is __________.
+
+### Short-answer questions {.unnumbered}
+
+1. Why is a straight line inadequate for crop growth?
+2. Interpret the parameters $A$, $k$ and $t_i$ of the logistic model.
+3. Distinguish between absolute and relative growth rate.
+4. How do you compare a logistic and a Gompertz fit?
+5. Why do repeated measurements on the same plants need special care?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A logistic curve has $A = 20$ g, $k = 0.15$ per day and $t_i = 56$ days. What is the biomass at 56 days?
+2. For the same curve, find the maximum absolute growth rate.
+3. For a Gompertz curve with $A = 20$ g, what is the biomass at the inflection point?
+
+### Important formulae {.unnumbered}
+
+Logistic growth model:
+
+$$
+W(t) = \frac{A}{1 + \exp\{-k(t - t_i)\}}
+$$ {#eq-ch9-logis}
+
+Gompertz growth model:
+
+$$
+W(t) = A\exp\{-\exp[-k(t - t_i)]\}
+$$ {#eq-ch9-gomp}
+
+Absolute growth rate of the logistic model:
+
+$$
+\frac{dW}{dt} = kW\left(1 - \frac{W}{A}\right)
+$$ {#eq-ch9-agr}
+
+### Quick revision {.unnumbered}
+
+- S-shaped growth → logistic (symmetric) or Gompertz (asymmetric).
+- $A$ → final size; $k$ → rate; $t_i$ → time of fastest growth.
+- Logistic maximum growth rate → $kA/4$ at $W = A/2$.
+- Compare fits by residuals, AIC and plausibility of parameters.
+- Do not extrapolate beyond the observed period.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` S `2.` inflection `3.` asymptote `4.` half `5.` asymmetric `6.` `nls()` `7.` size `8.` risky
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch9-logis, $W(t_i) = A/2 = 10$ g.
+2. From @eq-ch9-agr at $W = A/2$: $kA/4 = 0.15\times20/4 = 0.75$ g/day.
+3. By @eq-ch9-gomp, $W(t_i) = A/e = 7.36$ g.

@@ -1,0 +1,244 @@
+# Analysis of covariance {#sec-ancova}
+
+```{r setup-22}
+#| include: false
+options(digits = 4, width = 80, scipen = 6)
+set.seed(531)
+```
+
+## Learning outcomes {.unnumbered}
+
+Explain when and why to use a covariate, fit an analysis of covariance, test the homogeneity of regression slopes, and compute and compare adjusted treatment means.
+
+
+Sometimes part of the variation among experimental units can be measured but not controlled by blocking: the stand count of each plot, the initial weight of each animal, the yield of each tree before treatments were applied. Such a variable, measured on each unit and related to the response but **not affected by the treatments**, is called a **covariate** (concomitant variable).
+
+**Analysis of covariance** (ANCOVA) combines ANOVA with regression. It
+
+1. removes from the error the variation explained by the covariate, which increases precision, and
+2. **adjusts** the treatment means to a common value of the covariate, which removes bias due to chance differences in the covariate between treatments.
+
+## Model
+
+For an RCBD with one covariate $x$:
+
+$$y_{ij} = \mu + \tau_i + \beta_j + \gamma\,(x_{ij} - \bar x_{..}) + e_{ij}$$
+
+where $\gamma$ is the common regression coefficient of $y$ on $x$ within treatments and blocks. The **adjusted treatment mean** is
+
+$$\bar y_{i(\text{adj})} = \bar y_{i.} - \hat\gamma\,(\bar x_{i.} - \bar x_{..})$$
+
+### Assumptions
+
+In addition to the ANOVA assumptions:
+
+1. the covariate is **not affected by the treatments** (measure it before treatments are applied, or choose a variable the treatments cannot influence);
+2. the relationship between $y$ and $x$ is **linear**;
+3. the regression slope is the **same for all treatments** (homogeneity of regression slopes).
+
+## Example 24.1: apple trees
+
+@pearce1953 reported an experiment on apple trees at East Malling with six soil-management treatments (A–E, and S, the standard practice of keeping the land clean in summer) in four blocks. The response is the crop yield after treatment, and the covariate is the yield of the same tree (number of boxes of fruit) in the four seasons **before** the treatments were applied. The data are `pearce.apple` in `agridat`.
+
+```{r ancova-data}
+library(agridat)
+apple <- pearce.apple
+head(apple)
+```
+
+Since the covariate was measured before the treatments, it cannot have been affected by them. A quick check confirms that it does not differ among treatments:
+
+```{r ancova-check}
+summary(aov(prev ~ block + trt, data = apple))
+```
+
+```{r ancova-plot}
+plot(yield ~ prev, data = apple, pch = as.character(apple$trt),
+     col = as.integer(apple$block), cex = 1.1,
+     xlab = "Previous yield (covariate)", ylab = "Yield after treatment")
+legend("topleft", legend = levels(apple$block), col = 1:4, pch = 15,
+       title = "Block", bty = "n")
+```
+
+The plot shows a strong linear relationship between previous and current yield: trees that cropped well before the treatments also cropped well afterwards.
+
+### ANOVA without the covariate
+
+```{r ancova-anova}
+summary(aov(yield ~ block + trt, data = apple))
+```
+
+Ignoring the covariate, the treatments appear to have no effect at all ($F = 0.10$, $p = 0.99$), and the error mean square is 1562.
+
+### ANCOVA
+
+Add the covariate to the model **before** the treatment term, so that treatments are tested after adjustment for the covariate:
+
+```{r ancova-model}
+ancova <- aov(yield ~ block + prev + trt, data = apple)
+summary(ancova)
+```
+
+The covariate is highly significant, and after adjusting for it the treatments differ significantly ($F = 3.14$, $p = 0.042$). The error mean square has fallen from 1562 to `r round(deviance(ancova)/df.residual(ancova))`: the covariate explained most of the variation that was previously treated as error. Precision is greatly improved:
+
+```{r ancova-eff}
+EMS_anova  <- deviance(aov(yield ~ block + trt, data = apple)) / 15
+EMS_ancova <- deviance(ancova) / df.residual(ancova)
+EMS_anova / EMS_ancova     # approximate relative efficiency of ANCOVA
+```
+
+Because sequential sums of squares depend on the order of terms, it is good practice to check the result with **Type II** sums of squares from the `car` package, in which each term is adjusted for all others:
+
+```{r ancova-type2}
+library(car)
+Anova(lm(yield ~ block + prev + trt, data = apple), type = 2)
+```
+
+### The regression coefficient
+
+```{r ancova-coef}
+coef(ancova)["prev"]
+```
+
+Within blocks and treatments, each additional box of fruit in the earlier seasons is associated with `r round(coef(ancova)["prev"], 1)` units of additional yield after treatment.
+
+### Testing homogeneity of slopes
+
+The assumption of a common slope is tested by adding the treatment × covariate interaction:
+
+```{r ancova-slopes}
+anova(lm(yield ~ block + prev + trt, data = apple),
+      lm(yield ~ block + prev * trt, data = apple))
+```
+
+The interaction is not significant ($p = 0.15$), so a common slope is acceptable.
+
+### Adjusted treatment means
+
+Adjusted means (also called least-squares means) are computed with `emmeans`, at the overall mean of the covariate:
+
+```{r ancova-emmeans}
+library(emmeans)
+adj <- emmeans(ancova, ~ trt)
+adj
+
+data.frame(
+  unadjusted = tapply(apple$yield, apple$trt, mean),
+  covariate_mean = tapply(apple$prev, apple$trt, mean),
+  adjusted = summary(adj)$emmean
+)
+```
+
+The adjustment changes the picture considerably. Treatment S was given trees with the highest previous yields (mean 9.3), so its unadjusted mean (279.5) flattered it; after adjustment it is the lowest (`r round(summary(adj)$emmean[6])`). Treatment E had the trees with the lowest previous yields, and its adjusted mean is the highest.
+
+Compare each treatment with the standard practice S using Dunnett's test:
+
+```{r ancova-dunnett}
+contrast(adj, method = "trt.vs.ctrl", ref = "S")
+```
+
+After adjusting for previous cropping, treatment E outyielded the standard practice significantly ($p < 0.01$); the other treatments did not differ significantly from S.
+
+::: {.callout-note}
+**Covariance analysis for missing plots.** Before computers were common, ANCOVA with dummy covariates was used to estimate missing values in designed experiments. Today, simply fit the model to the available data with `lm()` or `aov()` and obtain adjusted means with `emmeans`.
+:::
+
+## Live R laboratory {#live-r-laboratory}
+
+::: {.live-r}
+**Analysis of covariance for apple trees**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** lets you use the example in RStudio.
+
+```r
+trt   <- factor(rep(c("A", "B", "C", "D", "E", "S"), times = 4))
+block <- factor(rep(paste0("B", 1:4), each = 6))
+prev  <- c(8.2, 8.2, 6.8, 5.7, 6.1, 7.6, 9.4, 6, 7, 5.5, 7, 10.1,
+           7.7, 9.1, 9.7, 10.2, 8.7, 9, 8.5, 10.1, 9.9, 10.3, 8.1, 10.5)
+yield <- c(287, 271, 234, 189, 210, 222, 290, 209, 210, 205, 276, 301,
+           254, 243, 286, 312, 279, 238, 307, 348, 371, 375, 344, 357)
+summary(aov(yield ~ block + trt))            # without the covariate
+fit <- aov(yield ~ block + prev + trt)       # with the covariate
+summary(fit)
+b <- coef(fit)["prev"]
+adjusted <- tapply(yield, trt, mean) - b * (tapply(prev, trt, mean) - mean(prev))
+round(cbind(unadjusted = tapply(yield, trt, mean), adjusted = adjusted), 1)
+```
+
+**Investigate.** Why does treatment S fall from near the top to the bottom after adjustment? Look at its mean previous yield.
+:::
+
+## Practical 26 and exercises
+
+1. Using the apple data, compute the adjusted mean for treatment A by hand from the formula $\bar y_{i(\text{adj})} = \bar y_{i.} - \hat\gamma(\bar x_{i.} - \bar x_{..})$ and check it against `emmeans`.
+2. Use Tukey's method to compare all pairs of adjusted means. Which pairs differ significantly?
+3. The `ChickWeight` data contain the weight of chicks on four diets over time. Using the weight at day 21 as the response and the weight at day 0 as a covariate, test whether the diets differ.
+
+::: {.callout-caution title="Historical Insights"}
+R. A. Fisher introduced the analysis of covariance in the 1930s. S. C. Pearce's experiments on apple trees at East Malling, used in this chapter, showed how much precision a pre-treatment covariate can add in perennial crops.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A covariate must not be affected by the __________.
+2. ANCOVA combines ANOVA with __________.
+3. The covariate should enter the model __________ the treatment term.
+4. ANCOVA assumes a common regression __________ for all treatments.
+5. Homogeneity of slopes is tested with the treatment × __________ interaction.
+6. Adjusted means are computed at the overall __________ of the covariate.
+7. Adjusted means are obtained in R with __________.
+8. `car::Anova(type = 2)` gives sums of squares adjusted for all other __________.
+
+### Short-answer questions {.unnumbered}
+
+1. What is a covariate? Give two agricultural examples.
+2. What are the two benefits of ANCOVA?
+3. State the assumptions of ANCOVA.
+4. Why can adjusted means rank treatments differently from unadjusted means?
+5. How was ANCOVA used for missing plots?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. Treatment S has unadjusted mean 279.5 and covariate mean 9.30; the overall covariate mean is 8.308 and $\hat\gamma = 28.40$. Find the adjusted mean.
+2. Treatment E has unadjusted mean 277.25 and covariate mean 7.475. Find its adjusted mean.
+3. Without the covariate EMS = 1562; with it EMS = 278. Find the approximate relative efficiency.
+
+### Important formulae {.unnumbered}
+
+ANCOVA model for an RCBD:
+
+$$
+y_{ij} = \mu + \tau_i + \beta_j + \gamma(x_{ij} - \bar x_{..}) + e_{ij}
+$$ {#eq-ch24-model}
+
+Adjusted treatment mean:
+
+$$
+\bar y_{i(\text{adj})} = \bar y_{i.} - \hat\gamma(\bar x_{i.} - \bar x_{..})
+$$ {#eq-ch24-adj}
+
+### Quick revision {.unnumbered}
+
+- Covariate → measured before treatment or unaffected by it.
+- ANCOVA → smaller error and unbiased (adjusted) means.
+- Fit block + covariate + treatment; check the slope interaction.
+- Report adjusted means with `emmeans`.
+- Missing plots → fit the model to available data.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` treatments `2.` regression `3.` before `4.` slope `5.` covariate `6.` mean `7.` `emmeans()` `8.` terms
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch24-adj, $279.5 - 28.40(9.30 - 8.308) = 251.3$.
+2. $277.25 - 28.40(7.475 - 8.308) = 300.9$.
+3. $1562/278 = 5.6$.

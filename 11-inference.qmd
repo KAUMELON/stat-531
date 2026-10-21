@@ -283,3 +283,78 @@ mean(compost) - mean(control)
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+William Sealy Gosset, a chemist at the Guinness brewery in Dublin, published the t distribution in 1908 under the pen name *Student*. Karl Pearson introduced the chi-square goodness-of-fit test in 1900.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. The hypothesis of no difference is the __________ hypothesis.
+2. Rejecting a true null hypothesis is a Type __________ error.
+3. The probability of rejecting a false null hypothesis is the __________ of the test.
+4. When the same units are measured twice, a __________ t-test is used.
+5. Welch's test does not assume equal __________.
+6. The goodness of fit of a Mendelian ratio is tested with the __________ test.
+7. A rank-based alternative to the two-sample t-test is the Wilcoxon __________ test.
+8. A 95% confidence interval that excludes zero corresponds to $p < $ __________.
+
+### Short-answer questions {.unnumbered}
+
+1. Define the p-value.
+2. Distinguish between paired and independent samples with an example.
+3. What are the assumptions of the two-sample t-test?
+4. Explain Type I and Type II errors.
+5. Why should a confidence interval be reported along with a p-value?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A sample of 16 plants has mean height 52 cm and SD 8 cm. Test $H_0: \mu = 50$ cm.
+2. In an F~2~, 290 tall and 110 dwarf plants are observed. Test a 3:1 ratio.
+3. Fifteen paired differences have mean 2.62 and SD 4.72. Find the paired t statistic.
+
+### Important formulae {.unnumbered}
+
+One-sample t statistic:
+
+$$
+t = \frac{\bar x - \mu_0}{s/\sqrt n}
+$$ {#eq-ch11-t}
+
+Paired t statistic:
+
+$$
+t = \frac{\bar d}{s_d/\sqrt n}
+$$ {#eq-ch11-paired}
+
+Pearson's chi-square statistic:
+
+$$
+\chi^2 = \sum \frac{(O_i - E_i)^2}{E_i}
+$$ {#eq-ch11-chisq}
+
+### Quick revision {.unnumbered}
+
+- Question → $H_0$ and $H_1$ → test → p-value → interpretation with an interval.
+- Paired design → paired test; independent groups → Welch or pooled test.
+- Counts in categories → chi-square; small expected counts → Fisher's exact test.
+- Non-normal small samples → rank-based tests.
+- Not significant ≠ no effect.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` null `2.` I `3.` power `4.` paired `5.` variances `6.` chi-square `7.` rank-sum `8.` 0.05
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch11-t, $t = (52-50)/(8/4) = 1.0$ with 15 df; not significant.
+2. Expected 300 and 100; by @eq-ch11-chisq, $\chi^2 = 100/300 + 100/100 = 1.33$ with 1 df; the fit is good.
+3. By @eq-ch11-paired, $t = 2.62/(4.72/\sqrt{15}) = 2.15$ with 14 df.

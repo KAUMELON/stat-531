@@ -138,3 +138,76 @@ stripchart(weight ~ group, PlantGrowth, vertical = TRUE,
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+John W. Tukey published *Exploratory Data Analysis* in 1977. He also introduced the box plot and is credited with coining the word *bit* for a binary digit.
+:::
+
+::: {.callout-tip title="Quotes to Inspire"}
+*"The greatest value of a picture is when it forces us to notice what we never expected to see."*
+
+John W. Tukey (1977)
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. Exploratory data analysis was popularised by John W. __________.
+2. EDA should begin with a __________ and the design of the study.
+3. Distributions should be examined __________ relationships.
+4. An observed association does not prove __________.
+5. A pattern seen in all data combined can differ from the pattern within __________.
+6. Exploratory decisions should be recorded in an EDA __________.
+7. A __________ score measures how many SDs an observation is from the mean.
+8. Findings from EDA suggest hypotheses to be tested with __________ data or designs.
+
+### Short-answer questions {.unnumbered}
+
+1. What is the purpose of exploratory data analysis?
+2. Distinguish between marginal and conditional patterns.
+3. Why must EDA findings not be reported as confirmed effects?
+4. List the contents of an EDA memo.
+5. How do you decide whether an unusual value is an error?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A plot yields 60 kg when the mean is 45 kg and the SD 5 kg. Find its z-score. Is it unusual?
+2. Two varieties have mean yields 4.0 and 6.0 t/ha with SDs 0.6 and 0.9 t/ha. Which is relatively more variable?
+
+### Important formulae {.unnumbered}
+
+Standardised (z) score:
+
+$$
+z = \frac{x - \bar x}{s}
+$$ {#eq-ch8-z}
+
+Coefficient of variation:
+
+$$
+\text{CV} = \frac{s}{\bar x} \times 100
+$$ {#eq-ch8-cv}
+
+### Quick revision {.unnumbered}
+
+- Question and design → first; graphs and summaries → next; models → last.
+- Distributions before relationships.
+- Marginal pattern ≠ conditional pattern: look within groups.
+- Association ≠ causation.
+- Record every exploratory decision.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` Tukey `2.` question `3.` before `4.` causation `5.` groups `6.` memo `7.` z `8.` new
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch8-z, $z = (60-45)/5 = 3$; it lies at the usual limit for an unusual value.
+2. By @eq-ch8-cv both CVs are 15%; they are equally variable relative to their means.

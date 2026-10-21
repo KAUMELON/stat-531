@@ -162,3 +162,64 @@ cat(sprintf("Across %d simulated plots, mean yield was %.2f t/ha (SD %.2f).\n",
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+Donald Knuth introduced *literate programming*, the idea of weaving explanation and code into one document, in 1984. R Markdown appeared in 2012 and Quarto, its multi-language successor, reached version 1.0 in 2022.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A Quarto document has the extension __________.
+2. An R Markdown document has the extension __________.
+3. Code in a report is placed in code __________.
+4. The chunk option __________ hides the code but shows its output.
+5. Values computed in R can be placed in text with __________ code.
+6. Converting a document to HTML, PDF or Word is called __________.
+7. A report is reproducible if it runs in a __________ R session.
+8. The header of a Quarto document is written in __________.
+
+### Short-answer questions {.unnumbered}
+
+1. Why is a dynamic report better than copying results into a word processor?
+2. Describe the anatomy of a Quarto document.
+3. Distinguish between `.Rmd` and `.qmd` files.
+4. How do you control the number of decimal places in a report?
+5. List the steps to make a project reproducible for another person.
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A report states a mean yield computed inline as `round(mean(c(4.1, 4.5, 4.9)), 1)`. What appears in the text?
+2. A chunk takes 4 s to run and the report has 15 such chunks. Roughly how long does rendering take, and how can caching help?
+
+### Important formulae {.unnumbered}
+
+Mean value reported inline:
+
+$$
+\bar x = \frac{4.1 + 4.5 + 4.9}{3} = 4.5
+$$ {#eq-ch14-mean}
+
+### Quick revision {.unnumbered}
+
+- Report → text + code + results in one file.
+- `.Rmd` and `.qmd` → both render with knitr; Quarto is the newer system.
+- Inline code → numbers in the text are always up to date.
+- Render in a fresh session before sharing.
+- Share data, code and the rendered report together.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` `.qmd` `2.` `.Rmd` `3.` chunks `4.` `echo: false` `5.` inline `6.` rendering `7.` fresh `8.` YAML
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch14-mean, the mean is 4.5, so the text shows 4.5.
+2. About 60 s; caching (`cache: true`) reruns only chunks whose code has changed.

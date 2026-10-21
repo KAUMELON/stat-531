@@ -163,3 +163,78 @@ boxplot(weight ~ group, PlantGrowth,
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+R. A. Fisher developed the analysis of variance at Rothamsted Experimental Station, England, where he worked from 1919, and presented it in *Statistical Methods for Research Workers* (1925). The letter F was chosen later by George Snedecor in Fisher's honour.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. ANOVA partitions the total variation into variation between groups and __________ groups.
+2. The F statistic is the ratio of the treatment mean square to the __________ mean square.
+3. In a CRD with $t$ treatments and $n$ plots, the error degrees of freedom are __________.
+4. A significant F test shows that at least __________ means differ.
+5. Tukey's method adjusts for __________ comparisons.
+6. The validity of ANOVA depends on independence, normality and equal __________.
+7. In an RCBD each treatment appears __________ in every block.
+8. `treatment * variety` in a formula includes both main effects and their __________.
+
+### Short-answer questions {.unnumbered}
+
+1. Why is ANOVA preferred to many t-tests?
+2. State the model for one-way ANOVA.
+3. How are the assumptions of ANOVA checked?
+4. Why is blocking used in field experiments?
+5. What does a significant interaction mean?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A CRD has 4 treatments with 5 replications. Find the treatment and error df.
+2. In the same experiment, TrSS = 60 and ESS = 48. Find F.
+3. With MSE = 3 and $r = 5$, find the standard error of a difference between two means.
+
+### Important formulae {.unnumbered}
+
+One-way ANOVA model:
+
+$$
+Y_{ij} = \mu + \tau_i + \epsilon_{ij}
+$$ {#eq-ch12-model}
+
+F statistic:
+
+$$
+F = \frac{\text{MS}_{\text{treatment}}}{\text{MS}_{\text{error}}}
+$$ {#eq-ch12-f}
+
+Standard error of a difference of two means:
+
+$$
+\text{SE}(d) = \sqrt{\frac{2\,\text{MSE}}{r}}
+$$ {#eq-ch12-sed}
+
+### Quick revision {.unnumbered}
+
+- Several means → ANOVA, not many t-tests.
+- Large F → between-group variation large relative to within-group variation.
+- Check residuals: residual vs fitted and normal Q–Q plots.
+- Blocks → remove field variation from the error.
+- Significant F → follow with planned or adjusted comparisons.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` within `2.` residual `3.` $n - t$ `4.` two `5.` multiple `6.` variances `7.` once `8.` interaction
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. Treatment df $= 3$; error df $= 20 - 4 = 16$.
+2. MSt $= 20$, MSE $= 3$; by @eq-ch12-f, $F = 6.67$ on (3, 16) df.
+3. By @eq-ch12-sed, $\sqrt{2\times3/5} = 1.10$.

@@ -100,7 +100,7 @@ c(error_ms_rcbd = with_block["Residuals", "Mean Sq"],
 
 Ignoring blocks moves block variation into the error, so the error mean square rises from about 0.039 to 0.116 and the CD widens. The relative efficiency of about 2.6 says a CRD would need about 2.6 times as many replicates for the same precision. Blocks stay in the model in any case, because they were part of the randomization.
 
-In the Latin square, error degrees of freedom are $(t-1)(t-2) = 4 	imes 3 = 12$: from 24 total degrees of freedom, rows, columns, and treatments each use 4.
+In the Latin square, error degrees of freedom are $(t-1)(t-2) = 4 \times 3 = 12$: from 24 total degrees of freedom, rows, columns, and treatments each use 4.
 
 In the split-plot, the wrong one-error analysis tests irrigation against a pooled error that is too small for main plots and too large for subplots. Its irrigation F-value is inflated, and the irrigation-by-nitrogen interaction, significant with error (b), becomes non-significant. The correct conclusions are those from the analysis with `Error(block / irrigation)`.
 
@@ -115,3 +115,131 @@ A prompt without the design usually produces `aov(yield_t_ha ~ nitrogen * variet
 ## Reporting and project evaluation
 
 `echo: false` executes code but hides the code listing; `eval: false` does not execute it. A complete project includes data provenance, raw inputs, cleaning code, analysis source, environment information, and rendered output. Interpretive exercises should be marked for the connection between question, design, method, uncertainty, and limitations rather than agreement with a preferred p-value.
+
+## STAT 531 modules
+
+```{r sol-setup}
+#| include: false
+options(digits = 4, scipen = 6)
+```
+
+### Exploratory analysis and distributions (@sec-met-eda, @sec-distributions)
+
+For the yacon data, dry root matter differs strongly between localities; Lima has the lowest means at every fertiliser dose.
+
+```{r sol-met}
+library(agricolae)
+data(yacon)
+round(with(yacon, tapply(roots, list(locality, dose), mean)), 2)
+```
+
+The pesticide and weed probabilities follow from the binomial and Poisson functions. For spray C the counts have variance close to the mean (a Poisson fit is reasonable), but pooled over all sprays the variance is more than five times the mean: mixing sprays with different means produces over-dispersion.
+
+```{r sol-dist}
+c(P_X_eq_10 = dbinom(10, 15, 0.7), P_X_le_8 = pbinom(8, 15, 0.7),
+  P_no_weeds = dpois(0, 2.5))
+spray_c <- InsectSprays$count[InsectSprays$spray == "C"]
+c(mean_C = mean(spray_c), var_C = var(spray_c),
+  mean_all = mean(InsectSprays$count), var_all = var(InsectSprays$count))
+```
+
+### Tests of significance (@sec-large-sample, @sec-small-sample)
+
+```{r sol-tests}
+data(plrv)
+hyo <- plrv$Yield[plrv$Locality == "Hyo-02"]
+z <- (mean(hyo) - 40) / (sd(hyo) / sqrt(length(hyo)))
+c(mean = mean(hyo), z = z, p_one_sided = pnorm(z, lower.tail = FALSE))
+prop.test(248, 400, p = 0.55, alternative = "greater", correct = FALSE)$p.value
+prop.test(c(72, 54), c(150, 150), alternative = "greater", correct = FALSE)$p.value
+chisq.test(c(290, 110), p = c(3, 1) / 4)
+```
+
+Mean yield at Huancayo (45.7 t/ha) significantly exceeds 40 t/ha. The adoption rate is significantly greater than 55%, and the new trap is significantly more effective at the 5% level. The tall:dwarf counts agree with a 3:1 ratio.
+
+For the `sleep` data the same patients received both drugs, so the paired test is correct:
+
+```{r sol-sleep}
+with(sleep, t.test(extra[group == 1], extra[group == 2], paired = TRUE))
+```
+
+### Analysis of variance (@sec-anova-crd, @sec-research-designs, @sec-contrasts)
+
+```{r sol-anova}
+pg_fit <- aov(weight ~ group, data = PlantGrowth)
+summary(pg_fit)
+library(emmeans)
+contrast(emmeans(pg_fit, ~ group), method = "trt.vs.ctrl")
+HSD.test(aov(weight ~ feed, data = chickwts), "feed")$groups
+```
+
+The `PlantGrowth` treatments differ ($p = 0.016$), but neither treatment differs significantly from the control by Dunnett's test: the significant F comes from the difference between the two treatments. The orthogonal contrasts confirm this:
+
+```{r sol-contrast}
+pg <- PlantGrowth
+contrasts(pg$group) <- cbind(ctrl_vs_trt = c(2, -1, -1), t1_vs_t2 = c(0, 1, -1))
+summary(aov(weight ~ group, data = pg),
+        split = list(group = list("Control vs treatments" = 1, "Trt 1 vs trt 2" = 2)))
+```
+
+The CD at 1% for the sweet potato experiment is
+
+```{r sol-cd1}
+qt(0.995, 8) * sqrt(2 * 22.489 / 3)
+```
+
+For the `npk` experiment, nitrogen and potassium are the important factors:
+
+```{r sol-npk}
+summary(aov(yield ~ block + N * P * K, data = npk))
+```
+
+### Covariance and mixed models (@sec-ancova, @sec-mixed-models)
+
+```{r sol-ancova}
+library(agridat)
+apple_fit <- aov(yield ~ block + prev + trt, data = pearce.apple)
+pairs(emmeans(apple_fit, ~ trt))
+```
+
+Only treatment E and the standard practice S differ significantly after Tukey adjustment.
+
+```{r sol-mixed}
+hyo2 <- droplevels(subset(plrv, Locality == "Hyo-02"))
+hyo2$Rep <- factor(hyo2$Rep)
+tab <- summary(aov(Yield ~ Rep + Genotype, data = hyo2))[[1]]
+s2g <- (tab[2, "Mean Sq"] - tab[3, "Mean Sq"]) / 3
+s2e <- tab[3, "Mean Sq"]
+c(sigma2_g = s2g, sigma2_e = s2e, H2_mean = s2g / (s2g + s2e / 3))
+```
+
+Genotypic variance at Huancayo is large relative to error, giving a high entry-mean heritability (about 0.93).
+
+### Regression and multivariate methods (@sec-multiple-regression to @sec-discriminant)
+
+```{r sol-reg}
+cor.test(~ Height + Girth, data = trees)$p.value
+summary(lm(Volume ~ Girth + I(Girth^2), data = trees))$coefficients
+fit3 <- lm(log(Volume) ~ log(Girth) + log(Height), data = trees)
+exp(predict(fit3, data.frame(Girth = 15, Height = 80), interval = "prediction"))
+```
+
+Height and diameter are significantly correlated; the quadratic term is significant; a tree 15 inches in diameter and 80 ft tall is predicted to contain about 38 cubic feet (95% prediction interval 32 to 45).
+
+```{r sol-multi}
+round(prcomp(iris[, 1:4], scale. = TRUE)$rotation[, 1], 2)
+factanal(factors = 2, covmat = ability.cov)$loadings
+library(MASS)
+mean(qda(Species ~ ., data = iris, CV = TRUE)$class == iris$Species)
+```
+
+PC1 of `iris` is dominated by petal length, petal width and sepal length. In the ability tests, reading and vocabulary load on one factor (verbal ability) and blocks, picture and maze on the other (spatial ability). QDA classifies slightly less accurately than LDA (97.3% against 98% cross-validated).
+
+### Non-linear models (@sec-nonlinear)
+
+```{r sol-nl}
+coef(nls(rate ~ SSmicmen(conc, Vm, K), data = subset(Puromycin, state == "treated")))
+coef(nls(height ~ SSasymp(age, Asym, R0, lrc), data = subset(Loblolly, Seed == "301")))
+```
+
+The treated enzyme reaches a maximum velocity of about 213 counts/min², with half-saturation at 0.064 ppm; tree 301 approaches an asymptotic height of about 96 ft.

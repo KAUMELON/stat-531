@@ -175,3 +175,78 @@ abline(model, col = "#bc7c21", lwd = 2)
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+Francis Galton described *regression towards mediocrity* in the heights of parents and children in 1886, giving regression its name. Karl Pearson developed the product-moment correlation coefficient in the 1890s.
+:::
+
+::: {.callout-tip title="Quotes to Inspire"}
+*"Essentially, all models are wrong, but some are useful."*
+
+George E. P. Box and Norman R. Draper (1987)
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. The correlation coefficient lies between __________ and +1.
+2. Spearman's correlation is based on __________.
+3. In $y = b_0 + b_1x$, $b_1$ is the __________.
+4. Least squares minimises the sum of squared __________.
+5. $R^2$ is the proportion of variation in $y$ explained by the __________.
+6. In multiple regression a coefficient is interpreted holding other predictors __________.
+7. An observation with unusual $x$ values has high __________.
+8. Prediction accuracy is best judged on __________ data.
+
+### Short-answer questions {.unnumbered}
+
+1. Distinguish between correlation and regression.
+2. Why does association not establish a treatment effect?
+3. What are the assumptions of linear regression?
+4. Explain leverage and influence.
+5. Why should prediction be evaluated on data not used to fit the model?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. For a data set, $S_{xy} = 40$, $S_{xx} = 20$, $\bar x = 4$ and $\bar y = 10$. Find the regression line.
+2. A regression has SSE = 30 and total SS = 120. Find $R^2$.
+3. If $r = 0.9$ in simple regression, what is $R^2$?
+
+### Important formulae {.unnumbered}
+
+Least-squares estimates:
+
+$$
+b_1 = \frac{\sum (x_i - \bar x)(y_i - \bar y)}{\sum (x_i - \bar x)^2}, \qquad b_0 = \bar y - b_1 \bar x
+$$ {#eq-ch13-b}
+
+Coefficient of determination:
+
+$$
+R^2 = 1 - \frac{\sum (y_i - \hat y_i)^2}{\sum (y_i - \bar y)^2}
+$$ {#eq-ch13-r2}
+
+### Quick revision {.unnumbered}
+
+- Correlation → strength of linear association; regression → prediction of $y$ from $x$.
+- Association ≠ causation.
+- Check residuals, leverage and influence before trusting a model.
+- $R^2$ → explained variation; RSE → typical prediction error.
+- Evaluate predictions on held-out data.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` −1 `2.` ranks `3.` slope `4.` residuals `5.` model `6.` constant `7.` leverage `8.` held-out
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch13-b, $b_1 = 40/20 = 2$ and $b_0 = 10 - 2\times4 = 2$; $\hat y = 2 + 2x$.
+2. By @eq-ch13-r2, $R^2 = 1 - 30/120 = 0.75$.
+3. $R^2 = r^2 = 0.81$.

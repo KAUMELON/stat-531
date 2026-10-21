@@ -146,7 +146,7 @@ By decomposing the time series, you can analyze each component separately, which
 
 Inspect the twelve seasonal factors returned by the decomposition. Their scale is thousands of births. Positive factors identify months above the estimated trend and negative factors identify months below it; compare `tapply(birthstscomp$seasonal, cycle(birthsts), mean)` rather than relying on a remembered month or value.
 
-To visualize these components—trend, seasonal, and irregular—you can use the `plot()` function in R. Here is how to do it:
+To visualize these components (trend, seasonal and irregular), you can use the `plot()` function in R. Here is how to do it:
 
 1. **Plot the Components**: After decomposing your time series, you can create plots for each component as follows:
 
@@ -196,61 +196,39 @@ When the smoothing factor (α) is larger, the level of smoothing decreases. An �
 There is no single alpha value suitable for every series; estimation and forecast evaluation are needed. In some cases, the statistician’s expertise is used to choose an appropriate factor. Alternatively, statistical methods can be applied to optimize α, such as using the least squares method to find the value that minimizes the sum of errors in the model.  
 
 
-### Types of Exponential Smoothing  
+### Types of Exponential Smoothing
 
-1. **Simple Exponential Smoothing**:
-  - Best suited for data without trend or seasonality.
-- The forecast for the next period is a weighted average of past observations, where weights decrease exponentially for older observations.
-- The smoothing parameter (\(\alpha\)) controls the degree of weighting; values range from 0 to 1. A higher \(\alpha\) gives more weight to recent observations.
+**1. Simple exponential smoothing**: for series with no trend and no seasonality.
 
-**Formula**:
-  \[
-    F_{t+1} = \alpha Y_t + (1 - \alpha) F_t
-    \]
-where \(F_{t+1}\) is the forecast for the next period, \(Y_t\) is the actual observation at time \(t\), and \(F_t\) is the forecast for time \(t\).
+$$F_{t+1} = \alpha Y_t + (1 - \alpha) F_t$$
 
-2. **Holt’s Linear Exponential Smoothing**:
-  - Extends simple exponential smoothing to account for trends in the data.
-- It uses two smoothing parameters: one for the level (\(\alpha\)) and one for the trend (\(\beta\)).
-- This method allows for forecasts that can accommodate linear trends.
+where $F_{t+1}$ is the forecast for the next period, $Y_t$ the observation at time $t$ and $F_t$ the forecast for time $t$. Repeated substitution shows that the weight on the observation $j$ periods ago is $\alpha(1-\alpha)^j$.
 
-**Formulas**:
-  - Level: 
-  \[
-    l_t = \alpha Y_t + (1 - \alpha)(l_{t-1} + b_{t-1})
-    \]
-- Trend:
-  \[
-    b_t = \beta (l_t - l_{t-1}) + (1 - \beta)b_{t-1}
-    \]
-- Forecast:
-  \[
-    F_{t+m} = l_t + mb_t
-    \]
+**2. Holt's linear (trend) method**: for series with a trend but no seasonality. It has a level $\ell_t$ with smoothing constant $\alpha$, and a slope $b_t$ with smoothing constant $\beta$:
 
-3. **Holt-Winters Exponential Smoothing**:
-  - An extension of Holt’s method that also incorporates seasonality.
-- It uses three parameters: \(\alpha\) for the level, \(\beta\) for the trend, and \(\gamma\) for the seasonal component.
-- There are two variants: additive (for seasonal effects that are roughly constant) and multiplicative (for seasonal effects that change with the level of the series).
+$$\ell_t = \alpha Y_t + (1 - \alpha)(\ell_{t-1} + b_{t-1})$$
+$$b_t = \beta(\ell_t - \ell_{t-1}) + (1 - \beta) b_{t-1}$$
+$$F_{t+h} = \ell_t + h\,b_t$$
 
-**Formulas**:
-  - Level:
-  \[
-    l_t = \alpha (Y_t / s_{t-s}) + (1 - \alpha)(l_{t-1} + b_{t-1})
-    \]
-- Trend:
-  \[
-    b_t = \beta (l_t - l_{t-1}) + (1 - \beta)b_{t-1}
-    \]
-- Seasonal:
-  \[
-    s_t = \gamma (Y_t / l_t) + (1 - \gamma)s_{t-s}
-    \]
-- Forecast:
-  \[
-    F_{t+m} = (l_t + mb_t)s_{t-s+1+((m-1)\bmod s)}
-    \]
+**3. Holt–Winters method**: for series with trend and seasonality of period $m$, with a third smoothing constant $\gamma$ for the seasonal component $s_t$.
 
+*Additive seasonality* (seasonal swings of constant size):
+
+$$\ell_t = \alpha (Y_t - s_{t-m}) + (1 - \alpha)(\ell_{t-1} + b_{t-1})$$
+$$b_t = \beta(\ell_t - \ell_{t-1}) + (1 - \beta) b_{t-1}$$
+$$s_t = \gamma (Y_t - \ell_t) + (1 - \gamma) s_{t-m}$$
+$$F_{t+h} = \ell_t + h\,b_t + s_{t+h-m}$$
+
+*Multiplicative seasonality* (seasonal swings proportional to the level):
+
+$$\ell_t = \alpha \frac{Y_t}{s_{t-m}} + (1 - \alpha)(\ell_{t-1} + b_{t-1})$$
+$$b_t = \beta(\ell_t - \ell_{t-1}) + (1 - \beta) b_{t-1}$$
+$$s_t = \gamma \frac{Y_t}{\ell_t} + (1 - \gamma) s_{t-m}$$
+$$F_{t+h} = (\ell_t + h\,b_t)\, s_{t+h-m}$$
+
+In the forecast equations, $s_{t+h-m}$ is the most recent estimate of the seasonal effect for the season being forecast (for $h > m$, use $s_{t+h-km}$ with $k$ the smallest integer such that $h \le km$).
+
+All three methods are fitted with `HoltWinters()`: set `gamma = FALSE` for Holt's method, and both `beta = FALSE, gamma = FALSE` for simple exponential smoothing. Use `seasonal = "multiplicative"` for multiplicative Holt–Winters.
 
 ### Advantages of Exponential Smoothing
 
@@ -299,6 +277,119 @@ In this case, the sum of squared errors (SSE) is 1828.855. In simple exponential
 ```{r original-10-26, eval=TRUE}
 HoltWinters(rainseries, beta = FALSE, gamma = FALSE, l.start = 23.56)
 ```
+
+## Holt, Holt–Winters and ARIMA forecasting {#sec-time-advanced}
+
+The simple exponential smoothing model above is the first of a family of forecasting methods. This section completes the family with forecasts beyond the data, checks of the forecast errors, Holt's and Holt–Winters methods, and ARIMA models [@hyndman2021].
+
+### Forecasting future values
+
+Forecasts beyond the data are made with `forecast()` from the `forecast` package [@R-forecast]. Here we forecast rainfall for 1913–1920 (8 years):
+
+```{r ts10-ses-forecast}
+library(forecast)
+rainforecast8 <- forecast(rainforecast, h = 8)
+rainforecast8
+plot(rainforecast8)
+```
+
+The point forecast is 24.68 inches for every year, with 80% and 95% prediction intervals (the dark and light shaded bands).
+
+### Checking the forecast errors
+
+If the model is adequate, the forecast errors (residuals) should show no autocorrelation, have constant variance and be roughly normally distributed with mean zero. The autocorrelation function (ACF) and the Ljung–Box test check the first condition:
+
+```{r ts10-ses-acf}
+res <- na.omit(residuals(rainforecast8))
+acf(res, lag.max = 20)
+Box.test(res, lag = 20, type = "Ljung-Box")
+```
+
+No autocorrelation falls outside the significance bounds except by chance, and the Ljung–Box test is not significant (p ≈ 0.63). There is therefore little evidence of autocorrelation in the forecast errors, and simple exponential smoothing provides an adequate forecasting model for London rainfall.
+
+```{r ts10-ses-hist}
+hist(res, breaks = 15, freq = FALSE, col = "grey90", main = "Forecast errors")
+curve(dnorm(x, mean(res), sd(res)), add = TRUE, col = "red", lwd = 2)
+```
+
+### Holt's exponential smoothing
+
+For a series with a trend but no seasonality we use Holt's method. The built-in `airmiles` data give the annual revenue passenger miles flown by US commercial airlines, 1937–1960, which has a strong upward trend:
+
+```{r ts10-holt}
+plot(airmiles, ylab = "Passenger miles (thousands)")
+airholt <- HoltWinters(airmiles, gamma = FALSE)
+airholt
+```
+
+The estimate $\alpha \approx 0.81$ means the level follows the most recent observations closely, and $\beta \approx 0.39$ means the slope is updated moderately quickly.
+
+```{r ts10-holt-forecast}
+airholtf <- forecast(airholt, h = 4)
+airholtf
+plot(airholtf)
+```
+
+### Holt–Winters exponential smoothing
+
+For a series with trend and seasonality we use the full Holt–Winters method. We model the log of the souvenir sales, which follows an additive model:
+
+```{r ts10-hw}
+souvenirhw <- HoltWinters(logsouvenirts)
+souvenirhw
+```
+
+The estimates are $\alpha \approx 0.41$, $\beta = 0$ and $\gamma \approx 0.96$. The value $\beta = 0$ means the slope is not updated: it keeps its initial value throughout. The high $\gamma$ means the seasonal effects are based mainly on the most recent observations.
+
+```{r ts10-hw-plot}
+plot(souvenirhw)
+```
+
+Forecast the next 12 months (1994) and back-transform with `exp()` to get sales:
+
+```{r ts10-hw-forecast}
+souvenirf <- forecast(souvenirhw, h = 12)
+plot(souvenirf)
+round(exp(souvenirf$mean))
+```
+
+The forecasts reproduce the seasonal pattern, with the highest sales in December.
+
+```{r ts10-hw-check}
+Box.test(residuals(souvenirf), lag = 20, type = "Ljung-Box")
+```
+
+The Ljung–Box test is not significant (p ≈ 0.62), so the Holt–Winters model fits adequately.
+
+### ARIMA models
+
+Exponential smoothing makes no assumption about correlation between successive values. **ARIMA** (autoregressive integrated moving average) models describe that correlation explicitly. An ARIMA($p,d,q$) model has $p$ autoregressive terms, $d$ differences and $q$ moving-average terms; seasonal ARIMA models add seasonal terms ARIMA($P,D,Q$)$_m$.
+
+The orders can be chosen by examining the ACF and partial ACF of the differenced series, or automatically with `auto.arima()`, which compares candidate models by AICc:
+
+```{r ts10-arima}
+kingsarima <- auto.arima(kingsts)
+kingsarima
+```
+
+An ARIMA(0,1,1) model is selected for the kings data: the series is differenced once and the differences follow a first-order moving-average process. Forecast the age at death of the next five kings:
+
+```{r ts10-arima-forecast}
+kingsf <- forecast(kingsarima, h = 5)
+kingsf
+plot(kingsf)
+Box.test(residuals(kingsf), lag = 20, type = "Ljung-Box")
+```
+
+For a seasonal series, `auto.arima()` also selects the seasonal part. For the monthly births:
+
+```{r ts10-sarima}
+auto.arima(birthsts)
+```
+
+::: {.callout-note}
+Always check the residuals of a fitted model (`checkresiduals()` in the `forecast` package does this in one step). A good model leaves residuals that look like uncorrelated random noise. For a thorough introduction to ARIMA modelling see Chapters 8–9 of @hyndman2021.
+:::
 
 ## Agricultural applications, interpretation, and further practice
 
@@ -411,3 +502,78 @@ predict(fit, n.ahead = 3)
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+Charles C. Holt developed exponential smoothing with trends in 1957 and his student Peter R. Winters added seasonality in 1960. George Box and Gwilym Jenkins published the ARIMA methodology in *Time Series Analysis: Forecasting and Control* in 1970.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A time series is stored in R with the function __________.
+2. For monthly data the `frequency` argument is __________.
+3. The long-term movement of a series is its __________.
+4. A pattern that repeats every year is the __________ component.
+5. `decompose()` estimates the trend with a centred __________ average.
+6. In simple exponential smoothing, an $\alpha$ close to 0 gives __________ smoothing.
+7. Holt's method adds a smoothing constant $\beta$ for the __________.
+8. The Ljung–Box test checks the forecast errors for __________.
+
+### Short-answer questions {.unnumbered}
+
+1. Distinguish between additive and multiplicative time series models.
+2. How is a series seasonally adjusted?
+3. Interpret an estimated $\alpha$ of 0.02 in simple exponential smoothing.
+4. When would you use Holt–Winters rather than Holt's method?
+5. What should the residuals of a good forecasting model look like?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. The current forecast is 24 and the new observation 30. With $\alpha = 0.2$, find the next forecast.
+2. Holt's method gives level 100 and slope 5 at time $t$. Forecast 3 periods ahead.
+3. An additive series has the value 30 in July, when the seasonal effect is +2.5. Find the seasonally adjusted value.
+
+### Important formulae {.unnumbered}
+
+Simple exponential smoothing:
+
+$$
+F_{t+1} = \alpha Y_t + (1-\alpha)F_t
+$$ {#eq-ch10-ses}
+
+Holt's forecast $h$ periods ahead:
+
+$$
+F_{t+h} = \ell_t + h\,b_t
+$$ {#eq-ch10-holt}
+
+Additive decomposition and seasonal adjustment:
+
+$$
+Y_t = T_t + S_t + I_t, \qquad Y_t^{\text{adj}} = Y_t - S_t
+$$ {#eq-ch10-add}
+
+### Quick revision {.unnumbered}
+
+- Plot first; constant fluctuations → additive; growing fluctuations → log or multiplicative.
+- `decompose()` → trend, seasonal, irregular; adjust by subtracting $S_t$.
+- No trend, no season → simple smoothing; trend → Holt; trend and season → Holt–Winters.
+- $\alpha$ near 1 → follows recent data; $\alpha$ near 0 → long-run average.
+- Check residuals: no autocorrelation, constant variance.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` `ts()` `2.` 12 `3.` trend `4.` seasonal `5.` moving `6.` heavy `7.` trend `8.` autocorrelation
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch10-ses, $0.2\times30 + 0.8\times24 = 25.2$.
+2. By @eq-ch10-holt, $100 + 3\times5 = 115$.
+3. By @eq-ch10-add, $30 - 2.5 = 27.5$.

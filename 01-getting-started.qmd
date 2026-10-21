@@ -390,3 +390,72 @@ length(yield_t_ha)
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+R was created by Ross Ihaka and Robert Gentleman at the University of Auckland, New Zealand, in the early 1990s as a free implementation of the S language. Version 1.0.0 of R was released on 29 February 2000. Its name comes partly from the first letters of its two authors' names.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. R is a free and open-source programming language and environment for statistical __________ and graphics.
+2. RStudio is an integrated development __________ for R.
+3. The four panes of RStudio are the source editor, the console, environment/history and the __________ / plots / packages / help pane.
+4. Organised collections of R functions, data and documentation are called __________.
+5. The official repository of contributed R packages is __________.
+6. A package is installed once with `install.packages()` but must be loaded in every session with __________.
+7. Before installing RStudio you must first install __________.
+8. The smallest unit to which a treatment is independently applied is the experimental __________.
+
+### Short-answer questions {.unnumbered}
+
+1. Distinguish between R and RStudio.
+2. Why is a script preferable to typing commands only in the console?
+3. What is an RStudio project and why is it useful?
+4. Explain the difference between installing and loading a package.
+5. Name three repositories from which R packages can be installed.
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A plot of 20 m^2^ yields 11.2 kg of grain. Express the yield in t/ha.
+2. A 1.5 m × 2 m plot yields 450 g of seed. Express the yield in kg/ha.
+3. In a pot experiment each pot holds four plants and the treatment is applied to the pot. What is the experimental unit, and how many replicates does an experiment with 6 pots per treatment have?
+
+### Important formulae {.unnumbered}
+
+Yield in tonnes per hectare from a plot harvest in kg and plot area in m^2^:
+
+$$
+\text{Yield (t/ha)} = \frac{\text{harvest (kg)}}{\text{plot area (m}^2)} \times 10
+$$ {#eq-ch1-yield}
+
+Yield in kilograms per hectare:
+
+$$
+\text{Yield (kg/ha)} = \frac{\text{harvest (kg)}}{\text{plot area (m}^2)} \times 10\,000
+$$ {#eq-ch1-kgha}
+
+### Quick revision {.unnumbered}
+
+- R → the language that does the computing; RStudio → the window in which you write, run and save R code.
+- Scripts and projects → analyses that can be rerun, checked and shared.
+- `install.packages()` → once per computer; `library()` → once per session.
+- Errors → information: read the message, check spelling, brackets and object names.
+- Always identify the experimental unit before analysing agricultural data.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` computing `2.` environment `3.` files `4.` packages `5.` CRAN `6.` `library()` `7.` R `8.` unit
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. Using @eq-ch1-yield, $11.2/20 \times 10 = 5.6$ t/ha.
+2. Area $=3$ m^2^; by @eq-ch1-kgha, $0.45/3 \times 10\,000 = 1500$ kg/ha.
+3. The pot is the experimental unit; there are 6 replicates per treatment, not 24.

@@ -49,3 +49,39 @@ The time-series chapter retains its original four worked datasets, followed by t
 These series are real historical teaching examples and are not agricultural simulations. Births and souvenir sales illustrate seasonal structure; the kings example illustrates smoothing of a sequence but should not be described as equally spaced annual observations. The original `iris.csv` is also preserved in `data/`, with the column capitalization used in the import lesson. The built-in `iris` object uses different capitalization and punctuation; inspect `names()` before selecting variables.
 
 The project preserves the author's unedited lecture notes, images, rainfall CSV, assessment scripts, and document files in `source-notes/`. Their substantive explanations and illustrations are now included in the reading chapters, with code repairs and additions. The separately authored time-series PDF in the original folder is not repackaged as original textbook content.
+
+
+## Data sets for the STAT 531 modules
+
+The postgraduate chapters use real data sets distributed with R and with the packages `agricolae`, `agridat`, `MASS`, `HistData` and `vcd`. Load them with `data(name)` after `library(package)`; the help page of each data set (for example `?gomez.seedrate`) describes the experiment and its original source.
+
+: Data sets used in Modules 8 to 12, their sources and the chapters that use them {#tbl-stat531-datasets .bordered}
+
+| Data set | Source | Description | Chapters |
+|:--|:--|:--|:--|
+| `iris` | base R | Four flower measurements on three *Iris* species (Fisher, 1936) | [-@sec-descriptive], [-@sec-visualization], [-@sec-discriminant] |
+| `PlantGrowth` | base R | Dried weight of plants under a control and two treatments | [-@sec-visualization], [-@sec-small-sample] |
+| `ToothGrowth` | base R | Tooth growth in guinea pigs: vitamin C dose × delivery method | [-@sec-datasets], [-@sec-visualization] |
+| `InsectSprays` | base R | Insect counts after six insecticide treatments | [-@sec-anova-crd] |
+| `npk` | base R | 2^3^ factorial N, P, K experiment on peas in six blocks | [-@sec-contrasts] |
+| `trees` | base R | Diameter, height and timber volume of 31 black cherry trees | [-@sec-multiple-regression] |
+| `airmiles` | base R | Annual passenger miles of US airlines, 1937–1960 | [-@sec-time] |
+| `oats` | `MASS` | Split-plot experiment: oat varieties × nitrogen (Yates, 1935) | [-@sec-research-designs], [-@sec-contrasts], [-@sec-mixed-models] |
+| `sweetpotato` | `agricolae` | Sweet potato yield under four virus treatments, CRD | [-@sec-anova-crd], [-@sec-contrasts] |
+| `plrv` | `agricolae` | Yield of 28 potato genotypes in six environments, RCBD | [-@sec-met-eda], [-@sec-large-sample], [-@sec-research-designs], [-@sec-mixed-models] |
+| `melon` | `agricolae` | Yield of four melon varieties, Latin square | [-@sec-research-designs] |
+| `greenhouse` | `agricolae` | Potato minituber production: method × variety factorial | [-@sec-research-designs] |
+| `soil` | `agricolae` | Physical and chemical properties of soils from 13 localities | [-@sec-pca] |
+| `yacon` | `agricolae` | Agronomic and quality traits of yacon in three localities | [-@sec-met-eda], [-@sec-multiple-regression], [-@sec-factor-analysis] |
+| `gomez.rice.uniformity` | `agridat` | Rice uniformity trial, 648 plots of 1 m^2^ (Gomez & Gomez, 1984) | [-@sec-distributions] |
+| `gomez.seedrate` | `agridat` | Rice yield at six seeding rates, RCBD (Gomez & Gomez, 1984) | [-@sec-datasets], [-@sec-contrasts] |
+| `gomez.stripplot` | `agridat` | Rice varieties × nitrogen, strip-plot (Gomez & Gomez, 1984) | [-@sec-research-designs] |
+| `pearce.apple` | `agridat` | Apple yields with previous yield as covariate (Pearce, 1953) | [-@sec-ancova] |
+| `pearl.kernels` | `agridat` | Colour and texture of maize kernels in an F~2~ (Pearl, 1911) | [-@sec-small-sample] |
+| `hernandez.nitrogen` | `agridat` | Maize yield response to nitrogen at five sites | [-@sec-nonlinear] |
+| `davidian.soybean` | `agridat` | Soybean leaf weight over time | [-@sec-nonlinear] |
+| `ZeaMays` | `HistData` | Darwin's paired heights of crossed and self-fertilised maize | [-@sec-small-sample] |
+| `Saxony`, `HorseKicks` | `vcd` | Classic binomial and Poisson frequency data | [-@sec-distributions] |
+| `kings.csv`, `births.csv`, `souvenir.csv`, `rain.csv` | `data/` folder | Time series from the Time Series Data Library | [-@sec-time] |
+| `iris.csv` | `data/` folder | The iris data as a CSV file, for practising import | [-@sec-import] |
+

@@ -29,6 +29,39 @@ The following 18 meetings are a teaching proposal, not an institutional credit-h
 | 17 | Chapters 15–16 | Rendered Quarto report; reviewed AI-assisted analysis with verification log |
 | 18 | Integrated project | Reproducible analysis and oral explanation |
 
+## STAT 531 (postgraduate) syllabus and practicals
+
+Modules 8 to 12, together with the relevant earlier chapters, cover the complete syllabus of the postgraduate course **STAT 531 – Data Analysis Using Statistical Packages**.
+
+: STAT 531 syllabus mapped to chapters {#tbl-stat531 .bordered}
+
+| Unit | Syllabus topics | Chapters |
+|:--:|:--|:--|
+| I | Summarisation and tabulation of data; descriptive statistics; graphical representation; exploratory data analysis | @sec-descriptive, @sec-visualization, @sec-eda, @sec-met-eda |
+| II | Fitting and testing goodness of fit of discrete and continuous distributions; large-sample tests; chi-square, *t* and *F* tests | @sec-distributions, @sec-large-sample, @sec-small-sample |
+| III | Analysis of variance and covariance for single-factor, multi-factor, one-way and multi-classified experiments; contrast analysis; multiple comparisons | @sec-anova-crd, @sec-research-designs, @sec-contrasts, @sec-ancova |
+| IV | Mixed models; variance components; testing contrasts; correlation and regression including multiple regression | @sec-mixed-models, @sec-multiple-regression |
+| V | Discriminant function; factor analysis; principal component analysis; time series; non-linear models | @sec-pca, @sec-factor-analysis, @sec-discriminant, @sec-time, @sec-nonlinear |
+
+: Postgraduate practical schedule {#tbl-stat531-practicals .bordered}
+
+| Practical | Chapter | Practical product |
+|:--:|:--|:--|
+| 19 | @sec-met-eda | Exploratory analysis of a multi-environment trial |
+| 20 | @sec-distributions | Binomial, Poisson and normal fits with goodness-of-fit tests |
+| 21 | @sec-large-sample | Z tests for means and proportions |
+| 22 | @sec-small-sample | *t*, *F* and chi-square tests; contingency tables |
+| 23 | @sec-anova-crd | CRD by hand and in R; LSD, DMRT, Tukey, Scheffé and Dunnett |
+| 24 | @sec-research-designs | RCBD efficiency, Latin square, factorial, split and strip plots |
+| 25 | @sec-contrasts | Planned contrasts and orthogonal polynomials |
+| 26 | @sec-ancova | Analysis of covariance and adjusted means |
+| 27 | @sec-mixed-models | Variance components, heritability, GCV, PCV and BLUPs |
+| 28 | @sec-multiple-regression | Partial correlation, multiple regression and diagnostics |
+| 29 | @sec-pca | Principal component analysis and biplots |
+| 30 | @sec-factor-analysis | Factor analysis with rotation |
+| 31 | @sec-discriminant | Discriminant function, $D^2$ and classification |
+| 32 | @sec-nonlinear | Fertiliser response curves and economic optimum |
+
 ## Assessment and integrated project
 
 A suggested assessment is 40% practical records, 20% an individual practical test, and 40% an integrated project. Institutions may replace these weights. Assess explanations as well as code.

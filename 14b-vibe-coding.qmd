@@ -251,3 +251,64 @@ c(block = 3 - 1, variety = 4 - 1, error = (3 - 1) * (4 - 1))
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+The term *vibe coding* was coined by the computer scientist Andrej Karpathy in February 2025 to describe programming by conversing with an AI model.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. Vibe coding means describing a task in natural language and letting an __________ write the code.
+2. Generated code must be __________ line by line before use.
+3. A function that does not exist in any package is called an __________ function.
+4. Code that runs without error can still answer the __________ question.
+5. Results should be verified against a __________ answer.
+6. A minimal __________ example helps when asking for help with an error.
+7. A good prompt specifies the question, data, design and expected __________.
+8. AI assistance should be __________ in the report.
+
+### Short-answer questions {.unnumbered}
+
+1. What are the risks of vibe coding for statistical analysis?
+2. What should a prompt for an analysis contain?
+3. How can you detect an invented function?
+4. Describe the review loop for AI-generated code.
+5. What is a minimal reproducible example?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. An AI-written function returns 5.0 as the mean of the integers 1 to 10. Is it correct?
+2. Generated ANOVA code reports 30 error df for an RCBD with 6 treatments and 4 blocks. Is it right?
+
+### Important formulae {.unnumbered}
+
+Known-answer check for the mean of the integers $1$ to $n$:
+
+$$
+\bar x = \frac{n+1}{2}
+$$ {#eq-ch14b-check}
+
+### Quick revision {.unnumbered}
+
+- AI drafts; you decide and verify.
+- Prompt → question, data, design, model, output.
+- Review every line; check that every function exists.
+- Verify with known answers and independent calculations.
+- Record and acknowledge AI assistance.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` AI assistant `2.` reviewed `3.` invented (hallucinated) `4.` wrong `5.` known `6.` reproducible `7.` output `8.` acknowledged
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. No; by @eq-ch14b-check the mean is $55/10 = 5.5$, so the function is wrong.
+2. No; the correct error df is $(6-1)(4-1) = 15$; the code ignored the blocks.

@@ -12,3 +12,8 @@ These sources document the software and datasets used in the text. Package help 
 - Hyndman, R. J., and Athanasopoulos, G. *Forecasting: Principles and Practice*, third edition. [Open textbook](https://otexts.com/fpp3/).
 - Xie, Y., Allaire, J. J., and Grolemund, G. *R Markdown: The Definitive Guide*. [Open guide](https://bookdown.org/yihui/rmarkdown/).
 - Gopinath, P. P. Earlier lecture notes for *Data Analysis Using Statistical Packages*, preserved locally in `source-notes/`. [Textbook of Agricultural Statistics](https://kaumelon.github.io/stat3202/).
+
+## Works cited {.unnumbered}
+
+::: {#refs}
+:::

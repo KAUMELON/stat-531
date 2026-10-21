@@ -42,7 +42,7 @@ Interquartile range|IQR()
   
 The function `mfv()`, for most frequent value, [in `modeest` package] can be used to find the statistical mode of a numeric vector.  
 
-## Measures of central tendancy  
+## Measures of central tendency  
 Know more about [Measures of central tendency](https://kaumelon.github.io/stat3202/measures-of-central-tendency---i.html#measures-of-central-tendency---i)  
 
 ```{r original-08-2, eval=TRUE}
@@ -209,10 +209,10 @@ Before going in to the details of constructing frequency table read thoroughly [
 
 ```{r original-08-12, eval=TRUE}
 
-# Constucting frequency table
+# Constructing a frequency table
 data<-iris$Sepal.Length  
 
-# Decide how many classes you wish to use using struges formula
+# Decide how many classes you wish to use using Sturges' formula
 N<- length(data)
 k<-1+3.322*log(N,base=10)
 n_class<-ceiling(k) #Rounds value of k to nearest highest integer.
@@ -511,3 +511,96 @@ boxplot(yield, col = "#8ecab1", ylab = "Yield (t/ha)")
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+Karl Pearson introduced the term *standard deviation* in 1893, and Herbert Sturges proposed his rule for the number of classes in 1926.
+:::
+
+::: {.callout-tip title="Quotes to Inspire"}
+*"The object of statistical methods is the reduction of data."*
+
+R. A. Fisher (1922)
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. The __________ is the middle value of ordered data.
+2. The most frequently occurring value is the __________.
+3. The __________ is the square root of the variance.
+4. The coefficient of variation expresses the SD as a __________ of the mean.
+5. The standard __________ measures the precision of a sample mean.
+6. Sturges' rule gives the number of __________ in a frequency table.
+7. `summary()` returns the minimum, quartiles, median, mean and __________.
+8. The argument `na.rm = TRUE` removes __________ values before a calculation.
+
+### Short-answer questions {.unnumbered}
+
+1. Distinguish between the standard deviation and the standard error.
+2. When is the median preferred to the mean?
+3. Why is the CV useful for comparing the variability of different characters?
+4. Describe the steps in constructing a grouped frequency distribution.
+5. What does `sapply()` do?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. Find the mean, SD and CV of the yields 3.2, 3.8, 4.0, 3.5 and 4.6 t/ha.
+2. A sample of 16 plants has SD 0.8 cm. Find the standard error of the mean.
+3. How many classes does Sturges' rule give for 150 observations?
+
+### Important formulae {.unnumbered}
+
+Arithmetic mean:
+
+$$
+\bar x = \frac{1}{n}\sum_{i=1}^n x_i
+$$ {#eq-ch7-mean}
+
+Sample standard deviation:
+
+$$
+s = \sqrt{\frac{\sum (x_i - \bar x)^2}{n-1}}
+$$ {#eq-ch7-sd}
+
+Coefficient of variation:
+
+$$
+\text{CV} = \frac{s}{\bar x} \times 100
+$$ {#eq-ch7-cv}
+
+Standard error of the mean:
+
+$$
+\text{SE}(\bar x) = \frac{s}{\sqrt n}
+$$ {#eq-ch7-se}
+
+Sturges' rule for the number of classes:
+
+$$
+k = 1 + 3.322\log_{10} N
+$$ {#eq-ch7-sturges}
+
+### Quick revision {.unnumbered}
+
+- Centre → mean, median, mode; spread → range, IQR, variance, SD, CV.
+- SD → spread of observations; SE → precision of the mean.
+- Skewed data or outliers → median and IQR.
+- Grouped frequency table → classes by Sturges' rule, equal widths covering the whole range.
+- Missing values → `na.rm = TRUE`; always report the denominator.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` median `2.` mode `3.` standard deviation `4.` percentage `5.` error `6.` classes `7.` maximum `8.` missing
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. Mean $=3.82$; SD $=0.531$ (@eq-ch7-sd); CV $=0.531/3.82\times100 = 13.9\%$ (@eq-ch7-cv).
+2. By @eq-ch7-se, $0.8/\sqrt{16} = 0.2$ cm.
+3. By @eq-ch7-sturges, $1 + 3.322\log_{10}150 = 8.23$, rounded up to 9.

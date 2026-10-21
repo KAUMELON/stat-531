@@ -292,3 +292,72 @@ grid()
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+William Playfair, a Scottish engineer, published the first bar charts and line graphs of economic data in his *Commercial and Political Atlas* (1786) and the first pie chart in 1801. Florence Nightingale's polar area diagrams (1858) persuaded the British government to reform army sanitation.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A __________ is used to compare the frequencies or means of categories.
+2. The distribution of a continuous variable is shown by a __________.
+3. A box plot shows the five-number __________.
+4. In a box plot the box spans from $Q_1$ to __________.
+5. Whiskers end at the most extreme observations within __________ IQR of the hinges.
+6. The relationship between two continuous variables is shown by a __________ plot.
+7. A hex colour code consists of three pairs giving red, green and __________ values.
+8. In `ggplot2`, variables are mapped to aesthetics and drawn with __________.
+
+### Short-answer questions {.unnumbered}
+
+1. Match a graph to each of these: a categorical variable, a continuous variable, two continuous variables, groups to compare.
+2. Explain the parts of a box plot.
+3. Why is a bar plot usually preferred to a pie chart?
+4. What is the difference between the fences and the whiskers of a box plot?
+5. How do you save a plot at 300 dpi in R?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. A data set has $Q_1 = 20$ and $Q_3 = 30$. Find the lower and upper fences.
+2. In a pie chart, what angle represents a category with 30% of the total?
+3. Write the hex code of the colour with RGB (224, 105, 16).
+
+### Important formulae {.unnumbered}
+
+Box plot fences:
+
+$$
+Q_1 - 1.5\,(Q_3-Q_1), \qquad Q_3 + 1.5\,(Q_3-Q_1)
+$$ {#eq-ch6-fence}
+
+Angle of a sector in a pie chart:
+
+$$
+\theta = \frac{\text{category value}}{\text{total}} \times 360°
+$$ {#eq-ch6-angle}
+
+### Quick revision {.unnumbered}
+
+- Category counts or means → bar plot; distribution → histogram or box plot; relationship → scatter plot.
+- Fences are cut-offs; whiskers end at real data values; points beyond are flagged, not deleted.
+- Pie charts → only for a few parts of one whole.
+- Labels, units and captions → every published graph.
+- Export with `png(..., res = 300)` or the Plots pane.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` bar plot `2.` histogram `3.` summary `4.` $Q_3$ `5.` 1.5 `6.` scatter `7.` blue `8.` geoms
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. IQR $=10$; by @eq-ch6-fence the fences are $20-15=5$ and $30+15=45$.
+2. By @eq-ch6-angle, $0.30 \times 360 = 108°$.
+3. 224 = E0, 105 = 69, 16 = 10, so `#E06910`.

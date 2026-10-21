@@ -1,0 +1,249 @@
+# Principal component analysis {#sec-pca}
+
+```{r setup-25}
+#| include: false
+options(digits = 4, width = 80, scipen = 6)
+set.seed(531)
+```
+
+## Learning outcomes {.unnumbered}
+
+Explain principal components, eigenvalues and loadings, run PCA on the correlation matrix, decide how many components to keep, interpret loadings and scores and read a biplot.
+
+
+Agricultural studies often record many correlated variables on each unit: a dozen soil properties per site, twenty morphological traits per accession, several quality parameters per sample. **Multivariate methods** analyse these variables together. **Principal component analysis** (PCA) is the most widely used. It replaces $p$ correlated variables by a smaller number of new, **uncorrelated** variables, the **principal components** (PCs), that retain most of the information (variance) in the data.
+
+## The idea
+
+The first principal component is the linear combination of the (standardised) variables
+
+$$\text{PC}_1 = a_{11} x_1 + a_{12} x_2 + \cdots + a_{1p} x_p$$
+
+that has the largest possible variance, subject to $\sum_j a_{1j}^2 = 1$. The second PC has the largest variance among combinations uncorrelated with the first, and so on. Mathematically:
+
+- the coefficients (**loadings**) of the PCs are the **eigenvectors** of the correlation (or covariance) matrix;
+- the variance of each PC is the corresponding **eigenvalue** $\lambda_k$;
+- the proportion of total variance explained by PC$_k$ is $\lambda_k / \sum \lambda_j$ (for standardised variables, $\sum\lambda_j = p$).
+
+::: {.callout-note}
+If the variables are measured in different units (pH, percentages, ppm), PCA must be done on the **correlation matrix**, i.e. on standardised variables. In R this means `scale. = TRUE` in `prcomp()`. Otherwise the variables with the largest variance dominate the analysis.
+:::
+
+## Example 27.1: soils of 13 localities in Peru
+
+The `soil` data in `agricolae` give the physical and chemical properties of soils from 13 localities in Peru, analysed at La Molina National Agrarian University. We use 12 properties: pH, electrical conductivity (EC), calcium carbonate (CaCO~3~), organic matter (`MO` in the data, renamed `OM`), cation exchange capacity (`CIC`, renamed `CEC`), available P and K, sand and clay content, and exchangeable Ca, Mg and Na.
+
+```{r pca-data}
+library(agricolae)
+data(soil)
+x <- soil[, c("pH", "EC", "CaCO3", "MO", "CIC", "P", "K",
+              "sand", "clay", "Ca", "Mg", "Na")]
+names(x)[names(x) == "MO"]  <- "OM"
+names(x)[names(x) == "CIC"] <- "CEC"
+rownames(x) <- soil$place
+round(head(x), 2)
+```
+
+::: {.callout-warning}
+The silt content (`slime` in the data) is left out deliberately: sand + silt + clay = 100%, so any one of the three is an exact linear function of the other two. Including all three would produce a component with zero variance.
+:::
+
+```{r pca-cor, fig.asp=0.9, out.width="65%"}
+library(corrplot)
+corrplot(cor(x), method = "ellipse", type = "upper", diag = FALSE)
+```
+
+Many of the soil properties are strongly correlated, so a few components should summarise them well.
+
+## PCA with prcomp()
+
+```{r pca-prcomp}
+pca <- prcomp(x, scale. = TRUE)
+summary(pca)
+```
+
+The first three components explain 44%, 20% and 19% of the total variance, together 82%.
+
+### How many components to keep?
+
+Common rules:
+
+1. **Kaiser's criterion**: keep components with eigenvalue greater than 1 (i.e. explaining more than one original standardised variable).
+2. **Cumulative variance**: keep enough components to explain, say, 70–80% of the total variance.
+3. **Scree plot**: keep the components before the "elbow" where the curve flattens.
+
+```{r pca-eigen}
+eigenvalues <- pca$sdev^2
+round(eigenvalues, 2)
+screeplot(pca, type = "lines", main = "Scree plot")
+abline(h = 1, lty = 2, col = "red")
+```
+
+Three eigenvalues exceed 1, and the scree plot flattens after the third component. We keep three components.
+
+### Interpreting the loadings
+
+```{r pca-loadings}
+round(pca$rotation[, 1:3], 2)
+```
+
+Large loadings (in absolute value) show which variables dominate each component:
+
+- **PC1** has high positive loadings for pH, Ca, clay and CaCO~3~ and a negative loading for sand. It contrasts **fine-textured, calcareous, base-rich soils** (high scores) with **sandy, acidic soils** (low scores).
+- **PC2** is dominated by P, organic matter, K and CEC (all with the same sign): a **fertility** component.
+- **PC3** has high loadings for EC and Na, with the opposite sign to organic matter and CEC: a **salinity–sodicity** component.
+
+::: {.callout-tip}
+The sign of a principal component is arbitrary: multiplying all loadings and scores of a component by −1 gives the same solution. Different programs (and versions) may therefore report opposite signs. Interpret the pattern of loadings, not their absolute sign.
+:::
+
+### Scores
+
+The **scores** are the values of the components for each sample:
+
+```{r pca-scores}
+round(pca$x[, 1:3], 2)
+```
+
+The localities from the coastal Cañete valley (Cnt2, Cnt3) have the highest PC1 scores (calcareous, clayey soils), while Namora and San Ramón (SR2) have the lowest (sandy, acidic soils).
+
+### Biplot
+
+A **biplot** shows the scores (points) and loadings (arrows) together. Samples lie in the direction of the variables in which they are high; arrows pointing in similar directions indicate positively correlated variables.
+
+```{r pca-biplot, fig.asp=0.9}
+biplot(pca, cex = 0.8, col = c("grey20", "red"))
+```
+
+## PCA with FactoMineR and factoextra
+
+The `FactoMineR` and `factoextra` packages [@R-FactoMineR; @R-factoextra] give richer output and publication-quality graphs. `PCA()` standardises the variables by default.
+
+```{r pca-fmr}
+library(FactoMineR)
+library(factoextra)
+res <- PCA(x, graph = FALSE)
+round(res$eig[1:5, ], 2)
+```
+
+The **correlations between the variables and the components** are easier to interpret than raw loadings:
+
+```{r pca-varcor}
+round(res$var$cor[, 1:3], 2)
+```
+
+```{r pca-fviz-eig}
+fviz_eig(res, addlabels = TRUE)
+```
+
+```{r pca-fviz-var, fig.asp=0.9, out.width="70%"}
+fviz_pca_var(res, col.var = "contrib", repel = TRUE,
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"))
+```
+
+```{r pca-fviz-biplot, fig.asp=0.9, out.width="75%"}
+fviz_pca_biplot(res, repel = TRUE, col.var = "steelblue", col.ind = "grey30")
+```
+
+## Uses of principal components
+
+- **Data reduction**: summarise many traits by a few components for display or further analysis.
+- **Grouping**: plot genotypes, sites or samples on the first two PCs to see clusters (e.g. in germplasm characterisation).
+- **Indices**: use the first PC as a composite index (e.g. a soil quality index).
+- **Principal component regression**: use the uncorrelated component scores as predictors in place of highly collinear variables (@sec-multiple-regression).
+
+## Live R laboratory {#live-r-laboratory}
+
+::: {.live-r}
+**Principal components of flower measurements**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** lets you use the example in RStudio.
+
+```r
+X <- iris[, 1:4]
+pca <- prcomp(X, scale. = TRUE)
+summary(pca)
+round(pca$sdev^2, 3)                    # eigenvalues
+round(pca$rotation, 2)                  # loadings
+screeplot(pca, type = "lines"); abline(h = 1, lty = 2, col = "red")
+plot(pca$x[, 1:2], pch = 19, col = as.integer(iris$Species),
+     xlab = "PC1", ylab = "PC2")
+```
+
+**Investigate.** Repeat the analysis with `scale. = FALSE`. Which variable now dominates PC1, and why is standardising necessary when variables have different variances?
+:::
+
+## Practical 29 and exercises
+
+1. Repeat the PCA of the soil data including the micro-nutrients B, Cu, Fe, Mn and Zn. How many components have eigenvalues greater than 1?
+2. Carry out a PCA of the four measurements in `iris` and plot the scores of the first two components coloured by species. Which variables dominate PC1?
+3. Using the `yacon` data in `agricolae`, average the traits `height`, `stalks`, `roots`, `FOS`, `brix`, `foliage` and `dry` over replications for each entry and locality, and perform a PCA. Interpret the first two components.
+
+::: {.callout-caution title="Historical Insights"}
+Karl Pearson described the geometric idea of principal components in 1901 and Harold Hotelling developed principal component analysis as a statistical method in 1933.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. Principal components are linear combinations of the original variables that are mutually __________.
+2. The variance of a principal component is the corresponding __________.
+3. The coefficients of a component are called __________.
+4. Variables in different units require PCA on the __________ matrix.
+5. Kaiser's criterion retains components with eigenvalues greater than __________.
+6. The values of the components for each unit are called __________.
+7. A __________ shows scores and loadings together.
+8. The sign of a principal component is __________.
+
+### Short-answer questions {.unnumbered}
+
+1. What is the purpose of PCA?
+2. Why must variables be standardised before PCA in most agricultural applications?
+3. Describe three rules for choosing the number of components.
+4. How is a biplot interpreted?
+5. Why was silt excluded from the soil PCA?
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. Twelve standardised variables give a first eigenvalue of 5.27. What proportion of variance does PC1 explain?
+2. The first three eigenvalues are 5.27, 2.37 and 2.24. Find the cumulative proportion.
+3. How many components does Kaiser's criterion retain if the eigenvalues are 5.27, 2.37, 2.24, 0.78 and 0.55?
+
+### Important formulae {.unnumbered}
+
+Principal component and its variance:
+
+$$
+\text{PC}_k = \sum_{j=1}^p a_{kj}x_j, \qquad \text{Var}(\text{PC}_k) = \lambda_k
+$$ {#eq-ch27-pc}
+
+Proportion of variance explained (standardised variables):
+
+$$
+\frac{\lambda_k}{\sum_j \lambda_j} = \frac{\lambda_k}{p}
+$$ {#eq-ch27-prop}
+
+### Quick revision {.unnumbered}
+
+- Many correlated variables → few uncorrelated components.
+- Different units → `prcomp(x, scale. = TRUE)`.
+- Keep components by eigenvalue > 1, cumulative variance and the scree plot.
+- Interpret loadings; plot scores; read the biplot.
+- Linearly dependent variables (sand + silt + clay) → drop one.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` uncorrelated `2.` eigenvalue `3.` loadings `4.` correlation `5.` 1 `6.` scores `7.` biplot `8.` arbitrary
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch27-prop, $5.27/12 = 43.9\%$.
+2. $(5.27 + 2.37 + 2.24)/12 = 82.3\%$.
+3. Three (eigenvalues above 1).

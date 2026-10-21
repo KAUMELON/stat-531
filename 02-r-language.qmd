@@ -88,7 +88,7 @@ x + 2*y
 my_age <- 32   
 # Numeric variable 32 is assigned to my_age
 
-# while writing your code it is preffered to use '_' instead of space  
+# object names cannot contain spaces; use '_' instead  
 
 my_name <- "Dr Pratheesh" # Character variable  
 
@@ -622,3 +622,74 @@ aggregate(yield_t_ha ~ variety, field, mean)
 ::: {.callout-tip title="From the browser to your practical notebook"}
 Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.
 :::
+
+::: {.callout-caution title="Historical Insights"}
+R is a dialect of the S language, which John Chambers and colleagues began developing at Bell Laboratories in 1976. Chambers received the ACM Software System Award in 1998 for the S system.
+:::
+
+## Chapter Summary
+
+### Fill in the blanks {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. In R the assignment operator is __________.
+2. A __________ stores values of a single type in one dimension.
+3. A data frame can hold columns of different __________.
+4. Categorical variables such as treatment or variety are stored as __________.
+5. Missing values in R are written as __________.
+6. By default `matrix()` fills its elements by __________.
+7. The function __________ applies a function to the rows or columns of a matrix.
+8. A container that can hold objects of different types and lengths is a __________.
+
+### Short-answer questions {.unnumbered}
+
+1. What are the basic data types in R?
+2. Distinguish between a matrix and a data frame.
+3. Why should treatment codes be stored as factors before analysis?
+4. How does R treat a vector that mixes numbers and text?
+5. Write the general form of a user-defined function in R.
+
+### Numerical and conceptual questions {.unnumbered}
+
+Answers are given at the end of the chapter.
+
+1. How many elements does `seq(5, 50, by = 5)` contain?
+2. For `m <- matrix(1:12, nrow = 3)`, what is `m[2, 3]`?
+3. What is `class(c(1, "a", TRUE))`?
+4. What does `mean(c(4, NA, 6), na.rm = TRUE)` return?
+
+### Important formulae {.unnumbered}
+
+Number of elements in an arithmetic sequence from $a$ to $b$ in steps of $h$:
+
+$$
+n = \frac{b-a}{h} + 1
+$$ {#eq-ch2-seq}
+
+Position of element $(i, j)$ in a matrix with $n_r$ rows filled by column:
+
+$$
+k = (j-1)\,n_r + i
+$$ {#eq-ch2-index}
+
+### Quick revision {.unnumbered}
+
+- Objects are created with `<-`; R is case sensitive.
+- Vector → one type; matrix → one type in two dimensions; data frame → columns of different types; list → anything.
+- Mixed types → coerced to the most general type (logical → numeric → character).
+- `NA` → missing; most summaries need `na.rm = TRUE`.
+- Treatments, blocks and varieties → factors.
+
+### Answers to fill in the blanks {.unnumbered}
+
+::: {.answer-key}
+`1.` `<-` `2.` vector `3.` types `4.` factors `5.` `NA` `6.` column `7.` `apply()` `8.` list
+:::
+
+### Solutions to numerical and conceptual questions {.unnumbered}
+
+1. By @eq-ch2-seq, $(50-5)/5 + 1 = 10$.
+2. Column-major filling (@eq-ch2-index): $k = (3-1)\times 3 + 2 = 8$, so `m[2, 3]` is 8.
+3. "character": all elements are coerced to the most general type.
+4. $(4+6)/2 = 5$.

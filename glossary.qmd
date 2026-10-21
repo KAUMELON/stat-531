@@ -52,3 +52,77 @@ When a command fails, read the first error, check spelling and object existence,
 ## Before you submit an analysis
 
 State the question and unit; document the source and units; retain raw data; record cleaning decisions; show distributions; justify the model; examine residuals; report effects and uncertainty; distinguish association from causation; and render from a fresh session. These steps are scientific habits, not a substitute for judgment.
+
+
+## Terms for the STAT 531 modules
+
+: Statistical terms used in Modules 8 to 12 {#tbl-stat531-glossary .bordered}
+
+| Term | Meaning |
+|:--|:--|
+| Experimental unit (plot) | The smallest unit to which a treatment is independently applied. |
+| Replication | Independent repetition of a treatment on different experimental units. |
+| Randomisation | Allocation of treatments to units by chance, which makes the error estimate valid. |
+| Local control (blocking) | Grouping similar units into blocks so that variation between blocks is removed from the error. |
+| Factor, level | A variable whose effect is studied, and the values it takes. |
+| Main effect | The effect of a factor averaged over the levels of the other factors. |
+| Interaction | The effect of one factor depends on the level of another. |
+| Error mean square (EMS) | Estimate of the variance among experimental units treated alike, $\sigma^2$. |
+| Coefficient of variation (CV) | $\sqrt{\text{EMS}}/\bar y \times 100$; a measure of the precision of an experiment. |
+| SE(m), SE(d) | Standard error of a treatment mean, $\sqrt{\text{EMS}/r}$, and of a difference between two means, $\sqrt{2\,\text{EMS}/r}$. |
+| Critical difference (CD), LSD | $t_{\alpha/2,\,\text{edf}} \times \text{SE(d)}$; the smallest difference between two means that is significant. |
+| Contrast | A linear combination of treatment means whose coefficients sum to zero. |
+| Orthogonal contrasts | Contrasts whose coefficient products sum to zero; they split the treatment SS into independent parts. |
+| Covariate | A variable measured on each unit, related to the response and unaffected by the treatments, used in ANCOVA. |
+| Fixed effect | A factor whose levels are deliberately chosen; inference applies to those levels. |
+| Random effect | A factor whose levels are a sample from a population; we estimate its variance. |
+| Variance component | The variance attributable to a random factor, e.g. genotypic variance $\sigma_g^2$. |
+| Heritability (broad sense) | Ratio of genotypic to phenotypic variance. |
+| BLUE, BLUP | Best linear unbiased estimate of a fixed effect; best linear unbiased prediction of a random effect. |
+| p-value | Probability, if $H_0$ were true, of a result at least as extreme as the one observed. |
+| Type I, Type II error | Rejecting a true $H_0$; failing to reject a false $H_0$. |
+| Power | Probability of rejecting $H_0$ when it is false, $1-\beta$. |
+| Residual | Observed value minus fitted value. |
+| Coefficient of determination ($R^2$) | Proportion of the variation in $y$ explained by a regression. |
+| Multicollinearity | Strong correlation among predictors, which makes regression coefficients unstable (measured by VIF). |
+| Eigenvalue, loading, score | In PCA: variance of a component; weight of a variable in a component; value of a component for a unit. |
+| Communality, uniqueness | In factor analysis: variance of a variable shared with common factors; variance specific to that variable. |
+| Mahalanobis' $D^2$ | Squared distance between group means scaled by the pooled covariance matrix. |
+| Asymptote | The limiting value a non-linear response curve approaches. |
+| Trend, seasonal, irregular | The long-term movement, regular periodic pattern and random remainder of a time series. |
+| Smoothing constant ($\alpha$, $\beta$, $\gamma$) | Weights in exponential smoothing for level, trend and seasonal components. |
+
+
+## R function reference
+
+: R functions used in this book {#tbl-functions .bordered}
+
+| Task | Function | Package |
+|:--|:--|:--|
+| Import a CSV / Excel file | `read.csv()`, `read_excel()` | utils, readxl |
+| Structure, summary | `str()`, `summary()`, `head()` | base |
+| Grouped summaries | `tapply()`, `aggregate()` | base |
+| Frequency tables | `table()`, `xtabs()`, `prop.table()`, `addmargins()` | base |
+| Graphs | `barplot()`, `hist()`, `boxplot()`, `plot()`, `pairs()` | graphics |
+| Distributions | `dbinom()`, `dpois()`, `pnorm()`, `qt()`, `qchisq()`, `qf()` | stats |
+| Fit a distribution | `goodfit()`, `fitdist()` | vcd, fitdistrplus |
+| Normality | `shapiro.test()`, `qqnorm()`, `lillie.test()` | stats, nortest |
+| *t* tests | `t.test()` | stats |
+| Proportions | `prop.test()`, `binom.test()` | stats |
+| Variances | `var.test()`, `bartlett.test()`, `leveneTest()` | stats, car |
+| Chi-square, Fisher | `chisq.test()`, `fisher.test()` | stats |
+| Non-parametric tests | `wilcox.test()`, `kruskal.test()`, `friedman.test()` | stats |
+| ANOVA | `aov()`, `lm()`, `anova()`, `Anova()` | stats, car |
+| CV of an experiment | `cv.model()` | agricolae |
+| Multiple comparisons | `LSD.test()`, `HSD.test()`, `duncan.test()`, `scheffe.test()`, `TukeyHSD()` | agricolae, stats |
+| Split-plot, strip-plot | `sp.plot()`, `strip.plot()`, `aov(... + Error())` | agricolae, stats |
+| Means, contrasts | `emmeans()`, `contrast()`, `pairs()`, `cld()` | emmeans, multcomp |
+| Mixed models | `lmer()`, `ranova()`, `VarCorr()`, `ranef()` | lme4, lmerTest |
+| Correlation | `cor()`, `cor.test()`, `partial.r()` | stats, psych |
+| Regression | `lm()`, `predict()`, `confint()`, `step()`, `vif()` | stats, car |
+| Non-linear regression | `nls()`, `SSasymp()`, `SSlogis()`, `SSgompertz()` | stats |
+| PCA | `prcomp()`, `PCA()`, `fviz_pca_biplot()` | stats, FactoMineR, factoextra |
+| Factor analysis | `factanal()`, `fa()`, `fa.parallel()`, `KMO()` | stats, psych |
+| Discriminant analysis | `lda()`, `qda()`, `manova()` | MASS, stats |
+| Time series | `ts()`, `decompose()`, `HoltWinters()`, `forecast()`, `auto.arima()` | stats, forecast |
+| Experimental layouts | `design.crd()`, `design.rcbd()`, `design.lsd()`, `design.split()` | agricolae |
