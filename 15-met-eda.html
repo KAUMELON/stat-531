@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>17&nbsp; Exploring a multi-environment trial – R Programming for Agricultural Data Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./16-distributions.html" rel="next">
+<link href="./14b-vibe-coding.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./15-met-eda.html">Module 8 · Exploratory analysis and probability distributions (STAT 531)</a></li><li class="breadcrumb-item"><a href="./15-met-eda.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exploring a multi-environment trial</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R Programming for Agricultural Data Analysis</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/KAUMELON/stat-531" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./course-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course guide</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 1 · Foundations and data exchange</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting started with R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-r-language.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Objects, data structures, and functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-data-import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Importing, validating, and exporting data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 2 · Data wrangling and cleaning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Cleaning agricultural observations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-wrangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Transforming and summarizing data with dplyr</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 3 · Data visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Visualizing agricultural data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 4 · Descriptive and exploratory analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-descriptive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Describing agricultural variation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">An exploratory study of crop yield</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 5 · Growth and time series</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-growth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modelling crop growth</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-time-series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Agricultural time series and forecasting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 6 · Statistical analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Hypothesis tests and confidence intervals</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Comparing treatments with analysis of variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 8 · Exploratory analysis and probability distributions (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-met-eda.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exploring a multi-environment trial</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Probability distributions and goodness of fit</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 9 · Tests of significance (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-large-sample.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Large-sample tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-small-sample.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Tests based on t, F and chi-square</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 10 · Analysis of variance and covariance (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-anova-mcp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Analysis of variance and multiple comparisons</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-research-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Research experiments: blocks, factorials, split and strip plots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-contrasts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Contrast analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-ancova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Analysis of covariance</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 11 · Mixed models and multiple regression (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-mixed-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Mixed models and variance components</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Partial correlation and multiple regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 12 · Multivariate methods and non-linear models (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-pca.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Principal component analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-factor-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Factor analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./27-discriminant.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Discriminant function analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./28-nonlinear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Fitting non-linear models</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References and further reading</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Datasets and measurement units</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Selected exercise solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Glossary and R reference</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#the-example-data" id="toc-the-example-data" class="nav-link" data-scroll-target="#the-example-data"><span class="header-section-number">17.1</span> The example data</a></li>
+  <li><a href="#structure-of-the-data" id="toc-structure-of-the-data" class="nav-link" data-scroll-target="#structure-of-the-data"><span class="header-section-number">17.2</span> Structure of the data</a></li>
+  <li><a href="#missing-values-and-data-checks" id="toc-missing-values-and-data-checks" class="nav-link" data-scroll-target="#missing-values-and-data-checks"><span class="header-section-number">17.3</span> Missing values and data checks</a></li>
+  <li><a href="#univariate-analysis" id="toc-univariate-analysis" class="nav-link" data-scroll-target="#univariate-analysis"><span class="header-section-number">17.4</span> Univariate analysis</a></li>
+  <li><a href="#tabulation-and-summaries-by-group" id="toc-tabulation-and-summaries-by-group" class="nav-link" data-scroll-target="#tabulation-and-summaries-by-group"><span class="header-section-number">17.5</span> Tabulation and summaries by group</a>
+  <ul class="collapse">
+  <li><a href="#frequency-and-contingency-tables" id="toc-frequency-and-contingency-tables" class="nav-link" data-scroll-target="#frequency-and-contingency-tables"><span class="header-section-number">17.5.1</span> Frequency and contingency tables</a></li>
+  <li><a href="#summary-statistics-by-group" id="toc-summary-statistics-by-group" class="nav-link" data-scroll-target="#summary-statistics-by-group"><span class="header-section-number">17.5.2</span> Summary statistics by group</a></li>
+  <li><a href="#graphs-by-group" id="toc-graphs-by-group" class="nav-link" data-scroll-target="#graphs-by-group"><span class="header-section-number">17.5.3</span> Graphs by group</a></li>
+  </ul></li>
+  <li><a href="#outliers" id="toc-outliers" class="nav-link" data-scroll-target="#outliers"><span class="header-section-number">17.6</span> Outliers</a></li>
+  <li><a href="#checking-normality" id="toc-checking-normality" class="nav-link" data-scroll-target="#checking-normality"><span class="header-section-number">17.7</span> Checking normality</a>
+  <ul class="collapse">
+  <li><a href="#transformations" id="toc-transformations" class="nav-link" data-scroll-target="#transformations"><span class="header-section-number">17.7.1</span> Transformations</a></li>
+  </ul></li>
+  <li><a href="#relationships-between-variables" id="toc-relationships-between-variables" class="nav-link" data-scroll-target="#relationships-between-variables"><span class="header-section-number">17.8</span> Relationships between variables</a></li>
+  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">17.9</span> Live R laboratory</a></li>
+  <li><a href="#practical-19-and-exercises" id="toc-practical-19-and-exercises" class="nav-link" data-scroll-target="#practical-19-and-exercises"><span class="header-section-number">17.10</span> Practical 19 and exercises</a></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">17.11</span> Chapter Summary</a>
+  <ul class="collapse">
+  <li><a href="#fill-in-the-blanks" id="toc-fill-in-the-blanks" class="nav-link" data-scroll-target="#fill-in-the-blanks">Fill in the blanks</a></li>
+  <li><a href="#short-answer-questions" id="toc-short-answer-questions" class="nav-link" data-scroll-target="#short-answer-questions">Short-answer questions</a></li>
+  <li><a href="#numerical-and-conceptual-questions" id="toc-numerical-and-conceptual-questions" class="nav-link" data-scroll-target="#numerical-and-conceptual-questions">Numerical and conceptual questions</a></li>
+  <li><a href="#important-formulae" id="toc-important-formulae" class="nav-link" data-scroll-target="#important-formulae">Important formulae</a></li>
+  <li><a href="#quick-revision" id="toc-quick-revision" class="nav-link" data-scroll-target="#quick-revision">Quick revision</a></li>
+  <li><a href="#answers-to-fill-in-the-blanks" id="toc-answers-to-fill-in-the-blanks" class="nav-link" data-scroll-target="#answers-to-fill-in-the-blanks">Answers to fill in the blanks</a></li>
+  <li><a href="#solutions-to-numerical-and-conceptual-questions" id="toc-solutions-to-numerical-and-conceptual-questions" class="nav-link" data-scroll-target="#solutions-to-numerical-and-conceptual-questions">Solutions to numerical and conceptual questions</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./15-met-eda.html">Module 8 · Exploratory analysis and probability distributions (STAT 531)</a></li><li class="breadcrumb-item"><a href="./15-met-eda.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exploring a multi-environment trial</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-met-eda" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exploring a multi-environment trial</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="learning-outcomes" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-outcomes">Learning outcomes</h2>
+<p>Carry out a systematic exploratory data analysis: check structure, missing values and balance, summarise and tabulate by groups, detect outliers within groups, check normality and choose transformations.</p>
+<p><strong>Exploratory data analysis</strong> (EDA), a term introduced by John W. Tukey, is the detective work done before any formal test or model. Its purpose is to get to know the data: check that they were entered correctly, see how each variable is distributed, find unusual observations and discover relationships worth testing. EDA combines the summaries of <a href="07-descriptive.html" class="quarto-xref"><span>Chapter 7</span></a> with the graphs of <a href="06-visualization.html" class="quarto-xref"><span>Chapter 6</span></a>.</p>
+<p>A useful checklist:</p>
+<ol type="1">
+<li>Check the structure: number of rows and columns, variable types, factor levels.</li>
+<li>Look for missing values and data-entry errors.</li>
+<li>Summarise and plot each variable (univariate analysis).</li>
+<li>Summarise and tabulate by groups.</li>
+<li>Look for outliers.</li>
+<li>Check the shape of the distributions (symmetry, normality) and consider transformations.</li>
+<li>Examine relationships between variables (bivariate and multivariate analysis).</li>
+</ol>
+</section>
+<section id="the-example-data" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="the-example-data"><span class="header-section-number">17.1</span> The example data</h2>
+<p>We use the <code>plrv</code> data from the <code>agricolae</code> package. The International Potato Center (CIP), Peru, evaluated 28 potato genotypes (clones from a population selected for resistance to potato leaf roll virus, plus the check varieties Canchan, Desiree and Unica) in six environments, with three replications each. Tuber yield (t/ha) and weights per plant and per plot (kg) were recorded.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agricolae)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(plrv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="structure-of-the-data" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="structure-of-the-data"><span class="header-section-number">17.2</span> Structure of the data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(plrv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 504   6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(plrv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   504 obs. of  6 variables:
+ $ Genotype   : Factor w/ 28 levels "102.18","104.22",..: 1 2 3 4 5 6 7 8 9 10 ...
+ $ Locality   : Factor w/ 6 levels "Ayac","Hyo-02",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ Rep        : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ WeightPlant: num  0.51 0.345 0.542 0.989 0.625 ...
+ $ WeightPlot : num  5.1 2.76 4.34 8.9 5 2.56 2.48 10.1 8.25 4.88 ...
+ $ Yield      : num  18.9 12.8 20.1 36.6 23.1 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(plrv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Genotype Locality Rep WeightPlant WeightPlot Yield
+1   102.18     Ayac   1      0.5100       5.10 18.89
+2   104.22     Ayac   1      0.3450       2.76 12.78
+3   121.31     Ayac   1      0.5425       4.34 20.09
+4   141.28     Ayac   1      0.9889       8.90 36.63
+5   157.26     Ayac   1      0.6250       5.00 23.15
+6    163.9     Ayac   1      0.5120       2.56 18.96</code></pre>
+</div>
+</div>
+<p><code>Rep</code> is stored as an integer, but it identifies replications, so it should be a factor:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plrv<span class="sc">$</span>Rep <span class="ot">&lt;-</span> <span class="fu">factor</span>(plrv<span class="sc">$</span>Rep)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nlevels</span>(plrv<span class="sc">$</span>Genotype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 28</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(plrv<span class="sc">$</span>Locality)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Ayac"   "Hyo-02" "LM-02"  "LM-03"  "SR-02"  "SR-03" </code></pre>
+</div>
+</div>
+</section>
+<section id="missing-values-and-data-checks" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="missing-values-and-data-checks"><span class="header-section-number">17.3</span> Missing values and data checks</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(plrv))          <span class="co"># total number of missing values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(plrv))      <span class="co"># missing values per column</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Genotype    Locality         Rep WeightPlant  WeightPlot       Yield 
+          0           0           0           0           0           0 </code></pre>
+</div>
+</div>
+<p>There are no missing values. Next check that the design is balanced, i.e.&nbsp;every genotype appears once in every replication of every locality:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(plrv<span class="sc">$</span>Locality, plrv<span class="sc">$</span>Rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        
+          1  2  3
+  Ayac   28 28 28
+  Hyo-02 28 28 28
+  LM-02  28 28 28
+  LM-03  28 28 28
+  SR-02  28 28 28
+  SR-03  28 28 28</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">table</span>(plrv<span class="sc">$</span>Genotype, plrv<span class="sc">$</span>Locality) <span class="sc">==</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>Each locality has 28 plots per replication and every genotype has three plots in each locality, so the data are complete and balanced. Also look for impossible values, such as negative yields:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(plrv<span class="sc">$</span>Yield)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  0.2469 99.3500</code></pre>
+</div>
+</div>
+</section>
+<section id="univariate-analysis" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="univariate-analysis"><span class="header-section-number">17.4</span> Univariate analysis</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(plrv<span class="sc">$</span>Yield)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.247  15.537  27.910  30.670  43.364  99.350 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(plrv<span class="sc">$</span>Yield, <span class="at">col =</span> <span class="st">"#D6EAF8"</span>, <span class="at">border =</span> <span class="st">"white"</span>,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Histogram of yield"</span>, <span class="at">xlab =</span> <span class="st">"Yield (t/ha)"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(plrv<span class="sc">$</span>Yield, <span class="at">horizontal =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"#FAD7A0"</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"Box plot of yield"</span>, <span class="at">xlab =</span> <span class="st">"Yield (t/ha)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15-met-eda_files/figure-html/eda-hist-1.png" class="img-fluid figure-img" width="1296"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The distribution is skewed to the right, with a long tail of high yields. A <strong>stem-and-leaf plot</strong> shows the same shape while keeping the actual values:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stem</span>(<span class="fu">round</span>(plrv<span class="sc">$</span>Yield))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  The decimal point is 1 digit(s) to the right of the |
+
+  0 | 011122344444
+  0 | 5555555667777777778888888899999999999
+  1 | 00000000111111111111222222222233333333333333333444444444444444
+  1 | 55555555555555566666666666666677777777777777778888888888888899999999
+  2 | 00000000001111111112222222222333444444444
+  2 | 55555566666666677777788889999999
+  3 | 00000000000001111111111111111222222333333333333444444444444
+  3 | 55566666666667777777778888889999999
+  4 | 00000011111111222222333334444444444
+  4 | 5555566666667777777777788999999
+  5 | 0000000011111222333344444
+  5 | 55666667777788899
+  6 | 00000011122344
+  6 | 555566799
+  7 | 01111224
+  7 | 5669
+  8 | 234
+  8 | 6
+  9 | 1
+  9 | 89</code></pre>
+</div>
+</div>
+</section>
+<section id="tabulation-and-summaries-by-group" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="tabulation-and-summaries-by-group"><span class="header-section-number">17.5</span> Tabulation and summaries by group</h2>
+<section id="frequency-and-contingency-tables" class="level3" data-number="17.5.1">
+<h3 data-number="17.5.1" class="anchored" data-anchor-id="frequency-and-contingency-tables"><span class="header-section-number">17.5.1</span> Frequency and contingency tables</h3>
+<p><code>table()</code> counts observations in each category; with two factors it gives a contingency (two-way) table. <code>xtabs()</code> does the same with a formula, and <code>prop.table()</code> converts counts to proportions. Here yields are first grouped into classes with <code>cut()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>plrv<span class="sc">$</span>YieldClass <span class="ot">&lt;-</span> <span class="fu">cut</span>(plrv<span class="sc">$</span>Yield, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">100</span>),</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"&lt;10"</span>, <span class="st">"10-20"</span>, <span class="st">"20-30"</span>, <span class="st">"30-40"</span>, <span class="st">"&gt;40"</span>))</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(<span class="sc">~</span> Locality <span class="sc">+</span> YieldClass, <span class="at">data =</span> plrv)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>tab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        YieldClass
+Locality &lt;10 10-20 20-30 30-40 &gt;40
+  Ayac     0    29    37    18   0
+  Hyo-02   2     2     6    18  56
+  LM-02    0     5    18    39  22
+  LM-03    0     0     4    11  69
+  SR-02   15    56    12     1   0
+  SR-03   37    44     3     0   0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Row percentages: distribution of yield classes within each locality</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">prop.table</span>(tab, <span class="at">margin =</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        YieldClass
+Locality  &lt;10 10-20 20-30 30-40  &gt;40
+  Ayac    0.0  34.5  44.0  21.4  0.0
+  Hyo-02  2.4   2.4   7.1  21.4 66.7
+  LM-02   0.0   6.0  21.4  46.4 26.2
+  LM-03   0.0   0.0   4.8  13.1 82.1
+  SR-02  17.9  66.7  14.3   1.2  0.0
+  SR-03  44.0  52.4   3.6   0.0  0.0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add row and column totals</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addmargins</span>(tab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        YieldClass
+Locality &lt;10 10-20 20-30 30-40 &gt;40 Sum
+  Ayac     0    29    37    18   0  84
+  Hyo-02   2     2     6    18  56  84
+  LM-02    0     5    18    39  22  84
+  LM-03    0     0     4    11  69  84
+  SR-02   15    56    12     1   0  84
+  SR-03   37    44     3     0   0  84
+  Sum     54   136    80    87 147 504</code></pre>
+</div>
+</div>
+</section>
+<section id="summary-statistics-by-group" class="level3" data-number="17.5.2">
+<h3 data-number="17.5.2" class="anchored" data-anchor-id="summary-statistics-by-group"><span class="header-section-number">17.5.2</span> Summary statistics by group</h3>
+<p><code>aggregate()</code> computes any function for each group. Here we compute the mean, standard deviation and coefficient of variation of yield in each locality:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>cv <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">mean</span>(x) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>loc_stats <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(Yield <span class="sc">~</span> Locality, <span class="at">data =</span> plrv,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">FUN =</span> <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(x), <span class="at">sd =</span> <span class="fu">sd</span>(x), <span class="at">cv =</span> <span class="fu">cv</span>(x)))</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>loc_stats <span class="ot">&lt;-</span> <span class="fu">do.call</span>(data.frame, loc_stats)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(loc_stats) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Locality"</span>, <span class="st">"Mean"</span>, <span class="st">"SD"</span>, <span class="st">"CV"</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>loc_stats[<span class="fu">order</span>(<span class="sc">-</span>loc_stats<span class="sc">$</span>Mean), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Locality  Mean     SD    CV
+4    LM-03 53.83 16.339 30.35
+2   Hyo-02 45.73 14.629 31.99
+3    LM-02 34.64  8.370 24.16
+1     Ayac 23.70  7.053 29.76
+5    SR-02 14.95  5.495 36.75
+6    SR-03 11.15  4.989 44.73</code></pre>
+</div>
+</div>
+<p>Mean yields range from about 11.2 t/ha to 53.8 t/ha across environments. A two-way table of means by genotype and locality is obtained with <code>tapply()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>gl <span class="ot">&lt;-</span> <span class="fu">with</span>(plrv, <span class="fu">tapply</span>(Yield, <span class="fu">list</span>(Genotype, Locality), mean))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">head</span>(gl), <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Ayac Hyo-02 LM-02 LM-03 SR-02 SR-03
+102.18 24.9   28.9  32.0  46.8  13.5  11.8
+104.22 21.5   53.5  39.2  50.4  16.0   7.1
+121.31 23.5   41.3  38.4  63.7   2.5  11.3
+141.28 31.8   60.5  34.0  77.6  19.2  15.5
+157.26 19.7   41.4  45.2  77.0  24.0  14.6
+163.9  17.5   29.5  28.9  32.0  12.7   7.8</code></pre>
+</div>
+</div>
+<p>and the best and worst genotypes over all environments are:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">tapply</span>(plrv<span class="sc">$</span>Yield, plrv<span class="sc">$</span>Genotype, mean), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">head</span>(g, <span class="dv">5</span>), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>141.28  Unica 319.20  235.6 157.26 
+ 39.76  39.10  38.76  38.63  36.95 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">tail</span>(g, <span class="dv">3</span>), <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 221.19   163.9 Desiree 
+  22.98   21.42   16.16 </code></pre>
+</div>
+</div>
+</section>
+<section id="graphs-by-group" class="level3" data-number="17.5.3">
+<h3 data-number="17.5.3" class="anchored" data-anchor-id="graphs-by-group"><span class="header-section-number">17.5.3</span> Graphs by group</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Yield <span class="sc">~</span> Locality, <span class="at">data =</span> plrv, <span class="at">col =</span> <span class="st">"#A9DFBF"</span>,</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Yield (t/ha)"</span>, <span class="at">xlab =</span> <span class="st">"Environment"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15-met-eda_files/figure-html/eda-box-loc-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The box plot shows that most of the variation in yield comes from differences <strong>between environments</strong>. The right skew seen in the overall histogram is largely the result of mixing environments with very different mean yields.</p>
+<p>An <strong>interaction plot</strong> shows whether genotypes rank similarly in all environments. Here we plot the three check varieties:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>checks <span class="ot">&lt;-</span> <span class="fu">droplevels</span>(<span class="fu">subset</span>(plrv, Genotype <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Canchan"</span>, <span class="st">"Desiree"</span>, <span class="st">"Unica"</span>)))</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(checks, <span class="fu">interaction.plot</span>(Locality, Genotype, Yield,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"darkgreen"</span>), <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">ylab =</span> <span class="st">"Mean yield (t/ha)"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15-met-eda_files/figure-html/eda-interaction-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The lines are not parallel, which suggests <strong>genotype × environment interaction</strong>: the varieties do not respond in the same way in every environment.</p>
+</section>
+</section>
+<section id="outliers" class="level2" data-number="17.6">
+<h2 data-number="17.6" class="anchored" data-anchor-id="outliers"><span class="header-section-number">17.6</span> Outliers</h2>
+<p>The box-plot rule (<a href="06-visualization.html" class="quarto-xref"><span>Chapter 6</span></a>) flags as outliers the observations beyond <span class="math inline">\(Q_1 - 1.5\,\text{IQR}\)</span> and <span class="math inline">\(Q_3 + 1.5\,\text{IQR}\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">boxplot.stats</span>(plrv<span class="sc">$</span>Yield)<span class="sc">$</span>out</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>plrv[plrv<span class="sc">$</span>Yield <span class="sc">%in%</span> out, <span class="fu">c</span>(<span class="st">"Genotype"</span>, <span class="st">"Locality"</span>, <span class="st">"Rep"</span>, <span class="st">"Yield"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Genotype Locality Rep Yield
+368   141.28    LM-03   2 90.89
+378   319.20    LM-03   2 99.35
+382   351.26    LM-03   2 86.11
+416    450.3    LM-03   3 98.15</code></pre>
+</div>
+</div>
+<p>All four come from LM-03, the highest-yielding environment. Outliers should be judged <strong>within</strong> the relevant group. A common rule standardises each value within its group (<span class="math inline">\(z\)</span>-score) and flags observations with <span class="math inline">\(|z| &gt; 3\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">ave</span>(plrv<span class="sc">$</span>Yield, plrv<span class="sc">$</span>Locality, <span class="at">FUN =</span> <span class="cf">function</span>(x) (x <span class="sc">-</span> <span class="fu">mean</span>(x)) <span class="sc">/</span> <span class="fu">sd</span>(x))</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>plrv[<span class="fu">abs</span>(z) <span class="sc">&gt;</span> <span class="dv">3</span>, <span class="fu">c</span>(<span class="st">"Genotype"</span>, <span class="st">"Locality"</span>, <span class="st">"Yield"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Genotype Locality Yield   
+&lt;0 rows&gt; (or 0-length row.names)</code></pre>
+</div>
+</div>
+<p>No observation is more than three standard deviations from its environment mean, so the four “outliers” are not unusual once the environment is taken into account.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Never delete an outlier just because it is extreme. First check the field book for a recording or data-entry error. Remove or correct a value only if there is a documented reason, and report what was done.</p>
+</div>
+</div>
+</section>
+<section id="checking-normality" class="level2" data-number="17.7">
+<h2 data-number="17.7" class="anchored" data-anchor-id="checking-normality"><span class="header-section-number">17.7</span> Checking normality</h2>
+<p>Many tests and ANOVA assume normally distributed errors. A <strong>normal Q–Q plot</strong> plots the ordered data against the quantiles expected from a normal distribution; normal data fall close to a straight line.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(plrv<span class="sc">$</span>Yield, <span class="at">main =</span> <span class="st">"Yield: all environments"</span>); <span class="fu">qqline</span>(plrv<span class="sc">$</span>Yield, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>ayac <span class="ot">&lt;-</span> plrv<span class="sc">$</span>Yield[plrv<span class="sc">$</span>Locality <span class="sc">==</span> <span class="st">"Ayac"</span>]</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(ayac, <span class="at">main =</span> <span class="st">"Yield: Ayacucho only"</span>); <span class="fu">qqline</span>(ayac, <span class="at">col =</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15-met-eda_files/figure-html/eda-qq-1.png" class="img-fluid figure-img" width="1296"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <strong>Shapiro–Wilk test</strong> tests the null hypothesis that the data come from a normal distribution:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(plrv<span class="sc">$</span>Yield)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  plrv$Yield
+W = 0.95, p-value = 2e-12</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(ayac)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  ayac
+W = 0.97, p-value = 0.09</code></pre>
+</div>
+</div>
+<p>Pooled over all environments, yield is clearly not normal (<span class="math inline">\(p &lt; 0.001\)</span>). Within Ayacucho the test gives <span class="math inline">\(p =\)</span> 0.087. In a designed experiment, normality is assessed on the <strong>residuals</strong> of the fitted model, not on the raw data (<a href="19-anova-mcp.html" class="quarto-xref"><span>Chapter 21</span></a>).</p>
+<section id="transformations" class="level3" data-number="17.7.1">
+<h3 data-number="17.7.1" class="anchored" data-anchor-id="transformations"><span class="header-section-number">17.7.1</span> Transformations</h3>
+<p>When data are skewed or the variance increases with the mean, a transformation can help:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 36%">
+<col style="width: 42%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Type of data</th>
+<th style="text-align: left;">Transformation</th>
+<th style="text-align: left;">R code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Counts (insects, lesions, weeds)</td>
+<td style="text-align: left;">square root</td>
+<td style="text-align: left;"><code>sqrt(x)</code> or <code>sqrt(x + 0.5)</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Percentages or proportions (germination, disease incidence)</td>
+<td style="text-align: left;">angular (arcsine)</td>
+<td style="text-align: left;"><code>asin(sqrt(p))</code> with <code>p</code> = proportion</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Positive data with variance ∝ mean² (yield, biomass, income)</td>
+<td style="text-align: left;">logarithmic</td>
+<td style="text-align: left;"><code>log(x)</code> or <code>log(x + 1)</code></td>
+</tr>
+</tbody>
+</table>
+<p>See Chapter 7 of <span class="citation" data-cites="gomez1984">Gomez and Gomez (<a href="references.html#ref-gomez1984" role="doc-biblioref">1984</a>)</span> for guidance. The Box–Cox procedure (<code>MASS::boxcox()</code>) can suggest a suitable power transformation.</p>
+</section>
+</section>
+<section id="relationships-between-variables" class="level2" data-number="17.8">
+<h2 data-number="17.8" class="anchored" data-anchor-id="relationships-between-variables"><span class="header-section-number">17.8</span> Relationships between variables</h2>
+<p>A scatter-plot matrix and a correlation matrix give a first view of the relationships among several numeric variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(plrv[, <span class="fu">c</span>(<span class="st">"WeightPlant"</span>, <span class="st">"WeightPlot"</span>, <span class="st">"Yield"</span>)],</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">col =</span> <span class="fu">adjustcolor</span>(<span class="st">"steelblue"</span>, <span class="fl">0.5</span>), <span class="at">pch =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15-met-eda_files/figure-html/eda-pairs-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(plrv[, <span class="fu">c</span>(<span class="st">"WeightPlant"</span>, <span class="st">"WeightPlot"</span>, <span class="st">"Yield"</span>)]), <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            WeightPlant WeightPlot  Yield
+WeightPlant       1.000     -0.238 -0.234
+WeightPlot       -0.238      1.000  0.981
+Yield            -0.234      0.981  1.000</code></pre>
+</div>
+</div>
+<p>Plot weight and yield are almost perfectly correlated (r = 0.981), as expected, because yield per hectare is calculated from plot weight. The <code>corrplot</code> package draws a correlation matrix as a picture, which is useful when there are many variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>corrplot 0.95 loaded</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(yacon)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(<span class="fu">cor</span>(yacon[, <span class="fu">c</span>(<span class="st">"height"</span>, <span class="st">"stalks"</span>, <span class="st">"roots"</span>, <span class="st">"FOS"</span>, <span class="st">"brix"</span>, <span class="st">"foliage"</span>, <span class="st">"dry"</span>, <span class="st">"IH"</span>)]),</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">"ellipse"</span>, <span class="at">type =</span> <span class="st">"upper"</span>, <span class="at">diag =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="15-met-eda_files/figure-html/eda-corrplot-1.png" class="img-fluid figure-img" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="24-multiple-regression.html" class="quarto-xref"><span>Chapter 26</span></a> covers correlation in detail.</p>
+</section>
+<section id="live-r-laboratory" class="level2" data-number="17.9">
+<h2 data-number="17.9" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">17.9</span> Live R laboratory</h2>
+<div class="live-r">
+<p><strong>Explore counts and transformations</strong></p>
+<p>Edit the code, then select <strong>Run R</strong>. The first run downloads R into your browser and may take a little time. <strong>Copy code</strong> lets you use the example in RStudio.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(InsectSprays)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(InsectSprays)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(InsectSprays<span class="sc">$</span>count, InsectSprays<span class="sc">$</span>spray, <span class="cf">function</span>(v) <span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(v), <span class="at">var =</span> <span class="fu">var</span>(v)))</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(count <span class="sc">~</span> spray, <span class="at">data =</span> InsectSprays, <span class="at">main =</span> <span class="st">"Raw counts"</span>, <span class="at">col =</span> <span class="st">"#FADBD8"</span>)</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="fu">sqrt</span>(count) <span class="sc">~</span> spray, <span class="at">data =</span> InsectSprays, <span class="at">main =</span> <span class="st">"Square root"</span>, <span class="at">col =</span> <span class="st">"#D5F5E3"</span>)</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Investigate.</strong> Look at the means and variances: how does the variance change with the mean? How does the square-root transformation change the spread of the boxes?</p>
+</div>
+</section>
+<section id="practical-19-and-exercises" class="level2" data-number="17.10">
+<h2 data-number="17.10" class="anchored" data-anchor-id="practical-19-and-exercises"><span class="header-section-number">17.10</span> Practical 19 and exercises</h2>
+<ol type="1">
+<li>Carry out an exploratory data analysis of the <code>yacon</code> data in <code>agricolae</code>: check its structure, summarise dry root matter (<code>roots</code>) by locality and fertiliser dose, and draw suitable graphs.</li>
+<li>Make a two-way table of mean <code>brix</code> by <code>entry</code> and <code>locality</code>. Which entry has the highest mean?</li>
+<li>Draw a normal Q–Q plot of <code>roots</code> for each locality. Is the distribution approximately normal within localities?</li>
+<li>The <code>InsectSprays</code> data give counts of insects after six insecticide treatments. Draw box plots of <code>count</code> and of <code>sqrt(count)</code> by <code>spray</code>. What does the square-root transformation do to the spread within groups?</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled" title="Historical Insights">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Historical Insights
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The International Potato Center (CIP), whose trial data are analysed in this chapter, was founded in Lima, Peru, in 1971. Multi-environment trials became the standard way to test new varieties because genotype × environment interaction makes a single-site result unreliable.</p>
+</div>
+</div>
+</section>
+<section id="chapter-summary" class="level2" data-number="17.11">
+<h2 data-number="17.11" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">17.11</span> Chapter Summary</h2>
+<section id="fill-in-the-blanks" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="fill-in-the-blanks">Fill in the blanks</h3>
+<p>Answers are given at the end of the chapter.</p>
+<ol type="1">
+<li>A trial of many genotypes in several environments is a multi-__________ trial.</li>
+<li>Before analysis, check that every genotype appears in every replication, i.e.&nbsp;that the design is __________.</li>
+<li><code>xtabs()</code> and <code>table()</code> produce __________ tables.</li>
+<li><code>prop.table()</code> converts counts into __________.</li>
+<li>Outliers in designed experiments should be judged __________ the relevant group.</li>
+<li>Non-parallel lines in an interaction plot suggest genotype × __________ interaction.</li>
+<li>Normality in a designed experiment is assessed on the __________ of the model.</li>
+<li>Counts are transformed by the __________ root.</li>
+</ol>
+</section>
+<section id="short-answer-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="short-answer-questions">Short-answer questions</h3>
+<ol type="1">
+<li>List the steps of a systematic exploratory analysis.</li>
+<li>Why can pooled data look non-normal even if each group is normal?</li>
+<li>How do you check whether a design is complete and balanced?</li>
+<li>What does an interaction plot show?</li>
+<li>Which transformation would you use for counts, percentages and yields?</li>
+</ol>
+</section>
+<section id="numerical-and-conceptual-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="numerical-and-conceptual-questions">Numerical and conceptual questions</h3>
+<p>Answers are given at the end of the chapter.</p>
+<ol type="1">
+<li>At Ayacucho the mean yield is 23.70 t/ha with SD 7.05 t/ha. Find the CV.</li>
+<li>At LM-03 a plot yields 99.35 t/ha; the locality mean is 53.83 and SD 16.34 t/ha. Is it an outlier by the <span class="math inline">\(|z| &gt; 3\)</span> rule?</li>
+<li>A trial has 28 genotypes, 6 environments and 3 replications. How many plots should the data contain?</li>
+</ol>
+</section>
+<section id="important-formulae" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="important-formulae">Important formulae</h3>
+<p>Coefficient of variation:</p>
+<p><span id="eq-ch17-cv"><span class="math display">\[
+\text{CV} = \frac{s}{\bar x}\times 100
+\tag{17.1}\]</span></span></p>
+<p>Standardised value within a group:</p>
+<p><span id="eq-ch17-z"><span class="math display">\[
+z_{ij} = \frac{y_{ij} - \bar y_i}{s_i}
+\tag{17.2}\]</span></span></p>
+</section>
+<section id="quick-revision" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="quick-revision">Quick revision</h3>
+<ul>
+<li>Structure → missing values → balance → univariate → by group → outliers → normality → relationships.</li>
+<li>Most variation in multi-environment trials → between environments.</li>
+<li>Outliers → judged within groups; never deleted without a documented reason.</li>
+<li>Pooled skewness ≠ non-normal errors; check residuals.</li>
+<li>Non-parallel lines → G × E interaction.</li>
+</ul>
+</section>
+<section id="answers-to-fill-in-the-blanks" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="answers-to-fill-in-the-blanks">Answers to fill in the blanks</h3>
+<div class="answer-key">
+<p><code>1.</code> environment <code>2.</code> balanced <code>3.</code> contingency <code>4.</code> proportions <code>5.</code> within <code>6.</code> environment <code>7.</code> residuals <code>8.</code> square</p>
+</div>
+</section>
+<section id="solutions-to-numerical-and-conceptual-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="solutions-to-numerical-and-conceptual-questions">Solutions to numerical and conceptual questions</h3>
+<ol type="1">
+<li>By <a href="#eq-ch17-cv" class="quarto-xref">Equation&nbsp;<span>17.1</span></a>, <span class="math inline">\(7.05/23.70\times100 = 29.7\%\)</span>.</li>
+<li>By <a href="#eq-ch17-z" class="quarto-xref">Equation&nbsp;<span>17.2</span></a>, <span class="math inline">\(z = (99.35-53.83)/16.34 = 2.79 &lt; 3\)</span>; it is not flagged.</li>
+<li><span class="math inline">\(28 \times 6 \times 3 = 504\)</span> plots.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-gomez1984" class="csl-entry" role="listitem">
+Gomez, Kwanchai A., and Arturo A. Gomez. 1984. <em>Statistical Procedures for Agricultural Research</em>. 2nd ed. New York: John Wiley &amp; Sons.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./14b-vibe-coding.html" class="pagination-link" aria-label="Vibe coding: writing R with an AI assistant">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./16-distributions.html" class="pagination-link" aria-label="Probability distributions and goodness of fit">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Probability distributions and goodness of fit</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
+
+
+
+
+</body></html>

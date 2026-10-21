@@ -103,6 +103,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -132,6 +161,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">R Programming for Agricultural Data Analysis</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/KAUMELON/stat-531" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -326,6 +358,145 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 8 · Exploratory analysis and probability distributions (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-met-eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exploring a multi-environment trial</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Probability distributions and goodness of fit</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 9 · Tests of significance (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-large-sample.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Large-sample tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-small-sample.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Tests based on t, F and chi-square</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 10 · Analysis of variance and covariance (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-anova-mcp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Analysis of variance and multiple comparisons</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-research-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Research experiments: blocks, factorials, split and strip plots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-contrasts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Contrast analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-ancova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Analysis of covariance</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 11 · Mixed models and multiple regression (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-mixed-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Mixed models and variance components</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Partial correlation and multiple regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 12 · Multivariate methods and non-linear models (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-pca.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Principal component analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-factor-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Factor analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./27-discriminant.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Discriminant function analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./28-nonlinear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Fitting non-linear models</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
@@ -334,13 +505,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-dictionary.html" class="sidebar-item-text sidebar-link">
@@ -391,6 +562,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#original-self-assessment-exercises" id="toc-original-self-assessment-exercises" class="nav-link" data-scroll-target="#original-self-assessment-exercises"><span class="header-section-number">2.7</span> Original self-assessment exercises</a></li>
   <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">2.8</span> Live R laboratory</a></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">2.9</span> Chapter Summary</a>
+  <ul class="collapse">
+  <li><a href="#fill-in-the-blanks" id="toc-fill-in-the-blanks" class="nav-link" data-scroll-target="#fill-in-the-blanks">Fill in the blanks</a></li>
+  <li><a href="#short-answer-questions" id="toc-short-answer-questions" class="nav-link" data-scroll-target="#short-answer-questions">Short-answer questions</a></li>
+  <li><a href="#numerical-and-conceptual-questions" id="toc-numerical-and-conceptual-questions" class="nav-link" data-scroll-target="#numerical-and-conceptual-questions">Numerical and conceptual questions</a></li>
+  <li><a href="#important-formulae" id="toc-important-formulae" class="nav-link" data-scroll-target="#important-formulae">Important formulae</a></li>
+  <li><a href="#quick-revision" id="toc-quick-revision" class="nav-link" data-scroll-target="#quick-revision">Quick revision</a></li>
+  <li><a href="#answers-to-fill-in-the-blanks" id="toc-answers-to-fill-in-the-blanks" class="nav-link" data-scroll-target="#answers-to-fill-in-the-blanks">Answers to fill in the blanks</a></li>
+  <li><a href="#solutions-to-numerical-and-conceptual-questions" id="toc-solutions-to-numerical-and-conceptual-questions" class="nav-link" data-scroll-target="#solutions-to-numerical-and-conceptual-questions">Solutions to numerical and conceptual questions</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -543,7 +724,7 @@ R treats the hashtag character, ’#’in a special way; R will not run anything
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>my_age <span class="ot">&lt;-</span> <span class="dv">32</span>   </span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Numeric variable 32 is assigned to my_age</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># while writing your code it is preffered to use '_' instead of space  </span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># object names cannot contain spaces; use '_' instead  </span></span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>my_name <span class="ot">&lt;-</span> <span class="st">"Dr Pratheesh"</span> <span class="co"># Character variable  </span></span>
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -1345,8 +1526,94 @@ From the browser to your practical notebook
 <p>Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-caution callout-titled" title="Historical Insights">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Historical Insights
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>R is a dialect of the S language, which John Chambers and colleagues began developing at Bell Laboratories in 1976. Chambers received the ACM Software System Award in 1998 for the S system.</p>
+</div>
+</div>
+</section>
+<section id="chapter-summary" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">2.9</span> Chapter Summary</h2>
+<section id="fill-in-the-blanks" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="fill-in-the-blanks">Fill in the blanks</h3>
+<p>Answers are given at the end of the chapter.</p>
+<ol type="1">
+<li>In R the assignment operator is __________.</li>
+<li>A __________ stores values of a single type in one dimension.</li>
+<li>A data frame can hold columns of different __________.</li>
+<li>Categorical variables such as treatment or variety are stored as __________.</li>
+<li>Missing values in R are written as __________.</li>
+<li>By default <code>matrix()</code> fills its elements by __________.</li>
+<li>The function __________ applies a function to the rows or columns of a matrix.</li>
+<li>A container that can hold objects of different types and lengths is a __________.</li>
+</ol>
+</section>
+<section id="short-answer-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="short-answer-questions">Short-answer questions</h3>
+<ol type="1">
+<li>What are the basic data types in R?</li>
+<li>Distinguish between a matrix and a data frame.</li>
+<li>Why should treatment codes be stored as factors before analysis?</li>
+<li>How does R treat a vector that mixes numbers and text?</li>
+<li>Write the general form of a user-defined function in R.</li>
+</ol>
+</section>
+<section id="numerical-and-conceptual-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="numerical-and-conceptual-questions">Numerical and conceptual questions</h3>
+<p>Answers are given at the end of the chapter.</p>
+<ol type="1">
+<li>How many elements does <code>seq(5, 50, by = 5)</code> contain?</li>
+<li>For <code>m &lt;- matrix(1:12, nrow = 3)</code>, what is <code>m[2, 3]</code>?</li>
+<li>What is <code>class(c(1, "a", TRUE))</code>?</li>
+<li>What does <code>mean(c(4, NA, 6), na.rm = TRUE)</code> return?</li>
+</ol>
+</section>
+<section id="important-formulae" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="important-formulae">Important formulae</h3>
+<p>Number of elements in an arithmetic sequence from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span> in steps of <span class="math inline">\(h\)</span>:</p>
+<p><span id="eq-ch2-seq"><span class="math display">\[
+n = \frac{b-a}{h} + 1
+\tag{2.1}\]</span></span></p>
+<p>Position of element <span class="math inline">\((i, j)\)</span> in a matrix with <span class="math inline">\(n_r\)</span> rows filled by column:</p>
+<p><span id="eq-ch2-index"><span class="math display">\[
+k = (j-1)\,n_r + i
+\tag{2.2}\]</span></span></p>
+</section>
+<section id="quick-revision" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="quick-revision">Quick revision</h3>
+<ul>
+<li>Objects are created with <code>&lt;-</code>; R is case sensitive.</li>
+<li>Vector → one type; matrix → one type in two dimensions; data frame → columns of different types; list → anything.</li>
+<li>Mixed types → coerced to the most general type (logical → numeric → character).</li>
+<li><code>NA</code> → missing; most summaries need <code>na.rm = TRUE</code>.</li>
+<li>Treatments, blocks and varieties → factors.</li>
+</ul>
+</section>
+<section id="answers-to-fill-in-the-blanks" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="answers-to-fill-in-the-blanks">Answers to fill in the blanks</h3>
+<div class="answer-key">
+<p><code>1.</code> <code>&lt;-</code> <code>2.</code> vector <code>3.</code> types <code>4.</code> factors <code>5.</code> <code>NA</code> <code>6.</code> column <code>7.</code> <code>apply()</code> <code>8.</code> list</p>
+</div>
+</section>
+<section id="solutions-to-numerical-and-conceptual-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="solutions-to-numerical-and-conceptual-questions">Solutions to numerical and conceptual questions</h3>
+<ol type="1">
+<li>By <a href="#eq-ch2-seq" class="quarto-xref">Equation&nbsp;<span>2.1</span></a>, <span class="math inline">\((50-5)/5 + 1 = 10\)</span>.</li>
+<li>Column-major filling (<a href="#eq-ch2-index" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>): <span class="math inline">\(k = (3-1)\times 3 + 2 = 8\)</span>, so <code>m[2, 3]</code> is 8.</li>
+<li>“character”: all elements are coerced to the most general type.</li>
+<li><span class="math inline">\((4+6)/2 = 5\)</span>.</li>
+</ol>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

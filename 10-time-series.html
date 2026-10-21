@@ -54,7 +54,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -161,6 +181,9 @@ window.Quarto = {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">R Programming for Agricultural Data Analysis</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/KAUMELON/stat-531" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -355,6 +378,145 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 8 · Exploratory analysis and probability distributions (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-met-eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exploring a multi-environment trial</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Probability distributions and goodness of fit</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 9 · Tests of significance (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-large-sample.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Large-sample tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-small-sample.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Tests based on t, F and chi-square</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 10 · Analysis of variance and covariance (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-anova-mcp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Analysis of variance and multiple comparisons</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-research-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Research experiments: blocks, factorials, split and strip plots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-contrasts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Contrast analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-ancova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Analysis of covariance</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 11 · Mixed models and multiple regression (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-mixed-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Mixed models and variance components</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Partial correlation and multiple regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 12 · Multivariate methods and non-linear models (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-pca.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Principal component analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-factor-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Factor analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./27-discriminant.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Discriminant function analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./28-nonlinear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Fitting non-linear models</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
@@ -363,13 +525,13 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-dictionary.html" class="sidebar-item-text sidebar-link">
@@ -414,16 +576,34 @@ window.Quarto = {
   <li><a href="#types-of-exponential-smoothing" id="toc-types-of-exponential-smoothing" class="nav-link" data-scroll-target="#types-of-exponential-smoothing"><span class="header-section-number">10.6.1</span> Types of Exponential Smoothing</a></li>
   <li><a href="#advantages-of-exponential-smoothing" id="toc-advantages-of-exponential-smoothing" class="nav-link" data-scroll-target="#advantages-of-exponential-smoothing"><span class="header-section-number">10.6.2</span> Advantages of Exponential Smoothing</a></li>
   </ul></li>
-  <li><a href="#agricultural-applications-interpretation-and-further-practice" id="toc-agricultural-applications-interpretation-and-further-practice" class="nav-link" data-scroll-target="#agricultural-applications-interpretation-and-further-practice"><span class="header-section-number">10.7</span> Agricultural applications, interpretation, and further practice</a>
+  <li><a href="#sec-time-advanced" id="toc-sec-time-advanced" class="nav-link" data-scroll-target="#sec-time-advanced"><span class="header-section-number">10.7</span> Holt, Holt–Winters and ARIMA forecasting</a>
   <ul class="collapse">
-  <li><a href="#time-order-carries-information" id="toc-time-order-carries-information" class="nav-link" data-scroll-target="#time-order-carries-information"><span class="header-section-number">10.7.1</span> Time order carries information</a></li>
-  <li><a href="#create-and-inspect-a-regular-series" id="toc-create-and-inspect-a-regular-series" class="nav-link" data-scroll-target="#create-and-inspect-a-regular-series"><span class="header-section-number">10.7.2</span> Create and inspect a regular series</a></li>
-  <li><a href="#moving-averages-and-decomposition" id="toc-moving-averages-and-decomposition" class="nav-link" data-scroll-target="#moving-averages-and-decomposition"><span class="header-section-number">10.7.3</span> Moving averages and decomposition</a></li>
-  <li><a href="#arima-as-a-starting-model" id="toc-arima-as-a-starting-model" class="nav-link" data-scroll-target="#arima-as-a-starting-model"><span class="header-section-number">10.7.4</span> ARIMA as a starting model</a></li>
-  <li><a href="#check-residuals-and-communicate-uncertainty" id="toc-check-residuals-and-communicate-uncertainty" class="nav-link" data-scroll-target="#check-residuals-and-communicate-uncertainty"><span class="header-section-number">10.7.5</span> Check residuals and communicate uncertainty</a></li>
-  <li><a href="#practical-10-and-exercises" id="toc-practical-10-and-exercises" class="nav-link" data-scroll-target="#practical-10-and-exercises"><span class="header-section-number">10.7.6</span> Practical 10 and exercises</a></li>
+  <li><a href="#forecasting-future-values" id="toc-forecasting-future-values" class="nav-link" data-scroll-target="#forecasting-future-values"><span class="header-section-number">10.7.1</span> Forecasting future values</a></li>
+  <li><a href="#checking-the-forecast-errors" id="toc-checking-the-forecast-errors" class="nav-link" data-scroll-target="#checking-the-forecast-errors"><span class="header-section-number">10.7.2</span> Checking the forecast errors</a></li>
+  <li><a href="#holts-exponential-smoothing" id="toc-holts-exponential-smoothing" class="nav-link" data-scroll-target="#holts-exponential-smoothing"><span class="header-section-number">10.7.3</span> Holt’s exponential smoothing</a></li>
+  <li><a href="#holtwinters-exponential-smoothing" id="toc-holtwinters-exponential-smoothing" class="nav-link" data-scroll-target="#holtwinters-exponential-smoothing"><span class="header-section-number">10.7.4</span> Holt–Winters exponential smoothing</a></li>
+  <li><a href="#arima-models" id="toc-arima-models" class="nav-link" data-scroll-target="#arima-models"><span class="header-section-number">10.7.5</span> ARIMA models</a></li>
   </ul></li>
-  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">10.8</span> Live R laboratory</a></li>
+  <li><a href="#agricultural-applications-interpretation-and-further-practice" id="toc-agricultural-applications-interpretation-and-further-practice" class="nav-link" data-scroll-target="#agricultural-applications-interpretation-and-further-practice"><span class="header-section-number">10.8</span> Agricultural applications, interpretation, and further practice</a>
+  <ul class="collapse">
+  <li><a href="#time-order-carries-information" id="toc-time-order-carries-information" class="nav-link" data-scroll-target="#time-order-carries-information"><span class="header-section-number">10.8.1</span> Time order carries information</a></li>
+  <li><a href="#create-and-inspect-a-regular-series" id="toc-create-and-inspect-a-regular-series" class="nav-link" data-scroll-target="#create-and-inspect-a-regular-series"><span class="header-section-number">10.8.2</span> Create and inspect a regular series</a></li>
+  <li><a href="#moving-averages-and-decomposition" id="toc-moving-averages-and-decomposition" class="nav-link" data-scroll-target="#moving-averages-and-decomposition"><span class="header-section-number">10.8.3</span> Moving averages and decomposition</a></li>
+  <li><a href="#arima-as-a-starting-model" id="toc-arima-as-a-starting-model" class="nav-link" data-scroll-target="#arima-as-a-starting-model"><span class="header-section-number">10.8.4</span> ARIMA as a starting model</a></li>
+  <li><a href="#check-residuals-and-communicate-uncertainty" id="toc-check-residuals-and-communicate-uncertainty" class="nav-link" data-scroll-target="#check-residuals-and-communicate-uncertainty"><span class="header-section-number">10.8.5</span> Check residuals and communicate uncertainty</a></li>
+  <li><a href="#practical-10-and-exercises" id="toc-practical-10-and-exercises" class="nav-link" data-scroll-target="#practical-10-and-exercises"><span class="header-section-number">10.8.6</span> Practical 10 and exercises</a></li>
+  </ul></li>
+  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">10.9</span> Live R laboratory</a></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">10.10</span> Chapter Summary</a>
+  <ul class="collapse">
+  <li><a href="#fill-in-the-blanks" id="toc-fill-in-the-blanks" class="nav-link" data-scroll-target="#fill-in-the-blanks">Fill in the blanks</a></li>
+  <li><a href="#short-answer-questions" id="toc-short-answer-questions" class="nav-link" data-scroll-target="#short-answer-questions">Short-answer questions</a></li>
+  <li><a href="#numerical-and-conceptual-questions" id="toc-numerical-and-conceptual-questions" class="nav-link" data-scroll-target="#numerical-and-conceptual-questions">Numerical and conceptual questions</a></li>
+  <li><a href="#important-formulae" id="toc-important-formulae" class="nav-link" data-scroll-target="#important-formulae">Important formulae</a></li>
+  <li><a href="#quick-revision" id="toc-quick-revision" class="nav-link" data-scroll-target="#quick-revision">Quick revision</a></li>
+  <li><a href="#answers-to-fill-in-the-blanks" id="toc-answers-to-fill-in-the-blanks" class="nav-link" data-scroll-target="#answers-to-fill-in-the-blanks">Answers to fill in the blanks</a></li>
+  <li><a href="#solutions-to-numerical-and-conceptual-questions" id="toc-solutions-to-numerical-and-conceptual-questions" class="nav-link" data-scroll-target="#solutions-to-numerical-and-conceptual-questions">Solutions to numerical and conceptual questions</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -661,7 +841,7 @@ Frequency = 1
 </ol>
 <p>By decomposing the time series, you can analyze each component separately, which can enhance your understanding of the data and improve forecasting accuracy.</p>
 <p>Inspect the twelve seasonal factors returned by the decomposition. Their scale is thousands of births. Positive factors identify months above the estimated trend and negative factors identify months below it; compare <code>tapply(birthstscomp$seasonal, cycle(birthsts), mean)</code> rather than relying on a remembered month or value.</p>
-<p>To visualize these components—trend, seasonal, and irregular—you can use the <code>plot()</code> function in R. Here is how to do it:</p>
+<p>To visualize these components (trend, seasonal and irregular), you can use the <code>plot()</code> function in R. Here is how to do it:</p>
 <ol type="1">
 <li><strong>Plot the Components</strong>: After decomposing your time series, you can create plots for each component as follows:</li>
 </ol>
@@ -719,33 +899,18 @@ Exponential smoothing is generally used to make short term forecasts, but longer
 <p>There is no single alpha value suitable for every series; estimation and forecast evaluation are needed. In some cases, the statistician’s expertise is used to choose an appropriate factor. Alternatively, statistical methods can be applied to optimize α, such as using the least squares method to find the value that minimizes the sum of errors in the model.</p>
 <section id="types-of-exponential-smoothing" class="level3" data-number="10.6.1">
 <h3 data-number="10.6.1" class="anchored" data-anchor-id="types-of-exponential-smoothing"><span class="header-section-number">10.6.1</span> Types of Exponential Smoothing</h3>
-<ol type="1">
-<li><strong>Simple Exponential Smoothing</strong>:</li>
-</ol>
-<ul>
-<li>Best suited for data without trend or seasonality.</li>
-<li>The forecast for the next period is a weighted average of past observations, where weights decrease exponentially for older observations.</li>
-<li>The smoothing parameter (()) controls the degree of weighting; values range from 0 to 1. A higher () gives more weight to recent observations.</li>
-</ul>
-<p><strong>Formula</strong>: [ F_{t+1} = Y_t + (1 - ) F_t ] where (F_{t+1}) is the forecast for the next period, (Y_t) is the actual observation at time (t), and (F_t) is the forecast for time (t).</p>
-<ol start="2" type="1">
-<li><strong>Holt’s Linear Exponential Smoothing</strong>:</li>
-</ol>
-<ul>
-<li>Extends simple exponential smoothing to account for trends in the data.</li>
-<li>It uses two smoothing parameters: one for the level (()) and one for the trend (()).</li>
-<li>This method allows for forecasts that can accommodate linear trends.</li>
-</ul>
-<p><strong>Formulas</strong>: - Level: [ l_t = Y_t + (1 - )(l_{t-1} + b_{t-1}) ] - Trend: [ b_t = (l_t - l_{t-1}) + (1 - )b_{t-1} ] - Forecast: [ F_{t+m} = l_t + mb_t ]</p>
-<ol start="3" type="1">
-<li><strong>Holt-Winters Exponential Smoothing</strong>:</li>
-</ol>
-<ul>
-<li>An extension of Holt’s method that also incorporates seasonality.</li>
-<li>It uses three parameters: () for the level, () for the trend, and () for the seasonal component.</li>
-<li>There are two variants: additive (for seasonal effects that are roughly constant) and multiplicative (for seasonal effects that change with the level of the series).</li>
-</ul>
-<p><strong>Formulas</strong>: - Level: [ l_t = (Y_t / s_{t-s}) + (1 - )(l_{t-1} + b_{t-1}) ] - Trend: [ b_t = (l_t - l_{t-1}) + (1 - )b_{t-1} ] - Seasonal: [ s_t = (Y_t / l_t) + (1 - )s_{t-s} ] - Forecast: [ F_{t+m} = (l_t + mb_t)s_{t-s+1+((m-1)s)} ]</p>
+<p><strong>1. Simple exponential smoothing</strong>: for series with no trend and no seasonality.</p>
+<p><span class="math display">\[F_{t+1} = \alpha Y_t + (1 - \alpha) F_t\]</span></p>
+<p>where <span class="math inline">\(F_{t+1}\)</span> is the forecast for the next period, <span class="math inline">\(Y_t\)</span> the observation at time <span class="math inline">\(t\)</span> and <span class="math inline">\(F_t\)</span> the forecast for time <span class="math inline">\(t\)</span>. Repeated substitution shows that the weight on the observation <span class="math inline">\(j\)</span> periods ago is <span class="math inline">\(\alpha(1-\alpha)^j\)</span>.</p>
+<p><strong>2. Holt’s linear (trend) method</strong>: for series with a trend but no seasonality. It has a level <span class="math inline">\(\ell_t\)</span> with smoothing constant <span class="math inline">\(\alpha\)</span>, and a slope <span class="math inline">\(b_t\)</span> with smoothing constant <span class="math inline">\(\beta\)</span>:</p>
+<p><span class="math display">\[\ell_t = \alpha Y_t + (1 - \alpha)(\ell_{t-1} + b_{t-1})\]</span> <span class="math display">\[b_t = \beta(\ell_t - \ell_{t-1}) + (1 - \beta) b_{t-1}\]</span> <span class="math display">\[F_{t+h} = \ell_t + h\,b_t\]</span></p>
+<p><strong>3. Holt–Winters method</strong>: for series with trend and seasonality of period <span class="math inline">\(m\)</span>, with a third smoothing constant <span class="math inline">\(\gamma\)</span> for the seasonal component <span class="math inline">\(s_t\)</span>.</p>
+<p><em>Additive seasonality</em> (seasonal swings of constant size):</p>
+<p><span class="math display">\[\ell_t = \alpha (Y_t - s_{t-m}) + (1 - \alpha)(\ell_{t-1} + b_{t-1})\]</span> <span class="math display">\[b_t = \beta(\ell_t - \ell_{t-1}) + (1 - \beta) b_{t-1}\]</span> <span class="math display">\[s_t = \gamma (Y_t - \ell_t) + (1 - \gamma) s_{t-m}\]</span> <span class="math display">\[F_{t+h} = \ell_t + h\,b_t + s_{t+h-m}\]</span></p>
+<p><em>Multiplicative seasonality</em> (seasonal swings proportional to the level):</p>
+<p><span class="math display">\[\ell_t = \alpha \frac{Y_t}{s_{t-m}} + (1 - \alpha)(\ell_{t-1} + b_{t-1})\]</span> <span class="math display">\[b_t = \beta(\ell_t - \ell_{t-1}) + (1 - \beta) b_{t-1}\]</span> <span class="math display">\[s_t = \gamma \frac{Y_t}{\ell_t} + (1 - \gamma) s_{t-m}\]</span> <span class="math display">\[F_{t+h} = (\ell_t + h\,b_t)\, s_{t+h-m}\]</span></p>
+<p>In the forecast equations, <span class="math inline">\(s_{t+h-m}\)</span> is the most recent estimate of the seasonal effect for the season being forecast (for <span class="math inline">\(h &gt; m\)</span>, use <span class="math inline">\(s_{t+h-km}\)</span> with <span class="math inline">\(k\)</span> the smallest integer such that <span class="math inline">\(h \le km\)</span>).</p>
+<p>All three methods are fitted with <code>HoltWinters()</code>: set <code>gamma = FALSE</code> for Holt’s method, and both <code>beta = FALSE, gamma = FALSE</code> for simple exponential smoothing. Use <code>seasonal = "multiplicative"</code> for multiplicative Holt–Winters.</p>
 </section>
 <section id="advantages-of-exponential-smoothing" class="level3" data-number="10.6.2">
 <h3 data-number="10.6.2" class="anchored" data-anchor-id="advantages-of-exponential-smoothing"><span class="header-section-number">10.6.2</span> Advantages of Exponential Smoothing</h3>
@@ -938,24 +1103,301 @@ a 24.67819</code></pre>
 </div>
 </section>
 </section>
-<section id="agricultural-applications-interpretation-and-further-practice" class="level2" data-number="10.7">
-<h2 data-number="10.7" class="anchored" data-anchor-id="agricultural-applications-interpretation-and-further-practice"><span class="header-section-number">10.7</span> Agricultural applications, interpretation, and further practice</h2>
-<section id="time-order-carries-information" class="level3" data-number="10.7.1">
-<h3 data-number="10.7.1" class="anchored" data-anchor-id="time-order-carries-information"><span class="header-section-number">10.7.1</span> Time order carries information</h3>
+<section id="sec-time-advanced" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="sec-time-advanced"><span class="header-section-number">10.7</span> Holt, Holt–Winters and ARIMA forecasting</h2>
+<p>The simple exponential smoothing model above is the first of a family of forecasting methods. This section completes the family with forecasts beyond the data, checks of the forecast errors, Holt’s and Holt–Winters methods, and ARIMA models <span class="citation" data-cites="hyndman2021">(<a href="references.html#ref-hyndman2021" role="doc-biblioref">R. J. Hyndman and Athanasopoulos 2021</a>)</span>.</p>
+<section id="forecasting-future-values" class="level3" data-number="10.7.1">
+<h3 data-number="10.7.1" class="anchored" data-anchor-id="forecasting-future-values"><span class="header-section-number">10.7.1</span> Forecasting future values</h3>
+<p>Forecasts beyond the data are made with <code>forecast()</code> from the <code>forecast</code> package <span class="citation" data-cites="R-forecast">(<a href="references.html#ref-R-forecast" role="doc-biblioref">R. Hyndman et al. 2023</a>)</span>. Here we forecast rainfall for 1913–1920 (8 years):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forecast)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>rainforecast8 <span class="ot">&lt;-</span> <span class="fu">forecast</span>(rainforecast, <span class="at">h =</span> <span class="dv">8</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>rainforecast8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+1913       24.67819 19.17493 30.18145 16.26169 33.09470
+1914       24.67819 19.17333 30.18305 16.25924 33.09715
+1915       24.67819 19.17173 30.18465 16.25679 33.09960
+1916       24.67819 19.17013 30.18625 16.25434 33.10204
+1917       24.67819 19.16853 30.18785 16.25190 33.10449
+1918       24.67819 19.16694 30.18945 16.24945 33.10694
+1919       24.67819 19.16534 30.19105 16.24701 33.10938
+1920       24.67819 19.16374 30.19265 16.24456 33.11182</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rainforecast8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-time-series_files/figure-html/ts10-ses-forecast-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The point forecast is 24.68 inches for every year, with 80% and 95% prediction intervals (the dark and light shaded bands).</p>
+</section>
+<section id="checking-the-forecast-errors" class="level3" data-number="10.7.2">
+<h3 data-number="10.7.2" class="anchored" data-anchor-id="checking-the-forecast-errors"><span class="header-section-number">10.7.2</span> Checking the forecast errors</h3>
+<p>If the model is adequate, the forecast errors (residuals) should show no autocorrelation, have constant variance and be roughly normally distributed with mean zero. The autocorrelation function (ACF) and the Ljung–Box test check the first condition:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(<span class="fu">residuals</span>(rainforecast8))</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(res, <span class="at">lag.max =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-time-series_files/figure-html/ts10-ses-acf-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(res, <span class="at">lag =</span> <span class="dv">20</span>, <span class="at">type =</span> <span class="st">"Ljung-Box"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Ljung test
+
+data:  res
+X-squared = 17.401, df = 20, p-value = 0.6268</code></pre>
+</div>
+</div>
+<p>No autocorrelation falls outside the significance bounds except by chance, and the Ljung–Box test is not significant (p ≈ 0.63). There is therefore little evidence of autocorrelation in the forecast errors, and simple exponential smoothing provides an adequate forecasting model for London rainfall.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(res, <span class="at">breaks =</span> <span class="dv">15</span>, <span class="at">freq =</span> <span class="cn">FALSE</span>, <span class="at">col =</span> <span class="st">"grey90"</span>, <span class="at">main =</span> <span class="st">"Forecast errors"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">dnorm</span>(x, <span class="fu">mean</span>(res), <span class="fu">sd</span>(res)), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-time-series_files/figure-html/ts10-ses-hist-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="holts-exponential-smoothing" class="level3" data-number="10.7.3">
+<h3 data-number="10.7.3" class="anchored" data-anchor-id="holts-exponential-smoothing"><span class="header-section-number">10.7.3</span> Holt’s exponential smoothing</h3>
+<p>For a series with a trend but no seasonality we use Holt’s method. The built-in <code>airmiles</code> data give the annual revenue passenger miles flown by US commercial airlines, 1937–1960, which has a strong upward trend:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(airmiles, <span class="at">ylab =</span> <span class="st">"Passenger miles (thousands)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-time-series_files/figure-html/ts10-holt-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>airholt <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(airmiles, <span class="at">gamma =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>airholt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Holt-Winters exponential smoothing with trend and without seasonal component.
+
+Call:
+HoltWinters(x = airmiles, gamma = FALSE)
+
+Smoothing parameters:
+ alpha: 0.8072924
+ beta : 0.3895832
+ gamma: FALSE
+
+Coefficients:
+       [,1]
+a 30668.871
+b  2100.563</code></pre>
+</div>
+</div>
+<p>The estimate <span class="math inline">\(\alpha \approx 0.81\)</span> means the level follows the most recent observations closely, and <span class="math inline">\(\beta \approx 0.39\)</span> means the slope is updated moderately quickly.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>airholtf <span class="ot">&lt;-</span> <span class="fu">forecast</span>(airholt, <span class="at">h =</span> <span class="dv">4</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>airholtf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+1961       32769.43 31428.80 34110.07 30719.11 34819.76
+1962       34870.00 32855.28 36884.71 31788.75 37951.24
+1963       36970.56 34183.65 39757.47 32708.35 41232.77
+1964       39071.12 35427.47 42714.78 33498.63 44643.61</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(airholtf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-time-series_files/figure-html/ts10-holt-forecast-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="holtwinters-exponential-smoothing" class="level3" data-number="10.7.4">
+<h3 data-number="10.7.4" class="anchored" data-anchor-id="holtwinters-exponential-smoothing"><span class="header-section-number">10.7.4</span> Holt–Winters exponential smoothing</h3>
+<p>For a series with trend and seasonality we use the full Holt–Winters method. We model the log of the souvenir sales, which follows an additive model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>souvenirhw <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(logsouvenirts)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>souvenirhw</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Holt-Winters exponential smoothing with trend and additive seasonal component.
+
+Call:
+HoltWinters(x = logsouvenirts)
+
+Smoothing parameters:
+ alpha: 0.413418
+ beta : 0
+ gamma: 0.9561275
+
+Coefficients:
+           [,1]
+a   10.37661961
+b    0.02996319
+s1  -0.80952063
+s2  -0.60576477
+s3   0.01103238
+s4  -0.24160551
+s5  -0.35933517
+s6  -0.18076683
+s7   0.07788605
+s8   0.10147055
+s9   0.09649353
+s10  0.05197826
+s11  0.41793637
+s12  1.18088423</code></pre>
+</div>
+</div>
+<p>The estimates are <span class="math inline">\(\alpha \approx 0.41\)</span>, <span class="math inline">\(\beta = 0\)</span> and <span class="math inline">\(\gamma \approx 0.96\)</span>. The value <span class="math inline">\(\beta = 0\)</span> means the slope is not updated: it keeps its initial value throughout. The high <span class="math inline">\(\gamma\)</span> means the seasonal effects are based mainly on the most recent observations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(souvenirhw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-time-series_files/figure-html/ts10-hw-plot-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Forecast the next 12 months (1994) and back-transform with <code>exp()</code> to get sales:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>souvenirf <span class="ot">&lt;-</span> <span class="fu">forecast</span>(souvenirhw, <span class="at">h =</span> <span class="dv">12</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(souvenirf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-time-series_files/figure-html/ts10-hw-forecast-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">exp</span>(souvenirf<span class="sc">$</span>mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct
+1994  14721  18597  35509  28421  26032  32069  42798  45152  46295  45626
+        Nov    Dec
+1994  67789 149801</code></pre>
+</div>
+</div>
+<p>The forecasts reproduce the seasonal pattern, with the highest sales in December.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(<span class="fu">residuals</span>(souvenirf), <span class="at">lag =</span> <span class="dv">20</span>, <span class="at">type =</span> <span class="st">"Ljung-Box"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Ljung test
+
+data:  residuals(souvenirf)
+X-squared = 17.53, df = 20, p-value = 0.6183</code></pre>
+</div>
+</div>
+<p>The Ljung–Box test is not significant (p ≈ 0.62), so the Holt–Winters model fits adequately.</p>
+</section>
+<section id="arima-models" class="level3" data-number="10.7.5">
+<h3 data-number="10.7.5" class="anchored" data-anchor-id="arima-models"><span class="header-section-number">10.7.5</span> ARIMA models</h3>
+<p>Exponential smoothing makes no assumption about correlation between successive values. <strong>ARIMA</strong> (autoregressive integrated moving average) models describe that correlation explicitly. An ARIMA(<span class="math inline">\(p,d,q\)</span>) model has <span class="math inline">\(p\)</span> autoregressive terms, <span class="math inline">\(d\)</span> differences and <span class="math inline">\(q\)</span> moving-average terms; seasonal ARIMA models add seasonal terms ARIMA(<span class="math inline">\(P,D,Q\)</span>)<span class="math inline">\(_m\)</span>.</p>
+<p>The orders can be chosen by examining the ACF and partial ACF of the differenced series, or automatically with <code>auto.arima()</code>, which compares candidate models by AICc:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>kingsarima <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(kingsts)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>kingsarima</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: kingsts 
+ARIMA(0,1,1) 
+
+Coefficients:
+          ma1
+      -0.7218
+s.e.   0.1208
+
+sigma^2 = 236.2:  log likelihood = -170.06
+AIC=344.13   AICc=344.44   BIC=347.56</code></pre>
+</div>
+</div>
+<p>An ARIMA(0,1,1) model is selected for the kings data: the series is differenced once and the differences follow a first-order moving-average process. Forecast the age at death of the next five kings:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>kingsf <span class="ot">&lt;-</span> <span class="fu">forecast</span>(kingsarima, <span class="at">h =</span> <span class="dv">5</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>kingsf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Point Forecast    Lo 80    Hi 80    Lo 95     Hi 95
+43       67.75063 48.05479 87.44646 37.62845  97.87281
+44       67.75063 47.30662 88.19463 36.48422  99.01703
+45       67.75063 46.58489 88.91637 35.38042 100.12084
+46       67.75063 45.88696 89.61429 34.31304 101.18822
+47       67.75063 45.21064 90.29062 33.27869 102.22257</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(kingsf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="10-time-series_files/figure-html/ts10-arima-forecast-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(<span class="fu">residuals</span>(kingsf), <span class="at">lag =</span> <span class="dv">20</span>, <span class="at">type =</span> <span class="st">"Ljung-Box"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Ljung test
+
+data:  residuals(kingsf)
+X-squared = 13.584, df = 20, p-value = 0.8509</code></pre>
+</div>
+</div>
+<p>For a seasonal series, <code>auto.arima()</code> also selects the seasonal part. For the monthly births:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">auto.arima</span>(birthsts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: birthsts 
+ARIMA(2,1,2)(1,1,1)[12] 
+
+Coefficients:
+         ar1      ar2      ma1     ma2     sar1     sma1
+      0.6539  -0.4540  -0.7255  0.2532  -0.2427  -0.8451
+s.e.  0.3003   0.2429   0.3227  0.2878   0.0985   0.0995
+
+sigma^2 = 0.4076:  log likelihood = -157.45
+AIC=328.91   AICc=329.67   BIC=350.21</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Always check the residuals of a fitted model (<code>checkresiduals()</code> in the <code>forecast</code> package does this in one step). A good model leaves residuals that look like uncorrelated random noise. For a thorough introduction to ARIMA modelling see Chapters 8–9 of <span class="citation" data-cites="hyndman2021">R. J. Hyndman and Athanasopoulos (<a href="references.html#ref-hyndman2021" role="doc-biblioref">2021</a>)</span>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="agricultural-applications-interpretation-and-further-practice" class="level2" data-number="10.8">
+<h2 data-number="10.8" class="anchored" data-anchor-id="agricultural-applications-interpretation-and-further-practice"><span class="header-section-number">10.8</span> Agricultural applications, interpretation, and further practice</h2>
+<section id="time-order-carries-information" class="level3" data-number="10.8.1">
+<h3 data-number="10.8.1" class="anchored" data-anchor-id="time-order-carries-information"><span class="header-section-number">10.8.1</span> Time order carries information</h3>
 <p>Monthly rainfall, weekly pest counts, and annual crop yields are time series when observations have a meaningful chronological order. Nearby observations may be correlated. A random train/test split can leak future information into an analysis and exaggerate forecast accuracy.</p>
 <p>A trend is a sustained change in level. Seasonality is a recurring pattern at a known period, such as 12 months. Irregular variation remains after systematic components are described. An additive representation is <span class="math inline">\(Y_t=T_t+S_t+E_t\)</span>. A multiplicative representation is more plausible when fluctuations increase with the series level, and may motivate a logarithmic transformation for strictly positive values.</p>
 </section>
-<section id="create-and-inspect-a-regular-series" class="level3" data-number="10.7.2">
-<h3 data-number="10.7.2" class="anchored" data-anchor-id="create-and-inspect-a-regular-series"><span class="header-section-number">10.7.2</span> Create and inspect a regular series</h3>
+<section id="create-and-inspect-a-regular-series" class="level3" data-number="10.8.2">
+<h3 data-number="10.8.2" class="anchored" data-anchor-id="create-and-inspect-a-regular-series"><span class="header-section-number">10.8.2</span> Create and inspect a regular series</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>weather <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/weather.csv"</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>weather<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(weather<span class="sc">$</span>date)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>weather <span class="ot">&lt;-</span> weather[<span class="fu">order</span>(weather<span class="sc">$</span>date), ]</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>expected <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">as.Date</span>(<span class="st">"2015-01-01"</span>), <span class="fu">as.Date</span>(<span class="st">"2024-12-01"</span>), <span class="at">by =</span> <span class="st">"month"</span>)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">anyDuplicated</span>(weather<span class="sc">$</span>date), <span class="fu">identical</span>(weather<span class="sc">$</span>date, expected),</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>          <span class="fu">all</span>(<span class="fu">is.finite</span>(weather<span class="sc">$</span>rain_mm)))</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>rain <span class="ot">&lt;-</span> <span class="fu">ts</span>(weather<span class="sc">$</span>rain_mm, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2015</span>, <span class="dv">1</span>), <span class="at">frequency =</span> <span class="dv">12</span>)</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rain, <span class="at">ylab =</span> <span class="st">"Monthly rainfall (mm)"</span>, <span class="at">xlab =</span> <span class="st">"Year"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>weather <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/weather.csv"</span>)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>weather<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(weather<span class="sc">$</span>date)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>weather <span class="ot">&lt;-</span> weather[<span class="fu">order</span>(weather<span class="sc">$</span>date), ]</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>expected <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">as.Date</span>(<span class="st">"2015-01-01"</span>), <span class="fu">as.Date</span>(<span class="st">"2024-12-01"</span>), <span class="at">by =</span> <span class="st">"month"</span>)</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="sc">!</span><span class="fu">anyDuplicated</span>(weather<span class="sc">$</span>date), <span class="fu">identical</span>(weather<span class="sc">$</span>date, expected),</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>          <span class="fu">all</span>(<span class="fu">is.finite</span>(weather<span class="sc">$</span>rain_mm)))</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>rain <span class="ot">&lt;-</span> <span class="fu">ts</span>(weather<span class="sc">$</span>rain_mm, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2015</span>, <span class="dv">1</span>), <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rain, <span class="at">ylab =</span> <span class="st">"Monthly rainfall (mm)"</span>, <span class="at">xlab =</span> <span class="st">"Year"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -963,7 +1405,7 @@ a 24.67819</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">monthplot</span>(rain, <span class="at">ylab =</span> <span class="st">"Monthly rainfall (mm)"</span>, <span class="at">xlab =</span> <span class="st">"Month"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">monthplot</span>(rain, <span class="at">ylab =</span> <span class="st">"Monthly rainfall (mm)"</span>, <span class="at">xlab =</span> <span class="st">"Month"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -974,12 +1416,12 @@ a 24.67819</code></pre>
 </div>
 <p><code>frequency = 12</code> declares 12 equally spaced observations per seasonal cycle; it does not fill gaps or verify dates. Irregular or missing months must be investigated before constructing the series. The simulation is smooth and complete for teaching; real rainfall often has zeros, skewness, extreme events, and structural changes.</p>
 </section>
-<section id="moving-averages-and-decomposition" class="level3" data-number="10.7.3">
-<h3 data-number="10.7.3" class="anchored" data-anchor-id="moving-averages-and-decomposition"><span class="header-section-number">10.7.3</span> Moving averages and decomposition</h3>
+<section id="moving-averages-and-decomposition" class="level3" data-number="10.8.3">
+<h3 data-number="10.8.3" class="anchored" data-anchor-id="moving-averages-and-decomposition"><span class="header-section-number">10.8.3</span> Moving averages and decomposition</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>trailing3 <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">filter</span>(rain, <span class="fu">rep</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>, <span class="dv">3</span>), <span class="at">sides =</span> <span class="dv">1</span>)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rain, <span class="at">col =</span> <span class="st">"grey60"</span>, <span class="at">ylab =</span> <span class="st">"Monthly rainfall (mm)"</span>)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(trailing3, <span class="at">col =</span> <span class="st">"#245A42"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>trailing3 <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">filter</span>(rain, <span class="fu">rep</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="dv">3</span>, <span class="dv">3</span>), <span class="at">sides =</span> <span class="dv">1</span>)</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rain, <span class="at">col =</span> <span class="st">"grey60"</span>, <span class="at">ylab =</span> <span class="st">"Monthly rainfall (mm)"</span>)</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(trailing3, <span class="at">col =</span> <span class="st">"#245A42"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -987,8 +1429,8 @@ a 24.67819</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>decomposition <span class="ot">&lt;-</span> <span class="fu">stl</span>(rain, <span class="at">s.window =</span> <span class="st">"periodic"</span>)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(decomposition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>decomposition <span class="ot">&lt;-</span> <span class="fu">stl</span>(rain, <span class="at">s.window =</span> <span class="st">"periodic"</span>)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(decomposition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -999,16 +1441,16 @@ a 24.67819</code></pre>
 </div>
 <p>A trailing three-month average uses the current and previous two months. A centred average also uses future observations relative to its centre, so it is suitable for retrospective description but not directly available at a forecast origin. Larger windows smooth more but can hide rapid changes. <code>stl()</code> here assumes a fixed seasonal pattern through <code>s.window = "periodic"</code>; inspect whether that is reasonable.</p>
 </section>
-<section id="arima-as-a-starting-model" class="level3" data-number="10.7.4">
-<h3 data-number="10.7.4" class="anchored" data-anchor-id="arima-as-a-starting-model"><span class="header-section-number">10.7.4</span> ARIMA as a starting model</h3>
+<section id="arima-as-a-starting-model" class="level3" data-number="10.8.4">
+<h3 data-number="10.8.4" class="anchored" data-anchor-id="arima-as-a-starting-model"><span class="header-section-number">10.8.4</span> ARIMA as a starting model</h3>
 <p>ARIMA combines autoregression (dependence on past values), differencing (changes between successive values), and moving-average error terms (dependence on past shocks). The notation ARIMA<span class="math inline">\((p,d,q)\)</span> gives their orders. Seasonal terms have analogous orders and a seasonal period. The moving-average term in ARIMA is not the same as a simple rolling mean of observations.</p>
 <p>Automatic selection searches candidate models under an information criterion. It cannot determine whether a forecast is useful for an agricultural decision. Fit only on the training period and compare predictions with a simple alternative.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forecast)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> <span class="fu">window</span>(rain, <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2022</span>, <span class="dv">12</span>))</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">window</span>(rain, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2023</span>, <span class="dv">1</span>))</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(train, <span class="at">seasonal =</span> <span class="cn">TRUE</span>, <span class="at">stepwise =</span> <span class="cn">FALSE</span>, <span class="at">approximation =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forecast)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> <span class="fu">window</span>(rain, <span class="at">end =</span> <span class="fu">c</span>(<span class="dv">2022</span>, <span class="dv">12</span>))</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">window</span>(rain, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2023</span>, <span class="dv">1</span>))</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(train, <span class="at">seasonal =</span> <span class="cn">TRUE</span>, <span class="at">stepwise =</span> <span class="cn">FALSE</span>, <span class="at">approximation =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Series: train 
 ARIMA(0,0,0)(0,1,1)[12] with drift 
@@ -1021,9 +1463,9 @@ s.e.   0.1496  0.0519
 sigma^2 = 180.9:  log likelihood = -341.87
 AIC=689.74   AICc=690.04   BIC=697.04</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>fc <span class="ot">&lt;-</span> <span class="fu">forecast</span>(fit, <span class="at">h =</span> <span class="fu">length</span>(test), <span class="at">level =</span> <span class="fu">c</span>(<span class="dv">80</span>, <span class="dv">95</span>))</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>baseline <span class="ot">&lt;-</span> <span class="fu">snaive</span>(train, <span class="at">h =</span> <span class="fu">length</span>(test))</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(fc, test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>fc <span class="ot">&lt;-</span> <span class="fu">forecast</span>(fit, <span class="at">h =</span> <span class="fu">length</span>(test), <span class="at">level =</span> <span class="fu">c</span>(<span class="dv">80</span>, <span class="dv">95</span>))</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>baseline <span class="ot">&lt;-</span> <span class="fu">snaive</span>(train, <span class="at">h =</span> <span class="fu">length</span>(test))</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(fc, test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                     ME     RMSE      MAE       MPE     MAPE      MASE
 Training set  0.3964322 12.43024 8.960996  0.108762 6.256319 0.6567123
@@ -1032,7 +1474,7 @@ Test set     -3.8000314 10.79652 8.679646 -2.820437 5.974210 0.6360934
 Training set -0.05648004        NA
 Test set     -0.15342540 0.3985872</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(baseline, test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(baseline, test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   ME     RMSE      MAE       MPE     MAPE      MASE       ACF1
 Training set 1.269048 16.96493 13.64524 0.2155139 9.597248 1.0000000 -0.1568845
@@ -1041,8 +1483,8 @@ Test set     2.183333 12.72442  9.62500 1.8576440 7.019550 0.7053743 -0.2741826
 Training set        NA
 Test set     0.3913482</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fc, <span class="at">xlab =</span> <span class="st">"Year"</span>, <span class="at">ylab =</span> <span class="st">"Monthly rainfall (mm)"</span>)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(test, <span class="at">col =</span> <span class="st">"#B45C21"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fc, <span class="at">xlab =</span> <span class="st">"Year"</span>, <span class="at">ylab =</span> <span class="st">"Monthly rainfall (mm)"</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(test, <span class="at">col =</span> <span class="st">"#B45C21"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1053,10 +1495,10 @@ Test set     0.3913482</code></pre>
 </div>
 <p>The seasonal naive baseline predicts each month using the value from the corresponding month of the previous year. Compare holdout RMSE and MAE, not only in-sample errors. MAPE is problematic near zero, common in rainfall. A model that loses to a baseline has not earned its complexity. For stronger evaluation, use rolling forecast origins and report accuracy by forecast horizon.</p>
 </section>
-<section id="check-residuals-and-communicate-uncertainty" class="level3" data-number="10.7.5">
-<h3 data-number="10.7.5" class="anchored" data-anchor-id="check-residuals-and-communicate-uncertainty"><span class="header-section-number">10.7.5</span> Check residuals and communicate uncertainty</h3>
+<section id="check-residuals-and-communicate-uncertainty" class="level3" data-number="10.8.5">
+<h3 data-number="10.8.5" class="anchored" data-anchor-id="check-residuals-and-communicate-uncertainty"><span class="header-section-number">10.8.5</span> Check residuals and communicate uncertainty</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">checkresiduals</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1078,8 +1520,8 @@ Model df: 1.   Total lags used: 19</code></pre>
 <p>Prediction intervals describe uncertain future observations under the model. They do not guarantee that all future values lie inside them. Changes in climate, instrumentation, or management can invalidate historical relationships.</p>
 <p>After choosing a method using training and validation, refit it on all available historical data for an operational forecast. Keep the evaluation results separate from this final fit.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>final_fit <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(rain, <span class="at">seasonal =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">forecast</span>(final_fit, <span class="at">h =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>final_fit <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(rain, <span class="at">seasonal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">forecast</span>(final_fit, <span class="at">h =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         Point Forecast     Lo 80    Hi 80     Lo 95    Hi 95
 Jan 2025       83.79209  66.60928 100.9749  57.51325 110.0709
@@ -1097,8 +1539,8 @@ Dec 2025      116.28728  99.10447 133.4701  90.00844 142.5661</code></pre>
 </div>
 </div>
 </section>
-<section id="practical-10-and-exercises" class="level3" data-number="10.7.6">
-<h3 data-number="10.7.6" class="anchored" data-anchor-id="practical-10-and-exercises"><span class="header-section-number">10.7.6</span> Practical 10 and exercises</h3>
+<section id="practical-10-and-exercises" class="level3" data-number="10.8.6">
+<h3 data-number="10.8.6" class="anchored" data-anchor-id="practical-10-and-exercises"><span class="header-section-number">10.8.6</span> Practical 10 and exercises</h3>
 <ol type="1">
 <li>Compare three-month and twelve-month trailing means. Describe the patterns each suppresses.</li>
 <li>Compare ARIMA and seasonal-naive holdout MAE and RMSE. Write the conclusion supported by these results, even if the simpler method wins.</li>
@@ -1109,21 +1551,21 @@ Dec 2025      116.28728  99.10447 133.4701  90.00844 142.5661</code></pre>
 <p><strong>Chapter review.</strong> Preserve chronology, verify regular spacing, compare a baseline, inspect residual dependence, and communicate prediction uncertainty.</p>
 </section>
 </section>
-<section id="live-r-laboratory" class="level2" data-number="10.8">
-<h2 data-number="10.8" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">10.8</span> Live R laboratory</h2>
+<section id="live-r-laboratory" class="level2" data-number="10.9">
+<h2 data-number="10.9" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">10.9</span> Live R laboratory</h2>
 <div class="live-r">
 <p><strong>Smooth a seasonal series and forecast</strong></p>
 <p>Edit the code, then select <strong>Run R</strong>. The first run downloads R into your browser and may take a little time. <strong>Copy code</strong> also lets you use this example in RStudio.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">531</span>)</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>month <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">60</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>rain <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="dv">100</span> <span class="sc">+</span> <span class="fl">0.3</span> <span class="sc">*</span> month <span class="sc">+</span> <span class="dv">30</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> month <span class="sc">/</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>           <span class="fu">rnorm</span>(<span class="dv">60</span>, <span class="dv">0</span>, <span class="dv">8</span>), <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2020</span>, <span class="dv">1</span>), <span class="at">frequency =</span> <span class="dv">12</span>)</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>smooth <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">filter</span>(rain, <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">12</span>, <span class="dv">12</span>), <span class="at">sides =</span> <span class="dv">2</span>)</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rain, <span class="at">col =</span> <span class="st">"#386ca2"</span>, <span class="at">ylab =</span> <span class="st">"Simulated rain (mm)"</span>)</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(smooth, <span class="at">col =</span> <span class="st">"#b87521"</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">arima</span>(rain, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>),</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">seasonal =</span> <span class="fu">list</span>(<span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="at">period =</span> <span class="dv">12</span>))</span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit, <span class="at">n.ahead =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">531</span>)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>month <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">60</span></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>rain <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="dv">100</span> <span class="sc">+</span> <span class="fl">0.3</span> <span class="sc">*</span> month <span class="sc">+</span> <span class="dv">30</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> month <span class="sc">/</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>           <span class="fu">rnorm</span>(<span class="dv">60</span>, <span class="dv">0</span>, <span class="dv">8</span>), <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2020</span>, <span class="dv">1</span>), <span class="at">frequency =</span> <span class="dv">12</span>)</span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>smooth <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">filter</span>(rain, <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">12</span>, <span class="dv">12</span>), <span class="at">sides =</span> <span class="dv">2</span>)</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rain, <span class="at">col =</span> <span class="st">"#386ca2"</span>, <span class="at">ylab =</span> <span class="st">"Simulated rain (mm)"</span>)</span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(smooth, <span class="at">col =</span> <span class="st">"#b87521"</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">arima</span>(rain, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>),</span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">seasonal =</span> <span class="fu">list</span>(<span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="at">period =</span> <span class="dv">12</span>))</span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit, <span class="at">n.ahead =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>Investigate.</strong> The forecast prints predictions and standard errors. This is a model demonstration on simulated rainfall, not an operational weather forecast. Explain why smoothing produces missing values at the ends.</p>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled" title="From the browser to your practical notebook">
@@ -1139,8 +1581,104 @@ From the browser to your practical notebook
 <p>Record the input you changed, the output you obtained, and your interpretation. These live examples use base R and work independently. The full chapter examples, including package-based analyses, remain available with copy buttons for RStudio. Browser objects last until this page is reloaded; Reset code restores the editor text. Internet access is needed on first use; long or interactive desktop tasks belong in RStudio.</p>
 </div>
 </div>
+<div class="callout callout-style-default callout-caution callout-titled" title="Historical Insights">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Historical Insights
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Charles C. Holt developed exponential smoothing with trends in 1957 and his student Peter R. Winters added seasonality in 1960. George Box and Gwilym Jenkins published the ARIMA methodology in <em>Time Series Analysis: Forecasting and Control</em> in 1970.</p>
+</div>
+</div>
+</section>
+<section id="chapter-summary" class="level2" data-number="10.10">
+<h2 data-number="10.10" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">10.10</span> Chapter Summary</h2>
+<section id="fill-in-the-blanks" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="fill-in-the-blanks">Fill in the blanks</h3>
+<p>Answers are given at the end of the chapter.</p>
+<ol type="1">
+<li>A time series is stored in R with the function __________.</li>
+<li>For monthly data the <code>frequency</code> argument is __________.</li>
+<li>The long-term movement of a series is its __________.</li>
+<li>A pattern that repeats every year is the __________ component.</li>
+<li><code>decompose()</code> estimates the trend with a centred __________ average.</li>
+<li>In simple exponential smoothing, an <span class="math inline">\(\alpha\)</span> close to 0 gives __________ smoothing.</li>
+<li>Holt’s method adds a smoothing constant <span class="math inline">\(\beta\)</span> for the __________.</li>
+<li>The Ljung–Box test checks the forecast errors for __________.</li>
+</ol>
+</section>
+<section id="short-answer-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="short-answer-questions">Short-answer questions</h3>
+<ol type="1">
+<li>Distinguish between additive and multiplicative time series models.</li>
+<li>How is a series seasonally adjusted?</li>
+<li>Interpret an estimated <span class="math inline">\(\alpha\)</span> of 0.02 in simple exponential smoothing.</li>
+<li>When would you use Holt–Winters rather than Holt’s method?</li>
+<li>What should the residuals of a good forecasting model look like?</li>
+</ol>
+</section>
+<section id="numerical-and-conceptual-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="numerical-and-conceptual-questions">Numerical and conceptual questions</h3>
+<p>Answers are given at the end of the chapter.</p>
+<ol type="1">
+<li>The current forecast is 24 and the new observation 30. With <span class="math inline">\(\alpha = 0.2\)</span>, find the next forecast.</li>
+<li>Holt’s method gives level 100 and slope 5 at time <span class="math inline">\(t\)</span>. Forecast 3 periods ahead.</li>
+<li>An additive series has the value 30 in July, when the seasonal effect is +2.5. Find the seasonally adjusted value.</li>
+</ol>
+</section>
+<section id="important-formulae" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="important-formulae">Important formulae</h3>
+<p>Simple exponential smoothing:</p>
+<p><span id="eq-ch10-ses"><span class="math display">\[
+F_{t+1} = \alpha Y_t + (1-\alpha)F_t
+\tag{10.1}\]</span></span></p>
+<p>Holt’s forecast <span class="math inline">\(h\)</span> periods ahead:</p>
+<p><span id="eq-ch10-holt"><span class="math display">\[
+F_{t+h} = \ell_t + h\,b_t
+\tag{10.2}\]</span></span></p>
+<p>Additive decomposition and seasonal adjustment:</p>
+<p><span id="eq-ch10-add"><span class="math display">\[
+Y_t = T_t + S_t + I_t, \qquad Y_t^{\text{adj}} = Y_t - S_t
+\tag{10.3}\]</span></span></p>
+</section>
+<section id="quick-revision" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="quick-revision">Quick revision</h3>
+<ul>
+<li>Plot first; constant fluctuations → additive; growing fluctuations → log or multiplicative.</li>
+<li><code>decompose()</code> → trend, seasonal, irregular; adjust by subtracting <span class="math inline">\(S_t\)</span>.</li>
+<li>No trend, no season → simple smoothing; trend → Holt; trend and season → Holt–Winters.</li>
+<li><span class="math inline">\(\alpha\)</span> near 1 → follows recent data; <span class="math inline">\(\alpha\)</span> near 0 → long-run average.</li>
+<li>Check residuals: no autocorrelation, constant variance.</li>
+</ul>
+</section>
+<section id="answers-to-fill-in-the-blanks" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="answers-to-fill-in-the-blanks">Answers to fill in the blanks</h3>
+<div class="answer-key">
+<p><code>1.</code> <code>ts()</code> <code>2.</code> 12 <code>3.</code> trend <code>4.</code> seasonal <code>5.</code> moving <code>6.</code> heavy <code>7.</code> trend <code>8.</code> autocorrelation</p>
+</div>
+</section>
+<section id="solutions-to-numerical-and-conceptual-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="solutions-to-numerical-and-conceptual-questions">Solutions to numerical and conceptual questions</h3>
+<ol type="1">
+<li>By <a href="#eq-ch10-ses" class="quarto-xref">Equation&nbsp;<span>10.1</span></a>, <span class="math inline">\(0.2\times30 + 0.8\times24 = 25.2\)</span>.</li>
+<li>By <a href="#eq-ch10-holt" class="quarto-xref">Equation&nbsp;<span>10.2</span></a>, <span class="math inline">\(100 + 3\times5 = 115\)</span>.</li>
+<li>By <a href="#eq-ch10-add" class="quarto-xref">Equation&nbsp;<span>10.3</span></a>, <span class="math inline">\(30 - 2.5 = 27.5\)</span>.</li>
+</ol>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-hyndman2021" class="csl-entry" role="listitem">
+Hyndman, Rob J., and George Athanasopoulos. 2021. <em>Forecasting: Principles and Practice</em>. 3rd ed. Melbourne: OTexts. <a href="https://otexts.com/fpp3/">https://otexts.com/fpp3/</a>.
+</div>
+<div id="ref-R-forecast" class="csl-entry" role="listitem">
+Hyndman, Rob, George Athanasopoulos, Christoph Bergmeir, Gabriel Caceres, Leanne Chhay, Kirill Kuroptev, Mitchell O’Hara-Wild, et al. 2023. <em>Forecast: Forecasting Functions for Time Series and Linear Models</em>. <a href="https://pkg.robjhyndman.com/forecast/">https://pkg.robjhyndman.com/forecast/</a>.
+</div>
+</div>
+</section>
 </section>
 
 </main> <!-- /main -->

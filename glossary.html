@@ -68,6 +68,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -97,6 +126,9 @@ ul.task-list li input[type="checkbox"] {
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">R Programming for Agricultural Data Analysis</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/KAUMELON/stat-531" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -291,6 +323,145 @@ ul.task-list li input[type="checkbox"] {
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 8 · Exploratory analysis and probability distributions (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-met-eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exploring a multi-environment trial</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Probability distributions and goodness of fit</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 9 · Tests of significance (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-large-sample.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Large-sample tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-small-sample.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Tests based on t, F and chi-square</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 10 · Analysis of variance and covariance (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-anova-mcp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Analysis of variance and multiple comparisons</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-research-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Research experiments: blocks, factorials, split and strip plots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-contrasts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Contrast analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-ancova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Analysis of covariance</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 11 · Mixed models and multiple regression (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-mixed-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Mixed models and variance components</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Partial correlation and multiple regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 12 · Multivariate methods and non-linear models (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-pca.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Principal component analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-factor-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Factor analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./27-discriminant.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Discriminant function analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./28-nonlinear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Fitting non-linear models</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
@@ -299,13 +470,13 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data-dictionary.html" class="sidebar-item-text sidebar-link">
@@ -340,6 +511,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#r-language-reminders" id="toc-r-language-reminders" class="nav-link" data-scroll-target="#r-language-reminders"><span class="header-section-number">C.2</span> R language reminders</a></li>
   <li><a href="#common-errors-and-a-repair-sequence" id="toc-common-errors-and-a-repair-sequence" class="nav-link" data-scroll-target="#common-errors-and-a-repair-sequence"><span class="header-section-number">C.3</span> Common errors and a repair sequence</a></li>
   <li><a href="#before-you-submit-an-analysis" id="toc-before-you-submit-an-analysis" class="nav-link" data-scroll-target="#before-you-submit-an-analysis"><span class="header-section-number">C.4</span> Before you submit an analysis</a></li>
+  <li><a href="#terms-for-the-stat-531-modules" id="toc-terms-for-the-stat-531-modules" class="nav-link" data-scroll-target="#terms-for-the-stat-531-modules"><span class="header-section-number">C.5</span> Terms for the STAT 531 modules</a></li>
+  <li><a href="#r-function-reference" id="toc-r-function-reference" class="nav-link" data-scroll-target="#r-function-reference"><span class="header-section-number">C.6</span> R function reference</a></li>
   </ul>
 </nav>
     </div>
@@ -562,6 +735,319 @@ ul.task-list li input[type="checkbox"] {
 <section id="before-you-submit-an-analysis" class="level2" data-number="C.4">
 <h2 data-number="C.4" class="anchored" data-anchor-id="before-you-submit-an-analysis"><span class="header-section-number">C.4</span> Before you submit an analysis</h2>
 <p>State the question and unit; document the source and units; retain raw data; record cleaning decisions; show distributions; justify the model; examine residuals; report effects and uncertainty; distinguish association from causation; and render from a fresh session. These steps are scientific habits, not a substitute for judgment.</p>
+</section>
+<section id="terms-for-the-stat-531-modules" class="level2" data-number="C.5">
+<h2 data-number="C.5" class="anchored" data-anchor-id="terms-for-the-stat-531-modules"><span class="header-section-number">C.5</span> Terms for the STAT 531 modules</h2>
+<div id="tbl-stat531-glossary" class="bordered quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-stat531-glossary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;C.1: Statistical terms used in Modules 8 to 12
+</figcaption>
+<div aria-describedby="tbl-stat531-glossary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-bordered caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Term</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Experimental unit (plot)</td>
+<td style="text-align: left;">The smallest unit to which a treatment is independently applied.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Replication</td>
+<td style="text-align: left;">Independent repetition of a treatment on different experimental units.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Randomisation</td>
+<td style="text-align: left;">Allocation of treatments to units by chance, which makes the error estimate valid.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Local control (blocking)</td>
+<td style="text-align: left;">Grouping similar units into blocks so that variation between blocks is removed from the error.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Factor, level</td>
+<td style="text-align: left;">A variable whose effect is studied, and the values it takes.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Main effect</td>
+<td style="text-align: left;">The effect of a factor averaged over the levels of the other factors.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Interaction</td>
+<td style="text-align: left;">The effect of one factor depends on the level of another.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Error mean square (EMS)</td>
+<td style="text-align: left;">Estimate of the variance among experimental units treated alike, <span class="math inline">\(\sigma^2\)</span>.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Coefficient of variation (CV)</td>
+<td style="text-align: left;"><span class="math inline">\(\sqrt{\text{EMS}}/\bar y \times 100\)</span>; a measure of the precision of an experiment.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SE(m), SE(d)</td>
+<td style="text-align: left;">Standard error of a treatment mean, <span class="math inline">\(\sqrt{\text{EMS}/r}\)</span>, and of a difference between two means, <span class="math inline">\(\sqrt{2\,\text{EMS}/r}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Critical difference (CD), LSD</td>
+<td style="text-align: left;"><span class="math inline">\(t_{\alpha/2,\,\text{edf}} \times \text{SE(d)}\)</span>; the smallest difference between two means that is significant.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Contrast</td>
+<td style="text-align: left;">A linear combination of treatment means whose coefficients sum to zero.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Orthogonal contrasts</td>
+<td style="text-align: left;">Contrasts whose coefficient products sum to zero; they split the treatment SS into independent parts.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Covariate</td>
+<td style="text-align: left;">A variable measured on each unit, related to the response and unaffected by the treatments, used in ANCOVA.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fixed effect</td>
+<td style="text-align: left;">A factor whose levels are deliberately chosen; inference applies to those levels.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Random effect</td>
+<td style="text-align: left;">A factor whose levels are a sample from a population; we estimate its variance.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Variance component</td>
+<td style="text-align: left;">The variance attributable to a random factor, e.g.&nbsp;genotypic variance <span class="math inline">\(\sigma_g^2\)</span>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Heritability (broad sense)</td>
+<td style="text-align: left;">Ratio of genotypic to phenotypic variance.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BLUE, BLUP</td>
+<td style="text-align: left;">Best linear unbiased estimate of a fixed effect; best linear unbiased prediction of a random effect.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">p-value</td>
+<td style="text-align: left;">Probability, if <span class="math inline">\(H_0\)</span> were true, of a result at least as extreme as the one observed.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Type I, Type II error</td>
+<td style="text-align: left;">Rejecting a true <span class="math inline">\(H_0\)</span>; failing to reject a false <span class="math inline">\(H_0\)</span>.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Power</td>
+<td style="text-align: left;">Probability of rejecting <span class="math inline">\(H_0\)</span> when it is false, <span class="math inline">\(1-\beta\)</span>.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Residual</td>
+<td style="text-align: left;">Observed value minus fitted value.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Coefficient of determination (<span class="math inline">\(R^2\)</span>)</td>
+<td style="text-align: left;">Proportion of the variation in <span class="math inline">\(y\)</span> explained by a regression.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Multicollinearity</td>
+<td style="text-align: left;">Strong correlation among predictors, which makes regression coefficients unstable (measured by VIF).</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eigenvalue, loading, score</td>
+<td style="text-align: left;">In PCA: variance of a component; weight of a variable in a component; value of a component for a unit.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Communality, uniqueness</td>
+<td style="text-align: left;">In factor analysis: variance of a variable shared with common factors; variance specific to that variable.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mahalanobis’ <span class="math inline">\(D^2\)</span></td>
+<td style="text-align: left;">Squared distance between group means scaled by the pooled covariance matrix.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Asymptote</td>
+<td style="text-align: left;">The limiting value a non-linear response curve approaches.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Trend, seasonal, irregular</td>
+<td style="text-align: left;">The long-term movement, regular periodic pattern and random remainder of a time series.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Smoothing constant (<span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>, <span class="math inline">\(\gamma\)</span>)</td>
+<td style="text-align: left;">Weights in exponential smoothing for level, trend and seasonal components.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="r-function-reference" class="level2" data-number="C.6">
+<h2 data-number="C.6" class="anchored" data-anchor-id="r-function-reference"><span class="header-section-number">C.6</span> R function reference</h2>
+<div id="tbl-functions" class="bordered quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;C.2: R functions used in this book
+</figcaption>
+<div aria-describedby="tbl-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table-bordered caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Task</th>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Package</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Import a CSV / Excel file</td>
+<td style="text-align: left;"><code>read.csv()</code>, <code>read_excel()</code></td>
+<td style="text-align: left;">utils, readxl</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Structure, summary</td>
+<td style="text-align: left;"><code>str()</code>, <code>summary()</code>, <code>head()</code></td>
+<td style="text-align: left;">base</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Grouped summaries</td>
+<td style="text-align: left;"><code>tapply()</code>, <code>aggregate()</code></td>
+<td style="text-align: left;">base</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Frequency tables</td>
+<td style="text-align: left;"><code>table()</code>, <code>xtabs()</code>, <code>prop.table()</code>, <code>addmargins()</code></td>
+<td style="text-align: left;">base</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Graphs</td>
+<td style="text-align: left;"><code>barplot()</code>, <code>hist()</code>, <code>boxplot()</code>, <code>plot()</code>, <code>pairs()</code></td>
+<td style="text-align: left;">graphics</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Distributions</td>
+<td style="text-align: left;"><code>dbinom()</code>, <code>dpois()</code>, <code>pnorm()</code>, <code>qt()</code>, <code>qchisq()</code>, <code>qf()</code></td>
+<td style="text-align: left;">stats</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fit a distribution</td>
+<td style="text-align: left;"><code>goodfit()</code>, <code>fitdist()</code></td>
+<td style="text-align: left;">vcd, fitdistrplus</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Normality</td>
+<td style="text-align: left;"><code>shapiro.test()</code>, <code>qqnorm()</code>, <code>lillie.test()</code></td>
+<td style="text-align: left;">stats, nortest</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>t</em> tests</td>
+<td style="text-align: left;"><code>t.test()</code></td>
+<td style="text-align: left;">stats</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Proportions</td>
+<td style="text-align: left;"><code>prop.test()</code>, <code>binom.test()</code></td>
+<td style="text-align: left;">stats</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Variances</td>
+<td style="text-align: left;"><code>var.test()</code>, <code>bartlett.test()</code>, <code>leveneTest()</code></td>
+<td style="text-align: left;">stats, car</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chi-square, Fisher</td>
+<td style="text-align: left;"><code>chisq.test()</code>, <code>fisher.test()</code></td>
+<td style="text-align: left;">stats</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Non-parametric tests</td>
+<td style="text-align: left;"><code>wilcox.test()</code>, <code>kruskal.test()</code>, <code>friedman.test()</code></td>
+<td style="text-align: left;">stats</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ANOVA</td>
+<td style="text-align: left;"><code>aov()</code>, <code>lm()</code>, <code>anova()</code>, <code>Anova()</code></td>
+<td style="text-align: left;">stats, car</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CV of an experiment</td>
+<td style="text-align: left;"><code>cv.model()</code></td>
+<td style="text-align: left;">agricolae</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Multiple comparisons</td>
+<td style="text-align: left;"><code>LSD.test()</code>, <code>HSD.test()</code>, <code>duncan.test()</code>, <code>scheffe.test()</code>, <code>TukeyHSD()</code></td>
+<td style="text-align: left;">agricolae, stats</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Split-plot, strip-plot</td>
+<td style="text-align: left;"><code>sp.plot()</code>, <code>strip.plot()</code>, <code>aov(... + Error())</code></td>
+<td style="text-align: left;">agricolae, stats</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Means, contrasts</td>
+<td style="text-align: left;"><code>emmeans()</code>, <code>contrast()</code>, <code>pairs()</code>, <code>cld()</code></td>
+<td style="text-align: left;">emmeans, multcomp</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mixed models</td>
+<td style="text-align: left;"><code>lmer()</code>, <code>ranova()</code>, <code>VarCorr()</code>, <code>ranef()</code></td>
+<td style="text-align: left;">lme4, lmerTest</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Correlation</td>
+<td style="text-align: left;"><code>cor()</code>, <code>cor.test()</code>, <code>partial.r()</code></td>
+<td style="text-align: left;">stats, psych</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Regression</td>
+<td style="text-align: left;"><code>lm()</code>, <code>predict()</code>, <code>confint()</code>, <code>step()</code>, <code>vif()</code></td>
+<td style="text-align: left;">stats, car</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Non-linear regression</td>
+<td style="text-align: left;"><code>nls()</code>, <code>SSasymp()</code>, <code>SSlogis()</code>, <code>SSgompertz()</code></td>
+<td style="text-align: left;">stats</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PCA</td>
+<td style="text-align: left;"><code>prcomp()</code>, <code>PCA()</code>, <code>fviz_pca_biplot()</code></td>
+<td style="text-align: left;">stats, FactoMineR, factoextra</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Factor analysis</td>
+<td style="text-align: left;"><code>factanal()</code>, <code>fa()</code>, <code>fa.parallel()</code>, <code>KMO()</code></td>
+<td style="text-align: left;">stats, psych</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Discriminant analysis</td>
+<td style="text-align: left;"><code>lda()</code>, <code>qda()</code>, <code>manova()</code></td>
+<td style="text-align: left;">MASS, stats</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Time series</td>
+<td style="text-align: left;"><code>ts()</code>, <code>decompose()</code>, <code>HoltWinters()</code>, <code>forecast()</code>, <code>auto.arima()</code></td>
+<td style="text-align: left;">stats, forecast</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Experimental layouts</td>
+<td style="text-align: left;"><code>design.crd()</code>, <code>design.rcbd()</code>, <code>design.lsd()</code>, <code>design.split()</code></td>
+<td style="text-align: left;">agricolae</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
 
 
 </section>

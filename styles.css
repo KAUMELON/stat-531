@@ -43,3 +43,8 @@ section[id^="worked-"]>h2 { margin-top:.25rem; }
 .live-plots canvas { max-width:100%; height:auto; display:block; margin-top:1rem; background:white; }
 @media(max-width:600px) { body { font-size:1rem; }.live-r,.worked-example { padding:.85rem; } }
 @media print { body { font-size:11pt; }.live-toolbar,.live-status { display:none; }.live-r textarea { border:none; } }
+.answer-key { background:#f6f8fc; border:1px dashed #9bb9d6; border-radius:.4rem; padding:.8rem 1rem; line-height:2; }
+.answer-key code { color:#17375e; font-weight:700; background:none; }
+.callout-caution { background:#fbf6ee; }
+h2#chapter-summary, section[id^="chapter-summary"] > h2 { border-bottom:3px solid var(--gold); }
+.worked-example>p:first-child { font-weight:400; }

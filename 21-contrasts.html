@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>23&nbsp; Contrast analysis – R Programming for Agricultural Data Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./22-ancova.html" rel="next">
+<link href="./20-research-designs.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0626ff4d7a71b55c8707dcae1d04a9b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7e0ba62e706371ef56a0d445b6cb2578.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./19-anova-mcp.html">Module 10 · Analysis of variance and covariance (STAT 531)</a></li><li class="breadcrumb-item"><a href="./21-contrasts.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Contrast analysis</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R Programming for Agricultural Data Analysis</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/KAUMELON/stat-531" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./course-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course guide</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 1 · Foundations and data exchange</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting started with R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-r-language.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Objects, data structures, and functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-data-import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Importing, validating, and exporting data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 2 · Data wrangling and cleaning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-cleaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Cleaning agricultural observations</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-wrangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Transforming and summarizing data with dplyr</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 3 · Data visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Visualizing agricultural data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 4 · Descriptive and exploratory analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-descriptive.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Describing agricultural variation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">An exploratory study of crop yield</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 5 · Growth and time series</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-growth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Modelling crop growth</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-time-series.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Agricultural time series and forecasting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 6 · Statistical analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Hypothesis tests and confidence intervals</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Comparing treatments with analysis of variance</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12b-experimental-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Designing and analysing field experiments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Correlation and regression for agricultural prediction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 7 · Reproducible research and AI-assisted coding</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports with R Markdown and Quarto</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14b-vibe-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Vibe coding: writing R with an AI assistant</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 8 · Exploratory analysis and probability distributions (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-met-eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Exploring a multi-environment trial</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Probability distributions and goodness of fit</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 9 · Tests of significance (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-large-sample.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Large-sample tests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-small-sample.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Tests based on t, F and chi-square</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 10 · Analysis of variance and covariance (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-anova-mcp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Analysis of variance and multiple comparisons</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-research-designs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Research experiments: blocks, factorials, split and strip plots</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-contrasts.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Contrast analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-ancova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Analysis of covariance</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 11 · Mixed models and multiple regression (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-mixed-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Mixed models and variance components</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24-multiple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Partial correlation and multiple regression</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true">
+ <span class="menu-text">Module 12 · Multivariate methods and non-linear models (STAT 531)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-pca.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Principal component analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-factor-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Factor analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./27-discriminant.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Discriminant function analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./28-nonlinear.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Fitting non-linear models</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References and further reading</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-dictionary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Datasets and measurement units</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./solutions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Selected exercise solutions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Glossary and R reference</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#learning-outcomes" id="toc-learning-outcomes" class="nav-link active" data-scroll-target="#learning-outcomes">Learning outcomes</a></li>
+  <li><a href="#contrasts" id="toc-contrasts" class="nav-link" data-scroll-target="#contrasts"><span class="header-section-number">23.1</span> Contrasts</a>
+  <ul class="collapse">
+  <li><a href="#orthogonal-contrasts" id="toc-orthogonal-contrasts" class="nav-link" data-scroll-target="#orthogonal-contrasts"><span class="header-section-number">23.1.1</span> Orthogonal contrasts</a></li>
+  </ul></li>
+  <li><a href="#example-23.1-planned-comparisons-among-virus-treatments" id="toc-example-23.1-planned-comparisons-among-virus-treatments" class="nav-link" data-scroll-target="#example-23.1-planned-comparisons-among-virus-treatments"><span class="header-section-number">23.2</span> Example 23.1: planned comparisons among virus treatments</a>
+  <ul class="collapse">
+  <li><a href="#method-1-contrasts-in-aov" id="toc-method-1-contrasts-in-aov" class="nav-link" data-scroll-target="#method-1-contrasts-in-aov"><span class="header-section-number">23.2.1</span> Method 1: contrasts in aov()</a></li>
+  <li><a href="#method-2-contrasts-with-emmeans" id="toc-method-2-contrasts-with-emmeans" class="nav-link" data-scroll-target="#method-2-contrasts-with-emmeans"><span class="header-section-number">23.2.2</span> Method 2: contrasts with emmeans</a></li>
+  </ul></li>
+  <li><a href="#orthogonal-polynomials-for-quantitative-treatments" id="toc-orthogonal-polynomials-for-quantitative-treatments" class="nav-link" data-scroll-target="#orthogonal-polynomials-for-quantitative-treatments"><span class="header-section-number">23.3</span> Orthogonal polynomials for quantitative treatments</a>
+  <ul class="collapse">
+  <li><a href="#example-23.2-seeding-rate-of-rice" id="toc-example-23.2-seeding-rate-of-rice" class="nav-link" data-scroll-target="#example-23.2-seeding-rate-of-rice"><span class="header-section-number">23.3.1</span> Example 23.2: seeding rate of rice</a></li>
+  <li><a href="#example-23.3-nitrogen-in-a-split-plot-experiment" id="toc-example-23.3-nitrogen-in-a-split-plot-experiment" class="nav-link" data-scroll-target="#example-23.3-nitrogen-in-a-split-plot-experiment"><span class="header-section-number">23.3.2</span> Example 23.3: nitrogen in a split-plot experiment</a></li>
+  </ul></li>
+  <li><a href="#contrasts-in-factorial-experiments" id="toc-contrasts-in-factorial-experiments" class="nav-link" data-scroll-target="#contrasts-in-factorial-experiments"><span class="header-section-number">23.4</span> Contrasts in factorial experiments</a></li>
+  <li><a href="#live-r-laboratory" id="toc-live-r-laboratory" class="nav-link" data-scroll-target="#live-r-laboratory"><span class="header-section-number">23.5</span> Live R laboratory</a></li>
+  <li><a href="#practical-25-and-exercises" id="toc-practical-25-and-exercises" class="nav-link" data-scroll-target="#practical-25-and-exercises"><span class="header-section-number">23.6</span> Practical 25 and exercises</a></li>
+  <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">23.7</span> Chapter Summary</a>
+  <ul class="collapse">
+  <li><a href="#fill-in-the-blanks" id="toc-fill-in-the-blanks" class="nav-link" data-scroll-target="#fill-in-the-blanks">Fill in the blanks</a></li>
+  <li><a href="#short-answer-questions" id="toc-short-answer-questions" class="nav-link" data-scroll-target="#short-answer-questions">Short-answer questions</a></li>
+  <li><a href="#numerical-and-conceptual-questions" id="toc-numerical-and-conceptual-questions" class="nav-link" data-scroll-target="#numerical-and-conceptual-questions">Numerical and conceptual questions</a></li>
+  <li><a href="#important-formulae" id="toc-important-formulae" class="nav-link" data-scroll-target="#important-formulae">Important formulae</a></li>
+  <li><a href="#quick-revision" id="toc-quick-revision" class="nav-link" data-scroll-target="#quick-revision">Quick revision</a></li>
+  <li><a href="#answers-to-fill-in-the-blanks" id="toc-answers-to-fill-in-the-blanks" class="nav-link" data-scroll-target="#answers-to-fill-in-the-blanks">Answers to fill in the blanks</a></li>
+  <li><a href="#solutions-to-numerical-and-conceptual-questions" id="toc-solutions-to-numerical-and-conceptual-questions" class="nav-link" data-scroll-target="#solutions-to-numerical-and-conceptual-questions">Solutions to numerical and conceptual questions</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./19-anova-mcp.html">Module 10 · Analysis of variance and covariance (STAT 531)</a></li><li class="breadcrumb-item"><a href="./21-contrasts.html"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Contrast analysis</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-contrasts" class="quarto-section-identifier"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Contrast analysis</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="learning-outcomes" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-outcomes">Learning outcomes</h2>
+<p>Define contrasts and orthogonality, partition a treatment sum of squares into single-degree-of-freedom contrasts, and use orthogonal polynomials to describe the response to quantitative treatments.</p>
+<p>Multiple comparison procedures (<a href="19-anova-mcp.html" class="quarto-xref"><span>Chapter 21</span></a>) compare treatment means without a specific plan. Most experiments, however, are designed to answer specific questions: <em>Is the new fungicide better than the old ones? Do organic sources differ from inorganic ones? How does yield respond to increasing doses of nitrogen?</em> Such questions are answered more powerfully by <strong>contrasts</strong> planned before the experiment.</p>
+</section>
+<section id="contrasts" class="level2" data-number="23.1">
+<h2 data-number="23.1" class="anchored" data-anchor-id="contrasts"><span class="header-section-number">23.1</span> Contrasts</h2>
+<p>A <strong>contrast</strong> among <span class="math inline">\(t\)</span> treatment means is a linear combination</p>
+<p><span class="math display">\[L = \sum_{i=1}^{t} c_i \mu_i \qquad \text{with} \qquad \sum_{i=1}^{t} c_i = 0\]</span></p>
+<p>For example, with four treatments, <span class="math inline">\(L = \mu_1 - \mu_2\)</span> compares treatments 1 and 2, and <span class="math inline">\(L = 3\mu_1 - \mu_2 - \mu_3 - \mu_4\)</span> compares treatment 1 with the average of the other three.</p>
+<p>The contrast is estimated by <span class="math inline">\(\hat L = \sum c_i \bar y_i\)</span>, with standard error</p>
+<p><span class="math display">\[\text{SE}(\hat L) = \sqrt{\text{EMS}\sum_i \frac{c_i^2}{r_i}}\]</span></p>
+<p>and its <strong>sum of squares</strong> (with 1 df) is</p>
+<p><span class="math display">\[\text{SS}(L) = \frac{\left(\sum_i c_i T_i\right)^2}{r \sum_i c_i^2}\]</span></p>
+<p>where <span class="math inline">\(T_i\)</span> are the treatment totals. <span class="math inline">\(H_0: L = 0\)</span> is tested by <span class="math inline">\(F = \text{SS}(L)/\text{EMS}\)</span> with <span class="math inline">\((1, \text{error df})\)</span> degrees of freedom, or equivalently by <span class="math inline">\(t = \hat L / \text{SE}(\hat L)\)</span>.</p>
+<section id="orthogonal-contrasts" class="level3" data-number="23.1.1">
+<h3 data-number="23.1.1" class="anchored" data-anchor-id="orthogonal-contrasts"><span class="header-section-number">23.1.1</span> Orthogonal contrasts</h3>
+<p>Two contrasts with coefficients <span class="math inline">\(c_i\)</span> and <span class="math inline">\(d_i\)</span> are <strong>orthogonal</strong> if <span class="math inline">\(\sum c_i d_i / r_i = 0\)</span> (for equal replication, <span class="math inline">\(\sum c_i d_i = 0\)</span>). A set of <span class="math inline">\(t - 1\)</span> mutually orthogonal contrasts splits the treatment sum of squares exactly into <span class="math inline">\(t - 1\)</span> independent single-df components:</p>
+<p><span class="math display">\[\text{TrSS} = \text{SS}(L_1) + \text{SS}(L_2) + \cdots + \text{SS}(L_{t-1})\]</span></p>
+</section>
+</section>
+<section id="example-23.1-planned-comparisons-among-virus-treatments" class="level2" data-number="23.2">
+<h2 data-number="23.2" class="anchored" data-anchor-id="example-23.1-planned-comparisons-among-virus-treatments"><span class="header-section-number">23.2</span> Example 23.1: planned comparisons among virus treatments</h2>
+<p>In the sweet potato experiment (<a href="19-anova-mcp.html" class="quarto-xref"><span>Chapter 21</span></a>), natural questions are:</p>
+<ol type="1">
+<li>Does virus infection reduce yield? (healthy <code>oo</code> versus the three infected treatments)</li>
+<li>Is infection by both viruses worse than infection by one? (<code>cc</code> and <code>ff</code> versus <code>fc</code>)</li>
+<li>Do the two viruses differ? (<code>cc</code> versus <code>ff</code>)</li>
+</ol>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Contrast</th>
+<th style="text-align: center;"><code>oo</code></th>
+<th style="text-align: center;"><code>cc</code></th>
+<th style="text-align: center;"><code>ff</code></th>
+<th style="text-align: center;"><code>fc</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(L_1\)</span>: healthy vs infected</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">−1</td>
+<td style="text-align: center;">−1</td>
+<td style="text-align: center;">−1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(L_2\)</span>: single vs double infection</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">−2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(L_3\)</span>: <code>cc</code> vs <code>ff</code></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">−1</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>Each row sums to zero, and every pair of rows is orthogonal (e.g.&nbsp;<span class="math inline">\(3 \times 0 + (-1)(1) + (-1)(1) + (-1)(-2) = 0\)</span>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>C <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">L1 =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>), <span class="at">L2 =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>), <span class="at">L3 =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(C)        <span class="co"># each contrast sums to zero</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>L1 L2 L3 
+ 0  0  0 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crossprod</span>(C)      <span class="co"># off-diagonal zeros: mutually orthogonal</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   L1 L2 L3
+L1 12  0  0
+L2  0  6  0
+L3  0  0  2</code></pre>
+</div>
+</div>
+<section id="method-1-contrasts-in-aov" class="level3" data-number="23.2.1">
+<h3 data-number="23.2.1" class="anchored" data-anchor-id="method-1-contrasts-in-aov"><span class="header-section-number">23.2.1</span> Method 1: contrasts in aov()</h3>
+<p>Assign the contrast matrix to the treatment factor (the order of the rows must match the order of the factor levels), then split the treatment sum of squares in <code>summary()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agricolae)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sweetpotato)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>sp <span class="ot">&lt;-</span> sweetpotato</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>sp<span class="sc">$</span>virus <span class="ot">&lt;-</span> <span class="fu">factor</span>(sp<span class="sc">$</span>virus, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"oo"</span>, <span class="st">"cc"</span>, <span class="st">"ff"</span>, <span class="st">"fc"</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(sp<span class="sc">$</span>virus) <span class="ot">&lt;-</span> C</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield <span class="sc">~</span> virus, <span class="at">data =</span> sp)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model, <span class="at">split =</span> <span class="fu">list</span>(<span class="at">virus =</span> <span class="fu">list</span>(<span class="st">"Healthy vs infected"</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"Single vs double"</span>    <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"cc vs ff"</span>            <span class="ot">=</span> <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                             Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+virus                         3   1170     390    17.3 0.00073 ***
+  virus: Healthy vs infected  1    344     344    15.3 0.00447 ** 
+  virus: Single vs double     1    613     613    27.2 0.00080 ***
+  virus: cc vs ff             1    214     214     9.5 0.01507 *  
+Residuals                     8    180      22                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>The three single-df sums of squares add up to the treatment SS (344.1 + 612.5 + 213.6 = 1170.2). All three contrasts are significant: infection reduces yield; double infection is worse than single infection; and chlorotic stunt virus (<code>cc</code>) reduces yield more than feathery mottle virus (<code>ff</code>).</p>
+</section>
+<section id="method-2-contrasts-with-emmeans" class="level3" data-number="23.2.2">
+<h3 data-number="23.2.2" class="anchored" data-anchor-id="method-2-contrasts-with-emmeans"><span class="header-section-number">23.2.2</span> Method 2: contrasts with emmeans</h3>
+<p><code>emmeans</code> estimates each contrast with its standard error and <em>t</em> test. Dividing the coefficients by a constant does not change the test, but makes the estimate interpretable; here <span class="math inline">\(L_1/3\)</span> is “healthy minus the average of the infected treatments”:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Welcome to emmeans.
+Caution: You lose important information if you filter this package's results.
+See '? untidy'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>em <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(model, <span class="sc">~</span> virus)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrast</span>(em, <span class="fu">list</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Healthy - mean(infected)"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>) <span class="sc">/</span> <span class="dv">3</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"mean(single) - double"</span>    <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>) <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"cc - ff"</span>                  <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> contrast                 estimate   SE df t.ratio p.value
+ Healthy - mean(infected)     12.4 3.16  8   3.912  0.0045
+ mean(single) - double        17.5 3.35  8   5.219  0.0008
+ cc - ff                     -11.9 3.87  8  -3.082  0.0151</code></pre>
+</div>
+</div>
+<p>Healthy plants yielded 12.4 kg/plot more than the average of infected plants, and single infections yielded 17.5 kg/plot more than the double infection. The <span class="math inline">\(t\)</span> values are the square roots of the <em>F</em> values above.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Contrasts should be planned <strong>before</strong> the data are seen. If contrasts are chosen after looking at the means, or if many non-orthogonal contrasts are tested, adjust for multiplicity, for example with <code>contrast(em, ..., adjust = "bonferroni")</code> or Scheffé’s method (<code>adjust = "scheffe"</code>).</p>
+</div>
+</div>
+</section>
+</section>
+<section id="orthogonal-polynomials-for-quantitative-treatments" class="level2" data-number="23.3">
+<h2 data-number="23.3" class="anchored" data-anchor-id="orthogonal-polynomials-for-quantitative-treatments"><span class="header-section-number">23.3</span> Orthogonal polynomials for quantitative treatments</h2>
+<p>When the levels of a factor are <strong>quantitative</strong> and equally spaced (doses of fertiliser, seed rates, irrigation levels), the most informative contrasts describe the <strong>shape of the response</strong>: linear, quadratic, cubic, and so on. These are <strong>orthogonal polynomial</strong> contrasts. For equally spaced levels their coefficients are tabulated; R generates them with <code>contr.poly()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">contr.poly</span>(<span class="dv">4</span>)                  <span class="co"># coefficients for 4 levels (scaled)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          .L   .Q      .C
+[1,] -0.6708  0.5 -0.2236
+[2,] -0.2236 -0.5  0.6708
+[3,]  0.2236 -0.5 -0.6708
+[4,]  0.6708  0.5  0.2236</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">sweep</span>(<span class="fu">contr.poly</span>(<span class="dv">4</span>), <span class="dv">2</span>, <span class="fu">c</span>(<span class="fu">sqrt</span>(<span class="dv">20</span>), <span class="dv">2</span>, <span class="fu">sqrt</span>(<span class="dv">20</span>)), <span class="st">"*"</span>))  <span class="co"># integer coefficients</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     .L .Q .C
+[1,] -3  1 -1
+[2,] -1 -1  3
+[3,]  1 -1 -3
+[4,]  3  1  1</code></pre>
+</div>
+</div>
+<p>For four levels the familiar integer coefficients are linear (−3, −1, 1, 3), quadratic (1, −1, −1, 1) and cubic (−1, 3, −3, 1).</p>
+<section id="example-23.2-seeding-rate-of-rice" class="level3" data-number="23.3.1">
+<h3 data-number="23.3.1" class="anchored" data-anchor-id="example-23.2-seeding-rate-of-rice"><span class="header-section-number">23.3.1</span> Example 23.2: seeding rate of rice</h3>
+<p><span class="citation" data-cites="gomez1984">Gomez and Gomez (<a href="references.html#ref-gomez1984" role="doc-biblioref">1984</a>)</span> (Table 5.12) report the grain yield (kg/ha) of rice (IR8) sown at six seeding rates (25, 50, 75, 100, 125 and 150 kg/ha) in an RCBD with four replications (<code>gomez.seedrate</code> in <code>agridat</code>):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(agridat)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>sr <span class="ot">&lt;-</span> gomez.seedrate</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(sr<span class="sc">$</span>yield, sr<span class="sc">$</span>rate, mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  25   50   75  100  125  150 
+5124 5070 5304 4848 4708 4703 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sr<span class="sc">$</span>rate_f <span class="ot">&lt;-</span> <span class="fu">factor</span>(sr<span class="sc">$</span>rate)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(sr<span class="sc">$</span>rate_f) <span class="ot">&lt;-</span> <span class="fu">contr.poly</span>(<span class="dv">6</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>model_sr <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield <span class="sc">~</span> rep <span class="sc">+</span> rate_f, <span class="at">data =</span> sr)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_sr, <span class="at">split =</span> <span class="fu">list</span>(<span class="at">rate_f =</span> <span class="fu">list</span>(<span class="at">Linear =</span> <span class="dv">1</span>, <span class="at">Quadratic =</span> <span class="dv">2</span>, <span class="at">Cubic =</span> <span class="dv">3</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">Quartic =</span> <span class="dv">4</span>, <span class="at">Quintic =</span> <span class="dv">5</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Df  Sum Sq Mean Sq F value Pr(&gt;F)   
+rep                  3 1944361  648120    5.86 0.0074 **
+rate_f               5 1198331  239666    2.17 0.1128   
+  rate_f: Linear     1  760035  760035    6.87 0.0192 * 
+  rate_f: Quadratic  1   74405   74405    0.67 0.4249   
+  rate_f: Cubic      1  113301  113301    1.02 0.3274   
+  rate_f: Quartic    1   90630   90630    0.82 0.3796   
+  rate_f: Quintic    1  159960  159960    1.45 0.2477   
+Residuals           15 1658376  110558                  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>This example shows the power of planned contrasts. The overall <em>F</em> test for seeding rate is <strong>not</strong> significant (<span class="math inline">\(p = 0.11\)</span>), because the treatment SS is spread over 5 df. But the <strong>linear</strong> component alone is significant (<span class="math inline">\(p = 0.019\)</span>), while the quadratic and higher components are not. Yield decreases linearly as the seeding rate increases over this range. The slope of that line is estimated by regressing yield on the numeric rate:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(yield <span class="sc">~</span> rep <span class="sc">+</span> rate, <span class="at">data =</span> sr)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(fit))[<span class="st">"rate"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Estimate Std. Error    t value   Pr(&gt;|t|) 
+  -4.16800    1.58818   -2.62439    0.01669 </code></pre>
+</div>
+</div>
+<p>Each additional kilogram of seed per hectare reduces yield by about 4.2 kg/ha: within the range tested, higher seeding rates gave no yield advantage.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(yield <span class="sc">~</span> rate, <span class="at">data =</span> sr, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="st">"grey50"</span>,</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Seeding rate (kg/ha)"</span>, <span class="at">ylab =</span> <span class="st">"Grain yield (kg/ha)"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">as.numeric</span>(<span class="fu">names</span>(<span class="fu">tapply</span>(sr<span class="sc">$</span>yield, sr<span class="sc">$</span>rate, mean))),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">tapply</span>(sr<span class="sc">$</span>yield, sr<span class="sc">$</span>rate, mean), <span class="at">pch =</span> <span class="dv">17</span>, <span class="at">cex =</span> <span class="fl">1.5</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> <span class="fu">mean</span>(sr<span class="sc">$</span>yield) <span class="sc">-</span> <span class="fu">coef</span>(fit)[<span class="st">"rate"</span>] <span class="sc">*</span> <span class="fu">mean</span>(sr<span class="sc">$</span>rate), <span class="at">b =</span> <span class="fu">coef</span>(fit)[<span class="st">"rate"</span>],</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="21-contrasts_files/figure-html/poly-plot-1.png" class="img-fluid figure-img" width="1008"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="example-23.3-nitrogen-in-a-split-plot-experiment" class="level3" data-number="23.3.2">
+<h3 data-number="23.3.2" class="anchored" data-anchor-id="example-23.3-nitrogen-in-a-split-plot-experiment"><span class="header-section-number">23.3.2</span> Example 23.3: nitrogen in a split-plot experiment</h3>
+<p>The same approach applies within any design. In the oats split-plot experiment (<a href="20-research-designs.html" class="quarto-xref"><span>Chapter 22</span></a>) nitrogen had four equally spaced levels:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>oats2 <span class="ot">&lt;-</span> oats</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(oats2<span class="sc">$</span>N) <span class="ot">&lt;-</span> <span class="fu">contr.poly</span>(<span class="dv">4</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(Y <span class="sc">~</span> V <span class="sc">*</span> N <span class="sc">+</span> <span class="fu">Error</span>(B <span class="sc">/</span> V), <span class="at">data =</span> oats2),</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">split =</span> <span class="fu">list</span>(<span class="at">N =</span> <span class="fu">list</span>(<span class="at">Linear =</span> <span class="dv">1</span>, <span class="at">Quadratic =</span> <span class="dv">2</span>, <span class="at">Cubic =</span> <span class="dv">3</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Error: B
+          Df Sum Sq Mean Sq F value Pr(&gt;F)
+Residuals  5  15875    3175               
+
+Error: B:V
+          Df Sum Sq Mean Sq F value Pr(&gt;F)
+V          2   1786     893    1.49   0.27
+Residuals 10   6013     601               
+
+Error: Within
+                 Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+N                 3  20020    6674   37.69 2.5e-12 ***
+  N: Linear       1  19536   19536  110.32 1.1e-13 ***
+  N: Quadratic    1    480     480    2.71    0.11    
+  N: Cubic        1      4       4    0.02    0.89    
+V:N               6    322      54    0.30    0.93    
+  V:N: Linear     2    168      84    0.48    0.62    
+  V:N: Quadratic  2     11       6    0.03    0.97    
+  V:N: Cubic      2    142      71    0.40    0.67    
+Residuals        45   7969     177                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Almost all of the nitrogen sum of squares (19,536 of 20,020) is linear; the quadratic and cubic components and their interactions with variety are not significant. The response of oats to nitrogen was linear over 0–0.6 cwt/acre, the same for all three varieties.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Orthogonal polynomial coefficients from <code>contr.poly()</code> assume <strong>equally spaced</strong> levels. For unequally spaced levels use <code>contr.poly(n, scores = c(0, 30, 60, 120))</code>, or fit the regression directly with the numeric dose as in <code>lm(yield ~ rep + rate + I(rate^2))</code>. Response curves that are not polynomials are covered in <a href="28-nonlinear.html" class="quarto-xref"><span>Chapter 30</span></a>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="contrasts-in-factorial-experiments" class="level2" data-number="23.4">
+<h2 data-number="23.4" class="anchored" data-anchor-id="contrasts-in-factorial-experiments"><span class="header-section-number">23.4</span> Contrasts in factorial experiments</h2>
+<p>In a <span class="math inline">\(2^n\)</span> factorial experiment the main effects and interactions are themselves orthogonal contrasts among the treatment combinations. The built-in <code>npk</code> data are a <span class="math inline">\(2^3\)</span> factorial on peas in six blocks; with factors coded as two-level factors, each effect has 1 df:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">aov</span>(yield <span class="sc">~</span> block <span class="sc">+</span> N <span class="sc">*</span> P <span class="sc">*</span> K, <span class="at">data =</span> npk))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value Pr(&gt;F)   
+block        5    343    68.7    4.45 0.0159 * 
+N            1    189   189.3   12.26 0.0044 **
+P            1      8     8.4    0.54 0.4749   
+K            1     95    95.2    6.17 0.0288 * 
+N:P          1     21    21.3    1.38 0.2632   
+N:K          1     33    33.1    2.15 0.1686   
+P:K          1      0     0.5    0.03 0.8628   
+Residuals   12    185    15.4                  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Only nitrogen (N) and potassium (K) main effects are significant. (The N:P:K interaction is not shown because it was confounded with blocks in this experiment.)</p>
+</section>
+<section id="live-r-laboratory" class="level2" data-number="23.5">
+<h2 data-number="23.5" class="anchored" data-anchor-id="live-r-laboratory"><span class="header-section-number">23.5</span> Live R laboratory</h2>
+<div class="live-r">
+<p><strong>Orthogonal polynomials for seeding rate</strong></p>
+<p>Edit the code, then select <strong>Run R</strong>. The first run downloads R into your browser and may take a little time. <strong>Copy code</strong> lets you use the example in RStudio.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>rate  <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>, <span class="dv">125</span>, <span class="dv">150</span>), <span class="at">times =</span> <span class="dv">4</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>rep_  <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">paste0</span>(<span class="st">"R"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>), <span class="at">each =</span> <span class="dv">6</span>))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>yield <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5113</span>, <span class="dv">5346</span>, <span class="dv">5272</span>, <span class="dv">5164</span>, <span class="dv">4804</span>, <span class="dv">5254</span>, <span class="dv">5398</span>, <span class="dv">5952</span>, <span class="dv">5713</span>, <span class="dv">4831</span>, <span class="dv">4848</span>, <span class="dv">4542</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>           <span class="dv">5307</span>, <span class="dv">4719</span>, <span class="dv">5483</span>, <span class="dv">4986</span>, <span class="dv">4432</span>, <span class="dv">4919</span>, <span class="dv">4678</span>, <span class="dv">4264</span>, <span class="dv">4749</span>, <span class="dv">4410</span>, <span class="dv">4748</span>, <span class="dv">4098</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>rate_f <span class="ot">&lt;-</span> <span class="fu">factor</span>(rate)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(rate_f) <span class="ot">&lt;-</span> <span class="fu">contr.poly</span>(<span class="dv">6</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">aov</span>(yield <span class="sc">~</span> rep_ <span class="sc">+</span> rate_f)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit, <span class="at">split =</span> <span class="fu">list</span>(<span class="at">rate_f =</span> <span class="fu">list</span>(<span class="at">Linear =</span> <span class="dv">1</span>, <span class="at">Quadratic =</span> <span class="dv">2</span>, <span class="at">Cubic =</span> <span class="dv">3</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">Quartic =</span> <span class="dv">4</span>, <span class="at">Quintic =</span> <span class="dv">5</span>)))</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(yield <span class="sc">~</span> rep_ <span class="sc">+</span> rate))[<span class="st">"rate"</span>]       <span class="co"># kg/ha per kg of seed</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Investigate.</strong> The overall <em>F</em> for seeding rate is not significant but the linear component is. Explain how this can happen.</p>
+</div>
+</section>
+<section id="practical-25-and-exercises" class="level2" data-number="23.6">
+<h2 data-number="23.6" class="anchored" data-anchor-id="practical-25-and-exercises"><span class="header-section-number">23.6</span> Practical 25 and exercises</h2>
+<ol type="1">
+<li>In the <code>PlantGrowth</code> data, test two orthogonal contrasts: control vs the two treatments, and treatment 1 vs treatment 2.</li>
+<li>In the <code>InsectSprays</code> data, sprays C, D and E are believed to belong to a newer chemical group. Construct and test a contrast comparing them with A, B and F (use square-root transformed counts).</li>
+<li>The <code>gomez.nitrogen</code> data in <code>agridat</code> contain nitrogen content of rice plants under eight fertiliser treatments. Read the help page and construct a set of meaningful contrasts.</li>
+<li>Fit linear and quadratic polynomials to the nitrogen response of oats using <code>lm(Y ~ B + V + Nn + I(Nn^2))</code>, where <code>Nn</code> is the numeric nitrogen level. Is the quadratic term needed?</li>
+</ol>
+<div class="callout callout-style-default callout-caution callout-titled" title="Historical Insights">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Historical Insights
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tables of orthogonal polynomial coefficients were published by R. A. Fisher and Frank Yates in <em>Statistical Tables for Biological, Agricultural and Medical Research</em> (1938), which agricultural researchers used for decades before computers.</p>
+</div>
+</div>
+</section>
+<section id="chapter-summary" class="level2" data-number="23.7">
+<h2 data-number="23.7" class="anchored" data-anchor-id="chapter-summary"><span class="header-section-number">23.7</span> Chapter Summary</h2>
+<section id="fill-in-the-blanks" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="fill-in-the-blanks">Fill in the blanks</h3>
+<p>Answers are given at the end of the chapter.</p>
+<ol type="1">
+<li>The coefficients of a contrast sum to __________.</li>
+<li>Two contrasts are orthogonal if the sum of the products of their coefficients is __________.</li>
+<li>With <span class="math inline">\(t\)</span> treatments there are __________ mutually orthogonal contrasts.</li>
+<li>Each contrast has __________ degree of freedom.</li>
+<li>Orthogonal polynomial coefficients are generated in R by __________.</li>
+<li>For four equally spaced levels the linear coefficients are −3, −1, 1 and __________.</li>
+<li>Contrasts should be planned __________ the data are seen.</li>
+<li>In <code>summary()</code>, the argument __________ partitions the treatment SS into contrasts.</li>
+</ol>
+</section>
+<section id="short-answer-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="short-answer-questions">Short-answer questions</h3>
+<ol type="1">
+<li>Define a contrast and give an example.</li>
+<li>What is the advantage of orthogonal contrasts?</li>
+<li>Why are orthogonal polynomials used for quantitative treatments?</li>
+<li>How can a contrast be significant when the overall F test is not?</li>
+<li>How are contrasts tested in mixed models?</li>
+</ol>
+</section>
+<section id="numerical-and-conceptual-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="numerical-and-conceptual-questions">Numerical and conceptual questions</h3>
+<p>Answers are given at the end of the chapter.</p>
+<ol type="1">
+<li>With <span class="math inline">\(r = 3\)</span>, treatment totals 73.2 and 109.0 are compared by the contrast (1, −1). Find SS(L).</li>
+<li>Are the contrasts (3, −1, −1, −1) and (0, 1, 1, −2) orthogonal?</li>
+<li>How many orthogonal polynomial contrasts can be formed from 6 seeding rates?</li>
+</ol>
+</section>
+<section id="important-formulae" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="important-formulae">Important formulae</h3>
+<p>A contrast and its standard error:</p>
+<p><span id="eq-ch23-con"><span class="math display">\[
+L = \sum c_i\mu_i, \ \sum c_i = 0, \qquad \text{SE}(\hat L) = \sqrt{\text{EMS}\sum\frac{c_i^2}{r_i}}
+\tag{23.1}\]</span></span></p>
+<p>Sum of squares of a contrast:</p>
+<p><span id="eq-ch23-ss"><span class="math display">\[
+\text{SS}(L) = \frac{(\sum c_iT_i)^2}{r\sum c_i^2}
+\tag{23.2}\]</span></span></p>
+<p>Orthogonality of two contrasts (equal replication):</p>
+<p><span id="eq-ch23-orth"><span class="math display">\[
+\sum c_i d_i = 0
+\tag{23.3}\]</span></span></p>
+</section>
+<section id="quick-revision" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="quick-revision">Quick revision</h3>
+<ul>
+<li>Specific questions → planned contrasts, more powerful than multiple comparisons.</li>
+<li><span class="math inline">\(t-1\)</span> orthogonal contrasts → split TrSS exactly.</li>
+<li>Doses, rates, dates → orthogonal polynomials: linear, quadratic, cubic.</li>
+<li>Unplanned or many contrasts → adjust (Bonferroni, Scheffé).</li>
+<li>Mixed models → <code>emmeans::contrast()</code> with the correct SE.</li>
+</ul>
+</section>
+<section id="answers-to-fill-in-the-blanks" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="answers-to-fill-in-the-blanks">Answers to fill in the blanks</h3>
+<div class="answer-key">
+<p><code>1.</code> zero <code>2.</code> zero <code>3.</code> <span class="math inline">\(t-1\)</span> <code>4.</code> one <code>5.</code> <code>contr.poly()</code> <code>6.</code> 3 <code>7.</code> before <code>8.</code> <code>split</code></p>
+</div>
+</section>
+<section id="solutions-to-numerical-and-conceptual-questions" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="solutions-to-numerical-and-conceptual-questions">Solutions to numerical and conceptual questions</h3>
+<ol type="1">
+<li>By <a href="#eq-ch23-ss" class="quarto-xref">Equation&nbsp;<span>23.2</span></a>, <span class="math inline">\((73.2 - 109.0)^2/(3\times2) = 213.6\)</span>.</li>
+<li>By <a href="#eq-ch23-orth" class="quarto-xref">Equation&nbsp;<span>23.3</span></a>, <span class="math inline">\(0 - 1 - 1 + 2 = 0\)</span>; yes.</li>
+<li><span class="math inline">\(6 - 1 = 5\)</span>: linear to quintic.</li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-gomez1984" class="csl-entry" role="listitem">
+Gomez, Kwanchai A., and Arturo A. Gomez. 1984. <em>Statistical Procedures for Agricultural Research</em>. 2nd ed. New York: John Wiley &amp; Sons.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./20-research-designs.html" class="pagination-link" aria-label="Research experiments: blocks, factorials, split and strip plots">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Research experiments: blocks, factorials, split and strip plots</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./22-ancova.html" class="pagination-link" aria-label="Analysis of covariance">
+        <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Analysis of covariance</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<script type="module" src="assets/live-r.js"></script>
+<script defer="" src="assets/melon-tracker.js" data-book="r-agricultural-data"></script>
+
+
+
+
+</body></html>
