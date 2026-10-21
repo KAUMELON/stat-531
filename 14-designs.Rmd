@@ -1,0 +1,251 @@
+# Experimental designs and multi-factor experiments {#designs}
+
+Field experiments rarely have homogeneous experimental units. Soil fertility, moisture and slope vary across a field, and this variation inflates the experimental error. **Local control**, i.e. grouping similar units into blocks, removes part of this variation from the error and makes the comparison of treatments more precise. This chapter covers the analysis of:
+
+- randomised complete block design (RCBD) — two-way classification
+- Latin square design (LSD) — three-way classification
+- factorial experiments — several factors at once
+- split-plot and strip-plot designs — factors applied to plots of different sizes
+
+All are analysed with `aov()` (or `lm()`); only the model formula changes. The `agricolae` package also has functions (`sp.plot()`, `strip.plot()`) that produce tables in the style of @gomez1984. Designs can be randomised with `agricolae` functions such as `design.crd()`, `design.rcbd()`, `design.lsd()`, `design.ab()` and `design.split()`.
+
+## Randomised complete block design (RCBD)
+
+The experimental area is divided into $r$ blocks of $t$ plots each, so that plots within a block are as uniform as possible. Every treatment appears once in each block, randomised independently in each block. Blocks are laid out across the fertility gradient.
+
+### Model
+
+$$y_{ij} = \mu + \tau_i + \beta_j + e_{ij}, \qquad i = 1, \ldots, t; \; j = 1, \ldots, r$$
+
+where $\beta_j$ is the effect of block $j$.
+
+| Source | df | SS |
+|:--|:--:|:--|
+| Blocks | $r - 1$ | $\sum_j B_j^2 / t - \text{CF}$ |
+| Treatments | $t - 1$ | $\sum_i T_i^2 / r - \text{CF}$ |
+| Error | $(r-1)(t-1)$ | by subtraction |
+| Total | $rt - 1$ | $\sum y_{ij}^2 - \text{CF}$ |
+
+### Example
+
+We analyse the yield (t/ha) of 28 potato genotypes grown in three replications (blocks) at La Molina in 2002, part of the `plrv` data used in Chapter \@ref(eda).
+
+```{r rcbd-data}
+library(agricolae)
+data(plrv)
+lm02 <- droplevels(subset(plrv, Locality == "LM-02"))
+lm02$Rep <- factor(lm02$Rep)     # blocks must be a factor
+str(lm02)
+```
+
+```{r rcbd-aov}
+rcbd <- aov(Yield ~ Rep + Genotype, data = lm02)
+summary(rcbd)
+cv.model(rcbd)
+```
+
+Genotypes differ highly significantly ($p < 0.001$). The block effect is also significant, which shows that blocking was worthwhile.
+
+::: {.rmdnote}
+Put the block term first in the formula. With balanced data the order does not matter, but with missing values R computes sequential (Type I) sums of squares, and treatments should then be adjusted for blocks.
+:::
+
+### Efficiency of RCBD relative to CRD
+
+How much did blocking help? The **relative efficiency** of the RCBD compared with a CRD is
+
+$$\text{RE} = \frac{(r-1)\,M_b + r(t-1)\,M_e}{(rt - 1)\,M_e}$$
+
+where $M_b$ and $M_e$ are the block and error mean squares.
+
+```{r rcbd-re}
+tab <- summary(rcbd)[[1]]
+Mb <- tab["Rep", "Mean Sq"]; Me <- tab["Residuals", "Mean Sq"]
+r <- 3; t <- 28
+RE <- ((r - 1) * Mb + r * (t - 1) * Me) / ((r * t - 1) * Me)
+RE
+```
+
+The RCBD was about `r round((RE - 1) * 100)`% more efficient than a CRD would have been: a CRD would need about `r round(RE, 2)` times as many replications to achieve the same precision.
+
+### Comparing genotypes
+
+With 28 genotypes, letter groupings become long. Here we show the top ten by Tukey's HSD:
+
+```{r rcbd-mc}
+hsd <- HSD.test(rcbd, "Genotype")
+head(hsd$groups, 10)
+hsd$statistics
+```
+
+## Latin square design (LSD)
+
+When fertility varies in two directions, a Latin square controls both. With $t$ treatments, the field is divided into $t$ rows and $t$ columns, and each treatment occurs exactly once in each row and each column. The number of replications equals the number of treatments, so the design is practical for 4 to 8 treatments.
+
+$$y_{ijk} = \mu + \rho_i + \gamma_j + \tau_k + e_{ijk}$$
+
+with error df $(t-1)(t-2)$.
+
+### Example
+
+Four melon varieties were compared in a 4 × 4 Latin square (`melon` in `agricolae`):
+
+```{r lsd-data}
+data(melon)
+melon$row <- factor(melon$row)
+melon$col <- factor(melon$col)
+# Layout of the varieties in the field
+xtabs(as.integer(variety) ~ row + col, data = melon)
+```
+
+```{r lsd-aov}
+lsd_model <- aov(yield ~ row + col + variety, data = melon)
+summary(lsd_model)
+tapply(melon$yield, melon$variety, mean)
+```
+
+The varieties do not differ significantly ($p = 0.10$), so no multiple comparison is needed. With only 6 error df, a Latin square of this size has low power.
+
+## Factorial experiments
+
+In a **factorial experiment** two or more factors are studied together, and every level of each factor is combined with every level of the others. A 3 × 4 factorial has 12 treatment combinations. Factorial experiments estimate:
+
+- the **main effect** of each factor, averaged over the levels of the other factor;
+- the **interaction**: whether the effect of one factor depends on the level of the other.
+
+### Model for a two-factor factorial in RCBD
+
+$$y_{ijk} = \mu + \beta_k + \alpha_i + \gamma_j + (\alpha\gamma)_{ij} + e_{ijk}$$
+
+where $\alpha_i$ and $\gamma_j$ are the main effects of factors A and B, and $(\alpha\gamma)_{ij}$ their interaction.
+
+### Example
+
+In a greenhouse experiment at CIP, Peru, four potato varieties were grown by three methods of minituber production (plant bed, hydroponics and pots) in four replications. The response is the number of minitubers from 10 plants (`greenhouse2` in `agricolae`).
+
+```{r fact-data}
+data(greenhouse)
+gh <- greenhouse$greenhouse2
+gh$replication <- factor(gh$replication)
+str(gh)
+```
+
+The formula `method * variety` expands to `method + variety + method:variety`:
+
+```{r fact-aov}
+fact <- aov(tubers ~ replication + method * variety, data = gh)
+summary(fact)
+```
+
+Both main effects and the **interaction** are significant. When the interaction is significant, the main effects can be misleading: the effect of variety depends on the method. Look at the two-way table of means and an interaction plot:
+
+```{r fact-means}
+with(gh, round(tapply(tubers, list(method, variety), mean), 1))
+with(gh, interaction.plot(variety, method, tubers, type = "b", pch = 19,
+     col = c("brown", "blue", "darkgreen"), lwd = 2,
+     ylab = "Mean number of tubers"))
+```
+
+Hydroponics produced far more tubers than the other methods. In hydroponics, Perricholi, Tomasa and Yungay produced many more tubers than Canchan, whereas in beds and pots Canchan was among the best. Because of this interaction, the varieties should be compared **separately within each method** (simple effects):
+
+```{r fact-simple}
+library(emmeans)
+em <- emmeans(fact, ~ variety | method)
+multcomp::cld(em, Letters = letters, adjust = "tukey")
+```
+
+Within plant beds the varieties do not differ significantly. In hydroponics, Canchan produced significantly fewer tubers than the other three varieties, while in pots Canchan and Perricholi produced significantly more than Tomasa and Yungay.
+
+::: {.rmdtip}
+If the interaction is **not** significant, compare the levels of each factor using the main-effect means: `HSD.test(fact, "method")` or `emmeans(fact, ~ method)`.
+:::
+
+## Split-plot design
+
+In a split-plot design one factor is applied to large plots (**main plots**) and the second factor to smaller plots (**sub-plots**) within each main plot. It is used when one factor needs large plots (irrigation, tillage, dates of sowing) or when one factor is of greater interest and should be estimated more precisely. Because main-plot treatments are randomised over larger units with fewer replicates, there are **two error terms**:
+
+- Error (a): for testing the main-plot factor;
+- Error (b): for testing the sub-plot factor and the interaction (usually smaller).
+
+$$y_{ijk} = \mu + \beta_k + \alpha_i + \delta_{ik} + \gamma_j + (\alpha\gamma)_{ij} + e_{ijk}$$
+
+where $\delta_{ik}$ is the main-plot error and $e_{ijk}$ the sub-plot error.
+
+| Source | df |
+|:--|:--:|
+| Blocks | $r - 1$ |
+| A (main plot) | $a - 1$ |
+| Error (a) | $(r-1)(a-1)$ |
+| B (sub-plot) | $b - 1$ |
+| A × B | $(a-1)(b-1)$ |
+| Error (b) | $a(r-1)(b-1)$ |
+| Total | $rab - 1$ |
+
+### Example
+
+The classic oats experiment of Yates (1935), `oats` in the `MASS` package, had three oat varieties on main plots and four levels of nitrogen manure (0, 0.2, 0.4, 0.6 cwt per acre) on sub-plots, in six blocks. Yield is in units of 1/4 lb per sub-plot.
+
+```{r split-data}
+library(MASS)
+str(oats)
+```
+
+In `aov()` the two error strata are specified with `Error()`: `Error(B/V)` says that main plots are the varieties within blocks.
+
+```{r split-aov}
+split <- aov(Y ~ V * N + Error(B / V), data = oats)
+summary(split)
+```
+
+The variety effect is tested against Error (a) (the `B:V` stratum) and is not significant ($p = 0.27$). Nitrogen is highly significant, and the V × N interaction is not, so the response to nitrogen is similar for all varieties. The `sp.plot()` function of `agricolae` gives the same analysis in a single table with both CVs:
+
+```{r split-agricolae}
+sp <- with(oats, sp.plot(block = B, pplot = V, splot = N, Y = Y))
+```
+
+Mean yield at each level of nitrogen:
+
+```{r split-means}
+tapply(oats$Y, oats$N, mean)
+```
+
+Yield increases steadily with nitrogen. Because nitrogen is a **quantitative** factor, the appropriate follow-up is to fit a response curve rather than to compare the levels pairwise; this is done with orthogonal polynomials in Chapter \@ref(contrasts).
+
+::: {.rmdwarning}
+Comparisons of means in a split-plot need different standard errors: one for main-plot means, one for sub-plot means, and two more for comparing sub-plot treatments within or across main plots. Fitting the split plot as a mixed model and using `emmeans` (Chapter \@ref(mixed-models)) computes the correct standard error for any comparison automatically.
+:::
+
+## Strip-plot design
+
+In a strip-plot (strip-block) design, factor A is applied in horizontal strips and factor B in vertical strips across each block. The design is used when both factors need large plots (e.g. irrigation and tillage). There are three error terms: for A, for B, and for the interaction.
+
+### Example
+
+@gomez1984 (Table 3.11) give the grain yield (kg/ha) of six rice varieties (horizontal strips) at three nitrogen levels (0, 60, 120 kg N/ha; vertical strips) in three replications (`gomez.stripplot` in `agridat`):
+
+```{r strip}
+library(agridat)
+gs <- gomez.stripplot
+gs$nitro <- factor(gs$nitro)
+strip <- with(gs, strip.plot(BLOCK = rep, COL = gen, ROW = nitro, Y = yield))
+```
+
+```{r strip-aov}
+# The same with aov(): three error strata
+summary(aov(yield ~ gen * nitro + Error(rep / (gen + nitro)), data = gs))
+```
+
+Varieties, nitrogen and their interaction are all significant. The interaction is clear from the table of means: variety G6 declines at the highest nitrogen level, while the others increase.
+
+```{r strip-means}
+round(with(gs, tapply(yield, list(gen, nitro), mean)))
+```
+
+## Exercises {-}
+
+::: {.rmdexercise}
+1. Analyse the yield of the 28 genotypes of the `plrv` data at locality `SR-02` as an RCBD. Compute the CV and the efficiency relative to a CRD.
+2. Analyse the tuber weight (`weight`) of the `greenhouse2` data as a two-factor factorial in RCBD. Is the interaction significant?
+3. The `npk` data (built into R) are from a 2 × 2 × 2 factorial experiment on peas in six blocks. Analyse the yield and identify the important factors.
+4. Use `design.rcbd()` from `agricolae` to prepare a randomised field layout for 8 treatments in 4 blocks.
+:::

@@ -1,0 +1,231 @@
+# Correlation and regression {#regression}
+
+**Correlation** measures the strength of the linear association between two variables, treating them symmetrically. **Regression** describes how one variable (the response, $y$) depends on one or more others (the predictors, $x$), and is used for prediction.
+
+We use the built-in `trees` data: the diameter (labelled `Girth`, in inches, measured at 4 ft 6 in above the ground), height (ft) and timber volume (cubic ft) of 31 felled black cherry trees. Estimating the volume of a standing tree from easily measured diameter and height is a classic problem in forestry.
+
+```{r reg-data}
+str(trees)
+pairs(trees, pch = 19, col = "darkgreen")
+```
+
+## Correlation
+
+### Pearson's correlation coefficient
+
+$$r = \frac{\sum (x_i - \bar x)(y_i - \bar y)}{\sqrt{\sum (x_i - \bar x)^2 \sum (y_i - \bar y)^2}}, \qquad -1 \le r \le 1$$
+
+```{r cor-matrix}
+cor(trees)
+```
+
+### Testing the significance of a correlation
+
+To test $H_0: \rho = 0$,
+
+$$t = \frac{r\sqrt{n-2}}{\sqrt{1 - r^2}}$$
+
+with $n - 2$ df. `cor.test()` performs the test and gives a confidence interval for $\rho$ (based on Fisher's $z$ transformation):
+
+```{r cor-test}
+cor.test(~ Girth + Volume, data = trees)
+```
+
+Diameter and volume are very strongly and significantly correlated ($r = 0.97$, $p < 0.001$).
+
+### Rank correlation
+
+Spearman's rank correlation ($\rho_s$) and Kendall's $\tau$ measure monotone (not necessarily linear) association and do not assume normality:
+
+```{r cor-spearman}
+cor.test(~ Height + Volume, data = trees, method = "spearman", exact = FALSE)
+cor(trees, method = "kendall")
+```
+
+### Partial correlation
+
+The **partial correlation** between $x_1$ and $x_2$ given $x_3$ measures their association after removing the linear effect of $x_3$ from both:
+
+$$r_{12.3} = \frac{r_{12} - r_{13}r_{23}}{\sqrt{(1 - r_{13}^2)(1 - r_{23}^2)}}$$
+
+```{r cor-partial}
+r <- cor(trees)
+r12 <- r["Height", "Volume"]; r13 <- r["Height", "Girth"]; r23 <- r["Volume", "Girth"]
+(r12 - r13 * r23) / sqrt((1 - r13^2) * (1 - r23^2))
+
+# The same with the psych package
+library(psych)
+partial.r(trees, c("Height", "Volume"), "Girth")
+```
+
+The simple correlation between height and volume is 0.60, but once diameter is held constant it falls to 0.44: part of the association between height and volume arises because taller trees also tend to be thicker.
+
+::: {.rmdwarning}
+Correlation does not imply causation, and a correlation coefficient describes only **linear** association. Always look at the scatter plot: two variables with a strong curved relationship can have $r$ close to zero.
+:::
+
+## Simple linear regression
+
+### Model
+
+$$y_i = \beta_0 + \beta_1 x_i + e_i, \qquad e_i \sim N(0, \sigma^2)$$
+
+The least-squares estimates are
+
+$$\hat\beta_1 = \frac{\sum (x_i - \bar x)(y_i - \bar y)}{\sum (x_i - \bar x)^2}, \qquad \hat\beta_0 = \bar y - \hat\beta_1 \bar x$$
+
+### Fitting with lm()
+
+```{r slr}
+fit1 <- lm(Volume ~ Girth, data = trees)
+summary(fit1)
+```
+
+Reading the output:
+
+- **Coefficients**: the fitted line is Volume = −36.94 + 5.07 × Diameter. Each additional inch of diameter adds about 5.07 cubic feet of volume. The *t* test for `Girth` tests $H_0: \beta_1 = 0$.
+- **Residual standard error**: $\hat\sigma$ = 4.25 cubic feet.
+- **Multiple R-squared** (coefficient of determination): 93.5% of the variation in volume is explained by diameter. In simple regression $R^2 = r^2$.
+- **F-statistic**: tests the whole regression; here equal to $t^2$.
+
+```{r slr-anova}
+anova(fit1)
+confint(fit1)                 # 95% confidence intervals for the coefficients
+```
+
+```{r slr-plot}
+plot(Volume ~ Girth, data = trees, pch = 19, col = "grey40",
+     xlab = "Diameter (inches)", ylab = "Volume (cubic feet)")
+abline(fit1, col = "red", lwd = 2)
+```
+
+### Prediction
+
+`predict()` gives the fitted value for new values of $x$, with a **confidence interval** (for the mean volume of all trees of that diameter) or a **prediction interval** (for the volume of a single new tree, which is wider):
+
+```{r slr-predict}
+new <- data.frame(Girth = 15)
+predict(fit1, new, interval = "confidence")
+predict(fit1, new, interval = "prediction")
+```
+
+### Checking the assumptions
+
+```{r slr-diag, fig.asp=0.8}
+par(mfrow = c(2, 2)); plot(fit1); par(mfrow = c(1, 1))
+```
+
+The residuals-versus-fitted plot shows a U-shaped pattern: the straight line under-predicts the volume of small and large trees and over-predicts medium trees. The relationship is curved, which we address below.
+
+## Multiple linear regression
+
+### Model
+
+$$y_i = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \cdots + \beta_k x_{ki} + e_i$$
+
+Each coefficient $\beta_j$ is a **partial regression coefficient**: the expected change in $y$ for a unit change in $x_j$ when the other predictors are held constant.
+
+```{r mlr}
+fit2 <- lm(Volume ~ Girth + Height, data = trees)
+summary(fit2)
+```
+
+Both predictors are significant. Holding height constant, each inch of diameter adds 4.71 cubic feet; holding diameter constant, each foot of height adds 0.34 cubic feet. $R^2$ rises to 0.948.
+
+### Comparing nested models
+
+Does height add significantly to a model that already contains diameter? Compare the two models with an *F* test:
+
+```{r mlr-compare}
+anova(fit1, fit2)
+```
+
+Yes ($p = 0.014$). Note that **adjusted $R^2$**, which penalises extra predictors, is a better guide than $R^2$ for comparing models with different numbers of predictors.
+
+### Standardised coefficients
+
+To compare the relative importance of predictors measured in different units, fit the model to standardised variables:
+
+```{r mlr-beta}
+coef(lm(scale(Volume) ~ scale(Girth) + scale(Height), data = trees))
+```
+
+Diameter has by far the larger standardised (beta) coefficient.
+
+### Multicollinearity
+
+When predictors are strongly correlated with each other, their coefficients become unstable and have large standard errors. The **variance inflation factor** (VIF) measures this; values above about 5–10 indicate a problem.
+
+```{r mlr-vif}
+library(car)
+vif(fit2)
+```
+
+Here the VIFs are small.
+
+### Diagnostics
+
+```{r mlr-diag}
+shapiro.test(residuals(fit2))           # normality of residuals
+library(lmtest)
+bptest(fit2)                            # Breusch-Pagan test for constant variance
+```
+
+### A better model from theory
+
+Tree volume is roughly proportional to (diameter)^2^ × height, as for a cylinder or cone. Taking logarithms turns this into a linear model:
+
+$$\log(\text{Volume}) = \beta_0 + \beta_1 \log(\text{Diameter}) + \beta_2 \log(\text{Height})$$
+
+```{r mlr-log}
+fit3 <- lm(log(Volume) ~ log(Girth) + log(Height), data = trees)
+summary(fit3)
+```
+
+The estimated exponents (`r round(coef(fit3)[2], 2)` for diameter and `r round(coef(fit3)[3], 2)` for height) are very close to the theoretical values 2 and 1, $R^2$ is 0.978, and the residual plot no longer shows a pattern:
+
+```{r mlr-log-diag}
+plot(fitted(fit3), residuals(fit3), pch = 19,
+     xlab = "Fitted values", ylab = "Residuals"); abline(h = 0, lty = 2)
+```
+
+::: {.rmdtip}
+A polynomial term is added with `I()`, for example `lm(Volume ~ Girth + I(Girth^2), data = trees)`. The `I()` is needed because `^` has a special meaning inside a model formula.
+:::
+
+## Selecting predictors
+
+When there are many candidate predictors, **stepwise selection** with `step()` adds or removes terms to minimise the Akaike information criterion (AIC). As an example, we model the dry root matter (`roots`) of yacon plants at Oxapampa (`yacon` data in `agricolae`) from six other traits:
+
+```{r step}
+library(agricolae)
+data(yacon)
+oxa <- subset(yacon, locality == "OXA")
+full <- lm(roots ~ height + stalks + foliage + brix + FOS + dry, data = oxa)
+vif(full)
+best <- step(full, trace = 0)      # backward elimination by AIC
+summary(best)
+```
+
+The selected model keeps degrees Brix and plant height, which together explain 68% of the variation in dry root matter.
+
+::: {.rmdwarning}
+Stepwise selection is a useful exploratory tool, but the p-values of the selected model are optimistic, because the same data were used to choose the model. Prefer models suggested by subject-matter knowledge, and validate a selected model on new data where possible.
+:::
+
+## Regression with qualitative predictors
+
+A factor can be included in a regression; R automatically creates dummy (indicator) variables. A model with a factor and a covariate is the ANCOVA model of Chapter \@ref(ancova). For example, the regression of petal width on petal length with separate intercepts for the three iris species:
+
+```{r reg-factor}
+summary(lm(Petal.Width ~ Petal.Length + Species, data = iris))$coefficients
+```
+
+## Exercises {-}
+
+::: {.rmdexercise}
+1. Using `trees`, test whether the correlation between height and diameter is significant.
+2. Fit the quadratic model `Volume ~ Girth + I(Girth^2)`. Is the quadratic term significant? Compare its residual plot with that of the straight line.
+3. Using the log model `fit3`, predict the volume of a tree 15 inches in diameter and 80 ft tall, with a 95% prediction interval. (Remember to back-transform with `exp()`.)
+4. For the `yacon` data at Cajamarca (`CAJ`), compute the correlation matrix of `height`, `stalks`, `roots`, `FOS` and `brix`, and test which correlations with `roots` are significant.
+:::

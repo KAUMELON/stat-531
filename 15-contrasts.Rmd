@@ -1,0 +1,172 @@
+# Contrast analysis {#contrasts}
+
+Multiple comparison procedures (Chapter \@ref(anova-crd)) compare treatment means without a specific plan. Most experiments, however, are designed to answer specific questions: *Is the new fungicide better than the old ones? Do organic sources differ from inorganic ones? How does yield respond to increasing doses of nitrogen?* Such questions are answered more powerfully by **contrasts** planned before the experiment.
+
+## Contrasts
+
+A **contrast** among $t$ treatment means is a linear combination
+
+$$L = \sum_{i=1}^{t} c_i \mu_i \qquad \text{with} \qquad \sum_{i=1}^{t} c_i = 0$$
+
+For example, with four treatments, $L = \mu_1 - \mu_2$ compares treatments 1 and 2, and $L = 3\mu_1 - \mu_2 - \mu_3 - \mu_4$ compares treatment 1 with the average of the other three.
+
+The contrast is estimated by $\hat L = \sum c_i \bar y_i$, with standard error
+
+$$\text{SE}(\hat L) = \sqrt{\text{EMS}\sum_i \frac{c_i^2}{r_i}}$$
+
+and its **sum of squares** (with 1 df) is
+
+$$\text{SS}(L) = \frac{\left(\sum_i c_i T_i\right)^2}{r \sum_i c_i^2}$$
+
+where $T_i$ are the treatment totals. $H_0: L = 0$ is tested by $F = \text{SS}(L)/\text{EMS}$ with $(1, \text{error df})$ degrees of freedom, or equivalently by $t = \hat L / \text{SE}(\hat L)$.
+
+### Orthogonal contrasts
+
+Two contrasts with coefficients $c_i$ and $d_i$ are **orthogonal** if $\sum c_i d_i / r_i = 0$ (for equal replication, $\sum c_i d_i = 0$). A set of $t - 1$ mutually orthogonal contrasts splits the treatment sum of squares exactly into $t - 1$ independent single-df components:
+
+$$\text{TrSS} = \text{SS}(L_1) + \text{SS}(L_2) + \cdots + \text{SS}(L_{t-1})$$
+
+## Example: planned comparisons among virus treatments
+
+In the sweet potato experiment (Chapter \@ref(anova-crd)), natural questions are:
+
+1. Does virus infection reduce yield? (healthy `oo` versus the three infected treatments)
+2. Is infection by both viruses worse than infection by one? (`cc` and `ff` versus `fc`)
+3. Do the two viruses differ? (`cc` versus `ff`)
+
+| Contrast | `oo` | `cc` | `ff` | `fc` |
+|:--|:--:|:--:|:--:|:--:|
+| $L_1$: healthy vs infected | 3 | −1 | −1 | −1 |
+| $L_2$: single vs double infection | 0 | 1 | 1 | −2 |
+| $L_3$: `cc` vs `ff` | 0 | 1 | −1 | 0 |
+
+Each row sums to zero, and every pair of rows is orthogonal (e.g. $3 \times 0 + (-1)(1) + (-1)(1) + (-1)(-2) = 0$).
+
+```{r con-check}
+C <- cbind(L1 = c(3, -1, -1, -1), L2 = c(0, 1, 1, -2), L3 = c(0, 1, -1, 0))
+colSums(C)        # each contrast sums to zero
+crossprod(C)      # off-diagonal zeros: mutually orthogonal
+```
+
+### Method 1: contrasts in aov()
+
+Assign the contrast matrix to the treatment factor (the order of the rows must match the order of the factor levels), then split the treatment sum of squares in `summary()`:
+
+```{r con-aov}
+library(agricolae)
+data(sweetpotato)
+sp <- sweetpotato
+sp$virus <- factor(sp$virus, levels = c("oo", "cc", "ff", "fc"))
+contrasts(sp$virus) <- C
+
+model <- aov(yield ~ virus, data = sp)
+summary(model, split = list(virus = list("Healthy vs infected" = 1,
+                                         "Single vs double"    = 2,
+                                         "cc vs ff"            = 3)))
+```
+
+The three single-df sums of squares add up to the treatment SS (344.1 + 612.5 + 213.6 = 1170.2). All three contrasts are significant: infection reduces yield; double infection is worse than single infection; and chlorotic stunt virus (`cc`) reduces yield more than feathery mottle virus (`ff`).
+
+### Method 2: contrasts with emmeans
+
+`emmeans` estimates each contrast with its standard error and *t* test. Dividing the coefficients by a constant does not change the test, but makes the estimate interpretable; here $L_1/3$ is "healthy minus the average of the infected treatments":
+
+```{r con-emmeans}
+library(emmeans)
+em <- emmeans(model, ~ virus)
+contrast(em, list(
+  "Healthy - mean(infected)" = c(3, -1, -1, -1) / 3,
+  "mean(single) - double"    = c(0, 1, 1, -2) / 2,
+  "cc - ff"                  = c(0, 1, -1, 0)
+))
+```
+
+Healthy plants yielded 12.4 kg/plot more than the average of infected plants, and single infections yielded 17.5 kg/plot more than the double infection. The $t$ values are the square roots of the *F* values above.
+
+::: {.rmdwarning}
+Contrasts should be planned **before** the data are seen. If contrasts are chosen after looking at the means, or if many non-orthogonal contrasts are tested, adjust for multiplicity, for example with `contrast(em, ..., adjust = "bonferroni")` or Scheffé's method (`adjust = "scheffe"`).
+:::
+
+## Orthogonal polynomials for quantitative treatments
+
+When the levels of a factor are **quantitative** and equally spaced (doses of fertiliser, seed rates, irrigation levels), the most informative contrasts describe the **shape of the response**: linear, quadratic, cubic, and so on. These are **orthogonal polynomial** contrasts. For equally spaced levels their coefficients are tabulated; R generates them with `contr.poly()`:
+
+```{r con-poly}
+contr.poly(4)                  # coefficients for 4 levels (scaled)
+round(sweep(contr.poly(4), 2, c(sqrt(20), 2, sqrt(20)), "*"))  # integer coefficients
+```
+
+For four levels the familiar integer coefficients are linear (−3, −1, 1, 3), quadratic (1, −1, −1, 1) and cubic (−1, 3, −3, 1).
+
+### Example: seeding rate of rice
+
+@gomez1984 (Table 5.12) report the grain yield (kg/ha) of rice (IR8) sown at six seeding rates (25, 50, 75, 100, 125 and 150 kg/ha) in an RCBD with four replications (`gomez.seedrate` in `agridat`):
+
+```{r poly-data}
+library(agridat)
+sr <- gomez.seedrate
+tapply(sr$yield, sr$rate, mean)
+```
+
+```{r poly-aov}
+sr$rate_f <- factor(sr$rate)
+contrasts(sr$rate_f) <- contr.poly(6)
+model_sr <- aov(yield ~ rep + rate_f, data = sr)
+summary(model_sr, split = list(rate_f = list(Linear = 1, Quadratic = 2, Cubic = 3,
+                                             Quartic = 4, Quintic = 5)))
+```
+
+This example shows the power of planned contrasts. The overall *F* test for seeding rate is **not** significant ($p = 0.11$), because the treatment SS is spread over 5 df. But the **linear** component alone is significant ($p = 0.019$), while the quadratic and higher components are not. Yield decreases linearly as the seeding rate increases over this range. The slope of that line is estimated by regressing yield on the numeric rate:
+
+```{r poly-lm}
+fit <- lm(yield ~ rep + rate, data = sr)
+coef(summary(fit))["rate", ]
+```
+
+Each additional kilogram of seed per hectare reduces yield by about `r round(-coef(fit)["rate"], 1)` kg/ha: within the range tested, higher seeding rates gave no yield advantage.
+
+```{r poly-plot}
+plot(yield ~ rate, data = sr, pch = 19, col = "grey50",
+     xlab = "Seeding rate (kg/ha)", ylab = "Grain yield (kg/ha)")
+points(as.numeric(names(tapply(sr$yield, sr$rate, mean))),
+       tapply(sr$yield, sr$rate, mean), pch = 17, cex = 1.5, col = "red")
+abline(a = mean(sr$yield) - coef(fit)["rate"] * mean(sr$rate), b = coef(fit)["rate"],
+       col = "red", lwd = 2)
+```
+
+### Example: nitrogen in a split-plot experiment
+
+The same approach applies within any design. In the oats split-plot experiment (Chapter \@ref(designs)) nitrogen had four equally spaced levels:
+
+```{r poly-oats}
+library(MASS)
+oats2 <- oats
+contrasts(oats2$N) <- contr.poly(4)
+summary(aov(Y ~ V * N + Error(B / V), data = oats2),
+        split = list(N = list(Linear = 1, Quadratic = 2, Cubic = 3)))
+```
+
+Almost all of the nitrogen sum of squares (19,536 of 20,020) is linear; the quadratic and cubic components and their interactions with variety are not significant. The response of oats to nitrogen was linear over 0–0.6 cwt/acre, the same for all three varieties.
+
+::: {.rmdtip}
+Orthogonal polynomial coefficients from `contr.poly()` assume **equally spaced** levels. For unequally spaced levels use `contr.poly(n, scores = c(0, 30, 60, 120))`, or fit the regression directly with the numeric dose as in `lm(yield ~ rep + rate + I(rate^2))`. Response curves that are not polynomials are covered in Chapter \@ref(nonlinear).
+:::
+
+## Contrasts in factorial experiments
+
+In a $2^n$ factorial experiment the main effects and interactions are themselves orthogonal contrasts among the treatment combinations. The built-in `npk` data are a $2^3$ factorial on peas in six blocks; with factors coded as two-level factors, each effect has 1 df:
+
+```{r con-npk}
+summary(aov(yield ~ block + N * P * K, data = npk))
+```
+
+Only nitrogen (N) and potassium (K) main effects are significant. (The N:P:K interaction is not shown because it was confounded with blocks in this experiment.)
+
+## Exercises {-}
+
+::: {.rmdexercise}
+1. In the `PlantGrowth` data, test two orthogonal contrasts: control vs the two treatments, and treatment 1 vs treatment 2.
+2. In the `InsectSprays` data, sprays C, D and E are believed to belong to a newer chemical group. Construct and test a contrast comparing them with A, B and F (use square-root transformed counts).
+3. The `gomez.nitrogen` data in `agridat` contain nitrogen content of rice plants under eight fertiliser treatments. Read the help page and construct a set of meaningful contrasts.
+4. Fit linear and quadratic polynomials to the nitrogen response of oats using `lm(Y ~ B + V + Nn + I(Nn^2))`, where `Nn` is the numeric nitrogen level. Is the quadratic term needed?
+:::

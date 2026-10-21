@@ -1,0 +1,182 @@
+# (PART) Unit IV: Mixed models and regression {-}
+
+# Mixed models and variance components {#mixed-models}
+
+## Fixed and random effects
+
+A factor in a model is treated as
+
+- **fixed** when its levels are chosen deliberately and conclusions apply only to those levels: fertiliser doses, irrigation schedules, a set of released varieties being compared;
+- **random** when its levels are a random sample from a larger population, and interest lies in the **variability** of that population: blocks, years, locations, animals, or genotypes sampled from a breeding population.
+
+A model containing both is a **mixed model**. For a random factor we estimate a **variance component**, not the effect of each level. Variance components are central in plant breeding (genetic variance, heritability), in sampling (variation between and within plots) and in multi-location trials (genotype × environment variance).
+
+Mixed models also handle designs with several error terms (split plots, repeated measures) and unbalanced data in a unified way.
+
+::: {.rmdnote}
+In R, mixed models are fitted with `lmer()` from the `lme4` package [@bates2015]. The `lmerTest` package adds *F* tests with Satterthwaite or Kenward–Roger degrees of freedom. Random effects are written as `(1 | factor)`: "a random intercept for each level of factor".
+:::
+
+## Estimating variance components by the ANOVA method
+
+For a one-way random model $y_{ij} = \mu + g_i + e_{ij}$ with $g_i \sim N(0, \sigma_g^2)$ and $e_{ij} \sim N(0, \sigma_e^2)$, the **expected mean squares** are
+
+| Source | df | MS | E(MS) |
+|:--|:--:|:--:|:--|
+| Genotypes | $g - 1$ | $M_g$ | $\sigma_e^2 + r\sigma_g^2$ |
+| Error | $(g-1)(r-1)$ | $M_e$ | $\sigma_e^2$ |
+
+(the same holds in an RCBD, with blocks removed). Equating mean squares to their expectations gives
+
+$$\hat\sigma_e^2 = M_e, \qquad \hat\sigma_g^2 = \frac{M_g - M_e}{r}$$
+
+### Example: genetic parameters in a potato trial
+
+We return to the 28 potato genotypes in an RCBD with three replications at La Molina (`plrv`, Chapter \@ref(designs)). If these genotypes are regarded as a sample from a breeding population, the genotypic variance and heritability describe how much of the variation in yield is genetic.
+
+```{r vc-data}
+library(agricolae)
+data(plrv)
+plrv$Rep <- factor(plrv$Rep)
+lm02 <- droplevels(subset(plrv, Locality == "LM-02"))
+
+tab <- summary(aov(Yield ~ Rep + Genotype, data = lm02))[[1]]
+tab
+```
+
+```{r vc-anova-method}
+r  <- 3
+Mg <- tab[2, "Mean Sq"]
+Me <- tab[3, "Mean Sq"]
+sigma2_g <- (Mg - Me) / r          # genotypic variance
+sigma2_e <- Me                     # error (environmental) variance
+sigma2_p <- sigma2_g + sigma2_e    # phenotypic variance
+xbar <- mean(lm02$Yield)
+
+c(sigma2_g = sigma2_g, sigma2_e = sigma2_e, sigma2_p = sigma2_p,
+  H2_plot  = sigma2_g / sigma2_p,                    # broad-sense heritability, plot basis
+  H2_mean  = sigma2_g / (sigma2_g + sigma2_e / r),   # heritability, entry-mean basis
+  GCV = sqrt(sigma2_g) / xbar * 100,                 # genotypic coefficient of variation
+  PCV = sqrt(sigma2_p) / xbar * 100)                 # phenotypic coefficient of variation
+```
+
+Broad-sense heritability on a plot basis is `r round(sigma2_g/sigma2_p, 2)`, and on an entry-mean basis (relevant when selection is based on genotype means over three replications) it is `r round(sigma2_g/(sigma2_g + sigma2_e/r), 2)`. The genotypic coefficient of variation (`r round(sqrt(sigma2_g)/xbar*100, 1)`%) is a large part of the phenotypic coefficient of variation (`r round(sqrt(sigma2_p)/xbar*100, 1)`%), indicating considerable genetic variability for yield.
+
+## Estimating variance components by REML
+
+The ANOVA method is simple but can give negative estimates and does not extend easily to unbalanced data. **Restricted maximum likelihood** (REML), the default in `lmer()`, avoids these problems.
+
+```{r vc-reml}
+library(lme4)
+library(lmerTest)
+m1 <- lmer(Yield ~ Rep + (1 | Genotype), data = lm02)
+summary(m1)
+```
+
+```{r vc-varcorr}
+vc <- as.data.frame(VarCorr(m1))
+vc[, c("grp", "vcov", "sdcor")]
+```
+
+With balanced data, REML reproduces the ANOVA estimates ($\hat\sigma_g^2$ = `r round(vc$vcov[1], 2)`, $\hat\sigma_e^2$ = `r round(vc$vcov[2], 2)`). The significance of the genotypic variance is tested by a likelihood-ratio test that compares the model with and without the random effect:
+
+```{r vc-ranova}
+ranova(m1)
+```
+
+The genotypic variance is highly significant.
+
+::: {.rmdwarning}
+The likelihood-ratio test for a variance component tests a parameter on the boundary of its space ($\sigma_g^2 = 0$), so the reported p-value is conservative; halving it gives a closer approximation.
+:::
+
+## Multi-environment trials
+
+The full `plrv` data include the 28 genotypes in six environments. A mixed model separates the genotypic variance from the genotype × environment (G × E) interaction variance. Environments are treated as fixed here, and replications are nested within environments:
+
+```{r met-model}
+m2 <- lmer(Yield ~ Locality + (1 | Locality:Rep) + (1 | Genotype) +
+             (1 | Genotype:Locality), data = plrv)
+vc2 <- as.data.frame(VarCorr(m2))
+vc2[, c("grp", "vcov")]
+ranova(m2)
+```
+
+All variance components are significant. The G × E variance (`r round(vc2$vcov[1], 1)`) is larger than the genotypic variance (`r round(vc2$vcov[2], 1)`): the genotypes rank differently in different environments, as the interaction plot in Chapter \@ref(eda) suggested.
+
+Heritability on an entry-mean basis across $e$ environments and $r$ replications is
+
+$$H^2 = \frac{\sigma_g^2}{\sigma_g^2 + \sigma_{ge}^2/e + \sigma_e^2/(re)}$$
+
+```{r met-h2}
+s2g  <- vc2$vcov[vc2$grp == "Genotype"]
+s2ge <- vc2$vcov[vc2$grp == "Genotype:Locality"]
+s2e  <- vc2$vcov[vc2$grp == "Residual"]
+e <- 6; r <- 3
+s2g / (s2g + s2ge / e + s2e / (r * e))
+```
+
+### BLUPs: predicting genotype values
+
+When genotypes are random, their predicted effects are **best linear unbiased predictions** (BLUPs). BLUPs shrink the observed genotype means towards the overall mean, more so when the heritability is low, and they are widely used to rank genotypes in breeding programmes.
+
+```{r met-blup}
+blup <- ranef(m2)$Genotype
+blup$Genotype <- rownames(blup)
+names(blup)[1] <- "BLUP"
+head(blup[order(-blup$BLUP), ], 6)
+```
+
+The genotype `Unica` (a released variety) has the highest predicted genetic value for yield across environments.
+
+## Split-plot designs as mixed models
+
+A split-plot design has two error terms because main plots and sub-plots are units of different sizes. In a mixed model, both are represented by random effects: blocks and main plots (variety within block) are random. For the oats experiment (Chapter \@ref(designs)):
+
+```{r sp-mixed}
+library(MASS)
+m3 <- lmer(Y ~ V * N + (1 | B / V), data = oats)
+anova(m3)                               # Satterthwaite degrees of freedom
+anova(m3, ddf = "Kenward-Roger")        # Kenward-Roger degrees of freedom
+```
+
+The *F* tests and their denominator degrees of freedom (10 for varieties, 45 for nitrogen and the interaction) are exactly those of the classical split-plot ANOVA. The variance components are
+
+```{r sp-vc}
+VarCorr(m3)
+```
+
+The mixed-model approach has two advantages: it works with missing data, and `emmeans` computes correct standard errors for any comparison, combining the error terms as needed.
+
+```{r sp-emmeans}
+library(emmeans)
+emm_V <- emmeans(m3, ~ V)
+pairs(emm_V)            # main-plot comparisons use the larger main-plot error
+emm_N <- emmeans(m3, ~ N)
+emm_N
+```
+
+## Testing the significance of contrasts in mixed models
+
+Contrasts (Chapter \@ref(contrasts)) are tested in mixed models with `emmeans::contrast()`, which uses the appropriate standard error and degrees of freedom. For the four equally spaced nitrogen levels, orthogonal polynomial contrasts are obtained with `method = "poly"`:
+
+```{r sp-contrast}
+contrast(emm_N, method = "poly")
+```
+
+The linear trend is highly significant, while the quadratic and cubic components are not, confirming the conclusion of Chapter \@ref(contrasts). Custom contrasts are specified as a list of coefficients, for example nitrogen applied (any level) versus no nitrogen:
+
+```{r sp-contrast2}
+contrast(emm_N, list("N applied vs none" = c(-3, 1, 1, 1) / 3))
+```
+
+Applying nitrogen increased yield by `r round(summary(contrast(emm_N, list(a = c(-3, 1, 1, 1)/3)))$estimate, 1)` units on average over the three levels.
+
+## Exercises {-}
+
+::: {.rmdexercise}
+1. Estimate the genotypic and error variances, heritability, GCV and PCV for yield of the `plrv` genotypes at locality `Hyo-02`, using both the ANOVA method and REML.
+2. Using the multi-environment model for `plrv`, estimate the heritability of `WeightPlant`.
+3. Analyse the `gomez.stripplot` data (`agridat`) as a mixed model with `(1 | rep / gen) + (1 | rep:nitro)` random effects. Compare the *F* tests with Chapter \@ref(designs).
+4. In the oats experiment, test the contrast "0.6 cwt versus 0.4 cwt" of nitrogen.
+:::

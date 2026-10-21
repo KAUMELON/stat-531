@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 13 Analysis of variance and multiple comparisons | Data Analysis Using Statistical Packages</title>
+<meta name="author" content="Dr. Pratheesh P. Gopinath">
+<meta name="description" content="13.1 The concept of analysis of variance Analysis of variance (ANOVA), developed by R. A. Fisher at Rothamsted Experimental Station in the 1920s, partitions the total variation in a set of...">
+<meta name="generator" content="bookdown 0.37 with bs4_book()">
+<meta property="og:title" content="Chapter 13 Analysis of variance and multiple comparisons | Data Analysis Using Statistical Packages">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://kaumelon.github.io/stat-531/anova-crd.html">
+<meta property="og:image" content="https://kaumelon.github.io/stat-531/images/cover.png">
+<meta property="og:description" content="13.1 The concept of analysis of variance Analysis of variance (ANOVA), developed by R. A. Fisher at Rothamsted Experimental Station in the 1920s, partitions the total variation in a set of...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 13 Analysis of variance and multiple comparisons | Data Analysis Using Statistical Packages">
+<meta name="twitter:description" content="13.1 The concept of analysis of variance Analysis of variance (ANOVA), developed by R. A. Fisher at Rothamsted Experimental Station in the 1920s, partitions the total variation in a set of...">
+<meta name="twitter:image" content="https://kaumelon.github.io/stat-531/images/cover.png">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.1/jquery-3.6.1.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.6.1/transition.js"></script><script src="libs/bs3compat-0.6.1/tabs.js"></script><script src="libs/bs3compat-0.6.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="custom.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A complete guide to data analysis in agricultural research using R">Data Analysis Using Statistical Packages</a>:
+        <small class="text-muted">A complete guide to data analysis in agricultural research using R</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Welcome</a></li>
+<li><a class="" href="preface.html">Preface</a></li>
+<li><a class="" href="syllabus.html">Syllabus</a></li>
+<li class="book-part">Getting started</li>
+<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="r-and-r-studio.html"><span class="header-section-number">2</span> R and RStudio</a></li>
+<li><a class="" href="rbase.html"><span class="header-section-number">3</span> R basics</a></li>
+<li><a class="" href="packages.html"><span class="header-section-number">4</span> Packages and libraries</a></li>
+<li><a class="" href="import.html"><span class="header-section-number">5</span> Importing data files</a></li>
+<li><a class="" href="dataset.html"><span class="header-section-number">6</span> Data sets in R</a></li>
+<li class="book-part">Unit I: Describing data</li>
+<li><a class="" href="descriptive-statistics.html"><span class="header-section-number">7</span> Descriptive statistics</a></li>
+<li><a class="" href="graphical-representation.html"><span class="header-section-number">8</span> Graphical representation</a></li>
+<li><a class="" href="eda.html"><span class="header-section-number">9</span> Exploratory data analysis</a></li>
+<li class="book-part">Unit II: Distributions and tests of hypotheses</li>
+<li><a class="" href="distributions.html"><span class="header-section-number">10</span> Probability distributions and goodness of fit</a></li>
+<li><a class="" href="large-sample.html"><span class="header-section-number">11</span> Large-sample tests</a></li>
+<li><a class="" href="small-sample.html"><span class="header-section-number">12</span> Tests based on t, F and chi-square</a></li>
+<li class="book-part">Unit III: Analysis of variance and covariance</li>
+<li><a class="active" href="anova-crd.html"><span class="header-section-number">13</span> Analysis of variance and multiple comparisons</a></li>
+<li><a class="" href="designs.html"><span class="header-section-number">14</span> Experimental designs and multi-factor experiments</a></li>
+<li><a class="" href="contrasts.html"><span class="header-section-number">15</span> Contrast analysis</a></li>
+<li><a class="" href="ancova.html"><span class="header-section-number">16</span> Analysis of covariance</a></li>
+<li class="book-part">Unit IV: Mixed models and regression</li>
+<li><a class="" href="mixed-models.html"><span class="header-section-number">17</span> Mixed models and variance components</a></li>
+<li><a class="" href="regression.html"><span class="header-section-number">18</span> Correlation and regression</a></li>
+<li class="book-part">Unit V: Multivariate methods, non-linear models and time series</li>
+<li><a class="" href="pca.html"><span class="header-section-number">19</span> Principal component analysis</a></li>
+<li><a class="" href="factor-analysis.html"><span class="header-section-number">20</span> Factor analysis</a></li>
+<li><a class="" href="discriminant.html"><span class="header-section-number">21</span> Discriminant function analysis</a></li>
+<li><a class="" href="nonlinear.html"><span class="header-section-number">22</span> Fitting non-linear models</a></li>
+<li><a class="" href="time-series-analysis-using-r.html"><span class="header-section-number">23</span> Time series analysis</a></li>
+<li class="book-part">Appendix</li>
+<li><a class="" href="appendix-data.html"><span class="header-section-number">A</span> Data sets used in this book</a></li>
+<li><a class="" href="appendix-functions.html"><span class="header-section-number">B</span> Quick reference of R functions</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/KAUMELON/stat-531">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="anova-crd" class="section level1" number="13">
+<h1>
+<span class="header-section-number">13</span> Analysis of variance and multiple comparisons<a class="anchor" aria-label="anchor" href="#anova-crd"><i class="fas fa-link"></i></a>
+</h1>
+<div id="the-concept-of-analysis-of-variance" class="section level2" number="13.1">
+<h2>
+<span class="header-section-number">13.1</span> The concept of analysis of variance<a class="anchor" aria-label="anchor" href="#the-concept-of-analysis-of-variance"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Analysis of variance</strong> (ANOVA), developed by R. A. Fisher at Rothamsted Experimental Station in the 1920s, partitions the total variation in a set of observations into parts attributable to different sources (treatments, blocks, error). Comparing the variation <strong>between</strong> treatment groups with the variation <strong>within</strong> groups tests whether the treatment means differ.</p>
+<p>The <em>t</em> test compares two means. With <span class="math inline">\(k &gt; 2\)</span> treatments, carrying out all <span class="math inline">\(k(k-1)/2\)</span> pairwise <em>t</em> tests would inflate the chance of at least one false significant result. ANOVA tests all the means at once:</p>
+<p><span class="math display">\[H_0: \mu_1 = \mu_2 = \cdots = \mu_k \qquad \text{vs} \qquad H_1: \text{at least two means differ}\]</span></p>
+<div id="assumptions" class="section level3" number="13.1.1">
+<h3>
+<span class="header-section-number">13.1.1</span> Assumptions<a class="anchor" aria-label="anchor" href="#assumptions"><i class="fas fa-link"></i></a>
+</h3>
+<p>ANOVA assumes that</p>
+<ol style="list-style-type: decimal">
+<li>the effects are <strong>additive</strong> (the model below is correct),</li>
+<li>the errors are <strong>independent</strong> (guaranteed by randomisation),</li>
+<li>the errors are <strong>normally distributed</strong>, and</li>
+<li>the errors have <strong>equal variance</strong> in all groups (homoscedasticity).</li>
+</ol>
+<p>Assumptions 3 and 4 are checked from the residuals after fitting the model (Section <a href="anova-crd.html#anova-assumptions">13.3</a>).</p>
+</div>
+<div id="terminology" class="section level3" number="13.1.2">
+<h3>
+<span class="header-section-number">13.1.2</span> Terminology<a class="anchor" aria-label="anchor" href="#terminology"><i class="fas fa-link"></i></a>
+</h3>
+<ul>
+<li>
+<strong>Factor</strong>: a variable whose effect is studied (variety, fertiliser, spacing). The values of a factor are its <strong>levels</strong>.</li>
+<li>
+<strong>Treatment</strong>: a level of a factor, or a combination of levels of several factors.</li>
+<li>
+<strong>Experimental unit</strong> (plot): the unit to which a treatment is applied.</li>
+<li>
+<strong>Replication</strong>: the number of experimental units receiving each treatment.</li>
+<li>
+<strong>One-way classification</strong>: observations classified by one factor. <strong>Multi-way classification</strong>: by two or more factors (Chapter <a href="designs.html#designs">14</a>).</li>
+</ul>
+</div>
+</div>
+<div id="completely-randomised-design-crd" class="section level2" number="13.2">
+<h2>
+<span class="header-section-number">13.2</span> Completely randomised design (CRD)<a class="anchor" aria-label="anchor" href="#completely-randomised-design-crd"><i class="fas fa-link"></i></a>
+</h2>
+<p>In a CRD the treatments are allocated to experimental units completely at random. It is suitable when the units are homogeneous, as in laboratory, pot-culture and greenhouse experiments.</p>
+<div id="model" class="section level3" number="13.2.1">
+<h3>
+<span class="header-section-number">13.2.1</span> Model<a class="anchor" aria-label="anchor" href="#model"><i class="fas fa-link"></i></a>
+</h3>
+<p><span class="math display">\[y_{ij} = \mu + \tau_i + e_{ij}, \qquad i = 1, \ldots, t; \; j = 1, \ldots, r_i\]</span></p>
+<p>where <span class="math inline">\(y_{ij}\)</span> is the observation on the <span class="math inline">\(j\)</span>th unit receiving treatment <span class="math inline">\(i\)</span>, <span class="math inline">\(\mu\)</span> the general mean, <span class="math inline">\(\tau_i\)</span> the effect of treatment <span class="math inline">\(i\)</span>, and <span class="math inline">\(e_{ij} \sim N(0, \sigma^2)\)</span> independent errors.</p>
+</div>
+<div id="anova-table" class="section level3" number="13.2.2">
+<h3>
+<span class="header-section-number">13.2.2</span> ANOVA table<a class="anchor" aria-label="anchor" href="#anova-table"><i class="fas fa-link"></i></a>
+</h3>
+<div class="inline-table"><table class="table table-sm">
+<colgroup>
+<col width="15%">
+<col width="21%">
+<col width="21%">
+<col width="21%">
+<col width="21%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Source</th>
+<th align="center">df</th>
+<th align="center">SS</th>
+<th align="center">MS</th>
+<th align="center"><em>F</em></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Treatments</td>
+<td align="center"><span class="math inline">\(t - 1\)</span></td>
+<td align="center"><span class="math inline">\(\text{TrSS} = \sum_i \dfrac{T_i^2}{r_i} - \text{CF}\)</span></td>
+<td align="center"><span class="math inline">\(\text{TrMS} = \dfrac{\text{TrSS}}{t-1}\)</span></td>
+<td align="center"><span class="math inline">\(\dfrac{\text{TrMS}}{\text{EMS}}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Error</td>
+<td align="center"><span class="math inline">\(n - t\)</span></td>
+<td align="center"><span class="math inline">\(\text{ESS} = \text{TSS} - \text{TrSS}\)</span></td>
+<td align="center"><span class="math inline">\(\text{EMS} = \dfrac{\text{ESS}}{n-t}\)</span></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">Total</td>
+<td align="center"><span class="math inline">\(n - 1\)</span></td>
+<td align="center"><span class="math inline">\(\text{TSS} = \sum_{ij} y_{ij}^2 - \text{CF}\)</span></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table></div>
+<p>Here <span class="math inline">\(T_i\)</span> is the total of treatment <span class="math inline">\(i\)</span>, <span class="math inline">\(G\)</span> the grand total, <span class="math inline">\(n = \sum r_i\)</span> and <span class="math inline">\(\text{CF} = G^2/n\)</span> the correction factor.</p>
+</div>
+<div id="example" class="section level3" number="13.2.3">
+<h3>
+<span class="header-section-number">13.2.3</span> Example<a class="anchor" aria-label="anchor" href="#example"><i class="fas fa-link"></i></a>
+</h3>
+<p>An experiment at Tacna, southern Peru, studied the effect of two sweet potato viruses on yield. The four treatments were cuttings infected with sweet potato chlorotic stunt virus (<code>cc</code>), sweet potato feathery mottle virus (<code>ff</code>), both viruses (<code>fc</code>), and healthy plants (<code>oo</code>). Each treatment had three plots of 50 plants, and total yield (kg per plot) was recorded. The data are <code>sweetpotato</code> in <code>agricolae</code>.</p>
+<div class="sourceCode" id="cb495"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">agricolae</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">sweetpotato</span><span class="op">)</span></span>
+<span><span class="va">sweetpotato</span></span></code></pre></div>
+<pre><code>#&gt;    virus yield
+#&gt; 1     cc  28.5
+#&gt; 2     cc  21.7
+#&gt; 3     cc  23.0
+#&gt; 4     fc  14.9
+#&gt; 5     fc  10.6
+#&gt; 6     fc  13.1
+#&gt; 7     ff  41.8
+#&gt; 8     ff  39.2
+#&gt; 9     ff  28.0
+#&gt; 10    oo  38.2
+#&gt; 11    oo  40.4
+#&gt; 12    oo  32.1</code></pre>
+<div class="sourceCode" id="cb497"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">sweetpotato</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt; 'data.frame':    12 obs. of  2 variables:
+#&gt;  $ virus: Factor w/ 4 levels "cc","fc","ff",..: 1 1 1 2 2 2 3 3 3 4 ...
+#&gt;  $ yield: num  28.5 21.7 23 14.9 10.6 13.1 41.8 39.2 28 38.2 ...</code></pre>
+<p>The treatment variable must be a <strong>factor</strong>; here it already is. If treatments are coded as numbers, convert them with <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> before the analysis, otherwise R will fit a regression instead of an ANOVA.</p>
+<div class="sourceCode" id="cb499"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">sweetpotato</span><span class="op">$</span><span class="va">yield</span>, <span class="va">sweetpotato</span><span class="op">$</span><span class="va">virus</span>, <span class="va">mean</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;    cc    fc    ff    oo 
+#&gt; 24.40 12.87 36.33 36.90</code></pre>
+<div class="sourceCode" id="cb501"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">virus</span>, data <span class="op">=</span> <span class="va">sweetpotato</span>, col <span class="op">=</span> <span class="st">"#D5F5E3"</span>,</span>
+<span>        xlab <span class="op">=</span> <span class="st">"Virus treatment"</span>, ylab <span class="op">=</span> <span class="st">"Yield (kg/plot)"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="stat531_files/figure-html/crd-means-1.png" width="80%" style="display: block; margin: auto;"></div>
+</div>
+<div id="computation-by-hand" class="section level3" number="13.2.4">
+<h3>
+<span class="header-section-number">13.2.4</span> Computation by hand<a class="anchor" aria-label="anchor" href="#computation-by-hand"><i class="fas fa-link"></i></a>
+</h3>
+<p>It helps to see the arithmetic once:</p>
+<div class="sourceCode" id="cb502"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">y</span>  <span class="op">&lt;-</span> <span class="va">sweetpotato</span><span class="op">$</span><span class="va">yield</span></span>
+<span><span class="va">n</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span><span class="va">G</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span><span class="va">CF</span> <span class="op">&lt;-</span> <span class="va">G</span><span class="op">^</span><span class="fl">2</span> <span class="op">/</span> <span class="va">n</span></span>
+<span><span class="va">TSS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">y</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">-</span> <span class="va">CF</span></span>
+<span></span>
+<span><span class="va">Ti</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">sweetpotato</span><span class="op">$</span><span class="va">virus</span>, <span class="va">sum</span><span class="op">)</span>        <span class="co"># treatment totals</span></span>
+<span><span class="va">ri</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">sweetpotato</span><span class="op">$</span><span class="va">virus</span>, <span class="va">length</span><span class="op">)</span>     <span class="co"># replications</span></span>
+<span><span class="va">TrSS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">Ti</span><span class="op">^</span><span class="fl">2</span> <span class="op">/</span> <span class="va">ri</span><span class="op">)</span> <span class="op">-</span> <span class="va">CF</span></span>
+<span><span class="va">ESS</span>  <span class="op">&lt;-</span> <span class="va">TSS</span> <span class="op">-</span> <span class="va">TrSS</span></span>
+<span></span>
+<span><span class="va">t</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nlevels.html">nlevels</a></span><span class="op">(</span><span class="va">sweetpotato</span><span class="op">$</span><span class="va">virus</span><span class="op">)</span></span>
+<span><span class="va">TrMS</span> <span class="op">&lt;-</span> <span class="va">TrSS</span> <span class="op">/</span> <span class="op">(</span><span class="va">t</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">EMS</span>  <span class="op">&lt;-</span> <span class="va">ESS</span> <span class="op">/</span> <span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="va">t</span><span class="op">)</span></span>
+<span><span class="cn">F</span> <span class="op">&lt;-</span> <span class="va">TrMS</span> <span class="op">/</span> <span class="va">EMS</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>TrSS <span class="op">=</span> <span class="va">TrSS</span>, ESS <span class="op">=</span> <span class="va">ESS</span>, TSS <span class="op">=</span> <span class="va">TSS</span>, F <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  p_value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">pf</a></span><span class="op">(</span><span class="cn">F</span>, <span class="va">t</span> <span class="op">-</span> <span class="fl">1</span>, <span class="va">n</span> <span class="op">-</span> <span class="va">t</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;         TrSS          ESS          TSS            F      p_value 
+#&gt; 1170.2091667  179.9133333 1350.1225000   17.3447833    0.0007334</code></pre>
+</div>
+<div id="analysis-with-aov" class="section level3" number="13.2.5">
+<h3>
+<span class="header-section-number">13.2.5</span> Analysis with aov()<a class="anchor" aria-label="anchor" href="#analysis-with-aov"><i class="fas fa-link"></i></a>
+</h3>
+<p>The function <code><a href="https://rdrr.io/r/stats/aov.html">aov()</a></code> fits the model. The formula <code>yield ~ virus</code> reads “yield explained by virus”:</p>
+<div class="sourceCode" id="cb504"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">virus</span>, data <span class="op">=</span> <span class="va">sweetpotato</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;             Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+#&gt; virus        3   1170     390    17.3 0.00073 ***
+#&gt; Residuals    8    180      22                    
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<p><span class="math inline">\(F = 17.34\)</span> with (3, 8) df and <span class="math inline">\(p &lt; 0.001\)</span>, so the virus treatments differ significantly in yield. The error mean square, <span class="math inline">\(\text{EMS} = 22.49\)</span>, estimates <span class="math inline">\(\sigma^2\)</span>.</p>
+<div class="rmdtip">
+<p><code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> fits the same model; <code>anova(lm(yield ~ virus, data = sweetpotato))</code> gives the same ANOVA table. <code><a href="https://rdrr.io/r/stats/aov.html">aov()</a></code> is a wrapper around <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> with output tailored to ANOVA.</p>
+</div>
+</div>
+<div id="coefficient-of-variation-standard-errors-and-critical-difference" class="section level3" number="13.2.6">
+<h3>
+<span class="header-section-number">13.2.6</span> Coefficient of variation, standard errors and critical difference<a class="anchor" aria-label="anchor" href="#coefficient-of-variation-standard-errors-and-critical-difference"><i class="fas fa-link"></i></a>
+</h3>
+<p>Agricultural journals usually report, along with the means:</p>
+<ul>
+<li>
+<strong>CV (%)</strong> <span class="math inline">\(= \sqrt{\text{EMS}} / \bar y \times 100\)</span>: a measure of experimental precision.</li>
+<li>
+<strong>SE(m)</strong> <span class="math inline">\(= \sqrt{\text{EMS}/r}\)</span>: standard error of a treatment mean.</li>
+<li>
+<strong>SE(d)</strong> <span class="math inline">\(= \sqrt{2\,\text{EMS}/r}\)</span>: standard error of the difference between two means.</li>
+<li>
+<strong>CD</strong> (critical difference, or least significant difference) <span class="math inline">\(= t_{\alpha/2,\,\text{error df}} \times \text{SE(d)}\)</span>.</li>
+</ul>
+<div class="sourceCode" id="cb506"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
+<span><span class="va">EMS</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/deviance.html">deviance</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html">df.residual</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>     <span class="co"># error mean square</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>CV  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/agricolae/man/cv.model.html">cv.model</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>,                          <span class="co"># agricolae function</span></span>
+<span>  SEm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">EMS</span> <span class="op">/</span> <span class="va">r</span><span class="op">)</span>,</span>
+<span>  SEd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">EMS</span> <span class="op">/</span> <span class="va">r</span><span class="op">)</span>,</span>
+<span>  CD5 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html">df.residual</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span> <span class="op">*</span> <span class="va">EMS</span> <span class="op">/</span> <span class="va">r</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;     CV    SEm    SEd    CD5 
+#&gt; 17.167  2.738  3.872  8.929</code></pre>
+<p>The CV of 17.2% is acceptable for a field experiment. Any two treatment means differing by more than the CD (8.93 kg) are significantly different at the 5% level.</p>
+</div>
+</div>
+<div id="anova-assumptions" class="section level2" number="13.3">
+<h2>
+<span class="header-section-number">13.3</span> Checking the assumptions<a class="anchor" aria-label="anchor" href="#anova-assumptions"><i class="fas fa-link"></i></a>
+</h2>
+<p>The residuals <span class="math inline">\(\hat e_{ij} = y_{ij} - \bar y_i\)</span> estimate the errors. Four diagnostic plots are produced by <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> on the fitted model:</p>
+<div class="sourceCode" id="cb508"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="stat531_files/figure-html/crd-diag-1.png" width="80%" style="display: block; margin: auto;"></div>
+<div class="sourceCode" id="cb509"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<ul>
+<li>
+<strong>Residuals vs Fitted</strong>: should show no pattern, with similar spread at all fitted values. A funnel shape indicates unequal variances.</li>
+<li>
+<strong>Normal Q–Q</strong>: points should lie close to the line.</li>
+<li>
+<strong>Scale–Location</strong>: another check of equal variance.</li>
+<li>
+<strong>Residuals vs Leverage</strong>: identifies influential observations.</li>
+</ul>
+<p>Formal tests:</p>
+<div class="sourceCode" id="cb510"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/shapiro.test.html">shapiro.test</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html">residuals</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">)</span>                       <span class="co"># normality of residuals</span></span></code></pre></div>
+<pre><code>#&gt; 
+#&gt;  Shapiro-Wilk normality test
+#&gt; 
+#&gt; data:  residuals(model)
+#&gt; W = 0.96, p-value = 0.8</code></pre>
+<div class="sourceCode" id="cb512"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/bartlett.test.html">bartlett.test</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">virus</span>, data <span class="op">=</span> <span class="va">sweetpotato</span><span class="op">)</span>     <span class="co"># homogeneity of variances</span></span></code></pre></div>
+<pre><code>#&gt; 
+#&gt;  Bartlett test of homogeneity of variances
+#&gt; 
+#&gt; data:  yield by virus
+#&gt; Bartlett's K-squared = 2.4, df = 3, p-value = 0.5</code></pre>
+<p>Both are non-significant, so the assumptions are reasonable.</p>
+<div id="when-the-assumptions-fail-an-example" class="section level3" number="13.3.1">
+<h3>
+<span class="header-section-number">13.3.1</span> When the assumptions fail: an example<a class="anchor" aria-label="anchor" href="#when-the-assumptions-fail-an-example"><i class="fas fa-link"></i></a>
+</h3>
+<p>The <code>InsectSprays</code> data give insect counts on 12 plots for each of six insecticides. Counts typically have a variance that increases with the mean:</p>
+<div class="sourceCode" id="cb514"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">count</span> <span class="op">~</span> <span class="va">spray</span>, data <span class="op">=</span> <span class="va">InsectSprays</span>, col <span class="op">=</span> <span class="st">"#FADBD8"</span>,</span>
+<span>        xlab <span class="op">=</span> <span class="st">"Spray"</span>, ylab <span class="op">=</span> <span class="st">"Insect count"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="stat531_files/figure-html/insect-raw-1.png" width="80%" style="display: block; margin: auto;"></div>
+<div class="sourceCode" id="cb515"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/bartlett.test.html">bartlett.test</a></span><span class="op">(</span><span class="va">count</span> <span class="op">~</span> <span class="va">spray</span>, data <span class="op">=</span> <span class="va">InsectSprays</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt; 
+#&gt;  Bartlett test of homogeneity of variances
+#&gt; 
+#&gt; data:  count by spray
+#&gt; Bartlett's K-squared = 26, df = 5, p-value = 0.00009</code></pre>
+<p>Bartlett’s test is highly significant: the variances are unequal. The square-root transformation, recommended for counts (Chapter <a href="eda.html#eda">9</a>), stabilises the variance:</p>
+<div class="sourceCode" id="cb517"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_sq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">count</span><span class="op">)</span> <span class="op">~</span> <span class="va">spray</span>, data <span class="op">=</span> <span class="va">InsectSprays</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model_sq</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;             Df Sum Sq Mean Sq F value Pr(&gt;F)    
+#&gt; spray        5   88.4   17.69    44.8 &lt;2e-16 ***
+#&gt; Residuals   66   26.1    0.39                   
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<div class="sourceCode" id="cb519"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/bartlett.test.html">bartlett.test</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">count</span><span class="op">)</span> <span class="op">~</span> <span class="va">spray</span>, data <span class="op">=</span> <span class="va">InsectSprays</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt; 
+#&gt;  Bartlett test of homogeneity of variances
+#&gt; 
+#&gt; data:  sqrt(count) by spray
+#&gt; Bartlett's K-squared = 3.8, df = 5, p-value = 0.6</code></pre>
+<div class="sourceCode" id="cb521"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/shapiro.test.html">shapiro.test</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html">residuals</a></span><span class="op">(</span><span class="va">model_sq</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt; 
+#&gt;  Shapiro-Wilk normality test
+#&gt; 
+#&gt; data:  residuals(model_sq)
+#&gt; W = 0.99, p-value = 0.7</code></pre>
+<p>After transformation both assumptions are satisfied, and the sprays differ highly significantly. Present the means in the original units (or back-transformed), but base the significance tests on the transformed analysis.</p>
+<p>If no transformation works, use the non-parametric <strong>Kruskal–Wallis test</strong>:</p>
+<div class="sourceCode" id="cb523"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/kruskal.test.html">kruskal.test</a></span><span class="op">(</span><span class="va">count</span> <span class="op">~</span> <span class="va">spray</span>, data <span class="op">=</span> <span class="va">InsectSprays</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt; 
+#&gt;  Kruskal-Wallis rank sum test
+#&gt; 
+#&gt; data:  count by spray
+#&gt; Kruskal-Wallis chi-squared = 55, df = 5, p-value = 2e-10</code></pre>
+</div>
+</div>
+<div id="multiple-comparison-procedures" class="section level2" number="13.4">
+<h2>
+<span class="header-section-number">13.4</span> Multiple comparison procedures<a class="anchor" aria-label="anchor" href="#multiple-comparison-procedures"><i class="fas fa-link"></i></a>
+</h2>
+<p>A significant <em>F</em> test says that the treatments are not all equal, but not <strong>which</strong> treatments differ. Multiple comparison procedures answer that question. They differ in how they control the error rate:</p>
+<div class="inline-table"><table class="table table-sm">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Procedure</th>
+<th align="left">Use</th>
+<th align="left">Error rate controlled</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Least significant difference (LSD)</td>
+<td align="left">Planned comparisons; only after a significant <em>F</em> (Fisher’s protected LSD)</td>
+<td align="left">per comparison</td>
+</tr>
+<tr class="even">
+<td align="left">Duncan’s multiple range test (DMRT)</td>
+<td align="left">Widely used in agricultural research to rank all means</td>
+<td align="left">intermediate</td>
+</tr>
+<tr class="odd">
+<td align="left">Tukey’s honestly significant difference (HSD)</td>
+<td align="left">All pairwise comparisons</td>
+<td align="left">family-wise (experiment-wise)</td>
+</tr>
+<tr class="even">
+<td align="left">Scheffé’s test</td>
+<td align="left">All possible contrasts, not only pairs</td>
+<td align="left">family-wise (most conservative)</td>
+</tr>
+<tr class="odd">
+<td align="left">Bonferroni</td>
+<td align="left">A small number of planned comparisons</td>
+<td align="left">family-wise</td>
+</tr>
+<tr class="even">
+<td align="left">Dunnett’s test</td>
+<td align="left">Each treatment against a control</td>
+<td align="left">family-wise</td>
+</tr>
+</tbody>
+</table></div>
+<p>The <code>agricolae</code> package implements these tests and labels the means with letters: <strong>means sharing a letter are not significantly different</strong>.</p>
+<div id="least-significant-difference-lsd" class="section level3" number="13.4.1">
+<h3>
+<span class="header-section-number">13.4.1</span> Least significant difference (LSD)<a class="anchor" aria-label="anchor" href="#least-significant-difference-lsd"><i class="fas fa-link"></i></a>
+</h3>
+<p><span class="math display">\[\text{LSD} = t_{\alpha/2,\,\text{edf}} \sqrt{\text{EMS}\left(\frac{1}{r_i} + \frac{1}{r_j}\right)}\]</span></p>
+<div class="sourceCode" id="cb525"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">lsd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/agricolae/man/LSD.test.html">LSD.test</a></span><span class="op">(</span><span class="va">model</span>, <span class="st">"virus"</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>, console <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt; 
+#&gt; Study: model ~ "virus"
+#&gt; 
+#&gt; LSD t Test for yield 
+#&gt; 
+#&gt; Mean Square Error:  22.49 
+#&gt; 
+#&gt; virus,  means and individual ( 95 %) CI
+#&gt; 
+#&gt;    yield   std r    se    LCL   UCL  Min  Max   Q25  Q50   Q75
+#&gt; cc 24.40 3.610 3 2.738 18.086 30.71 21.7 28.5 22.35 23.0 25.75
+#&gt; fc 12.87 2.159 3 2.738  6.553 19.18 10.6 14.9 11.85 13.1 14.00
+#&gt; ff 36.33 7.333 3 2.738 30.020 42.65 28.0 41.8 33.60 39.2 40.50
+#&gt; oo 36.90 4.300 3 2.738 30.586 43.21 32.1 40.4 35.15 38.2 39.30
+#&gt; 
+#&gt; Alpha: 0.05 ; DF Error: 8
+#&gt; Critical Value of t: 2.306 
+#&gt; 
+#&gt; least Significant Difference: 8.929 
+#&gt; 
+#&gt; Treatments with the same letter are not significantly different.
+#&gt; 
+#&gt;    yield groups
+#&gt; oo 36.90      a
+#&gt; ff 36.33      a
+#&gt; cc 24.40      b
+#&gt; fc 12.87      c</code></pre>
+<p>The LSD is 8.93 kg, the same as the CD computed above. Healthy plants (<code>oo</code>) and plants infected with feathery mottle virus alone (<code>ff</code>) do not differ; both outyield <code>cc</code>, and the double infection <code>fc</code> gives the lowest yield.</p>
+</div>
+<div id="duncans-multiple-range-test-dmrt" class="section level3" number="13.4.2">
+<h3>
+<span class="header-section-number">13.4.2</span> Duncan’s multiple range test (DMRT)<a class="anchor" aria-label="anchor" href="#duncans-multiple-range-test-dmrt"><i class="fas fa-link"></i></a>
+</h3>
+<p>DMRT uses a different critical range for means that are <span class="math inline">\(p\)</span> steps apart in the ranked list:</p>
+<div class="sourceCode" id="cb527"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dmrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/agricolae/man/duncan.test.html">duncan.test</a></span><span class="op">(</span><span class="va">model</span>, <span class="st">"virus"</span>, console <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt; 
+#&gt; Study: model ~ "virus"
+#&gt; 
+#&gt; Duncan's new multiple range test
+#&gt; for yield 
+#&gt; 
+#&gt; Mean Square Error:  22.49 
+#&gt; 
+#&gt; virus,  means
+#&gt; 
+#&gt;    yield   std r    se  Min  Max   Q25  Q50   Q75
+#&gt; cc 24.40 3.610 3 2.738 21.7 28.5 22.35 23.0 25.75
+#&gt; fc 12.87 2.159 3 2.738 10.6 14.9 11.85 13.1 14.00
+#&gt; ff 36.33 7.333 3 2.738 28.0 41.8 33.60 39.2 40.50
+#&gt; oo 36.90 4.300 3 2.738 32.1 40.4 35.15 38.2 39.30
+#&gt; 
+#&gt; Alpha: 0.05 ; DF Error: 8 
+#&gt; 
+#&gt; Critical Range
+#&gt;     2     3     4 
+#&gt; 8.929 9.305 9.515 
+#&gt; 
+#&gt; Means with the same letter are not significantly different.
+#&gt; 
+#&gt;    yield groups
+#&gt; oo 36.90      a
+#&gt; ff 36.33      a
+#&gt; cc 24.40      b
+#&gt; fc 12.87      c</code></pre>
+</div>
+<div id="tukeys-hsd" class="section level3" number="13.4.3">
+<h3>
+<span class="header-section-number">13.4.3</span> Tukey’s HSD<a class="anchor" aria-label="anchor" href="#tukeys-hsd"><i class="fas fa-link"></i></a>
+</h3>
+<p><span class="math display">\[\text{HSD} = q_{\alpha;\,t,\,\text{edf}} \sqrt{\frac{\text{EMS}}{r}}\]</span></p>
+<p>where <span class="math inline">\(q\)</span> is the studentized range statistic.</p>
+<div class="sourceCode" id="cb529"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hsd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/agricolae/man/HSD.test.html">HSD.test</a></span><span class="op">(</span><span class="va">model</span>, <span class="st">"virus"</span>, console <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt; 
+#&gt; Study: model ~ "virus"
+#&gt; 
+#&gt; HSD Test for yield 
+#&gt; 
+#&gt; Mean Square Error:  22.49 
+#&gt; 
+#&gt; virus,  means
+#&gt; 
+#&gt;    yield   std r    se  Min  Max   Q25  Q50   Q75
+#&gt; cc 24.40 3.610 3 2.738 21.7 28.5 22.35 23.0 25.75
+#&gt; fc 12.87 2.159 3 2.738 10.6 14.9 11.85 13.1 14.00
+#&gt; ff 36.33 7.333 3 2.738 28.0 41.8 33.60 39.2 40.50
+#&gt; oo 36.90 4.300 3 2.738 32.1 40.4 35.15 38.2 39.30
+#&gt; 
+#&gt; Alpha: 0.05 ; DF Error: 8 
+#&gt; Critical Value of Studentized Range: 4.529 
+#&gt; 
+#&gt; Minimun Significant Difference: 12.4 
+#&gt; 
+#&gt; Treatments with the same letter are not significantly different.
+#&gt; 
+#&gt;    yield groups
+#&gt; oo 36.90      a
+#&gt; ff 36.33     ab
+#&gt; cc 24.40     bc
+#&gt; fc 12.87      c</code></pre>
+<p>Base R also has <code><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD()</a></code>, which gives a confidence interval and adjusted p-value for every pair:</p>
+<div class="sourceCode" id="cb531"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;   Tukey multiple comparisons of means
+#&gt;     95% family-wise confidence level
+#&gt; 
+#&gt; Fit: aov(formula = yield ~ virus, data = sweetpotato)
+#&gt; 
+#&gt; $virus
+#&gt;           diff      lwr     upr  p adj
+#&gt; fc-cc -11.5333 -23.9330  0.8663 0.0686
+#&gt; ff-cc  11.9333  -0.4663 24.3330 0.0592
+#&gt; oo-cc  12.5000   0.1003 24.8997 0.0482
+#&gt; ff-fc  23.4667  11.0670 35.8663 0.0014
+#&gt; oo-fc  24.0333  11.6337 36.4330 0.0012
+#&gt; oo-ff   0.5667 -11.8330 12.9663 0.9988</code></pre>
+<div class="sourceCode" id="cb533"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/TukeyHSD.html">TukeyHSD</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>, las <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="stat531_files/figure-html/mc-tukeyhsd-1.png" width="80%" style="display: block; margin: auto;"></div>
+<p>Pairs whose interval does not include zero are significantly different. Tukey’s test is more conservative than LSD and DMRT: it separates the means into overlapping groups (<code>a</code>, <code>ab</code>, <code>bc</code>, <code>c</code>) instead of the three distinct groups found by LSD.</p>
+</div>
+<div id="scheffé-and-bonferroni" class="section level3" number="13.4.4">
+<h3>
+<span class="header-section-number">13.4.4</span> Scheffé and Bonferroni<a class="anchor" aria-label="anchor" href="#scheff%C3%A9-and-bonferroni"><i class="fas fa-link"></i></a>
+</h3>
+<div class="sourceCode" id="cb534"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/agricolae/man/scheffe.test.html">scheffe.test</a></span><span class="op">(</span><span class="va">model</span>, <span class="st">"virus"</span><span class="op">)</span><span class="op">$</span><span class="va">groups</span></span></code></pre></div>
+<pre><code>#&gt;    yield groups
+#&gt; oo 36.90      a
+#&gt; ff 36.33      a
+#&gt; cc 24.40     ab
+#&gt; fc 12.87      b</code></pre>
+<div class="sourceCode" id="cb536"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/agricolae/man/LSD.test.html">LSD.test</a></span><span class="op">(</span><span class="va">model</span>, <span class="st">"virus"</span>, p.adj <span class="op">=</span> <span class="st">"bonferroni"</span><span class="op">)</span><span class="op">$</span><span class="va">groups</span></span></code></pre></div>
+<pre><code>#&gt;    yield groups
+#&gt; oo 36.90      a
+#&gt; ff 36.33      a
+#&gt; cc 24.40     ab
+#&gt; fc 12.87      b</code></pre>
+</div>
+<div id="comparisons-with-emmeans" class="section level3" number="13.4.5">
+<h3>
+<span class="header-section-number">13.4.5</span> Comparisons with emmeans<a class="anchor" aria-label="anchor" href="#comparisons-with-emmeans"><i class="fas fa-link"></i></a>
+</h3>
+<p>The <code>emmeans</code> package <span class="citation">(<a href="references.html#ref-R-emmeans">Lenth 2024</a>)</span> computes estimated marginal means and comparisons for almost any model, including unbalanced data and mixed models (Chapter <a href="mixed-models.html#mixed-models">17</a>).</p>
+<div class="sourceCode" id="cb538"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rvlenth/emmeans">emmeans</a></span><span class="op">)</span></span>
+<span><span class="va">em</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">model</span>, <span class="op">~</span> <span class="va">virus</span><span class="op">)</span></span>
+<span><span class="va">em</span></span></code></pre></div>
+<pre><code>#&gt;  virus emmean   SE df lower.CL upper.CL
+#&gt;  cc      24.4 2.74  8    18.09     30.7
+#&gt;  fc      12.9 2.74  8     6.55     19.2
+#&gt;  ff      36.3 2.74  8    30.02     42.6
+#&gt;  oo      36.9 2.74  8    30.59     43.2
+#&gt; 
+#&gt; Confidence level used: 0.95</code></pre>
+<div class="sourceCode" id="cb540"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">em</span><span class="op">)</span>                                   <span class="co"># all pairs, Tukey adjustment</span></span></code></pre></div>
+<pre><code>#&gt;  contrast estimate   SE df t.ratio p.value
+#&gt;  cc - fc    11.533 3.87  8   2.979  0.0686
+#&gt;  cc - ff   -11.933 3.87  8  -3.082  0.0592
+#&gt;  cc - oo   -12.500 3.87  8  -3.228  0.0482
+#&gt;  fc - ff   -23.467 3.87  8  -6.061  0.0014
+#&gt;  fc - oo   -24.033 3.87  8  -6.207  0.0012
+#&gt;  ff - oo    -0.567 3.87  8  -0.146  0.9988
+#&gt; 
+#&gt; P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
+<div class="sourceCode" id="cb542"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Dunnett's test: each virus treatment against healthy plants (oo)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html">contrast</a></span><span class="op">(</span><span class="va">em</span>, method <span class="op">=</span> <span class="st">"trt.vs.ctrl"</span>, ref <span class="op">=</span> <span class="st">"oo"</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;  contrast estimate   SE df t.ratio p.value
+#&gt;  cc - oo   -12.500 3.87  8  -3.228  0.0313
+#&gt;  fc - oo   -24.033 3.87  8  -6.207  0.0007
+#&gt;  ff - oo    -0.567 3.87  8  -0.146  0.9917
+#&gt; 
+#&gt; P value adjustment: dunnettx method for 3 tests</code></pre>
+<p>Compared with healthy plants, infection with <code>cc</code> alone and with both viruses (<code>fc</code>) reduced yield significantly, while infection with <code>ff</code> alone did not.</p>
+<div class="rmdwarning">
+<p><strong>Which test should I use?</strong> Choose the procedure <strong>before</strong> looking at the data, according to the question. For comparing each treatment with a control, use Dunnett. For a few planned comparisons, use contrasts (Chapter <a href="contrasts.html#contrasts">15</a>). For all pairwise comparisons, Tukey’s HSD controls the overall error rate. LSD and DMRT are less conservative and are still widely used in agricultural journals; use LSD only when the overall <em>F</em> test is significant. For quantitative treatments (doses, rates, dates), do not use multiple comparisons at all; fit a response curve (Chapters <a href="contrasts.html#contrasts">15</a> and <a href="nonlinear.html#nonlinear">22</a>).</p>
+</div>
+</div>
+</div>
+<div id="unequal-replication" class="section level2" number="13.5">
+<h2>
+<span class="header-section-number">13.5</span> Unequal replication<a class="anchor" aria-label="anchor" href="#unequal-replication"><i class="fas fa-link"></i></a>
+</h2>
+<p>The same functions work when treatments have different numbers of replications. For example, with the last observation of <code>fc</code> missing:</p>
+<div class="sourceCode" id="cb544"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sp2</span> <span class="op">&lt;-</span> <span class="va">sweetpotato</span><span class="op">[</span><span class="op">-</span><span class="fl">6</span>, <span class="op">]</span></span>
+<span><span class="va">model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">virus</span>, data <span class="op">=</span> <span class="va">sp2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model2</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;             Df Sum Sq Mean Sq F value Pr(&gt;F)   
+#&gt; virus        3    940   313.4    12.2 0.0036 **
+#&gt; Residuals    7    180    25.7                  
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<div class="sourceCode" id="cb546"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/agricolae/man/LSD.test.html">LSD.test</a></span><span class="op">(</span><span class="va">model2</span>, <span class="st">"virus"</span><span class="op">)</span><span class="op">$</span><span class="va">groups</span></span></code></pre></div>
+<pre><code>#&gt;    yield groups
+#&gt; oo 36.90      a
+#&gt; ff 36.33      a
+#&gt; cc 24.40      b
+#&gt; fc 12.75      c</code></pre>
+<p>With unequal replication, the LSD differs between pairs of means; <code>agricolae</code> then uses the harmonic mean of the replications and reports it, while <code>emmeans</code> computes the exact standard error for each pair.</p>
+</div>
+<div id="exercises-10" class="section level2 unnumbered">
+<h2>Exercises<a class="anchor" aria-label="anchor" href="#exercises-10"><i class="fas fa-link"></i></a>
+</h2>
+<div class="rmdexercise">
+<ol style="list-style-type: decimal">
+<li>Analyse the <code>PlantGrowth</code> data as a CRD. Check the assumptions and compare the treatments with the control using Dunnett’s test.</li>
+<li>Analyse the <code>chickwts</code> data (weight of chicks on six feeds). Use Tukey’s HSD to group the feeds.</li>
+<li>For the <code>InsectSprays</code> data, use DMRT on the square-root transformed counts and present the treatment means in the original units with their letter groups.</li>
+<li>Compute the CD at the 1% level for the sweet potato experiment.</li>
+</ol>
+</div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="small-sample.html"><span class="header-section-number">12</span> Tests based on t, F and chi-square</a></div>
+<div class="next"><a href="designs.html"><span class="header-section-number">14</span> Experimental designs and multi-factor experiments</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#anova-crd"><span class="header-section-number">13</span> Analysis of variance and multiple comparisons</a></li>
+<li>
+<a class="nav-link" href="#the-concept-of-analysis-of-variance"><span class="header-section-number">13.1</span> The concept of analysis of variance</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#assumptions"><span class="header-section-number">13.1.1</span> Assumptions</a></li>
+<li><a class="nav-link" href="#terminology"><span class="header-section-number">13.1.2</span> Terminology</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#completely-randomised-design-crd"><span class="header-section-number">13.2</span> Completely randomised design (CRD)</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#model"><span class="header-section-number">13.2.1</span> Model</a></li>
+<li><a class="nav-link" href="#anova-table"><span class="header-section-number">13.2.2</span> ANOVA table</a></li>
+<li><a class="nav-link" href="#example"><span class="header-section-number">13.2.3</span> Example</a></li>
+<li><a class="nav-link" href="#computation-by-hand"><span class="header-section-number">13.2.4</span> Computation by hand</a></li>
+<li><a class="nav-link" href="#analysis-with-aov"><span class="header-section-number">13.2.5</span> Analysis with aov()</a></li>
+<li><a class="nav-link" href="#coefficient-of-variation-standard-errors-and-critical-difference"><span class="header-section-number">13.2.6</span> Coefficient of variation, standard errors and critical difference</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#anova-assumptions"><span class="header-section-number">13.3</span> Checking the assumptions</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#when-the-assumptions-fail-an-example"><span class="header-section-number">13.3.1</span> When the assumptions fail: an example</a></li></ul>
+</li>
+<li>
+<a class="nav-link" href="#multiple-comparison-procedures"><span class="header-section-number">13.4</span> Multiple comparison procedures</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#least-significant-difference-lsd"><span class="header-section-number">13.4.1</span> Least significant difference (LSD)</a></li>
+<li><a class="nav-link" href="#duncans-multiple-range-test-dmrt"><span class="header-section-number">13.4.2</span> Duncan’s multiple range test (DMRT)</a></li>
+<li><a class="nav-link" href="#tukeys-hsd"><span class="header-section-number">13.4.3</span> Tukey’s HSD</a></li>
+<li><a class="nav-link" href="#scheff%C3%A9-and-bonferroni"><span class="header-section-number">13.4.4</span> Scheffé and Bonferroni</a></li>
+<li><a class="nav-link" href="#comparisons-with-emmeans"><span class="header-section-number">13.4.5</span> Comparisons with emmeans</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#unequal-replication"><span class="header-section-number">13.5</span> Unequal replication</a></li>
+<li><a class="nav-link" href="#exercises-10">Exercises</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/KAUMELON/stat-531/blob/main/13-anova-crd.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/KAUMELON/stat-531/edit/main/13-anova-crd.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Data Analysis Using Statistical Packages</strong>: A complete guide to data analysis in agricultural research using R" was written by Dr. Pratheesh P. Gopinath. It was last built on Last updated: 21 October 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

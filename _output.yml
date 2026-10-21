@@ -1,19 +1,8 @@
 bookdown::bs4_book:
+  css: custom.css
   theme:
-    primary: "#3477eb"  
-bookdown::gitbook: 
-  css: custom.css  
-  config:
-    toc: 
-      collapse: section 
-      before: |
-        <li><a href="./">LECTURE NOTES</a></li>
-      after: |
-        <li><a href="https://sites.google.com/view/kau-melon/home" target="blank">Published in MeLON</a></li>
-    toolbar:
-      position: fixed
-    edit : null
-    download: null
-    sharing: null
-    info: true
-        
+    primary: "#1f6f43"
+  repo:
+    base: https://github.com/KAUMELON/stat-531
+    branch: main
+  footnotes_inline: true

@@ -1,0 +1,188 @@
+# Large-sample tests {#large-sample}
+
+## Testing of hypotheses: a quick review
+
+A **statistical hypothesis** is a statement about a population parameter. A test of hypothesis decides, using sample data, whether the data are consistent with the **null hypothesis** $H_0$ (usually "no difference" or "no effect") or provide evidence for the **alternative hypothesis** $H_1$.
+
+The general procedure is:
+
+1. State $H_0$ and $H_1$. The alternative may be **two-sided** ($\mu \ne \mu_0$) or **one-sided** ($\mu > \mu_0$ or $\mu < \mu_0$).
+2. Choose the **level of significance** $\alpha$, usually 0.05 or 0.01.
+3. Compute the **test statistic** from the sample.
+4. Find the **p-value**: the probability, if $H_0$ were true, of a test statistic at least as extreme as the one observed. Equivalently, compare the test statistic with the **critical value**.
+5. **Decision**: reject $H_0$ if $p \le \alpha$ (or if the statistic falls in the critical region); otherwise do not reject $H_0$.
+
+| | $H_0$ true | $H_0$ false |
+|:--|:--:|:--:|
+| Reject $H_0$ | Type I error (probability $\alpha$) | Correct decision (power $1 - \beta$) |
+| Do not reject $H_0$ | Correct decision | Type II error (probability $\beta$) |
+
+::: {.rmdnote}
+"Do not reject $H_0$" is not the same as "$H_0$ is true". It only means that the data do not provide enough evidence against it. Always report the p-value (and, where possible, a confidence interval) rather than only "significant" or "not significant".
+:::
+
+## Large-sample (Z) tests
+
+When the sample size is large (as a rule of thumb $n \ge 30$), the central limit theorem ensures that the sample mean, the sample proportion and many other statistics are approximately normally distributed, whatever the distribution of the population. A test statistic of the form
+
+$$Z = \frac{\text{statistic} - \text{hypothesised value}}{\text{standard error of the statistic}}$$
+
+then follows approximately the standard normal distribution $N(0, 1)$ under $H_0$. Critical values of $Z$:
+
+| Level of significance | Two-sided test | One-sided test |
+|:--:|:--:|:--:|
+| 5% | 1.96 | 1.645 |
+| 1% | 2.576 | 2.326 |
+
+```{r z-crit}
+qnorm(c(0.975, 0.995))   # two-sided critical values at 5% and 1%
+qnorm(c(0.95, 0.99))     # one-sided critical values at 5% and 1%
+```
+
+Base R has no function for the Z test of means, but it takes only a few lines. The following helper function computes the p-value for a given $Z$:
+
+```{r z-pvalue}
+z_pvalue <- function(z, alternative = c("two.sided", "less", "greater")) {
+  alternative <- match.arg(alternative)
+  switch(alternative,
+    two.sided = 2 * pnorm(-abs(z)),
+    less      = pnorm(z),
+    greater   = pnorm(z, lower.tail = FALSE))
+}
+```
+
+### Example data
+
+We again use the `plrv` potato trial (Chapter \@ref(eda)): 84 plots in each of six environments.
+
+```{r z-data}
+library(agricolae)
+data(plrv)
+lm02 <- plrv$Yield[plrv$Locality == "LM-02"]
+ayac <- plrv$Yield[plrv$Locality == "Ayac"]
+c(n = length(lm02), mean = mean(lm02), sd = sd(lm02))
+c(n = length(ayac), mean = mean(ayac), sd = sd(ayac))
+```
+
+## Test for a single mean
+
+To test $H_0: \mu = \mu_0$,
+
+$$Z = \frac{\bar x - \mu_0}{\sigma / \sqrt{n}}$$
+
+When the population standard deviation $\sigma$ is unknown, it is replaced by the sample SD $s$, which is acceptable for large $n$.
+
+**Example.** Is the mean potato yield at La Molina (LM-02) different from 30 t/ha?
+
+$H_0: \mu = 30$ against $H_1: \mu \ne 30$.
+
+```{r z-one}
+mu0 <- 30
+n <- length(lm02)
+z <- (mean(lm02) - mu0) / (sd(lm02) / sqrt(n))
+z
+z_pvalue(z)
+```
+
+$|Z| =$ `r round(z, 2)` > 1.96 and $p < 0.001$, so we reject $H_0$: the mean yield at LM-02 differs significantly from 30 t/ha (it is higher). A 95% confidence interval for the mean is
+
+```{r z-ci}
+mean(lm02) + c(-1, 1) * qnorm(0.975) * sd(lm02) / sqrt(n)
+```
+
+## Test for the difference of two means
+
+To test $H_0: \mu_1 = \mu_2$ with two large independent samples,
+
+$$Z = \frac{\bar x_1 - \bar x_2}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}}$$
+
+**Example.** Do mean yields at LM-02 and Ayacucho differ?
+
+```{r z-two}
+n1 <- length(lm02); n2 <- length(ayac)
+se <- sqrt(var(lm02) / n1 + var(ayac) / n2)
+z  <- (mean(lm02) - mean(ayac)) / se
+z
+z_pvalue(z)
+```
+
+$Z =$ `r round(z, 2)`, $p < 0.001$: the mean yield at LM-02 is significantly higher than at Ayacucho.
+
+## Test for a single proportion
+
+If $X$ successes are observed in $n$ trials, the sample proportion is $\hat p = X/n$. To test $H_0: P = P_0$,
+
+$$Z = \frac{\hat p - P_0}{\sqrt{P_0 (1 - P_0) / n}}$$
+
+**Example.** A seed company claims that the germination of its seed is 90%. In a test of 500 seeds, 430 germinated. Is the germination lower than claimed?
+
+$H_0: P = 0.90$ against $H_1: P < 0.90$ (one-sided).
+
+```{r z-prop}
+x <- 430; n <- 500; P0 <- 0.90
+p_hat <- x / n
+z <- (p_hat - P0) / sqrt(P0 * (1 - P0) / n)
+z
+z_pvalue(z, "less")
+```
+
+$Z =$ `r round(z, 2)` < −1.645 and $p =$ `r signif(z_pvalue(z, "less"), 2)`, so we reject $H_0$: the germination is significantly lower than 90%.
+
+The built-in `prop.test()` gives the same p-value; it reports $\chi^2 = Z^2$ instead of $Z$:
+
+```{r z-proptest}
+prop.test(x = 430, n = 500, p = 0.90, alternative = "less", correct = FALSE)
+```
+
+::: {.rmdtip}
+`prop.test()` applies Yates' continuity correction by default (`correct = TRUE`), which gives a slightly larger p-value. For small samples use the exact binomial test, `binom.test(430, 500, p = 0.9)`.
+:::
+
+## Test for the difference of two proportions
+
+To test $H_0: P_1 = P_2$,
+
+$$Z = \frac{\hat p_1 - \hat p_2}{\sqrt{\hat p (1 - \hat p)\left(\dfrac{1}{n_1} + \dfrac{1}{n_2}\right)}}, \qquad \hat p = \frac{x_1 + x_2}{n_1 + n_2}$$
+
+where $\hat p$ is the pooled proportion.
+
+**Example.** In a field trial, 36 of 200 plants sprayed with a fungicide and 58 of 200 unsprayed plants showed leaf blight. Does the fungicide reduce disease incidence?
+
+```{r z-twoprop}
+x1 <- 36; n1 <- 200     # sprayed
+x2 <- 58; n2 <- 200     # unsprayed
+p1 <- x1 / n1; p2 <- x2 / n2
+p  <- (x1 + x2) / (n1 + n2)
+z  <- (p1 - p2) / sqrt(p * (1 - p) * (1 / n1 + 1 / n2))
+c(p1 = p1, p2 = p2, z = z)
+z_pvalue(z, "less")
+
+# The same with prop.test (two-sided by default)
+prop.test(c(x1, x2), c(n1, n2), alternative = "less", correct = FALSE)
+```
+
+Disease incidence was 18% with the fungicide and 29% without. $Z =$ `r round(z, 2)` and the one-sided $p =$ `r signif(z_pvalue(z, "less"), 2)` < 0.05, so the fungicide significantly reduced the incidence of leaf blight.
+
+## Test for the difference of two standard deviations
+
+For large samples the standard error of $s$ is approximately $\sigma/\sqrt{2n}$, so to test $H_0: \sigma_1 = \sigma_2$,
+
+$$Z = \frac{s_1 - s_2}{\sqrt{\dfrac{s_1^2}{2n_1} + \dfrac{s_2^2}{2n_2}}}$$
+
+```{r z-sd}
+s1 <- sd(lm02); s2 <- sd(ayac)
+z <- (s1 - s2) / sqrt(s1^2 / (2 * n1) + s2^2 / (2 * n2))
+c(s1 = s1, s2 = s2, z = z)
+z_pvalue(z)
+```
+
+$|Z| < 1.96$, so the variability of yield does not differ significantly between the two environments.
+
+## Exercises {-}
+
+::: {.rmdexercise}
+1. Using the `plrv` data, test whether the mean yield at Huancayo (`Hyo-02`) exceeds 40 t/ha.
+2. Test whether mean yields at `SR-02` and `SR-03` differ.
+3. In a survey of 400 farmers, 248 had adopted a recommended variety. Test whether the adoption rate is greater than 55%.
+4. A new trap caught pests on 72 of 150 sampling days, and the standard trap on 54 of 150 days. Is the new trap more effective?
+:::

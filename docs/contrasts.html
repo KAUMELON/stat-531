@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 15 Contrast analysis | Data Analysis Using Statistical Packages</title>
+<meta name="author" content="Dr. Pratheesh P. Gopinath">
+<meta name="description" content="Multiple comparison procedures (Chapter 13) compare treatment means without a specific plan. Most experiments, however, are designed to answer specific questions: Is the new fungicide better than...">
+<meta name="generator" content="bookdown 0.37 with bs4_book()">
+<meta property="og:title" content="Chapter 15 Contrast analysis | Data Analysis Using Statistical Packages">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://kaumelon.github.io/stat-531/contrasts.html">
+<meta property="og:image" content="https://kaumelon.github.io/stat-531/images/cover.png">
+<meta property="og:description" content="Multiple comparison procedures (Chapter 13) compare treatment means without a specific plan. Most experiments, however, are designed to answer specific questions: Is the new fungicide better than...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 15 Contrast analysis | Data Analysis Using Statistical Packages">
+<meta name="twitter:description" content="Multiple comparison procedures (Chapter 13) compare treatment means without a specific plan. Most experiments, however, are designed to answer specific questions: Is the new fungicide better than...">
+<meta name="twitter:image" content="https://kaumelon.github.io/stat-531/images/cover.png">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.1/jquery-3.6.1.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.6.1/transition.js"></script><script src="libs/bs3compat-0.6.1/tabs.js"></script><script src="libs/bs3compat-0.6.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="custom.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="A complete guide to data analysis in agricultural research using R">Data Analysis Using Statistical Packages</a>:
+        <small class="text-muted">A complete guide to data analysis in agricultural research using R</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Welcome</a></li>
+<li><a class="" href="preface.html">Preface</a></li>
+<li><a class="" href="syllabus.html">Syllabus</a></li>
+<li class="book-part">Getting started</li>
+<li><a class="" href="introduction.html"><span class="header-section-number">1</span> Introduction</a></li>
+<li><a class="" href="r-and-r-studio.html"><span class="header-section-number">2</span> R and RStudio</a></li>
+<li><a class="" href="rbase.html"><span class="header-section-number">3</span> R basics</a></li>
+<li><a class="" href="packages.html"><span class="header-section-number">4</span> Packages and libraries</a></li>
+<li><a class="" href="import.html"><span class="header-section-number">5</span> Importing data files</a></li>
+<li><a class="" href="dataset.html"><span class="header-section-number">6</span> Data sets in R</a></li>
+<li class="book-part">Unit I: Describing data</li>
+<li><a class="" href="descriptive-statistics.html"><span class="header-section-number">7</span> Descriptive statistics</a></li>
+<li><a class="" href="graphical-representation.html"><span class="header-section-number">8</span> Graphical representation</a></li>
+<li><a class="" href="eda.html"><span class="header-section-number">9</span> Exploratory data analysis</a></li>
+<li class="book-part">Unit II: Distributions and tests of hypotheses</li>
+<li><a class="" href="distributions.html"><span class="header-section-number">10</span> Probability distributions and goodness of fit</a></li>
+<li><a class="" href="large-sample.html"><span class="header-section-number">11</span> Large-sample tests</a></li>
+<li><a class="" href="small-sample.html"><span class="header-section-number">12</span> Tests based on t, F and chi-square</a></li>
+<li class="book-part">Unit III: Analysis of variance and covariance</li>
+<li><a class="" href="anova-crd.html"><span class="header-section-number">13</span> Analysis of variance and multiple comparisons</a></li>
+<li><a class="" href="designs.html"><span class="header-section-number">14</span> Experimental designs and multi-factor experiments</a></li>
+<li><a class="active" href="contrasts.html"><span class="header-section-number">15</span> Contrast analysis</a></li>
+<li><a class="" href="ancova.html"><span class="header-section-number">16</span> Analysis of covariance</a></li>
+<li class="book-part">Unit IV: Mixed models and regression</li>
+<li><a class="" href="mixed-models.html"><span class="header-section-number">17</span> Mixed models and variance components</a></li>
+<li><a class="" href="regression.html"><span class="header-section-number">18</span> Correlation and regression</a></li>
+<li class="book-part">Unit V: Multivariate methods, non-linear models and time series</li>
+<li><a class="" href="pca.html"><span class="header-section-number">19</span> Principal component analysis</a></li>
+<li><a class="" href="factor-analysis.html"><span class="header-section-number">20</span> Factor analysis</a></li>
+<li><a class="" href="discriminant.html"><span class="header-section-number">21</span> Discriminant function analysis</a></li>
+<li><a class="" href="nonlinear.html"><span class="header-section-number">22</span> Fitting non-linear models</a></li>
+<li><a class="" href="time-series-analysis-using-r.html"><span class="header-section-number">23</span> Time series analysis</a></li>
+<li class="book-part">Appendix</li>
+<li><a class="" href="appendix-data.html"><span class="header-section-number">A</span> Data sets used in this book</a></li>
+<li><a class="" href="appendix-functions.html"><span class="header-section-number">B</span> Quick reference of R functions</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/KAUMELON/stat-531">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="contrasts" class="section level1" number="15">
+<h1>
+<span class="header-section-number">15</span> Contrast analysis<a class="anchor" aria-label="anchor" href="#contrasts"><i class="fas fa-link"></i></a>
+</h1>
+<p>Multiple comparison procedures (Chapter <a href="anova-crd.html#anova-crd">13</a>) compare treatment means without a specific plan. Most experiments, however, are designed to answer specific questions: <em>Is the new fungicide better than the old ones? Do organic sources differ from inorganic ones? How does yield respond to increasing doses of nitrogen?</em> Such questions are answered more powerfully by <strong>contrasts</strong> planned before the experiment.</p>
+<div id="contrasts-1" class="section level2" number="15.1">
+<h2>
+<span class="header-section-number">15.1</span> Contrasts<a class="anchor" aria-label="anchor" href="#contrasts-1"><i class="fas fa-link"></i></a>
+</h2>
+<p>A <strong>contrast</strong> among <span class="math inline">\(t\)</span> treatment means is a linear combination</p>
+<p><span class="math display">\[L = \sum_{i=1}^{t} c_i \mu_i \qquad \text{with} \qquad \sum_{i=1}^{t} c_i = 0\]</span></p>
+<p>For example, with four treatments, <span class="math inline">\(L = \mu_1 - \mu_2\)</span> compares treatments 1 and 2, and <span class="math inline">\(L = 3\mu_1 - \mu_2 - \mu_3 - \mu_4\)</span> compares treatment 1 with the average of the other three.</p>
+<p>The contrast is estimated by <span class="math inline">\(\hat L = \sum c_i \bar y_i\)</span>, with standard error</p>
+<p><span class="math display">\[\text{SE}(\hat L) = \sqrt{\text{EMS}\sum_i \frac{c_i^2}{r_i}}\]</span></p>
+<p>and its <strong>sum of squares</strong> (with 1 df) is</p>
+<p><span class="math display">\[\text{SS}(L) = \frac{\left(\sum_i c_i T_i\right)^2}{r \sum_i c_i^2}\]</span></p>
+<p>where <span class="math inline">\(T_i\)</span> are the treatment totals. <span class="math inline">\(H_0: L = 0\)</span> is tested by <span class="math inline">\(F = \text{SS}(L)/\text{EMS}\)</span> with <span class="math inline">\((1, \text{error df})\)</span> degrees of freedom, or equivalently by <span class="math inline">\(t = \hat L / \text{SE}(\hat L)\)</span>.</p>
+<div id="orthogonal-contrasts" class="section level3" number="15.1.1">
+<h3>
+<span class="header-section-number">15.1.1</span> Orthogonal contrasts<a class="anchor" aria-label="anchor" href="#orthogonal-contrasts"><i class="fas fa-link"></i></a>
+</h3>
+<p>Two contrasts with coefficients <span class="math inline">\(c_i\)</span> and <span class="math inline">\(d_i\)</span> are <strong>orthogonal</strong> if <span class="math inline">\(\sum c_i d_i / r_i = 0\)</span> (for equal replication, <span class="math inline">\(\sum c_i d_i = 0\)</span>). A set of <span class="math inline">\(t - 1\)</span> mutually orthogonal contrasts splits the treatment sum of squares exactly into <span class="math inline">\(t - 1\)</span> independent single-df components:</p>
+<p><span class="math display">\[\text{TrSS} = \text{SS}(L_1) + \text{SS}(L_2) + \cdots + \text{SS}(L_{t-1})\]</span></p>
+</div>
+</div>
+<div id="example-planned-comparisons-among-virus-treatments" class="section level2" number="15.2">
+<h2>
+<span class="header-section-number">15.2</span> Example: planned comparisons among virus treatments<a class="anchor" aria-label="anchor" href="#example-planned-comparisons-among-virus-treatments"><i class="fas fa-link"></i></a>
+</h2>
+<p>In the sweet potato experiment (Chapter <a href="anova-crd.html#anova-crd">13</a>), natural questions are:</p>
+<ol style="list-style-type: decimal">
+<li>Does virus infection reduce yield? (healthy <code>oo</code> versus the three infected treatments)</li>
+<li>Is infection by both viruses worse than infection by one? (<code>cc</code> and <code>ff</code> versus <code>fc</code>)</li>
+<li>Do the two viruses differ? (<code>cc</code> versus <code>ff</code>)</li>
+</ol>
+<div class="inline-table"><table class="table table-sm">
+<thead><tr class="header">
+<th align="left">Contrast</th>
+<th align="center"><code>oo</code></th>
+<th align="center"><code>cc</code></th>
+<th align="center"><code>ff</code></th>
+<th align="center"><code>fc</code></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">
+<span class="math inline">\(L_1\)</span>: healthy vs infected</td>
+<td align="center">3</td>
+<td align="center">−1</td>
+<td align="center">−1</td>
+<td align="center">−1</td>
+</tr>
+<tr class="even">
+<td align="left">
+<span class="math inline">\(L_2\)</span>: single vs double infection</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">−2</td>
+</tr>
+<tr class="odd">
+<td align="left">
+<span class="math inline">\(L_3\)</span>: <code>cc</code> vs <code>ff</code>
+</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">−1</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table></div>
+<p>Each row sums to zero, and every pair of rows is orthogonal (e.g. <span class="math inline">\(3 \times 0 + (-1)(1) + (-1)(1) + (-1)(-2) = 0\)</span>).</p>
+<div class="sourceCode" id="cb589"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">C</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>L1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>, L2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">2</span><span class="op">)</span>, L3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="va">C</span><span class="op">)</span>        <span class="co"># each contrast sums to zero</span></span></code></pre></div>
+<pre><code>#&gt; L1 L2 L3 
+#&gt;  0  0  0</code></pre>
+<div class="sourceCode" id="cb591"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html">crossprod</a></span><span class="op">(</span><span class="va">C</span><span class="op">)</span>      <span class="co"># off-diagonal zeros: mutually orthogonal</span></span></code></pre></div>
+<pre><code>#&gt;    L1 L2 L3
+#&gt; L1 12  0  0
+#&gt; L2  0  6  0
+#&gt; L3  0  0  2</code></pre>
+<div id="method-1-contrasts-in-aov" class="section level3" number="15.2.1">
+<h3>
+<span class="header-section-number">15.2.1</span> Method 1: contrasts in aov()<a class="anchor" aria-label="anchor" href="#method-1-contrasts-in-aov"><i class="fas fa-link"></i></a>
+</h3>
+<p>Assign the contrast matrix to the treatment factor (the order of the rows must match the order of the factor levels), then split the treatment sum of squares in <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>:</p>
+<div class="sourceCode" id="cb593"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">agricolae</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">sweetpotato</span><span class="op">)</span></span>
+<span><span class="va">sp</span> <span class="op">&lt;-</span> <span class="va">sweetpotato</span></span>
+<span><span class="va">sp</span><span class="op">$</span><span class="va">virus</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">sp</span><span class="op">$</span><span class="va">virus</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"oo"</span>, <span class="st">"cc"</span>, <span class="st">"ff"</span>, <span class="st">"fc"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/contrasts.html">contrasts</a></span><span class="op">(</span><span class="va">sp</span><span class="op">$</span><span class="va">virus</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">C</span></span>
+<span></span>
+<span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">virus</span>, data <span class="op">=</span> <span class="va">sp</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model</span>, split <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>virus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Healthy vs infected"</span> <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                                         <span class="st">"Single vs double"</span>    <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                                         <span class="st">"cc vs ff"</span>            <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;                              Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+#&gt; virus                         3   1170     390    17.3 0.00073 ***
+#&gt;   virus: Healthy vs infected  1    344     344    15.3 0.00447 ** 
+#&gt;   virus: Single vs double     1    613     613    27.2 0.00080 ***
+#&gt;   virus: cc vs ff             1    214     214     9.5 0.01507 *  
+#&gt; Residuals                     8    180      22                    
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<p>The three single-df sums of squares add up to the treatment SS (344.1 + 612.5 + 213.6 = 1170.2). All three contrasts are significant: infection reduces yield; double infection is worse than single infection; and chlorotic stunt virus (<code>cc</code>) reduces yield more than feathery mottle virus (<code>ff</code>).</p>
+</div>
+<div id="method-2-contrasts-with-emmeans" class="section level3" number="15.2.2">
+<h3>
+<span class="header-section-number">15.2.2</span> Method 2: contrasts with emmeans<a class="anchor" aria-label="anchor" href="#method-2-contrasts-with-emmeans"><i class="fas fa-link"></i></a>
+</h3>
+<p><code>emmeans</code> estimates each contrast with its standard error and <em>t</em> test. Dividing the coefficients by a constant does not change the test, but makes the estimate interpretable; here <span class="math inline">\(L_1/3\)</span> is “healthy minus the average of the infected treatments”:</p>
+<div class="sourceCode" id="cb595"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rvlenth/emmeans">emmeans</a></span><span class="op">)</span></span>
+<span><span class="va">em</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span><span class="va">model</span>, <span class="op">~</span> <span class="va">virus</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html">contrast</a></span><span class="op">(</span><span class="va">em</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>  <span class="st">"Healthy - mean(infected)"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fl">3</span>,</span>
+<span>  <span class="st">"mean(single) - double"</span>    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span>,</span>
+<span>  <span class="st">"cc - ff"</span>                  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;  contrast                 estimate   SE df t.ratio p.value
+#&gt;  Healthy - mean(infected)     12.4 3.16  8   3.912  0.0045
+#&gt;  mean(single) - double        17.5 3.35  8   5.219  0.0008
+#&gt;  cc - ff                     -11.9 3.87  8  -3.082  0.0151</code></pre>
+<p>Healthy plants yielded 12.4 kg/plot more than the average of infected plants, and single infections yielded 17.5 kg/plot more than the double infection. The <span class="math inline">\(t\)</span> values are the square roots of the <em>F</em> values above.</p>
+<div class="rmdwarning">
+<p>Contrasts should be planned <strong>before</strong> the data are seen. If contrasts are chosen after looking at the means, or if many non-orthogonal contrasts are tested, adjust for multiplicity, for example with <code>contrast(em, ..., adjust = "bonferroni")</code> or Scheffé’s method (<code>adjust = "scheffe"</code>).</p>
+</div>
+</div>
+</div>
+<div id="orthogonal-polynomials-for-quantitative-treatments" class="section level2" number="15.3">
+<h2>
+<span class="header-section-number">15.3</span> Orthogonal polynomials for quantitative treatments<a class="anchor" aria-label="anchor" href="#orthogonal-polynomials-for-quantitative-treatments"><i class="fas fa-link"></i></a>
+</h2>
+<p>When the levels of a factor are <strong>quantitative</strong> and equally spaced (doses of fertiliser, seed rates, irrigation levels), the most informative contrasts describe the <strong>shape of the response</strong>: linear, quadratic, cubic, and so on. These are <strong>orthogonal polynomial</strong> contrasts. For equally spaced levels their coefficients are tabulated; R generates them with <code><a href="https://rdrr.io/r/stats/contrast.html">contr.poly()</a></code>:</p>
+<div class="sourceCode" id="cb597"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/contrast.html">contr.poly</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>                  <span class="co"># coefficients for 4 levels (scaled)</span></span></code></pre></div>
+<pre><code>#&gt;           .L   .Q      .C
+#&gt; [1,] -0.6708  0.5 -0.2236
+#&gt; [2,] -0.2236 -0.5  0.6708
+#&gt; [3,]  0.2236 -0.5 -0.6708
+#&gt; [4,]  0.6708  0.5  0.2236</code></pre>
+<div class="sourceCode" id="cb599"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sweep.html">sweep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/contrast.html">contr.poly</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>, <span class="fl">2</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span>, <span class="st">"*"</span><span class="op">)</span><span class="op">)</span>  <span class="co"># integer coefficients</span></span></code></pre></div>
+<pre><code>#&gt;      .L .Q .C
+#&gt; [1,] -3  1 -1
+#&gt; [2,] -1 -1  3
+#&gt; [3,]  1 -1 -3
+#&gt; [4,]  3  1  1</code></pre>
+<p>For four levels the familiar integer coefficients are linear (−3, −1, 1, 3), quadratic (1, −1, −1, 1) and cubic (−1, 3, −3, 1).</p>
+<div id="example-seeding-rate-of-rice" class="section level3" number="15.3.1">
+<h3>
+<span class="header-section-number">15.3.1</span> Example: seeding rate of rice<a class="anchor" aria-label="anchor" href="#example-seeding-rate-of-rice"><i class="fas fa-link"></i></a>
+</h3>
+<p><span class="citation">Gomez and Gomez (<a href="references.html#ref-gomez1984">1984</a>)</span> (Table 5.12) report the grain yield (kg/ha) of rice (IR8) sown at six seeding rates (25, 50, 75, 100, 125 and 150 kg/ha) in an RCBD with four replications (<code>gomez.seedrate</code> in <code>agridat</code>):</p>
+<div class="sourceCode" id="cb601"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://kwstat.github.io/agridat/">agridat</a></span><span class="op">)</span></span>
+<span><span class="va">sr</span> <span class="op">&lt;-</span> <span class="va">gomez.seedrate</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">sr</span><span class="op">$</span><span class="va">yield</span>, <span class="va">sr</span><span class="op">$</span><span class="va">rate</span>, <span class="va">mean</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;   25   50   75  100  125  150 
+#&gt; 5124 5070 5304 4848 4708 4703</code></pre>
+<div class="sourceCode" id="cb603"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sr</span><span class="op">$</span><span class="va">rate_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">sr</span><span class="op">$</span><span class="va">rate</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/contrasts.html">contrasts</a></span><span class="op">(</span><span class="va">sr</span><span class="op">$</span><span class="va">rate_f</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/contrast.html">contr.poly</a></span><span class="op">(</span><span class="fl">6</span><span class="op">)</span></span>
+<span><span class="va">model_sr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">rep</span> <span class="op">+</span> <span class="va">rate_f</span>, data <span class="op">=</span> <span class="va">sr</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model_sr</span>, split <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>rate_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Linear <span class="op">=</span> <span class="fl">1</span>, Quadratic <span class="op">=</span> <span class="fl">2</span>, Cubic <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                                             Quartic <span class="op">=</span> <span class="fl">4</span>, Quintic <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;                     Df  Sum Sq Mean Sq F value Pr(&gt;F)   
+#&gt; rep                  3 1944361  648120    5.86 0.0074 **
+#&gt; rate_f               5 1198331  239666    2.17 0.1128   
+#&gt;   rate_f: Linear     1  760035  760035    6.87 0.0192 * 
+#&gt;   rate_f: Quadratic  1   74405   74405    0.67 0.4249   
+#&gt;   rate_f: Cubic      1  113301  113301    1.02 0.3274   
+#&gt;   rate_f: Quartic    1   90630   90630    0.82 0.3796   
+#&gt;   rate_f: Quintic    1  159960  159960    1.45 0.2477   
+#&gt; Residuals           15 1658376  110558                  
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<p>This example shows the power of planned contrasts. The overall <em>F</em> test for seeding rate is <strong>not</strong> significant (<span class="math inline">\(p = 0.11\)</span>), because the treatment SS is spread over 5 df. But the <strong>linear</strong> component alone is significant (<span class="math inline">\(p = 0.019\)</span>), while the quadratic and higher components are not. Yield decreases linearly as the seeding rate increases over this range. The slope of that line is estimated by regressing yield on the numeric rate:</p>
+<div class="sourceCode" id="cb605"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">rep</span> <span class="op">+</span> <span class="va">rate</span>, data <span class="op">=</span> <span class="va">sr</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="st">"rate"</span>, <span class="op">]</span></span></code></pre></div>
+<pre><code>#&gt;   Estimate Std. Error    t value   Pr(&gt;|t|) 
+#&gt;   -4.16800    1.58818   -2.62439    0.01669</code></pre>
+<p>Each additional kilogram of seed per hectare reduces yield by about 4.2 kg/ha: within the range tested, higher seeding rates gave no yield advantage.</p>
+<div class="sourceCode" id="cb607"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">rate</span>, data <span class="op">=</span> <span class="va">sr</span>, pch <span class="op">=</span> <span class="fl">19</span>, col <span class="op">=</span> <span class="st">"grey50"</span>,</span>
+<span>     xlab <span class="op">=</span> <span class="st">"Seeding rate (kg/ha)"</span>, ylab <span class="op">=</span> <span class="st">"Grain yield (kg/ha)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">sr</span><span class="op">$</span><span class="va">yield</span>, <span class="va">sr</span><span class="op">$</span><span class="va">rate</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>       <span class="fu"><a href="https://rdrr.io/r/base/tapply.html">tapply</a></span><span class="op">(</span><span class="va">sr</span><span class="op">$</span><span class="va">yield</span>, <span class="va">sr</span><span class="op">$</span><span class="va">rate</span>, <span class="va">mean</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">17</span>, cex <span class="op">=</span> <span class="fl">1.5</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">sr</span><span class="op">$</span><span class="va">yield</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="st">"rate"</span><span class="op">]</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">sr</span><span class="op">$</span><span class="va">rate</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="st">"rate"</span><span class="op">]</span>,</span>
+<span>       col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="stat531_files/figure-html/poly-plot-1.png" width="80%" style="display: block; margin: auto;"></div>
+</div>
+<div id="example-nitrogen-in-a-split-plot-experiment" class="section level3" number="15.3.2">
+<h3>
+<span class="header-section-number">15.3.2</span> Example: nitrogen in a split-plot experiment<a class="anchor" aria-label="anchor" href="#example-nitrogen-in-a-split-plot-experiment"><i class="fas fa-link"></i></a>
+</h3>
+<p>The same approach applies within any design. In the oats split-plot experiment (Chapter <a href="designs.html#designs">14</a>) nitrogen had four equally spaced levels:</p>
+<div class="sourceCode" id="cb608"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span></span>
+<span><span class="va">oats2</span> <span class="op">&lt;-</span> <span class="va">oats</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/contrasts.html">contrasts</a></span><span class="op">(</span><span class="va">oats2</span><span class="op">$</span><span class="va">N</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/contrast.html">contr.poly</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">Y</span> <span class="op">~</span> <span class="va">V</span> <span class="op">*</span> <span class="va">N</span> <span class="op">+</span> <span class="fu">Error</span><span class="op">(</span><span class="va">B</span> <span class="op">/</span> <span class="va">V</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">oats2</span><span class="op">)</span>,</span>
+<span>        split <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>N <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Linear <span class="op">=</span> <span class="fl">1</span>, Quadratic <span class="op">=</span> <span class="fl">2</span>, Cubic <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt; 
+#&gt; Error: B
+#&gt;           Df Sum Sq Mean Sq F value Pr(&gt;F)
+#&gt; Residuals  5  15875    3175               
+#&gt; 
+#&gt; Error: B:V
+#&gt;           Df Sum Sq Mean Sq F value Pr(&gt;F)
+#&gt; V          2   1786     893    1.49   0.27
+#&gt; Residuals 10   6013     601               
+#&gt; 
+#&gt; Error: Within
+#&gt;                  Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+#&gt; N                 3  20020    6673   37.69 2.5e-12 ***
+#&gt;   N: Linear       1  19536   19536  110.32 1.1e-13 ***
+#&gt;   N: Quadratic    1    480     480    2.71    0.11    
+#&gt;   N: Cubic        1      4       4    0.02    0.89    
+#&gt; V:N               6    322      54    0.30    0.93    
+#&gt;   V:N: Linear     2    168      84    0.48    0.62    
+#&gt;   V:N: Quadratic  2     11       6    0.03    0.97    
+#&gt;   V:N: Cubic      2    142      71    0.40    0.67    
+#&gt; Residuals        45   7969     177                    
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<p>Almost all of the nitrogen sum of squares (19,536 of 20,020) is linear; the quadratic and cubic components and their interactions with variety are not significant. The response of oats to nitrogen was linear over 0–0.6 cwt/acre, the same for all three varieties.</p>
+<div class="rmdtip">
+<p>Orthogonal polynomial coefficients from <code><a href="https://rdrr.io/r/stats/contrast.html">contr.poly()</a></code> assume <strong>equally spaced</strong> levels. For unequally spaced levels use <code>contr.poly(n, scores = c(0, 30, 60, 120))</code>, or fit the regression directly with the numeric dose as in <code>lm(yield ~ rep + rate + I(rate^2))</code>. Response curves that are not polynomials are covered in Chapter <a href="nonlinear.html#nonlinear">22</a>.</p>
+</div>
+</div>
+</div>
+<div id="contrasts-in-factorial-experiments" class="section level2" number="15.4">
+<h2>
+<span class="header-section-number">15.4</span> Contrasts in factorial experiments<a class="anchor" aria-label="anchor" href="#contrasts-in-factorial-experiments"><i class="fas fa-link"></i></a>
+</h2>
+<p>In a <span class="math inline">\(2^n\)</span> factorial experiment the main effects and interactions are themselves orthogonal contrasts among the treatment combinations. The built-in <code>npk</code> data are a <span class="math inline">\(2^3\)</span> factorial on peas in six blocks; with factors coded as two-level factors, each effect has 1 df:</p>
+<div class="sourceCode" id="cb610"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/aov.html">aov</a></span><span class="op">(</span><span class="va">yield</span> <span class="op">~</span> <span class="va">block</span> <span class="op">+</span> <span class="va">N</span> <span class="op">*</span> <span class="va">P</span> <span class="op">*</span> <span class="va">K</span>, data <span class="op">=</span> <span class="va">npk</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code>#&gt;             Df Sum Sq Mean Sq F value Pr(&gt;F)   
+#&gt; block        5    343    68.7    4.45 0.0159 * 
+#&gt; N            1    189   189.3   12.26 0.0044 **
+#&gt; P            1      8     8.4    0.54 0.4749   
+#&gt; K            1     95    95.2    6.17 0.0288 * 
+#&gt; N:P          1     21    21.3    1.38 0.2632   
+#&gt; N:K          1     33    33.1    2.15 0.1686   
+#&gt; P:K          1      0     0.5    0.03 0.8628   
+#&gt; Residuals   12    185    15.4                  
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<p>Only nitrogen (N) and potassium (K) main effects are significant. (The N:P:K interaction is not shown because it was confounded with blocks in this experiment.)</p>
+</div>
+<div id="exercises-12" class="section level2 unnumbered">
+<h2>Exercises<a class="anchor" aria-label="anchor" href="#exercises-12"><i class="fas fa-link"></i></a>
+</h2>
+<div class="rmdexercise">
+<ol style="list-style-type: decimal">
+<li>In the <code>PlantGrowth</code> data, test two orthogonal contrasts: control vs the two treatments, and treatment 1 vs treatment 2.</li>
+<li>In the <code>InsectSprays</code> data, sprays C, D and E are believed to belong to a newer chemical group. Construct and test a contrast comparing them with A, B and F (use square-root transformed counts).</li>
+<li>The <code>gomez.nitrogen</code> data in <code>agridat</code> contain nitrogen content of rice plants under eight fertiliser treatments. Read the help page and construct a set of meaningful contrasts.</li>
+<li>Fit linear and quadratic polynomials to the nitrogen response of oats using <code>lm(Y ~ B + V + Nn + I(Nn^2))</code>, where <code>Nn</code> is the numeric nitrogen level. Is the quadratic term needed?</li>
+</ol>
+</div>
+
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="designs.html"><span class="header-section-number">14</span> Experimental designs and multi-factor experiments</a></div>
+<div class="next"><a href="ancova.html"><span class="header-section-number">16</span> Analysis of covariance</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#contrasts"><span class="header-section-number">15</span> Contrast analysis</a></li>
+<li>
+<a class="nav-link" href="#contrasts-1"><span class="header-section-number">15.1</span> Contrasts</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#orthogonal-contrasts"><span class="header-section-number">15.1.1</span> Orthogonal contrasts</a></li></ul>
+</li>
+<li>
+<a class="nav-link" href="#example-planned-comparisons-among-virus-treatments"><span class="header-section-number">15.2</span> Example: planned comparisons among virus treatments</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#method-1-contrasts-in-aov"><span class="header-section-number">15.2.1</span> Method 1: contrasts in aov()</a></li>
+<li><a class="nav-link" href="#method-2-contrasts-with-emmeans"><span class="header-section-number">15.2.2</span> Method 2: contrasts with emmeans</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#orthogonal-polynomials-for-quantitative-treatments"><span class="header-section-number">15.3</span> Orthogonal polynomials for quantitative treatments</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#example-seeding-rate-of-rice"><span class="header-section-number">15.3.1</span> Example: seeding rate of rice</a></li>
+<li><a class="nav-link" href="#example-nitrogen-in-a-split-plot-experiment"><span class="header-section-number">15.3.2</span> Example: nitrogen in a split-plot experiment</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#contrasts-in-factorial-experiments"><span class="header-section-number">15.4</span> Contrasts in factorial experiments</a></li>
+<li><a class="nav-link" href="#exercises-12">Exercises</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/KAUMELON/stat-531/blob/main/15-contrasts.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/KAUMELON/stat-531/edit/main/15-contrasts.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Data Analysis Using Statistical Packages</strong>: A complete guide to data analysis in agricultural research using R" was written by Dr. Pratheesh P. Gopinath. It was last built on Last updated: 21 October 2026.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

@@ -2,3 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+~$*
+/_bookdown_files/
+/stat531_files/
+/stat531.Rmd
+/packages.bib

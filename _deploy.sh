@@ -1,11 +1,12 @@
-# clone the repository to the book-output directory
-git pull
+#!/bin/sh
+# Rebuild the book and publish it.
+# GitHub Pages serves the site from the docs/ folder of the main branch.
+set -e
 
-# Purge the old files to make sure new ones are built
-git rm -rf docs/SHA_GENERATED/
+git pull origin main
 
 Rscript _build.R
 
-git add --all *
+git add --all
 git commit -m "Update the book"
-git push -q origin master
+git push origin main
