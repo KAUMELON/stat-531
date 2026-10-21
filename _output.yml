@@ -1,8 +1,0 @@
-bookdown::bs4_book:
-  css: custom.css
-  theme:
-    primary: "#1f6f43"
-  repo:
-    base: https://github.com/KAUMELON/stat-531
-    branch: main
-  footnotes_inline: true

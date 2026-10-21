@@ -1,0 +1,45 @@
+:root { --ink:#17375e; --gold:#d5a126; --bs-primary:#214f87; --bs-link-color:#214f87; }
+body { font-family:Georgia,'Times New Roman',serif; font-size:1.08rem; line-height:1.8; color:#242b33; background:#fff; }
+h1,h2,h3,h4 { font-family:Georgia,'Times New Roman',serif; font-weight:700; color:var(--ink); line-height:1.3; }
+h1.title { color:#152b45; border-bottom:4px solid var(--gold); padding-bottom:.65rem; }
+h2 { margin-top:2.3rem; border-bottom:1px solid #d9e3ee; padding-bottom:.4rem; }
+a { text-underline-offset:.18em; }
+p { max-width:78ch; }
+.sidebar,.quarto-margin-sidebar,.quarto-page-breadcrumbs,.nav-footer { font-family:system-ui,sans-serif; font-size:.88rem; line-height:1.5; }
+#quarto-sidebar { background:#f6f8fc; border-right:1px solid #dde6ef; }
+.sidebar-title { color:var(--ink); font-family:Georgia,serif; font-weight:700; }
+.sidebar-item-section>.sidebar-item-container { color:var(--ink); font-weight:650; margin-top:.7rem; }
+.sidebar nav[role=doc-toc] ul>li>a.active,.sidebar-item-text.active { color:#153d6d!important; background:#fff2c8; border-left:3px solid var(--gold); padding-left:.45rem; }
+.callout { margin-block:1.6rem; border-radius:.45rem; box-shadow:0 2px 7px #17375e0a; }
+.callout.callout-style-default .callout-title { font-family:system-ui,sans-serif; font-weight:650; }
+.callout-note { background:#f1f7ff; }.callout-tip { background:#f0f9f3; }.callout-warning { background:#fff7e8; }.callout-important { background:#fff0f2; }
+div.sourceCode { border:1px solid #ccdaeb; border-left:4px solid #38818b; background:#f5f8fc; border-radius:.4rem; margin:1.2rem 0; }
+pre.sourceCode { padding:1rem; background:transparent; }
+pre,code,textarea { font-family:'Cascadia Code',Consolas,'Liberation Mono',monospace; }
+pre { font-size:.86rem; line-height:1.6; border-radius:.35rem; }
+code:not(.sourceCode) { color:#8a2d62; }
+.code-copy-button { opacity:1; color:#245785; }
+.cell-output-stdout pre,.cell-output-display { border-left:3px solid #d9aa34; padding-left:1rem; }
+table { font-variant-numeric:tabular-nums; font-size:.95rem; }
+thead { background:#edf3fb; color:var(--ink); }
+tbody tr:nth-child(even) { background:#f8fafc; }
+figure img { border:1px solid #d9e3ee; border-radius:.3rem; }
+figcaption { color:#53677c; font-size:.88rem; line-height:1.5; }
+mjx-container[display="true"] { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+.worked-example { border:1px solid #a9c8e0; border-top:5px solid #287d99; border-radius:.45rem; padding:1.3rem 1.5rem; background:#f8fcff; margin:2rem 0; }
+.worked-example>p:first-child { color:var(--ink); font-weight:700; }
+section[id^="worked-"] { border:1px solid #a9c8e0; border-top:5px solid #287d99; border-radius:.45rem; padding:1rem 1.3rem; background:#f8fcff; margin:2rem 0; }
+section[id^="worked-"]>h2 { margin-top:.25rem; }
+.live-r { border:1px solid #9bb9d6; border-top:5px solid #5275ae; border-radius:.5rem; padding:1.2rem; margin:1.8rem 0; background:linear-gradient(135deg,#f3f7ff,#f7fcfa); }
+.live-r label { display:block; font:600 .9rem system-ui,sans-serif; color:var(--ink); margin:.6rem 0; }
+.live-r textarea { display:block; width:100%; resize:vertical; border:1px solid #b1c3d9; border-radius:.3rem; background:white; color:#182f4b; font-size:.88rem; line-height:1.6; padding:.9rem; tab-size:2; }
+.live-r textarea:focus { outline:3px solid #e4b844; outline-offset:2px; }
+.live-toolbar { display:flex; gap:.5rem; flex-wrap:wrap; margin:.8rem 0; }
+.live-toolbar button { font:600 .86rem system-ui,sans-serif; border:1px solid #a7bdd3; background:white; color:var(--ink); padding:.55rem .85rem; border-radius:.3rem; cursor:pointer; }
+.live-toolbar button:first-child { background:#214f87; color:white; border-color:#214f87; }
+.live-toolbar button:disabled { opacity:.55; cursor:wait; }
+.live-status { display:block; font:.8rem system-ui,sans-serif; color:#4b6178; }
+.live-output { background:#152c43; color:#f2f7fd; padding:1rem; margin-top:1rem; white-space:pre-wrap; overflow-wrap:anywhere; }
+.live-plots canvas { max-width:100%; height:auto; display:block; margin-top:1rem; background:white; }
+@media(max-width:600px) { body { font-size:1rem; }.live-r,.worked-example { padding:.85rem; } }
+@media print { body { font-size:11pt; }.live-toolbar,.live-status { display:none; }.live-r textarea { border:none; } }

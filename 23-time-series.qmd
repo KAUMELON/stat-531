@@ -1,0 +1,374 @@
+# Time series analysis {#sec-time-series-analysis-using-r}
+
+## Learning outcomes {.unnumbered}
+
+Create and plot time series, decompose them into trend, seasonal and irregular components, seasonally adjust, forecast with simple, Holt and Holt–Winters exponential smoothing and ARIMA models, and check forecast errors.
+
+
+A **time series** is a sequence of observations recorded at successive, usually equally spaced, points in time: monthly rainfall, annual crop production, weekly market arrivals or daily prices. The order of the observations matters, and neighbouring values are usually correlated, so time series need their own methods.
+
+This chapter is adapted from *A Little Book of R for Time Series* by Avril Coghlan [@coghlan2017] (CC BY 3.0), with additions. For a full treatment see @hyndman2021.
+
+## Data used in this chapter
+
+Four data sets are used. They are in the `data` folder of the book's [GitHub repository](https://github.com/KAUMELON/stat-531/tree/main/data), and can also be downloaded from the links below:
+
+- [kings.csv](https://raw.githubusercontent.com/KAUMELON/stat-531/main/data/kings.csv): age at death of 42 successive kings of England, starting with William the Conqueror.
+- [births.csv](https://raw.githubusercontent.com/KAUMELON/stat-531/main/data/births.csv): number of births per month (in thousands) in New York City, January 1946 to December 1959.
+- [souvenir.csv](https://raw.githubusercontent.com/KAUMELON/stat-531/main/data/souvenir.csv): monthly sales of a souvenir shop at a beach resort town in Queensland, Australia, January 1987 to December 1993.
+- [rain.csv](https://raw.githubusercontent.com/KAUMELON/stat-531/main/data/rain.csv): total annual rainfall (inches) in London, 1813 to 1912.
+
+The data originate from the Time Series Data Library of Rob Hyndman.
+
+## Creating a time series object
+
+First import the data as in @sec-import. Each file has a single column:
+
+```{r ts-import}
+kings    <- read.csv("data/kings.csv")$age
+births   <- read.csv("data/births.csv")$births
+souvenir <- read.csv("data/souvenir.csv")$sales
+rain     <- read.csv("data/rain.csv")$rainfall
+```
+
+Next store the data as a time series object with `ts()`:
+
+```{r ts-kings}
+kingsts <- ts(kings)
+kingsts
+```
+
+For data collected more often than once a year, give the number of observations per year in `frequency` (12 for monthly, 4 for quarterly data) and the time of the first observation in `start`. For example, `start = c(1986, 2)` means the second quarter (or month) of 1986. The births data are monthly from January 1946:
+
+```{r ts-births}
+birthsts <- ts(births, frequency = 12, start = c(1946, 1))
+birthsts
+```
+
+Similarly for the souvenir sales and the annual rainfall:
+
+```{r ts-souvenir}
+souvenirts <- ts(souvenir, frequency = 12, start = c(1987, 1))
+rainseries <- ts(rain, start = 1813)
+```
+
+## Plotting time series
+
+The first step in any analysis is a time plot, drawn with `plot.ts()`:
+
+```{r ts-plot-kings}
+plot.ts(kingsts, ylab = "Age at death", xlab = "King number")
+```
+
+The random fluctuations in the kings' ages are roughly constant in size over time, so an **additive model** is appropriate. In an additive model the components (trend, seasonal and irregular) are added together; this works when the size of the fluctuations does not change with the level of the series.
+
+```{r ts-plot-births}
+plot.ts(birthsts, ylab = "Births (thousands)")
+```
+
+The births series shows clear seasonal variation, with a peak every summer and a trough every winter. The seasonal and random fluctuations are roughly constant in size, so an additive model is again appropriate.
+
+```{r ts-plot-souvenir}
+plot.ts(souvenirts, ylab = "Sales")
+```
+
+For the souvenir sales an additive model is **not** appropriate, because both the seasonal and the random fluctuations grow as the level of the series rises. Taking the natural logarithm often stabilises the variance:
+
+```{r ts-plot-logsouvenir}
+logsouvenirts <- log(souvenirts)
+plot.ts(logsouvenirts, ylab = "log(Sales)")
+```
+
+On the log scale the seasonal and random fluctuations are roughly constant in size, so the log series can be described by an additive model (equivalently, the original series follows a multiplicative model).
+
+## Decomposing time series
+
+Decomposing a time series means separating it into its components:
+
+1. **Trend component**: the long-term upward or downward movement.
+2. **Seasonal component**: a pattern that repeats at a fixed period, such as every 12 months.
+3. **Irregular (random) component**: what remains after removing trend and seasonality.
+
+Under the additive model $Y_t = T_t + S_t + I_t$; under the multiplicative model $Y_t = T_t \times S_t \times I_t$.
+
+### Decomposing non-seasonal data
+
+A non-seasonal series has only a trend and an irregular component. The trend can be estimated by smoothing, for example with a **simple moving average** (SMA). The `SMA()` function of the `TTR` package computes it:
+
+```{r ts-ttr, eval=FALSE}
+install.packages("TTR")
+```
+
+```{r ts-sma3}
+library(TTR)
+kingstsSMA3 <- SMA(kingsts, n = 3)
+plot.ts(kingstsSMA3)
+```
+
+A moving average of order 3 still leaves a lot of random fluctuation. A higher order gives a smoother trend; finding the right amount of smoothing needs some trial and error. With order 8:
+
+```{r ts-sma8}
+kingstsSMA8 <- SMA(kingsts, n = 8)
+plot.ts(kingstsSMA8)
+```
+
+The smoothed series suggests that the age at death fell from about 55 years for the early kings to about 38 years around the 20th king, and then rose to about 73 years by the 40th king.
+
+### Decomposing seasonal data
+
+`decompose()` estimates the trend (with a centred moving average), the seasonal and the irregular components of a seasonal series:
+
+```{r ts-decompose}
+birthstscomp <- decompose(birthsts)
+```
+
+The result is a list with elements `seasonal`, `trend` and `random`. The estimated seasonal effects for January to December are:
+
+```{r ts-figure}
+round(birthstscomp$figure, 3)
+```
+
+July has the largest seasonal effect (about +1.46 thousand births above the trend) and February the smallest (about −2.08), so births peak in summer and are lowest in February.
+
+```{r ts-decompose-plot, fig.asp=0.9}
+plot(birthstscomp)
+```
+
+The panels show, from top to bottom, the observed series, the trend, the seasonal component and the irregular component. The trend falls slightly from about 22.4 thousand in early 1947 to about 22.0 thousand at the end of 1948, and then rises steadily to about 27 thousand by 1959.
+
+## Seasonally adjusting a time series
+
+If a seasonal series follows an additive model, it can be **seasonally adjusted** by subtracting the estimated seasonal component:
+
+```{r ts-adjust}
+birthstsadj <- birthsts - birthstscomp$seasonal
+plot(birthstsadj, ylab = "Seasonally adjusted births")
+```
+
+The adjusted series contains only the trend and irregular components, which makes it easier to see whether births are increasing or decreasing. For a multiplicative series, decompose with `decompose(x, type = "multiplicative")` and divide by the seasonal component instead.
+
+## Forecasting with exponential smoothing
+
+Exponential smoothing, introduced by R. G. Brown (1956) and extended by C. C. Holt (1957) and P. R. Winters (1960), makes short-term forecasts from a weighted average of past observations in which the weights decrease exponentially with age. It is reliable for short horizons; long-term forecasts can be poor.
+
+The **smoothing constant** $\alpha$ ($0 \le \alpha \le 1$) controls how fast the weights decay:
+
+- $\alpha$ close to **1**: little smoothing; the forecast follows the most recent observations closely.
+- $\alpha$ close to **0**: heavy smoothing; the forecast depends on many past observations, each receiving a small weight.
+
+R chooses the smoothing constants that minimise the sum of squared one-step-ahead forecast errors.
+
+### Types of exponential smoothing
+
+**1. Simple exponential smoothing** — for series with no trend and no seasonality.
+
+$$F_{t+1} = \alpha Y_t + (1 - \alpha) F_t$$
+
+where $F_{t+1}$ is the forecast for the next period, $Y_t$ the observation at time $t$ and $F_t$ the forecast for time $t$. Repeated substitution shows that the weight on the observation $j$ periods ago is $\alpha(1-\alpha)^j$.
+
+**2. Holt's linear (trend) method** — for series with a trend but no seasonality. It has a level $\ell_t$ with smoothing constant $\alpha$, and a slope $b_t$ with smoothing constant $\beta$:
+
+$$\ell_t = \alpha Y_t + (1 - \alpha)(\ell_{t-1} + b_{t-1})$$
+$$b_t = \beta(\ell_t - \ell_{t-1}) + (1 - \beta) b_{t-1}$$
+$$F_{t+h} = \ell_t + h\,b_t$$
+
+**3. Holt–Winters method** — for series with trend and seasonality of period $m$, with a third smoothing constant $\gamma$ for the seasonal component $s_t$.
+
+*Additive seasonality* (seasonal swings of constant size):
+
+$$\ell_t = \alpha (Y_t - s_{t-m}) + (1 - \alpha)(\ell_{t-1} + b_{t-1})$$
+$$b_t = \beta(\ell_t - \ell_{t-1}) + (1 - \beta) b_{t-1}$$
+$$s_t = \gamma (Y_t - \ell_t) + (1 - \gamma) s_{t-m}$$
+$$F_{t+h} = \ell_t + h\,b_t + s_{t+h-m}$$
+
+*Multiplicative seasonality* (seasonal swings proportional to the level):
+
+$$\ell_t = \alpha \frac{Y_t}{s_{t-m}} + (1 - \alpha)(\ell_{t-1} + b_{t-1})$$
+$$b_t = \beta(\ell_t - \ell_{t-1}) + (1 - \beta) b_{t-1}$$
+$$s_t = \gamma \frac{Y_t}{\ell_t} + (1 - \gamma) s_{t-m}$$
+$$F_{t+h} = (\ell_t + h\,b_t)\, s_{t+h-m}$$
+
+In the forecast equations, $s_{t+h-m}$ is the most recent estimate of the seasonal effect for the season being forecast (for $h > m$, use $s_{t+h-km}$ with $k$ the smallest integer such that $h \le km$).
+
+All three methods are fitted with `HoltWinters()`: set `gamma = FALSE` for Holt's method, and both `beta = FALSE, gamma = FALSE` for simple exponential smoothing. Use `seasonal = "multiplicative"` for multiplicative Holt–Winters.
+
+### Simple exponential smoothing
+
+```{r ts-rain-plot}
+plot.ts(rainseries, ylab = "Rainfall (inches)")
+```
+
+The mean stays roughly constant at about 25 inches and the random fluctuations are roughly constant in size, so an additive model with no trend and no seasonality is appropriate. We can therefore forecast with simple exponential smoothing:
+
+```{r ts-ses}
+rainforecast <- HoltWinters(rainseries, beta = FALSE, gamma = FALSE)
+rainforecast
+```
+
+The estimated $\alpha$ is about 0.024, which is very close to zero. The forecasts therefore give **almost equal weight to recent and distant observations**: each new observation moves the level only slightly, so the forecast is essentially a long-run average of the series. This makes sense for a series with no trend whose fluctuations are mostly random.
+
+By default `HoltWinters()` computes in-sample forecasts for the period covered by the data. They are stored in the `fitted` element:
+
+```{r ts-ses-fitted}
+head(rainforecast$fitted)
+```
+
+Plot the original series (black) against the in-sample forecasts (red):
+
+```{r ts-ses-plot}
+plot(rainforecast)
+```
+
+The forecasts are much smoother than the data. The accuracy of the in-sample forecasts is measured by the sum of squared errors (SSE):
+
+```{r ts-ses-sse}
+rainforecast$SSE
+```
+
+In simple exponential smoothing the starting level is by default the first observation, 23.56 inches for 1813. It can be set explicitly with `l.start`:
+
+```{r ts-ses-lstart}
+rainforecast2 <- HoltWinters(rainseries, beta = FALSE, gamma = FALSE, l.start = 23.56)
+rainforecast2$SSE
+```
+
+Here the SSE is unchanged, because 23.56 is already the default starting value. A different `l.start` would give a different SSE.
+
+#### Forecasting future values
+
+Forecasts beyond the data are made with `forecast()` from the `forecast` package [@R-forecast]. Here we forecast rainfall for 1913–1920 (8 years):
+
+```{r ts-ses-forecast}
+library(forecast)
+rainforecast8 <- forecast(rainforecast, h = 8)
+rainforecast8
+plot(rainforecast8)
+```
+
+The point forecast is 24.68 inches for every year, with 80% and 95% prediction intervals (the dark and light shaded bands).
+
+#### Checking the forecast errors
+
+If the model is adequate, the forecast errors (residuals) should show no autocorrelation, have constant variance and be roughly normally distributed with mean zero. The autocorrelation function (ACF) and the Ljung–Box test check the first condition:
+
+```{r ts-ses-acf}
+res <- na.omit(residuals(rainforecast8))
+acf(res, lag.max = 20)
+Box.test(res, lag = 20, type = "Ljung-Box")
+```
+
+No autocorrelation falls outside the significance bounds except by chance, and the Ljung–Box test is not significant (p ≈ 0.63). There is therefore little evidence of autocorrelation in the forecast errors, and simple exponential smoothing provides an adequate forecasting model for London rainfall.
+
+```{r ts-ses-hist}
+hist(res, breaks = 15, freq = FALSE, col = "grey90", main = "Forecast errors")
+curve(dnorm(x, mean(res), sd(res)), add = TRUE, col = "red", lwd = 2)
+```
+
+### Holt's exponential smoothing
+
+For a series with a trend but no seasonality we use Holt's method. The built-in `airmiles` data give the annual revenue passenger miles flown by US commercial airlines, 1937–1960, which has a strong upward trend:
+
+```{r ts-holt}
+plot(airmiles, ylab = "Passenger miles (thousands)")
+airholt <- HoltWinters(airmiles, gamma = FALSE)
+airholt
+```
+
+The estimate $\alpha \approx 0.81$ means the level follows the most recent observations closely, and $\beta \approx 0.39$ means the slope is updated moderately quickly.
+
+```{r ts-holt-forecast}
+airholtf <- forecast(airholt, h = 4)
+airholtf
+plot(airholtf)
+```
+
+### Holt–Winters exponential smoothing
+
+For a series with trend and seasonality we use the full Holt–Winters method. We model the log of the souvenir sales, which follows an additive model:
+
+```{r ts-hw}
+souvenirhw <- HoltWinters(logsouvenirts)
+souvenirhw
+```
+
+The estimates are $\alpha \approx 0.41$, $\beta = 0$ and $\gamma \approx 0.96$. The value $\beta = 0$ means the slope is not updated: it keeps its initial value throughout. The high $\gamma$ means the seasonal effects are based mainly on the most recent observations.
+
+```{r ts-hw-plot}
+plot(souvenirhw)
+```
+
+Forecast the next 12 months (1994) and back-transform with `exp()` to get sales:
+
+```{r ts-hw-forecast}
+souvenirf <- forecast(souvenirhw, h = 12)
+plot(souvenirf)
+round(exp(souvenirf$mean))
+```
+
+The forecasts reproduce the seasonal pattern, with the highest sales in December.
+
+```{r ts-hw-check}
+Box.test(residuals(souvenirf), lag = 20, type = "Ljung-Box")
+```
+
+The Ljung–Box test is not significant (p ≈ 0.62), so the Holt–Winters model fits adequately.
+
+## ARIMA models
+
+Exponential smoothing makes no assumption about correlation between successive values. **ARIMA** (autoregressive integrated moving average) models describe that correlation explicitly. An ARIMA($p,d,q$) model has $p$ autoregressive terms, $d$ differences and $q$ moving-average terms; seasonal ARIMA models add seasonal terms ARIMA($P,D,Q$)$_m$.
+
+The orders can be chosen by examining the ACF and partial ACF of the differenced series, or automatically with `auto.arima()`, which compares candidate models by AICc:
+
+```{r ts-arima}
+kingsarima <- auto.arima(kingsts)
+kingsarima
+```
+
+An ARIMA(0,1,1) model is selected for the kings data: the series is differenced once and the differences follow a first-order moving-average process. Forecast the age at death of the next five kings:
+
+```{r ts-arima-forecast}
+kingsf <- forecast(kingsarima, h = 5)
+kingsf
+plot(kingsf)
+Box.test(residuals(kingsf), lag = 20, type = "Ljung-Box")
+```
+
+For a seasonal series, `auto.arima()` also selects the seasonal part. For the monthly births:
+
+```{r ts-sarima}
+auto.arima(birthsts)
+```
+
+::: {.callout-note}
+Always check the residuals of a fitted model (`checkresiduals()` in the `forecast` package does this in one step). A good model leaves residuals that look like uncorrelated random noise. For a thorough introduction to ARIMA modelling see Chapters 8–9 of @hyndman2021.
+:::
+
+## Live R laboratory {#live-r-laboratory}
+
+::: {.live-r}
+**Decompose and forecast a seasonal series**
+
+Edit the code, then select **Run R**. The first run downloads R into your browser and may take a little time. **Copy code** lets you use the example in RStudio.
+
+```r
+# Monthly atmospheric CO2 at Mauna Loa (built-in data set)
+plot(co2, ylab = "CO2 (ppm)")
+dc <- decompose(co2)
+round(dc$figure, 2)                     # seasonal effects, Jan to Dec
+plot(dc)
+
+hw <- HoltWinters(co2)
+c(alpha = hw$alpha, beta = hw$beta, gamma = hw$gamma)
+fc <- predict(hw, n.ahead = 24, prediction.interval = TRUE)
+ts.plot(co2, fc, col = c("black", "red", "grey50", "grey50"), lty = c(1, 1, 2, 2))
+```
+
+**Investigate.** Fit simple exponential smoothing (`beta = FALSE, gamma = FALSE`) to the built-in `Nile` series. Is its $\alpha$ close to 0 or to 1, and what does that mean?
+:::
+
+## Practical and exercises
+
+1. The built-in `co2` data set gives monthly atmospheric CO~2~ concentrations at Mauna Loa, 1959–1997. Plot the series, decompose it and describe the trend and seasonal pattern.
+2. Seasonally adjust the `co2` series and plot the adjusted series.
+3. Fit a Holt–Winters model to `co2` and forecast the next 24 months. Check the residuals.
+4. Fit an ARIMA model to the London rainfall series with `auto.arima()`. Compare its forecasts with those from simple exponential smoothing.

@@ -1,0 +1,46 @@
+# Course guide {.unnumbered}
+
+**STAT 531 – Data Analysis Using Statistical Packages** exposes students to the use of statistical packages for the analysis of data and gives hands-on experience in analysing their own research data. The course is useful to students of all disciplines.
+
+By completing the course, students should be able to import and validate a data set; summarise, tabulate and graph it; fit and test probability distributions; carry out large-sample, *t*, *F* and chi-square tests; analyse single-factor, multi-factor, split-plot and covariance experiments with appropriate contrasts and multiple comparisons; estimate variance components with mixed models; fit and diagnose linear, multiple and non-linear regressions; apply principal component, factor and discriminant analysis; and analyse and forecast time series, explaining every result in its agricultural context.
+
+## Syllabus and where to find it
+
+: STAT 531 syllabus mapped to the chapters of this book {#tbl-syllabus .bordered}
+
+| Unit | Syllabus topics | Chapters |
+|:----:|:----------------|:---------|
+| I | Use of software packages for summarisation and tabulation of data; descriptive statistics; graphical representation of data; exploratory data analysis | [-@sec-introduction]–[-@sec-eda] |
+| II | Fitting and testing the goodness of fit of discrete and continuous probability distributions; testing of hypothesis based on large-sample test statistics; testing of hypothesis using chi-square, *t* and *F* statistics | [-@sec-distributions]–[-@sec-small-sample] |
+| III | Concept of analysis of variance and covariance of data for single-factor, multi-factor, one-way and multi-classified experiments; contrast analysis; multiple comparisons | [-@sec-anova-crd]–[-@sec-ancova] |
+| IV | Analysis of mixed models; estimation of variance components; testing the significance of contrasts; correlation and regression including multiple regression | [-@sec-mixed-models]–[-@sec-regression] |
+| V | Discriminant function; factor analysis; principal component analysis; analysis of time-series data; fitting of non-linear models | [-@sec-pca]–[-@sec-time-series-analysis-using-r] |
+
+## Suggested practical schedule
+
+The following 16 practicals are a teaching proposal, not an institutional rule. Each can be organised as a short demonstration, a live R laboratory, independent work on the chapter exercises and discussion.
+
+: Suggested practical schedule {#tbl-schedule .bordered}
+
+| Practical | Reading | Practical product |
+|:--:|:--|:--|
+| 1 | Chapters [-@sec-introduction]–[-@sec-rbase] | RStudio project; vectors, matrices and data frames |
+| 2 | Chapters [-@sec-packages]–[-@sec-dataset] | Packages installed; own data imported and checked |
+| 3 | Chapters [-@sec-descriptive-statistics]–[-@sec-graphical-representation] | Descriptive statistics, frequency tables and graphs |
+| 4 | @sec-eda | Exploratory analysis of a multi-environment trial |
+| 5 | @sec-distributions | Binomial, Poisson and normal fits with goodness-of-fit tests |
+| 6 | Chapters [-@sec-large-sample]–[-@sec-small-sample] | Z, *t*, *F* and chi-square tests |
+| 7 | @sec-anova-crd | CRD analysis, assumptions, CD and multiple comparisons |
+| 8 | @sec-designs | RCBD, Latin square and factorial experiments |
+| 9 | @sec-designs | Split-plot and strip-plot experiments |
+| 10 | @sec-contrasts | Planned contrasts and orthogonal polynomials |
+| 11 | @sec-ancova | Analysis of covariance |
+| 12 | @sec-mixed-models | Variance components, heritability, mixed models |
+| 13 | @sec-regression | Correlation, simple and multiple regression |
+| 14 | Chapters [-@sec-pca]–[-@sec-discriminant] | PCA, factor analysis and discriminant function |
+| 15 | @sec-nonlinear | Fertiliser response and growth curves |
+| 16 | @sec-time-series-analysis-using-r | Decomposition, exponential smoothing and ARIMA forecasts |
+
+## Assessment of practical work
+
+For each practical, submit the R script and a short written interpretation. A script that runs is necessary but not sufficient: the interpretation should state the design, the model, the key result with its uncertainty, and what the result means agronomically.

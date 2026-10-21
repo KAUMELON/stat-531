@@ -1,0 +1,81 @@
+# Preface {.unnumbered}
+
+Agricultural research produces data from field experiments, surveys, laboratory assays and long-term monitoring. Turning those data into sound conclusions needs two things: a clear understanding of the statistical method, and the practical skill to carry it out on a computer. Most students learn the first in their theory courses but struggle with the second. This book is meant to close that gap.
+
+This textbook covers the complete syllabus of **STAT 531 – Data Analysis Using Statistical Packages**, offered in the Post Graduate programme of Kerala Agricultural University. It is written for M.Sc. and Ph.D. students of every agricultural discipline who need to analyse their own research data, and it doubles as a desk reference for researchers who want a worked R example for a familiar statistical procedure. It develops my earlier lecture notes for the course into a full textbook: every chapter states the statistical model, shows the R code with its real output, explains how to read that output, and ends with a live R laboratory and practical exercises.
+
+Every analysis is carried out in **R**, the free and open-source statistical environment, using **RStudio** as the interface. The examples use real experimental data that ship with R or with freely available R packages, many of them classic agricultural experiments from @gomez1984, @snedecor1989 and the International Potato Center, so that every result in the book can be reproduced exactly.
+
+## How this book is organised
+
+The chapters follow the five units of the syllabus (see the [Course guide](course-guide.qmd)):
+
+- **Getting started** (Chapters [-@sec-introduction]–[-@sec-dataset]): statistical software, installing R and RStudio, R basics, packages, importing data and built-in data sets.
+- **Unit I · Describing data** (Chapters [-@sec-descriptive-statistics]–[-@sec-eda]): summarisation and tabulation, descriptive statistics, graphs and exploratory data analysis.
+- **Unit II · Distributions and tests of hypotheses** (Chapters [-@sec-distributions]–[-@sec-small-sample]): fitting distributions and testing goodness of fit, large-sample tests, and *t*, *F* and chi-square tests.
+- **Unit III · Analysis of variance and covariance** (Chapters [-@sec-anova-crd]–[-@sec-ancova]): one-way ANOVA, multiple comparisons, standard experimental designs, factorial, split-plot and strip-plot experiments, contrasts and ANCOVA.
+- **Unit IV · Mixed models and regression** (Chapters [-@sec-mixed-models]–[-@sec-regression]): mixed models, variance components, testing contrasts, correlation and regression.
+- **Unit V · Multivariate methods, non-linear models and time series** (Chapters [-@sec-pca]–[-@sec-time-series-analysis-using-r]): principal components, factor analysis, discriminant functions, non-linear models and time series.
+
+The appendices describe every data set, give selected solutions to the exercises and provide a glossary and R function reference.
+
+## Learn by running R
+
+::: {.callout-tip title="A live R laboratory in every chapter"}
+Each chapter ends with a **Live R laboratory**: editable code, a **Run R** button, console output and plots. The code runs in real R inside your browser (webR), so you can change a value, run again and see what happens without installing anything. Start with the [first live calculation](03-r-basics.qmd#live-r-laboratory), or try the laboratories on [analysis of variance](13-anova-crd.qmd#live-r-laboratory) and [principal components](19-pca.qmd#live-r-laboratory).
+
+The browser downloads R the first time you select **Run R**, so allow a little time and use a current browser with an internet connection. The laboratories use base R with the data typed into the code. Every ordinary code block in the book has a copy button: copy it into RStudio to run the full, package-based analyses on your own computer.
+:::
+
+## How to study this book
+
+Read the explanation, predict what the code will do, run it, and compare the output with your prediction. Then change one input and explain the result. Code that runs is necessary; a defensible statistical interpretation is equally necessary.
+
+You should be familiar with basic statistical theory. For the theory behind the methods, refer to the companion [Textbook of Agricultural Statistics](https://www.agrinoteskau.com/agstat-textbook.html) and to standard texts such as @goon1983, @gupta1997, @panse1985, @snedecor1989 and @gomez1984.
+
+## Conventions
+
+R code is shown in shaded boxes with a copy button. Lines of output start with `#>`, so a whole box can be pasted into R without editing:
+
+```{r conventions}
+mean(c(12, 15, 18))
+```
+
+Function names are written with parentheses, e.g. `aov()`, and package names in code font, e.g. `agricolae`. Notes, tips and warnings appear in coloured boxes:
+
+::: {.callout-note}
+A note gives background or a pointer to further reading.
+:::
+
+::: {.callout-warning}
+A warning marks a common mistake.
+:::
+
+## Software and packages
+
+The book was built with `r R.version.string`. Install the packages used in the book once with:
+
+```{r install-all, eval=FALSE}
+install.packages(c(
+  "agricolae", "agridat", "car", "emmeans", "multcomp", "lme4", "lmerTest",
+  "pbkrtest", "fitdistrplus", "vcd", "HistData", "psych", "FactoMineR",
+  "factoextra", "forecast", "TTR", "modeest", "pastecs", "readxl", "corrplot",
+  "nortest", "lmtest", "ggplot2"
+))
+```
+
+`MASS` comes with every R installation.
+
+## Acknowledgements
+
+@sec-time-series-analysis-using-r is adapted from *A Little Book of R for Time Series* by Avril Coghlan [@coghlan2017], released under a Creative Commons Attribution 3.0 licence. The data sets are used with thanks to the authors of the `agricolae`, `agridat`, `HistData` and `vcd` packages and the original experimenters cited in each chapter.
+
+## Feedback
+
+If you find an error or have a suggestion, please contact [Dr. Pratheesh P. Gopinath](https://coavellayani.kau.in/people/dr-pratheesh-p-gopinath) (e-mail: `pratheesh.pg@kau.in`), Department of Agricultural Statistics, College of Agriculture, Vellayani, Kerala Agricultural University, or open an issue on [GitHub](https://github.com/KAUMELON/stat-531/issues).
+
+This work is licensed under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/). It is published in **MeLoN** (Module for e-Learning & Online Notes) of Kerala Agricultural University.
+
+```{r logo, echo=FALSE, out.width="25%"}
+knitr::include_graphics("images/logo.png")
+```

@@ -1,0 +1,35 @@
+# Data sets used in this book {#sec-data}
+
+
+All data sets are freely available. Those in packages are loaded with `data(name)` after `library(package)`; the CSV files are in the [`data` folder](https://github.com/KAUMELON/stat-531/tree/main/data) of the book's GitHub repository.
+
+: Data sets, their sources and the chapters that use them {#tbl-datasets .bordered}
+
+| Data set | Source | Description | Chapters |
+|:--|:--|:--|:--|
+| `iris` | base R | Four flower measurements on three *Iris* species (Fisher, 1936) | [-@sec-descriptive-statistics], [-@sec-graphical-representation], [-@sec-discriminant] |
+| `PlantGrowth` | base R | Dried weight of plants under a control and two treatments | [-@sec-graphical-representation], [-@sec-small-sample] |
+| `ToothGrowth` | base R | Tooth growth in guinea pigs: vitamin C dose × delivery method | [-@sec-dataset], [-@sec-graphical-representation] |
+| `InsectSprays` | base R | Insect counts after six insecticide treatments | [-@sec-anova-crd] |
+| `npk` | base R | 2^3^ factorial N, P, K experiment on peas in six blocks | [-@sec-contrasts] |
+| `trees` | base R | Diameter, height and timber volume of 31 black cherry trees | [-@sec-regression] |
+| `airmiles` | base R | Annual passenger miles of US airlines, 1937–1960 | [-@sec-time-series-analysis-using-r] |
+| `oats` | `MASS` | Split-plot experiment: oat varieties × nitrogen (Yates, 1935) | [-@sec-designs], [-@sec-contrasts], [-@sec-mixed-models] |
+| `sweetpotato` | `agricolae` | Sweet potato yield under four virus treatments, CRD | [-@sec-anova-crd], [-@sec-contrasts] |
+| `plrv` | `agricolae` | Yield of 28 potato genotypes in six environments, RCBD | [-@sec-eda], [-@sec-large-sample], [-@sec-designs], [-@sec-mixed-models] |
+| `melon` | `agricolae` | Yield of four melon varieties, Latin square | [-@sec-designs] |
+| `greenhouse` | `agricolae` | Potato minituber production: method × variety factorial | [-@sec-designs] |
+| `soil` | `agricolae` | Physical and chemical properties of soils from 13 localities | [-@sec-pca] |
+| `yacon` | `agricolae` | Agronomic and quality traits of yacon in three localities | [-@sec-eda], [-@sec-regression], [-@sec-factor-analysis] |
+| `gomez.rice.uniformity` | `agridat` | Rice uniformity trial, 648 plots of 1 m^2^ (Gomez & Gomez, 1984) | [-@sec-distributions] |
+| `gomez.seedrate` | `agridat` | Rice yield at six seeding rates, RCBD (Gomez & Gomez, 1984) | [-@sec-dataset], [-@sec-contrasts] |
+| `gomez.stripplot` | `agridat` | Rice varieties × nitrogen, strip-plot (Gomez & Gomez, 1984) | [-@sec-designs] |
+| `pearce.apple` | `agridat` | Apple yields with previous yield as covariate (Pearce, 1953) | [-@sec-ancova] |
+| `pearl.kernels` | `agridat` | Colour and texture of maize kernels in an F~2~ (Pearl, 1911) | [-@sec-small-sample] |
+| `hernandez.nitrogen` | `agridat` | Maize yield response to nitrogen at five sites | [-@sec-nonlinear] |
+| `davidian.soybean` | `agridat` | Soybean leaf weight over time | [-@sec-nonlinear] |
+| `ZeaMays` | `HistData` | Darwin's paired heights of crossed and self-fertilised maize | [-@sec-small-sample] |
+| `Saxony`, `HorseKicks` | `vcd` | Classic binomial and Poisson frequency data | [-@sec-distributions] |
+| `kings.csv`, `births.csv`, `souvenir.csv`, `rain.csv` | `data/` folder | Time series from the Time Series Data Library | [-@sec-time-series-analysis-using-r] |
+| `iris.csv` | `data/` folder | The iris data as a CSV file, for practising import | [-@sec-import] |
+

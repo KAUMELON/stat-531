@@ -1,0 +1,99 @@
+project:
+  type: book
+  output-dir: _book
+  execute-dir: project
+  resources:
+    - data/
+    - images/
+    - assets/
+
+book:
+  title: "Data Analysis Using Statistical Packages"
+  subtitle: "A postgraduate textbook of agricultural data analysis with R · STAT 531"
+  author: "Dr. Pratheesh P. Gopinath"
+  date: today
+  date-format: "D MMMM YYYY"
+  cover-image: images/cover.png
+  repo-url: https://github.com/KAUMELON/stat-531
+  repo-branch: pg-quarto-book
+  repo-actions: [source, issue]
+  search: true
+  chapters:
+    - index.qmd
+    - course-guide.qmd
+    - part: "Getting started with R"
+      chapters:
+        - 01-introduction.qmd
+        - 02-r-rstudio.qmd
+        - 03-r-basics.qmd
+        - 04-packages.qmd
+        - 05-importing.qmd
+        - 06-datasets.qmd
+    - part: "Unit I · Describing data"
+      chapters:
+        - 07-descriptive.qmd
+        - 08-graphs.qmd
+        - 09-eda.qmd
+    - part: "Unit II · Distributions and tests of hypotheses"
+      chapters:
+        - 10-distributions.qmd
+        - 11-large-sample.qmd
+        - 12-small-sample.qmd
+    - part: "Unit III · Analysis of variance and covariance"
+      chapters:
+        - 13-anova-crd.qmd
+        - 14-designs.qmd
+        - 15-contrasts.qmd
+        - 16-ancova.qmd
+    - part: "Unit IV · Mixed models and regression"
+      chapters:
+        - 17-mixed-models.qmd
+        - 18-correlation-regression.qmd
+    - part: "Unit V · Multivariate methods, non-linear models and time series"
+      chapters:
+        - 19-pca.qmd
+        - 20-factor-analysis.qmd
+        - 21-discriminant.qmd
+        - 22-nonlinear.qmd
+        - 23-time-series.qmd
+    - references.qmd
+  appendices:
+    - data-dictionary.qmd
+    - solutions.qmd
+    - glossary.qmd
+
+bibliography: [book.bib, packages.bib]
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-depth: 3
+    number-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    highlight-style: github
+    crossref:
+      chapters: true
+    include-after-body:
+      text: |
+        <script type="module" src="assets/live-r.js"></script>
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: false
+  freeze: false
+
+knitr:
+  opts_chunk:
+    comment: "#>"
+    fig.align: center
+    out.width: "85%"
+    fig.width: 7
+    fig.asp: 0.62
+    dpi: 144
+
+lang: en
