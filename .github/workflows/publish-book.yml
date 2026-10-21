@@ -49,6 +49,23 @@ jobs:
             any::pastecs
             any::TTR
             any::agricolae
+            any::agridat
+            any::car
+            any::emmeans
+            any::multcomp
+            any::lme4
+            any::lmerTest
+            any::pbkrtest
+            any::lmtest
+            any::fitdistrplus
+            any::vcd
+            any::HistData
+            any::psych
+            any::FactoMineR
+            any::factoextra
+            any::corrplot
+            any::nortest
+            any::MASS
 
       - name: Check R environment
         shell: bash
